@@ -24,6 +24,14 @@
   - Place detailed explanations in the most appropriate existing documentation file (`README.md`, `IMPLEMENTATION_LOG.md`, `FUTURE_FEATURES.md`, `AGENTS.md`, etc.).
 - This rule protects radical simplicity and long-term maintainability across many AI collaboration sessions.
 
+## Capturing Deferred Ideas
+
+When suggesting new features, mechanics, UI improvements, tuning ideas, or other changes:
+
+- If the human decides the idea is out of scope for the current session or phase, proactively offer to record it in `FUTURE_FEATURES.md`.
+- `FUTURE_FEATURES.md` should be treated as a living collection of future possibilities and deferred ideas (not only the high-level phase roadmap).
+- This keeps the current focus tight while preventing potentially valuable directions from being forgotten.
+
 ## Project Focus (Important)
 
 This is a deliberately simple spatial agent-based simulation focused on **generational evolution of behavioral traits**.
