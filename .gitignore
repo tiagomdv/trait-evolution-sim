@@ -1,7 +1,12 @@
+# OS
 .DS_Store
 Thumbs.db
+
+# Editor
 .vscode/
 .idea/
+
+# Temporary / local
 *.log
 tmp/
 temp/
