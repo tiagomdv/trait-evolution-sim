@@ -19,11 +19,22 @@ We use only one resource (Food) and keep the rules simple on purpose.
 ## Phased Roadmap
 
 ### Phase 0 – Bare Survival (Foundation)
-- 2D movement
-- Food in the environment
-- Hunger + consumption
+
+**Core Mechanics**
+- 2D continuous movement in a toroidal world
+- Environmental food that spawns sparsely and randomly
+- Hunger system + consumption (carried food and ground food)
 - Death from starvation
-- Basic visualization
+- Basic visualization and population stats
+
+**v0.1 Foundation Polish Priorities**
+- Hunger and consumption tuning (rates, thresholds, self-consumption logic)
+- Food distribution, density, and respawn behavior
+- Movement feel and random walk quality
+- Basic metrics and observability (population stability, average lifespan, food availability over time)
+- Exposure of key parameters for easier tuning
+- Visual feedback improvements (hunger state, food levels)
+- Overall code clarity and structure while staying single-file
 
 ### Phase 1 – Trade
 - Proximity-based trading between agents
