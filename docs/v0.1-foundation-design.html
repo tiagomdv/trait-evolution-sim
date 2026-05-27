@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Review • trait-evolution-sim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0a0c10; color: #c5d1e0; }
+    .prose h1, .prose h2, .prose h3 { color: #f1f5f9; }
+    .prose code { background: #1e2937; padding: 2px 6px; border-radius: 4px; }
+    .prose pre { background: #11151f; padding: 16px; border-radius: 8px; overflow-x: auto; }
+    .section { scroll-margin-top: 80px; }
+    nav a { transition: color 0.1s; }
+    nav a:hover { color: #60a5fa; }
+  </style>
+</head>
+<body class="p-6 max-w-5xl mx-auto">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-semibold text-white">Design Review</h1>
+      <p class="text-slate-400">trait-evolution-sim — v0.1 Foundation</p>
+    </div>
+    <div class="text-right">
+      <div class="text-sm text-slate-500">Generated: 2026-05-27</div>
+      <a href="#summary" class="text-blue-400 hover:underline text-sm">Jump to Summary</a>
+      <span class="text-slate-600 mx-2">•</span>
+      <a href="#full-design" class="text-blue-400 hover:underline text-sm">Full Design</a>
+    </div>
+  </div>
+
+  <!-- Summary Section -->
+  <div id="summary" class="section mb-12">
+    <div class="flex items-center gap-3 mb-4">
+      <h2 class="text-2xl font-semibold text-white">Summary</h2>
+      <span class="text-xs px-2 py-1 bg-emerald-900 text-emerald-300 rounded">Short Version</span>
+    </div>
+
+    <div class="prose prose-invert max-w-none bg-slate-900 border border-slate-700 rounded-xl p-8">
+      <p>A complete design for a <strong>live parameter configuration panel</strong> in the sidebar + tuning the hunger/consumption system to make starvation more punishing in the current bare Phase 0 simulation.</p>
+
+      <h3 class="mt-6">Key Deliverables</h3>
+      <ul>
+        <li>Centralized <code>CONFIG</code> object + schema for long-term maintainability</li>
+        <li>Sidebar "Live Parameters" panel with real-time controls</li>
+        <li>Recommended punishing defaults (hunger rate 0.052, lower relief values)</li>
+        <li>8-step incremental PR Plan aligned with AGENTS.md rules</li>
+        <li>4 Mermaid architecture diagrams</li>
+      </ul>
+
+      <h3 class="mt-6">Philosophy Preserved</h3>
+      <p>Everything stays inside the single <code>index.html</code>. No new dependencies. Designed for easy extension in future phases while respecting radical simplicity.</p>
+
+      <div class="mt-6 text-sm text-slate-400 border-t border-slate-700 pt-4">
+        <strong>Files produced:</strong><br>
+        • <code>trait-evolution-sim-design-full.md</code><br>
+        • <code>trait-evolution-sim-design-summary.md</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Design Section -->
+  <div id="full-design" class="section">
+    <div class="flex items-center gap-3 mb-4">
+      <h2 class="text-2xl font-semibold text-white">Full Design Document</h2>
+      <span class="text-xs px-2 py-1 bg-blue-900 text-blue-300 rounded">~6,200 words</span>
+    </div>
+
+    <div class="prose prose-invert max-w-none bg-slate-900 border border-slate-700 rounded-xl p-8 text-[15px] leading-relaxed">
+
+      <h1>Design: Live Parameter Configuration Window + Hunger &amp; Consumption Tuning for Punishing Starvation (Phase 0 Bare Survival)</h1>
+
+      <p><strong>Project</strong>: trait-evolution-sim<br>
+      <strong>Author</strong>: Grok (AI Design Assistant, following AGENTS.md)<br>
+      <strong>Date</strong>: 2026-05-27<br>
+      <strong>Status</strong>: Draft<br>
+      <strong>Current Phase</strong>: v0.1 Foundation — Bare Survival (Phase 0)</p>
+
+      <hr>
+
+      <h2>Overview</h2>
+      <p>This design introduces two tightly coupled changes for the Phase 0 foundation:</p>
+      <ol>
+        <li><strong>A live, extensible parameter configuration panel</strong> integrated into the existing right sidebar. This replaces scattered magic numbers with a single <code>CONFIG</code> source of truth and provides immediate visual + interactive controls.</li>
+        <li><strong>Tuning of the hunger and consumption system</strong> to make starvation meaningfully punishing.</li>
+      </ol>
+
+      <h2>Background &amp; Motivation</h2>
+      <h3>Current State</h3>
+      <ul>
+        <li>Simulation loop: <code>gameLoop()</code> → <code>update()</code> → <code>draw()</code></li>
+        <li>Agent hunger increases by <code>0.035</code> per tick, dies at 100</li>
+        <li>Self-consume relief: <code>-1.6</code>, Ground food relief: <code>-2.5</code></li>
+        <li>Baseline survival without eating ≈ 48 seconds</li>
+      </ul>
+
+      <h3>Pain Points</h3>
+      <ul>
+        <li>Starvation is too forgiving</li>
+        <li>No easy way to tune values during development</li>
+        <li>Magic numbers scattered everywhere — bad for future phases</li>
+      </ul>
+
+      <h2>Goals &amp; Non-Goals</h2>
+      <h3>Goals</h3>
+      <ul>
+        <li>Centralize all scalars behind a <code>CONFIG</code> object</li>
+        <li>Visible, always-on parameter panel in the sidebar</li>
+        <li>Most values update live</li>
+        <li>Make starvation punishing while remaining playable</li>
+        <li>Easy to extend for future phases</li>
+      </ul>
+
+      <h2>Proposed Design Highlights</h2>
+      <h3>New Punishing Defaults</h3>
+      <pre><code>CONFIG.hunger = {
+  rate: 0.052,                 // +49% faster
+  selfConsumeRelief: 1.25,     // 22% less relief
+  groundEatRelief: 1.95,       // 22% less relief
+};</code></pre>
+
+      <p>Expected survival time drops significantly, forcing better foraging behavior even with random movement.</p>
+
+      <h2>Alternatives Considered</h2>
+      <ul>
+        <li>Floating modal (rejected — breaks liveness)</li>
+        <li>Bottom tuner console (rejected — too big layout change)</li>
+        <li>JSON textarea (too advanced for now)</li>
+      </ul>
+      <p><strong>Chosen</strong>: In-sidebar panel with schema-driven controls.</p>
+
+      <h2>Key Decisions</h2>
+      <ul>
+        <li>Mutable <code>CONFIG</code> + schema for long-term maintainability</li>
+        <li>Live-by-default with clear "Reset Required" badges</li>
+        <li>Focus on rate + relief scalars (no new mechanics)</li>
+        <li>No persistence in this increment</li>
+      </ul>
+
+      <h2>PR Plan (8 Incremental Steps)</h2>
+      <p>Each step is small, safe, and reviewable. Follow one per focused session.</p>
+      <ol>
+        <li>Pure refactor: Introduce CONFIG + replace literals (no UI)</li>
+        <li>Add CONFIG_SCHEMA and helper scaffolding</li>
+        <li>Add static sidebar panel HTML shell</li>
+        <li>Wire first live hunger controls</li>
+        <li>Complete wiring for all parameters</li>
+        <li><strong>Apply punishing defaults</strong> (the real behavior change)</li>
+        <li>Polish, defaults button, comments</li>
+        <li>Optional: test extensibility with 1-2 new params</li>
+      </ol>
+
+      <hr>
+
+      <p class="text-sm text-slate-400 mt-8">
+        <em>This document was produced strictly as design assistance per AGENTS.md. 
+        The human will implement manually in small increments. No code was written into index.html by the AI.</em>
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-12 text-center text-xs text-slate-500">
+    Files also available as Markdown:<br>
+    <code>~/trait-evolution-sim-design-full.md</code><br>
+    <code>~/trait-evolution-sim-design-summary.md</code>
+  </div>
+
+  <script>
+    // Simple smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
