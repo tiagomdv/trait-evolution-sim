@@ -19,3 +19,26 @@
 - Deliberate "Human as Project Manager" workflow for learning purposes.
 
 This sets a clean, focused baseline before any simulation code is written.
+
+## 2026 — v0.1 Foundation Polish Implemented (Live Hunger Sliders)
+
+**Pull Request**: [#8 - feat: v0.1 Foundation Polish - Live hunger & consumption parameter controls](https://github.com/tiagomdv/trait-evolution-sim/pull/8)
+
+**Status**: PR opened.
+
+**What was implemented** (all changes manually applied and tested by the human before requesting the PR):
+- Added 5 plain top-level `let` variables for hunger parameters (`hungerRate`, `selfConsumeRelief`, `groundEatRelief`, `selfConsumeThreshold`, `selfConsumeAmount`) with explanatory comments.
+- Implemented a minimal right sidebar using Tailwind with 5 hardcoded range sliders.
+- All slider values directly mutate the `let` variables and take effect on the next frame (fully live).
+- Layout change: wrapped the simulation in a flex container so the sidebar sits to the right of the canvas.
+- Added `initHungerSliders()` wiring function.
+- Through live experimentation (especially with high `groundEatRelief`), interesting "lucky survivor" dynamics were observed.
+
+**Documentation updates**:
+- `FUTURE_FEATURES.md` was significantly expanded with new sections (additive):
+  - Run History, Metrics & Observability (including run comparison and click-to-inspect individual agents)
+  - Trait Exploration & Alternative Ideas
+- Added entry to this log.
+- Added Standing PR Directive and Log Files Philosophy to `AGENTS.md`.
+
+This marks the completion of the approved v0.1 simple approach. The project now has live, tunable hunger mechanics while remaining radically simple.
