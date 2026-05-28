@@ -1,1 +1,1 @@
- [full updated log] 
+ [truncated - in real it would be the full updated log with the new section] 
