@@ -15,6 +15,15 @@
 4. **Never** push code or documentation yourself. Only the human commits and pushes.
 5. Always respect the current phase scope.
 
+**Standing PR Directive** (added 2026-05-28)
+
+Every pull request description **must** explicitly state that:
+- All changes were manually applied by the human (tiagomdv).
+- The human tested the changes in the running simulation.
+- The PR was only requested after the human verified the work.
+
+This is non-negotiable for maintaining process integrity and the "Human as Project Manager" workflow.
+
 ## File Discipline (Non-Negotiable)
 
 - **Never create new files.** All work and new information must be integrated into existing files in the repository.
@@ -53,6 +62,16 @@ After the human approves a feature, help update:
 - `IMPLEMENTATION_LOG.md` (detailed, honest entry about what was added and what emerged)
 - `README.md` (if the change affects how the project should be understood)
 
+## Log Files Philosophy (Add, Don't Replace)  [Added 2026-05-28]
+
+`IMPLEMENTATION_LOG.md` and `FUTURE_FEATURES.md` are **historical records**, not living documents that get rewritten.
+
+- **Never delete or replace** existing sections or entries.
+- When a feature or polish item is completed, **add** a completion note next to it (e.g. "→ Completed in PR #7") and append any relevant details.
+- New future ideas or observations should be **added** (new bullets or new dated sections), never replace older ones.
+- `IMPLEMENTATION_LOG.md` works like a dev log: new work = new dated section at the bottom.
+- This preserves the project's decision history and evolution of ideas over time.
+
 ## Session & Process Discipline
 
 - Prefer **one fresh session per feature**.
@@ -64,17 +83,6 @@ After the human approves a feature, help update:
 - Do not write code directly into `index.html` expecting it to be committed.
 - Do not push for scope creep without strong justification tied to understanding trait evolution.
 - Do not over-document minor tweaks.
-
----
-
-**Standing PR Directive** (added 2026-05-28)
-
-Every pull request description **must** explicitly state that:
-- All changes were manually applied by the human (tiagomdv).
-- The human tested the changes in the running simulation.
-- The PR was only requested after the human verified the work.
-
-This is non-negotiable for maintaining process integrity and the "Human as Project Manager" workflow.
 
 ---
 
