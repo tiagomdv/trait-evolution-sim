@@ -44,7 +44,10 @@ trait-evolution-sim/
 ├── FUTURE_FEATURES.md
 ├── IMPLEMENTATION_LOG.md
 ├── .gitignore
-└── index.html
+├── index.html
+└── design-docs/
+    ├── run-history-v1-design.html
+    └── v0.1-simple-hunger-design-step-by-step.html
 ```
 
 ## Development Approach
