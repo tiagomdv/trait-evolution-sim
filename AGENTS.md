@@ -15,8 +15,6 @@
 4. **Never** push code or documentation yourself. Only the human commits and pushes.
 5. Always respect the current phase scope.
 
-**Standing PR Directive**: Every pull request description must explicitly state that the changes were manually applied by the human, tested in the simulation, and that the human requested the PR only after verification. This is non-negotiable for maintaining project process integrity.
-
 ## File Discipline (Non-Negotiable)
 
 - **Never create new files.** All work and new information must be integrated into existing files in the repository.
@@ -66,6 +64,17 @@ After the human approves a feature, help update:
 - Do not write code directly into `index.html` expecting it to be committed.
 - Do not push for scope creep without strong justification tied to understanding trait evolution.
 - Do not over-document minor tweaks.
+
+---
+
+**Standing PR Directive** (added 2026-05-28)
+
+Every pull request description **must** explicitly state that:
+- All changes were manually applied by the human (tiagomdv).
+- The human tested the changes in the running simulation.
+- The PR was only requested after the human verified the work.
+
+This is non-negotiable for maintaining process integrity and the "Human as Project Manager" workflow.
 
 ---
 
