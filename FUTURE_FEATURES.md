@@ -23,8 +23,13 @@ We use only one resource (Food) and keep the rules simple on purpose.
 - Food in the environment
 - Hunger + consumption
 - Death from starvation
-- Basic visualization
+- Basic visualization and population stats
 - **v0.1 Foundation Polish**: Simple live parameter controls in the sidebar + tuning hunger/consumption to make starvation meaningfully punishing (simple variables + hardcoded sliders approach approved for initial foundation)
+
+**v0.1 Polish Priorities** (in addition to the sliders):
+- Basic metrics and observability (population stability, average lifespan, food availability)
+- Visual feedback improvements
+- Overall code clarity while staying single-file
 
 **Future Polish Ideas** (not in v0.1):
 - Lightweight "Starvation Deaths" counter for better observability of tuning effects
