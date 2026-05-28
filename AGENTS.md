@@ -15,6 +15,8 @@
 4. **Never** push code or documentation yourself. Only the human commits and pushes.
 5. Always respect the current phase scope.
 
+**Standing PR Directive**: Every pull request description must explicitly state that the changes were manually applied by the human, tested in the simulation, and that the human requested the PR only after verification. This is non-negotiable for maintaining project process integrity.
+
 ## File Discipline (Non-Negotiable)
 
 - **Never create new files.** All work and new information must be integrated into existing files in the repository.
