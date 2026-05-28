@@ -4,55 +4,40 @@
 
 **Repository**: https://github.com/tiagomdv/trait-evolution-sim
 
-**Pull Request**: [#1 - docs: Add foundational documentation](https://github.com/tiagomdv/trait-evolution-sim/pull/1)
+**Status**: Fresh repository initialized with foundational documentation.
 
-**Status**: Documentation PR opened for review.
+**What was added**:
+- `README.md` — Main project vision, locked focus, the three traits, philosophy, and development approach.
+- `AGENTS.md` — Strict rules and process for AI collaboration (human is the only one who edits `index.html` and pushes).
+- `FUTURE_FEATURES.md` — Phased roadmap with clear priorities.
+- `IMPLEMENTATION_LOG.md` — This history file.
 
-**Files included in this PR**:
-- `README.md`
-- `AGENTS.md`
-- `FUTURE_FEATURES.md`
-- `IMPLEMENTATION_LOG.md`
-- `.gitignore`
+**Key Decisions**:
+- Extremely simple foundation using only one resource (Food).
+- Three specific heritable traits chosen: HoardingBias, ExplorationRate, TradeBoldness.
+- Strong emphasis on observability of generational change.
+- Deliberate "Human as Project Manager" workflow for learning purposes.
 
-This establishes the project's vision, scope, three locked traits, and collaboration workflow before any code is written in `index.html`.
-
-Next steps will focus on developing the simulation in subsequent PRs after this documentation foundation is reviewed and merged.
-
-## 2026 — v0.1 Foundation Design Approved (Simple Approach)
-
-**Design Artifact**: `trait-evolution-sim-design.html` (reviewed and tested by the human)
-
-**Approach Chosen**: Simple version (plain `let` variables + a small number of hardcoded sliders in the sidebar). Rejected the heavier `CONFIG` + schema-driven panel for the initial foundation to keep things radically simple.
-
-**Core Scope for v0.1 Implementation**:
-- Add a few tunable parameters for hunger and consumption.
-- Basic live sidebar controls for those parameters.
-- Tune defaults to make starvation more punishing while remaining playable.
-- Keep all changes inside the single existing `index.html`.
-
-This design is now the reference for the first code changes to `index.html`. Implementation will follow small, focused PRs as per the updated AGENTS.md File Discipline rules.
-
-Additional ideas from the design (starvation deaths counter, presets, future trait modulation of hunger, long-term code organization inside the single file) were moved to FUTURE_FEATURES.md under "Future Polish Ideas".
+This sets a clean, focused baseline before any simulation code is written.
 
 ## 2026 — v0.1 Foundation Polish Implemented (Live Hunger Sliders)
 
 **Pull Request**: [#7 - feat: v0.1 Foundation Polish - Live hunger & consumption parameter controls](https://github.com/tiagomdv/trait-evolution-sim/pull/7)
 
-**Status**: PR opened.
+**Status**: PR opened (changes manually applied and tested by the human before PR requested).
 
-**What was implemented** (all changes manually applied and tested by the human before requesting the PR):
-- Added 5 plain top-level `let` variables for hunger parameters (`hungerRate`, `selfConsumeRelief`, `groundEatRelief`, `selfConsumeThreshold`, `selfConsumeAmount`) with explanatory comments.
-- Implemented a minimal right sidebar using Tailwind with 5 hardcoded range sliders.
-- All slider values directly mutate the `let` variables and take effect on the next frame (fully live).
-- Layout change: wrapped the simulation in a flex container so the sidebar sits to the right of the canvas.
-- Added `initHungerSliders()` wiring function.
-- Through live experimentation (especially with high `groundEatRelief`), interesting "lucky survivor" dynamics were observed.
+**What was implemented**:
+- Added 5 plain top-level `let` variables for the key hunger/consumption parameters with short explanatory comments.
+- Added a minimal right sidebar (using Tailwind) containing 5 hardcoded `<input type="range">` sliders.
+- All slider values directly mutate the `let` variables and take effect on the next animation frame (fully live).
+- Updated the DOM layout with a flex container so the sidebar sits beside the canvas.
+- Added `initHungerSliders()` function and wiring.
+- Through live experimentation during development (especially raising `groundEatRelief` significantly), interesting emergent behavior was observed (slow population die-off with one extremely long-surviving "lucky" agent).
 
-**Documentation updates**:
-- `FUTURE_FEATURES.md` was significantly expanded with new sections:
-  - Run History, Metrics & Observability (including run comparison and click-to-inspect individual agents)
-  - Trait Exploration & Alternative Ideas
-- These ideas emerged organically from actually using the tuned simulation rather than from upfront design.
+**Documentation updates** (added, not replaced):
+- Appended new section to `FUTURE_FEATURES.md` for Run History, Metrics & Observability ideas that emerged from actual use.
+- Appended new section to `FUTURE_FEATURES.md` for Trait Exploration & Alternative Ideas.
+- Added entry to this log.
+- Added Standing PR Directive to `AGENTS.md`.
 
-This marks the completion of the approved v0.1 simple approach. The project now has live, tunable hunger mechanics while remaining radically simple.
+This completes the approved v0.1 simple approach (plain lets + hardcoded sliders).
