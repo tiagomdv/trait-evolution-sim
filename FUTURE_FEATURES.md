@@ -46,8 +46,8 @@ We use only one resource (Food) and keep the rules simple on purpose.
 ### Run History, Metrics & Observability (Captured 2026-05-28)
 After completing the v0.1 hunger parameter controls and tuning (plain lets + sliders), and through direct observation of simulation behavior (especially with high `groundEatRelief` values), the following became clearly valuable:
 
-- Store results of previous runs within the same browser session (longest survival time, final population, peak population, etc.)
-- Simple way to compare multiple runs side-by-side (e.g. "Run #3 had one agent survive 4m12s")
+- **Run History (Minimal v1)**: Store results of previous runs within the same browser session (longest survival time, final population, etc.) **→ Completed in PR #8**
+- Simple way to compare multiple runs side-by-side (e.g. "Run #3 had one agent survive 4m12s") **→ Completed in PR #8**
 - Basic per-run statistics panel (longest-lived agent, average lifetime, starvation deaths, etc.)
 - Click on an individual agent (dot) to inspect its personal stats (current hunger, food carried, lifetime, possibly future traits like HoardingBias, etc.)
 
