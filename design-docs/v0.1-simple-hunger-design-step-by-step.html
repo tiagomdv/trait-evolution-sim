@@ -1,1 +1,203 @@
-[Full content of the v0.1 step-by-step design HTML]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v0.1 Simple Hunger — Step-by-Step Implementation Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0a0c10; color: #c5d1e0; }
+    .step-header { background: #1e2937; border-left: 4px solid #22c55e; }
+    .warning { background: #451a03; border-left: 4px solid #f59e0b; }
+    .code-block { background: #11151f; padding: 12px 16px; border-radius: 6px; font-family: ui-monospace, monospace; font-size: 13.5px; line-height: 1.45; overflow-x: auto; }
+    .highlight { background: #1e2937; padding: 2px 6px; border-radius: 3px; }
+    .nav a { color: #60a5fa; }
+    .nav a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="p-6 max-w-5xl mx-auto">
+
+  <h1 class="text-3xl font-semibold text-white mb-2">v0.1 Simple Hunger Sliders — Step-by-Step Guide</h1>
+  <p class="text-slate-400 mb-6">Follow this exactly. This version is written for people who already added the 5 <code>let</code> variables.</p>
+
+  <!-- Current State -->
+  <div class="warning p-4 rounded-r-xl mb-8">
+    <strong>Important — Check your current state first</strong><br>
+    You should already have the 5 let variables near the top of your script (after the NUM_ constants) and your <code>Agent.update()</code> + food loop should already be using those variables instead of magic numbers.<br><br>
+    If you do <strong>not</strong> have them yet, stop and add them first using the previous guide or the comments I gave you.
+  </div>
+
+  <div class="bg-slate-900 border border-slate-700 rounded-xl p-5 mb-8">
+    <h2 class="font-semibold mb-3">Your Current State (what you probably have right now)</h2>
+    <ul class="list-disc pl-5 text-sm space-y-1">
+      <li>5 <code>let</code> variables with comments (hungerRate, selfConsumeRelief, groundEatRelief, etc.)</li>
+      <li><code>Agent.update()</code> using the lets</li>
+      <li>Food consumption loop using <code>groundEatRelief</code></li>
+      <li>Still the old single-column layout (no flex, no sidebar)</li>
+      <li>Only Pause/Reset buttons in the header</li>
+    </ul>
+  </div>
+
+  <!-- Navigation -->
+  <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 mb-8 text-sm flex flex-wrap gap-x-6 gap-y-1 sticky top-2 z-10">
+    <a href="#step1" class="hover:underline">Step 1: Layout Wrapper (the flex div)</a>
+    <a href="#step2" class="hover:underline">Step 2: Add the Sidebar HTML</a>
+    <a href="#step3" class="hover:underline">Step 3: Add the JS Wiring</a>
+    <a href="#step4" class="hover:underline">Step 4: Call the Init Function</a>
+    <a href="#troubleshooting" class="hover:underline">Troubleshooting</a>
+  </div>
+
+  <!-- STEP 1: The Flex Layout -->
+  <div id="step1" class="mb-10">
+    <div class="step-header px-4 py-2 rounded-t-xl font-semibold text-emerald-300">STEP 1 — Add the Flex Layout Wrapper (Most Common Pain Point)</div>
+    
+    <div class="bg-slate-900 border border-slate-700 p-5 rounded-b-xl">
+      <p class="mb-4"><strong>This is the part most people get stuck on.</strong></p>
+      
+      <p class="mb-3">You need to change your current structure from this:</p>
+      
+      <div class="code-block mb-4">
+&lt;div class="max-w-5xl mx-auto"&gt;<br>
+&nbsp;&nbsp;&lt;div class="flex items-center gap-4 mb-4"&gt; ... header ... &lt;/div&gt;<br>
+&nbsp;&nbsp;&lt;canvas ...&gt;&lt;/canvas&gt;<br>
+&nbsp;&nbsp;&lt;div class="mt-3 ..."&gt; phase text &lt;/div&gt;<br>
+&lt;/div&gt;
+      </div>
+
+      <p class="mb-3">Into this (we wrap the canvas + phase text in a flex row):</p>
+
+      <div class="code-block mb-4">
+&lt;div class="max-w-5xl mx-auto"&gt;<br>
+&nbsp;&nbsp;&lt;div class="flex items-center gap-4 mb-4"&gt; ... header ... &lt;/div&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;!-- NEW: flex container starts here --&gt;<br>
+&nbsp;&nbsp;&lt;div class="flex gap-6 items-start"&gt;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Left column: simulation --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="flex-1"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;canvas ...&gt;&lt;/canvas&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="mt-3 ..."&gt; phase text &lt;/div&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Right column: sidebar (we add this in Step 2) --&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- SIDEBAR WILL GO HERE --&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;/div&gt;<br>
+&nbsp;&nbsp;&lt;!-- flex container ends here --&gt;<br>
+&lt;/div&gt;
+      </div>
+
+      <div class="warning p-4 rounded-r text-sm">
+        <strong>Exact edit you need to make right now:</strong><br>
+        1. Find the line that says <code>&lt;div class="max-w-5xl mx-auto"&gt;</code><br>
+        2. After the header div (the one with the title and buttons), insert the new flex opening:<br>
+        <code>&lt;div class="flex gap-6 items-start"&gt;</code><br><br>
+        3. Wrap your <code>&lt;canvas&gt;</code> + the phase text div inside a new <code>&lt;div class="flex-1"&gt; ... &lt;/div&gt;</code><br><br>
+        4. After that inner div, add a comment: <code>&lt;!-- SIDEBAR GOES HERE --&gt;</code><br><br>
+        5. Close the flex div before the final <code>&lt;/div&gt;</code> of the main container.
+      </div>
+
+      <p class="mt-4 text-sm text-emerald-300">Do this change first before adding any sidebar HTML. Test that the page still looks normal (just wider now).</p>
+    </div>
+  </div>
+
+  <!-- STEP 2: Sidebar HTML -->
+  <div id="step2" class="mb-10">
+    <div class="step-header px-4 py-2 rounded-t-xl font-semibold text-emerald-300">STEP 2 — Paste the Sidebar HTML</div>
+    
+    <div class="bg-slate-900 border border-slate-700 p-5 rounded-b-xl">
+      <p class="mb-3">Replace the comment <code>&lt;!-- SIDEBAR GOES HERE --&gt;</code> with this entire block:</p>
+      
+      <div class="code-block">
+&lt;div class="w-72 bg-slate-900 border border-slate-700 rounded p-3 text-sm flex-shrink-0"&gt;<br>
+&nbsp;&nbsp;&lt;div class="text-xs uppercase tracking-widest text-slate-400 mb-2"&gt;Hunger &amp; Consumption (v0.1)&lt;/div&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;!-- Hunger Rate slider --&gt;<br>
+&nbsp;&nbsp;&lt;div class="mb-2"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="flex justify-between text-xs mb-0.5"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span&gt;Hunger Rate&lt;/span&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="val-hunger-rate" class="font-mono text-emerald-300"&gt;0.055&lt;/span&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="range" id="slider-hunger-rate" min="0.01" max="0.15" step="0.001" value="0.055" class="w-full accent-emerald-400"&gt;<br>
+&nbsp;&nbsp;&lt;/div&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;!-- Self-Consume Relief --&gt;<br>
+&nbsp;&nbsp;&lt;div class="mb-2"&gt; ... same pattern ... &lt;/div&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;!-- Ground Eat Relief --&gt;<br>
+&nbsp;&nbsp;&lt;div class="mb-2"&gt; ... same pattern ... &lt;/div&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;!-- Self-Consume Threshold --&gt;<br>
+&nbsp;&nbsp;&lt;div class="mb-2"&gt; ... same pattern ... &lt;/div&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;!-- Self-Consume Amount --&gt;<br>
+&nbsp;&nbsp;&lt;div class="mb-2"&gt; ... same pattern ... &lt;/div&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;div class="mt-3 text-[10px] text-slate-500"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Changes apply live (next frame). All values tunable without reset.<br>
+&nbsp;&nbsp;&lt;/div&gt;<br>
+&lt;/div&gt;
+      </div>
+
+      <p class="mt-4 text-sm">You can copy the full 5-slider version from the previous HTML guide if you want the complete block in one go.</p>
+    </div>
+  </div>
+
+  <!-- STEP 3 + 4 -->
+  <div id="step3" class="mb-10">
+    <div class="step-header px-4 py-2 rounded-t-xl font-semibold text-emerald-300">STEP 3 &amp; 4 — Add the JavaScript Wiring + Init Call</div>
+    
+    <div class="bg-slate-900 border border-slate-700 p-5 rounded-b-xl">
+      <p class="mb-3"><strong>Add this function</strong> near the bottom of your <code>&lt;script&gt;</code> tag, before the <code>start();</code> call:</p>
+      
+      <div class="code-block mb-4">
+function initHungerSliders() {<br>
+&nbsp;&nbsp;// Hunger Rate<br>
+&nbsp;&nbsp;const sRate = document.getElementById('slider-hunger-rate');<br>
+&nbsp;&nbsp;const vRate = document.getElementById('val-hunger-rate');<br>
+&nbsp;&nbsp;sRate.value = hungerRate;<br>
+&nbsp;&nbsp;sRate.oninput = () =&gt; { hungerRate = parseFloat(sRate.value); vRate.textContent = hungerRate.toFixed(3); };<br>
+<br>
+&nbsp;&nbsp;// Repeat the same pattern for the other 4 sliders...<br>
+&nbsp;&nbsp;// (Self-Consume Relief, Ground Eat Relief, Threshold, Amount)<br>
+}<br>
+<br>
+// IMPORTANT: Call it at the very end<br>
+initHungerSliders();
+      </div>
+
+      <div class="warning p-4 rounded-r text-sm">
+        <strong>Critical:</strong> The <code>initHungerSliders();</code> call must be at the very bottom of the script, after all functions are defined and after the sidebar HTML exists in the DOM.
+      </div>
+    </div>
+  </div>
+
+  <div id="troubleshooting" class="mb-10">
+    <div class="step-header px-4 py-2 rounded-t-xl font-semibold text-emerald-300">Common Problems &amp; Fixes</div>
+    
+    <div class="bg-slate-900 border border-slate-700 p-5 rounded-b-xl text-sm space-y-4">
+      <div>
+        <strong>Sliders don't appear or are broken:</strong><br>
+        → You probably put the sidebar HTML outside the new flex container. It must be a direct child of <code>&lt;div class="flex gap-6..."&gt;</code>.
+      </div>
+      <div>
+        <strong>Sliders appear but don't do anything:</strong><br>
+        → The <code>initHungerSliders()</code> function is either not defined, or you are calling it too early (before the sidebar HTML exists).
+      </div>
+      <div>
+        <strong>Page looks broken after adding flex:</strong><br>
+        → Make sure you wrapped the canvas + phase text in <code>&lt;div class="flex-1"&gt;...&lt;/div&gt;</code> and closed it properly.
+      </div>
+      <div>
+        <strong>Console error "hungerRate is not defined":</strong><br>
+        → You added the sliders before you added the 5 let variables at the top.
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center text-xs text-slate-500 mt-8">
+    Once you finish these steps, your sliders should be live. Then we can add the nice run history / stats you wanted.
+  </div>
+
+</body>
+</html>

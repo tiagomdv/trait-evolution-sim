@@ -1,1 +1,460 @@
-[Full content of the Run History design HTML as previously read]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Run History + Basic Stats (Minimal v1) — Design &amp; Step-by-Step Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0a0c10; color: #c5d1e0; font-size: 15px; line-height: 1.65; }
+    .prose h1, .prose h2, .prose h3, .prose h4 { color: #f1f5f9; }
+    .prose code { background: #1e2937; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+    .prose pre { background: #11151f; padding: 14px 16px; border-radius: 8px; overflow-x: auto; font-size: 13.5px; line-height: 1.45; }
+    .section { scroll-margin-top: 80px; }
+    .step { counter-increment: step; }
+    .step:before {
+      content: counter(step);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.75rem; height: 1.75rem;
+      background: #334155; color: #94a3b8;
+      border-radius: 9999px; font-size: 0.875rem; font-weight: 700;
+      margin-right: 0.75rem; flex-shrink: 0;
+    }
+    .decision { background: #1e2937; border-left: 3px solid #64748b; }
+    .badge { font-size: 0.65rem; padding: 1px 8px; border-radius: 9999px; font-weight: 600; letter-spacing: 0.5px; }
+    .copy-box { background: #0f172a; border: 1px solid #334155; }
+    .nav-link { transition: all 0.1s; }
+    .nav-link:hover { color: #60a5fa; }
+    .action { background: #1e2937; border-left: 3px solid #22c55e; }
+    .warning { background: #451a03; border-left: 3px solid #f59e0b; }
+    table { border-collapse: collapse; }
+    td, th { padding: 6px 10px; border: 1px solid #334155; }
+    .snippet-label { font-size: 10px; letter-spacing: 0.5px; font-weight: 700; color: #64748b; }
+    .toc a { display: block; padding: 4px 0; }
+  </style>
+</head>
+<body class="p-6 max-w-5xl mx-auto">
+
+  <!-- Header -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-1">
+      <h1 class="text-3xl font-semibold text-white">Run History + Basic Stats (Minimal v1)</h1>
+      <span class="badge bg-emerald-900 text-emerald-300">DESIGN + IMPLEMENTATION GUIDE</span>
+    </div>
+    <p class="text-slate-400">trait-evolution-sim — Phase 0 Foundation / Observability</p>
+    <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-400">
+      <span><strong>Date:</strong> 2026-05-28</span>
+      <span><strong>Target:</strong> <code class="text-emerald-300">evol-econ-sim/index.html</code> (325 lines, post-v0.1)</span>
+      <span><strong>Scope:</strong> In-memory only • 7 tiny PRs</span>
+    </div>
+  </div>
+
+  <!-- AGENTS.md Reminder -->
+  <div class="warning rounded-r-xl p-4 mb-8 text-sm">
+    <strong class="text-amber-300">AGENTS.md — Non-negotiable Rules</strong><br>
+    • You (tiagomdv) are the <strong>only</strong> person who edits or commits <code>index.html</code><br>
+    • One feature at a time. This session is <strong>exclusively</strong> Run History v1.<br>
+    • Never create new files. Everything stays inside the single <code>index.html</code>.<br>
+    • All documentation updates must be <strong>appended</strong> (never replace) to <code>IMPLEMENTATION_LOG.md</code> and <code>FUTURE_FEATURES.md</code>.<br>
+    • This HTML is design assistance only. All code changes are done manually by you.
+  </div>
+
+  <!-- Quick Nav -->
+  <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 mb-8 text-sm sticky top-2 z-10">
+    <div class="flex flex-wrap gap-x-6 gap-y-1 font-medium">
+      <a href="#overview" class="nav-link">Overview &amp; Scope</a>
+      <a href="#key-decisions" class="nav-link">Key Decisions</a>
+      <a href="#step-by-step" class="nav-link font-semibold text-emerald-400">Step-by-Step Guide (11 steps)</a>
+      <a href="#pr-plan" class="nav-link">PR Plan (7 tiny PRs)</a>
+      <a href="#recommendations" class="nav-link">Recommendations</a>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div id="overview" class="section mb-10">
+    <h2 class="text-2xl font-semibold mb-3">Overview</h2>
+    <div class="prose prose-invert bg-slate-900 border border-slate-700 rounded-xl p-6">
+      <p>This design delivers the <strong>minimal v1 "Run History + Basic Stats"</strong> feature: an in-memory (session-only) log of completed simulation runs.</p>
+      <p>Runs are automatically recorded when you click <strong>Reset</strong> or when the population naturally reaches zero. Each entry captures:</p>
+      <ul class="list-disc pl-5">
+        <li>Run number</li>
+        <li>Duration (seconds, derived from ticks)</li>
+        <li>Longest single-agent survival time in that run</li>
+        <li>Final population</li>
+      </ul>
+      <p>The UI extends the <strong>existing right sidebar</strong> (below the v0.1 hunger sliders) with a prominent "Best longest survival this session" callout + a simple chronological list + Clear button.</p>
+      <p class="text-emerald-400 font-medium mt-3">Everything stays radically simple — plain lets + one new field on Agent + hardcoded Tailwind in the sidebar. No new files. No persistence.</p>
+    </div>
+  </div>
+
+  <!-- Scope -->
+  <div class="mb-10">
+    <h3 class="text-lg font-semibold mb-2">Exact v1 Scope (Locked)</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-slate-900 border border-slate-700 rounded-xl p-4">
+        <div class="text-emerald-400 font-semibold mb-2">In Scope</div>
+        <ul class="text-sm space-y-1">
+          <li>✓ In-memory run list (lost on reload)</li>
+          <li>✓ Record on Reset click</li>
+          <li>✓ Record on natural population == 0</li>
+          <li>✓ Run #, duration, longest survival, final pop</li>
+          <li>✓ "Best longest survival this session" highlight</li>
+          <li>✓ Simple list + Clear button</li>
+          <li>✓ All changes inside existing sidebar</li>
+        </ul>
+      </div>
+      <div class="bg-slate-900 border border-slate-700 rounded-xl p-4">
+        <div class="text-amber-400 font-semibold mb-2">Explicitly Out of Scope for v1</div>
+        <ul class="text-sm space-y-1 text-slate-400">
+          <li>✗ No localStorage / persistence</li>
+          <li>✗ No charts or graphs</li>
+          <li>✗ No starvation death counter</li>
+          <li>✗ No export / save</li>
+          <li>✗ No per-agent inspection (future idea)</li>
+          <li>✗ No new files of any kind</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Decisions -->
+  <div id="key-decisions" class="section mb-10">
+    <h2 class="text-2xl font-semibold mb-3">Key Decisions</h2>
+    <div class="space-y-3">
+      <div class="decision rounded-r-xl p-4">
+        <div class="font-semibold">1. Record on BOTH Reset and natural population==0 (with guard flag)</div>
+        <div class="text-sm text-slate-400 mt-1">Captures the "sole survivor" / lucky agent dynamics that motivated the feature in FUTURE_FEATURES.md. One tiny 3-line check + flag prevents double-recording.</div>
+      </div>
+      <div class="decision rounded-r-xl p-4">
+        <div class="font-semibold">2. "Best longest survival this session" is prominent (emerald, top of section)</div>
+        <div class="text-sm text-slate-400 mt-1">Highest-signal value from the experiments. Placed first for immediate value without scanning the list.</div>
+      </div>
+      <div class="decision rounded-r-xl p-4">
+        <div class="font-semibold">3. UI lives inside the existing w-72 right sidebar (below hunger controls)</div>
+        <div class="text-sm text-slate-400 mt-1">Lowest friction and risk. Exact reuse of the v0.1 sidebar pattern that just succeeded. Zero layout changes to the flex/canvas relationship.</div>
+      </div>
+      <div class="decision rounded-r-xl p-4">
+        <div class="font-semibold">4. Duration &amp; survival use tick-derived seconds (tick / 60)</div>
+        <div class="text-sm text-slate-400 mt-1">Perfect consistency with the existing discrete engine. No extra Date or performance.now() complexity.</div>
+      </div>
+      <div class="decision rounded-r-xl p-4">
+        <div class="font-semibold">5. Only one new field on Agent: birthTick</div>
+        <div class="text-sm text-slate-400 mt-1">Matches the "plain lets + minimal model change" philosophy that worked for v0.1 sliders.</div>
+      </div>
+      <div class="decision rounded-r-xl p-4">
+        <div class="font-semibold">6. History list uses innerHTML on a small scrollable div (max-h-28)</div>
+        <div class="text-sm text-slate-400 mt-1">Zero dependencies. Fine for a session-only list that rarely exceeds 10–15 entries.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step-by-Step Guide -->
+  <div id="step-by-step" class="section mb-10">
+    <h2 class="text-2xl font-semibold mb-3 flex items-center gap-2">
+      Step-by-Step HTML Implementation Guide
+      <span class="badge bg-emerald-900 text-emerald-300">11 MICRO-STEPS</span>
+    </h2>
+
+    <div class="prose prose-invert bg-slate-900 border border-slate-700 rounded-xl p-6 mb-6">
+      <p><strong>Follow this exactly, in order.</strong> Each step is a single, safe, atomic edit. Apply it, hard-reload the browser (Ctrl/Cmd+Shift+R), verify the simulation still works normally, then move to the next step.</p>
+      <p class="text-emerald-400 font-medium">Many steps are literally 1–4 lines and change zero visible behavior until Step 10.</p>
+    </div>
+
+    <!-- Prerequisites -->
+    <div class="bg-slate-900 border border-slate-700 rounded-xl p-5 mb-6">
+      <div class="font-semibold text-amber-300 mb-2">Current State You Must Have Before Starting</div>
+      <ul class="text-sm space-y-1">
+        <li>Exactly the 325-line <code>evol-econ-sim/index.html</code> (post v0.1 hunger sliders)</li>
+        <li>5 hunger <code>let</code> variables (around lines 111–115)</li>
+        <li><code>Agent</code> class with only <code>food</code> + <code>hunger</code></li>
+        <li><code>resetSim()</code> that does <code>tick=0; init();</code> (lines 276-279)</li>
+        <li>Flex layout + <code>w-72</code> sidebar with the 5 sliders</li>
+        <li>No <code>runNumber</code>, <code>runHistory</code>, or <code>birthTick</code> anywhere yet</li>
+      </ul>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 1 — Add the 6 New Global Tracking Variables</h3>
+      <div class="text-sm text-slate-400 mb-3">Location: Inside &lt;script&gt;, immediately after the last hunger <code>let</code> (after line ~115).</div>
+      <div class="copy-box rounded-xl p-4">
+        <div class="snippet-label mb-2">INSERT THIS BLOCK</div>
+        <pre><code>// === v1 Run History (minimal, in-memory only) ===
+let runNumber = 0;
+let runStartTick = 0;
+let runHistory = [];                 // {run, durationSec, longestSec, finalPop}[]
+let currentRunMaxSurvivalTicks = 0;
+let currentRunEnded = false;
+let bestLongestSec = 0;</code></pre>
+      </div>
+      <div class="text-xs text-emerald-400 mt-2">Test: Hard reload. Simulation runs normally. No errors. Hunger sliders still work.</div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 2 — Add birthTick to the Agent constructor</h3>
+      <div class="text-sm text-slate-400 mb-3">Location: Inside the <code>Agent</code> constructor (around line 123).</div>
+      <div class="copy-box rounded-xl p-4">
+        <div class="snippet-label mb-2">ADD ONE LINE</div>
+        <pre><code>constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 1.5;
+    this.vy = (Math.random() - 0.5) * 1.5;
+    this.food = 18 + Math.random() * 12;
+    this.hunger = 0;
+    this.birthTick = tick;   // NEW for v1 Run History
+}</code></pre>
+      </div>
+      <div class="text-xs text-emerald-400 mt-2">Test: Hard reload. No errors. Agents still appear and move.</div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 3 — Track lifetime on death (inside Agent.update)</h3>
+      <div class="text-sm text-slate-400 mb-3">Location: The death check inside <code>Agent.update()</code> (around line 152).</div>
+      <div class="copy-box rounded-xl p-4">
+        <div class="snippet-label mb-2">REPLACE THE DEATH BLOCK</div>
+        <pre><code>// Die
+if (this.hunger > 100) {
+    const life = tick - this.birthTick;
+    if (life > currentRunMaxSurvivalTicks) currentRunMaxSurvivalTicks = life;
+    return false;
+}</code></pre>
+      </div>
+      <div class="text-xs text-emerald-400 mt-2">Test: Hard reload. Let some agents starve. No console errors.</div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 4 — Add recordCurrentRun() function</h3>
+      <div class="text-sm text-slate-400 mb-3">Location: Add as a new top-level function near the other control functions (e.g. after <code>resetSim</code>).</div>
+      <div class="copy-box rounded-xl p-4">
+        <div class="snippet-label mb-2">NEW FUNCTION</div>
+        <pre><code>function recordCurrentRun() {
+    if (currentRunEnded || runNumber === 0) return;
+
+    // Include still-alive agents at the moment of recording
+    let maxLife = currentRunMaxSurvivalTicks;
+    for (let a of agents) {
+        const life = tick - a.birthTick;
+        if (life > maxLife) maxLife = life;
+    }
+
+    const durationTicks = Math.max(0, tick - runStartTick);
+    const durationSec = Math.round(durationTicks / 60);
+
+    const longestSec = Math.round(maxLife / 60);
+    const finalPop = agents.length;
+
+    runHistory.push({
+        run: runNumber,
+        durationSec: durationSec,
+        longestSec: longestSec,
+        finalPop: finalPop
+    });
+
+    if (longestSec > bestLongestSec) bestLongestSec = longestSec;
+
+    currentRunEnded = true;
+    console.log(`[Run History] Recorded Run #${runNumber} — ${durationSec}s, longest ${longestSec}s, pop ${finalPop}`);
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 5 — Update resetSim() + add startNewRun()</h3>
+      <div class="copy-box rounded-xl p-4 mb-3">
+        <div class="snippet-label mb-2">REPLACE resetSim + ADD HELPER</div>
+        <pre><code>function startNewRun() {
+    runNumber++;
+    runStartTick = tick;
+    currentRunMaxSurvivalTicks = 0;
+    currentRunEnded = false;
+}
+
+function resetSim() {
+    recordCurrentRun();     // record what just ended
+    tick = 0;
+    init();
+    startNewRun();          // begin fresh run tracking
+}</code></pre>
+      </div>
+      <div class="text-xs text-emerald-400">Test: Hard reload → click Reset a few times → check console. You should see "Recorded Run #X" messages.</div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 6 — Detect natural extinction (in update())</h3>
+      <div class="text-sm text-slate-400 mb-3">Location: Right after the line <code>agents = alive;</code> inside the <code>update()</code> function.</div>
+      <div class="copy-box rounded-xl p-4">
+        <pre><code>agents = alive;
+
+// NEW: detect natural population crash for run history
+if (agents.length === 0 && !currentRunEnded && runNumber > 0) {
+    recordCurrentRun();
+}</code></pre>
+      </div>
+      <div class="text-xs text-emerald-400 mt-2">This is one of the smallest, highest-value changes. Test by cranking hunger sliders very high and waiting for extinction.</div>
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 7 — Add renderRunHistory() + clearRuns()</h3>
+      <div class="copy-box rounded-xl p-4">
+        <div class="snippet-label mb-2">NEW RENDER + CLEAR FUNCTIONS</div>
+        <pre><code>function renderRunHistory() {
+    const bestEl = document.getElementById('best-longest');
+    const listEl = document.getElementById('run-list');
+    if (!bestEl || !listEl) return;
+
+    bestEl.textContent = bestLongestSec > 0 ? bestLongestSec + 's' : '—';
+
+    if (runHistory.length === 0) {
+        listEl.innerHTML = '<div class="text-[10px] text-slate-500 px-1 py-0.5">No runs yet</div>';
+        return;
+    }
+
+    let html = '';
+    for (let i = runHistory.length - 1; i >= 0; i--) {   // newest first
+        const r = runHistory[i];
+        html += `<div class="flex justify-between text-[10px] py-0.5 border-b border-slate-800 last:border-0">
+            <span class="font-mono text-slate-400">Run #${r.run}</span>
+            <span class="text-emerald-300">${r.longestSec}s</span>
+            <span class="text-slate-400">${r.durationSec}s • ${r.finalPop}</span>
+        </div>`;
+    }
+    listEl.innerHTML = html;
+}
+
+function clearRuns() {
+    runHistory = [];
+    bestLongestSec = 0;
+    renderRunHistory();
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- STEP 8 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 8 — Add the sidebar HTML section</h3>
+      <div class="text-sm text-slate-400 mb-3">Location: Inside the right sidebar div (the <code>w-72</code> one), after the last hunger slider block and before the footer note.</div>
+      <div class="copy-box rounded-xl p-4">
+        <div class="snippet-label mb-2">INSERT THIS BLOCK (after the last slider)</div>
+        <pre><code>&lt;!-- Run History v1 (minimal, session-only) --&gt;
+&lt;div class="mt-4 pt-3 border-t border-slate-700"&gt;
+  &lt;div class="text-xs uppercase tracking-widest text-slate-400 mb-1.5"&gt;Run History (v1 — session only)&lt;/div&gt;
+
+  &lt;div class="mb-2"&gt;
+    &lt;div class="text-[10px] text-slate-400"&gt;Best longest survival&lt;/div&gt;
+    &lt;div id="best-longest" class="text-xl font-semibold text-emerald-400"&gt;—&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div id="run-list" class="max-h-28 overflow-auto text-xs pr-1 mb-2"&gt;
+    &lt;div class="text-[10px] text-slate-500 px-1 py-0.5"&gt;No runs yet&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;button onclick="clearRuns()"
+          class="text-[10px] px-2 py-0.5 bg-slate-800 hover:bg-slate-700 rounded text-slate-400"&gt;
+    Clear Runs
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </div>
+
+    <!-- STEP 9 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 9 — Wire up the new functions (bootstrap)</h3>
+      <div class="text-sm text-slate-400 mb-3">Location: At the very bottom of the script, after <code>initHungerSliders();</code> and before or inside <code>start();</code>.</div>
+      <div class="copy-box rounded-xl p-4">
+        <pre><code>initHungerSliders();
+
+// NEW for v1 Run History
+startNewRun();
+renderRunHistory();
+
+start();</code></pre>
+      </div>
+      <div class="text-xs text-emerald-400 mt-2">Also add one call to <code>renderRunHistory();</code> at the end of <code>recordCurrentRun()</code> and inside <code>clearRuns()</code>.</div>
+    </div>
+
+    <!-- STEP 10 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 10 — Add render calls + small polish</h3>
+      <ul class="text-sm space-y-1">
+        <li>Call <code>renderRunHistory();</code> at the end of <code>recordCurrentRun()</code></li>
+        <li>Call <code>renderRunHistory();</code> at the end of <code>clearRuns()</code></li>
+        <li>Add a few comments labeling the new v1 sections</li>
+        <li>Optional: improve the list row formatting slightly</li>
+      </ul>
+    </div>
+
+    <!-- STEP 11 -->
+    <div class="step mb-8">
+      <h3 class="text-lg font-semibold mb-2">STEP 11 — Final verification &amp; edge cases</h3>
+      <div class="text-sm">Test matrix:</div>
+      <ul class="text-sm list-disc pl-5 mt-2 space-y-1">
+        <li>Reset multiple times — list grows, Best updates</li>
+        <li>High hunger values → natural extinction → run recorded</li>
+        <li>Clear button works and resets Best to —</li>
+        <li>Pause + Reset combinations</li>
+        <li>Reload page → history is gone (expected for v1)</li>
+      </ul>
+    </div>
+
+    <div class="warning rounded-r-xl p-4 text-sm">
+      <strong>Troubleshooting tip from v0.1 experience:</strong> If something stops working after a step, hard reload first. Then check the console. The most common issues are missing a <code>;</code> or calling <code>renderRunHistory</code> before the elements exist in the DOM.
+    </div>
+  </div>
+
+  <!-- PR Plan -->
+  <div id="pr-plan" class="section mb-10">
+    <h2 class="text-2xl font-semibold mb-3">PR Plan (7 Tiny, Independently Mergeable PRs)</h2>
+    <div class="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-950">
+          <tr>
+            <th class="text-left px-4 py-2">PR</th>
+            <th class="text-left px-4 py-2">Steps</th>
+            <th class="text-left px-4 py-2">Focus</th>
+            <th class="text-left px-4 py-2">Notes</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800">
+          <tr><td class="px-4 py-2 font-mono">PR #8</td><td class="px-4 py-2">1–2</td><td class="px-4 py-2">State + birthTick</td><td class="px-4 py-2">Pure additive, zero behavior change</td></tr>
+          <tr><td class="px-4 py-2 font-mono">PR #9</td><td class="px-4 py-2">3–4</td><td class="px-4 py-2">Lifetime tracking + record fn</td><td class="px-4 py-2">Console-only recording</td></tr>
+          <tr><td class="px-4 py-2 font-mono">PR #10</td><td class="px-4 py-2">5</td><td class="px-4 py-2">resetSim + startNewRun wiring</td><td class="px-4 py-2">First observable behavior</td></tr>
+          <tr><td class="px-4 py-2 font-mono">PR #11</td><td class="px-4 py-2">6</td><td class="px-4 py-2">Natural extinction detection</td><td class="px-4 py-2">Very small, high value</td></tr>
+          <tr><td class="px-4 py-2 font-mono">PR #12</td><td class="px-4 py-2">7</td><td class="px-4 py-2">render + clear functions</td><td class="px-4 py-2">Pure JS, no UI yet</td></tr>
+          <tr><td class="px-4 py-2 font-mono">PR #13</td><td class="px-4 py-2">8–9</td><td class="px-4 py-2">Sidebar HTML + bootstrap</td><td class="px-4 py-2">First visible UI</td></tr>
+          <tr><td class="px-4 py-2 font-mono">PR #14</td><td class="px-4 py-2">10–11</td><td class="px-4 py-2">Polish + final verification</td><td class="px-4 py-2">Comments, edges, docs</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-slate-400 mt-3">Every PR description must include the exact AGENTS.md standing directive language about manual human edits + extensive browser testing.</p>
+  </div>
+
+  <!-- Recommendations -->
+  <div id="recommendations" class="section mb-10">
+    <h2 class="text-2xl font-semibold mb-3">Answers to the 3 Open Questions</h2>
+    <div class="space-y-4 text-sm">
+      <div><strong>1. When to record a run?</strong> → Both on manual Reset <strong>and</strong> natural population==0 (with the guard flag). This was the motivating observation from v0.1.</div>
+      <div><strong>2. How prominent should "Best survival" be?</strong> → Very prominent (large emerald number at the top of the new sidebar section). It is the single most useful number from the experiments.</div>
+      <div><strong>3. Sidebar vs separate panel?</strong> → Extend the existing <code>w-72</code> right sidebar (below hunger controls). Lowest risk, perfect consistency with v0.1 success.</div>
+    </div>
+  </div>
+
+  <!-- After Implementation -->
+  <div class="bg-slate-900 border border-slate-700 rounded-xl p-6">
+    <h3 class="font-semibold mb-2">After You Finish Implementation &amp; Testing</h3>
+    <ol class="list-decimal pl-5 text-sm space-y-1">
+      <li>Append a detailed entry to <code>IMPLEMENTATION_LOG.md</code> (new dated section at the bottom).</li>
+      <li>Update the "Run History..." bullet in <code>FUTURE_FEATURES.md</code> with "→ Completed in PR #XX" + any observations that emerged.</li>
+      <li>Consider a light README mention if the feature changes how people should use the sim.</li>
+    </ol>
+    <p class="text-xs text-slate-400 mt-4">This document was produced in a dedicated fresh session per AGENTS.md rules.</p>
+  </div>
+
+</body>
+</html>
