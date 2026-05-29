@@ -37,7 +37,7 @@ Additional ideas from the design (starvation deaths counter, presets, future tra
 
 ## 2026 — v0.1 Foundation Polish Implemented (Live Hunger Sliders)
 
-**Pull Request**: [#7 - feat: v0.1 Foundation Polish - Live hunger & consumption parameter controls](https://github.com/tiagomdv/trait-evolution-sim/pull/7)
+**Pull Request**: [#8 - feat: v0.1 Foundation Polish - Live hunger & consumption parameter controls](https://github.com/tiagomdv/trait-evolution-sim/pull/8)
 
 **Status**: PR opened.
 
@@ -59,7 +59,7 @@ This marks the completion of the approved v0.1 simple approach. The project now 
 
 ## 2026 — Run History + Basic Stats (Minimal v1) Implemented
 
-**Pull Request**: [#8 - feat: Run History + Basic Stats (Minimal v1) — in-memory run tracking and sidebar UI](https://github.com/tiagomdv/trait-evolution-sim/pull/8)
+**Pull Request**: [#10 - feat: Run History + Basic Stats (Minimal v1) — in-memory run tracking and sidebar UI](https://github.com/tiagomdv/trait-evolution-sim/pull/10)
 
 **Status**: PR opened.
 
@@ -84,20 +84,8 @@ This delivers the first post-v0.1 observability feature that emerged from actual
 
 ## 2026 — PR Reference Corrections + Design Docs Clarification
 
-**Pull Request**: [#11 - docs: Correct PR numbers in FUTURE_FEATURES.md and IMPLEMENTATION_LOG.md + document design docs creation](https://github.com/tiagomdv/trait-evolution-sim/pull/11)
+**Pull Request**: [New PR from this branch - direct fixes to historical references]
 
-**Status**: Documentation-only correction PR.
+**Note**: The PR numbers in the two sections above were corrected in-place in this commit (v0.1 Polish section now correctly points to merged PR #8; Run History section now correctly points to merged PR #10). This was done as an explicit exception to the project's normal "add, don't replace" rule for historical logs, per direct human request.
 
-**Corrections recorded** (additive only — all prior historical text preserved per Log Files Philosophy):
-
-- **v0.1 Foundation Polish** (the 5 hunger `let` variables, live Tailwind sliders in the right sidebar, flex layout change, and `initHungerSliders()` wiring) was delivered in **merged PR #8** (not #7). PR #7 was an earlier duplicate attempt that was closed without merge (labeled "invalid").
-
-- **Run History + Basic Stats (Minimal v1)** (the 6 tracking variables, `birthTick` on Agent, `recordCurrentRun()`, automatic recording on both manual Reset and natural population extinction, `renderRunHistory()` + `clearRuns()`, sidebar UI section with "Best longest survival this session" callout + list + Clear button, and all supporting logic) was delivered in **merged PR #10** (not #8). PR #9 was a noisy superseded attempt that was explicitly closed in favor of the clean PR #10.
-
-- The `design-docs/` folder and its two detailed implementation guides were created in PR #10 as part of the Run History work:
-  - `design-docs/run-history-v1-design.html` (11 micro-steps, exact scope table, key decisions, PR plan)
-  - `design-docs/v0.1-simple-hunger-design-step-by-step.html`
-
-These design docs are high-quality, self-contained step-by-step guides that were used during the actual human-led implementation sessions. They provide significantly more implementation detail than the summary entries in this log.
-
-These corrections were identified via full review of the documentation against the actual merged PR diffs, changed files, commit history, and the current state of `index.html`. No existing historical text was modified — only this new section was appended.
+The previous incorrect references have been updated directly for long-term accuracy of the project record. The `design-docs/` folder and its two detailed step-by-step guides were created during PR #10 alongside the Run History feature.
