@@ -17,7 +17,7 @@
 
 This establishes the project's vision, scope, three locked traits, and collaboration workflow before any code is written in `index.html`.
 
-Next steps will focus on developing the simulation in subsequent PRs after this documentation foundation is reviewed and merged.
+Next steps will focus on developing the simulation in subsequent PRs after this documentation foundation was reviewed and merged.
 
 ## 2026 — v0.1 Foundation Design Approved (Simple Approach)
 
@@ -81,3 +81,23 @@ This marks the completion of the approved v0.1 simple approach. The project now 
 - This entry in `IMPLEMENTATION_LOG.md`.
 
 This delivers the first post-v0.1 observability feature that emerged from actual usage of the simulation.
+
+## 2026 — PR Reference Corrections + Design Docs Clarification
+
+**Pull Request**: [#XX - docs: Correct PR numbers in FUTURE_FEATURES.md and IMPLEMENTATION_LOG.md + document design docs creation](https://github.com/tiagomdv/trait-evolution-sim/pull/XX)
+
+**Status**: Documentation-only correction PR.
+
+**Corrections recorded** (additive only — all prior historical text preserved per Log Files Philosophy):
+
+- **v0.1 Foundation Polish** (the 5 hunger `let` variables, live Tailwind sliders in the right sidebar, flex layout change, and `initHungerSliders()` wiring) was delivered in **merged PR #8** (not #7). PR #7 was an earlier duplicate attempt that was closed without merge (labeled "invalid").
+
+- **Run History + Basic Stats (Minimal v1)** (the 6 tracking variables, `birthTick` on Agent, `recordCurrentRun()`, automatic recording on both manual Reset and natural population extinction, `renderRunHistory()` + `clearRuns()`, sidebar UI section with "Best longest survival this session" callout + list + Clear button, and all supporting logic) was delivered in **merged PR #10** (not #8). PR #9 was a noisy superseded attempt that was explicitly closed in favor of the clean PR #10.
+
+- The `design-docs/` folder and its two detailed implementation guides were created in PR #10 as part of the Run History work:
+  - `design-docs/run-history-v1-design.html` (11 micro-steps, exact scope table, key decisions, PR plan)
+  - `design-docs/v0.1-simple-hunger-design-step-by-step.html`
+
+These design docs are high-quality, self-contained step-by-step guides that were used during the actual human-led implementation sessions. They provide significantly more implementation detail than the summary entries in this log.
+
+These corrections were identified via full review of the documentation against the actual merged PR diffs, changed files, commit history, and the current state of `index.html`. No existing historical text was modified — only this new section was appended.

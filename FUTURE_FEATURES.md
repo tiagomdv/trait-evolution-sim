@@ -86,3 +86,12 @@ These ideas should be revisited when designing the reproduction + inheritance sy
 **Explicitly deprioritized for now**: Government, policy, multiple goods, complex production chains, financial systems.
 
 We will only consider these much later, once the core evolutionary dynamics are clear and well-observed.
+
+---
+
+**PR Reference Corrections (appended 2026-05-29)**
+
+- **v0.1 Foundation Polish** (hunger & consumption parameter controls + live sidebar sliders) was actually delivered in merged PR #8. PR #7 was a duplicate attempt that was closed without being merged (labeled "invalid").
+- **Run History (Minimal v1)** (in-memory tracking, automatic recording on Reset + natural population extinction, "Best longest survival this session" highlight + list + Clear button in the sidebar, etc.) was delivered in merged PR #10. PR #9 was a noisy superseded attempt that was closed in favor of the clean PR #10.
+- The `design-docs/` folder (with the detailed step-by-step implementation guides) was created in the same PR #10.
+- See the corresponding entry in `IMPLEMENTATION_LOG.md` and the actual merged GitHub PRs for the accurate delivery history.
