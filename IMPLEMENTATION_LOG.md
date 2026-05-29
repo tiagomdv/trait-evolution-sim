@@ -84,7 +84,7 @@ This delivers the first post-v0.1 observability feature that emerged from actual
 
 ## 2026 — PR Reference Corrections + Design Docs Clarification
 
-**Pull Request**: [#XX - docs: Correct PR numbers in FUTURE_FEATURES.md and IMPLEMENTATION_LOG.md + document design docs creation](https://github.com/tiagomdv/trait-evolution-sim/pull/XX)
+**Pull Request**: [#11 - docs: Correct PR numbers in FUTURE_FEATURES.md and IMPLEMENTATION_LOG.md + document design docs creation](https://github.com/tiagomdv/trait-evolution-sim/pull/11)
 
 **Status**: Documentation-only correction PR.
 
