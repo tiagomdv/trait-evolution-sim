@@ -24,10 +24,10 @@ We use only one resource (Food) and keep the rules simple on purpose.
 - Hunger + consumption
 - Death from starvation
 - Basic visualization and population stats
-- **v0.1 Foundation Polish**: Simple live parameter controls in the sidebar + tuning hunger/consumption to make starvation meaningfully punishing (simple variables + hardcoded sliders approach approved for initial foundation) **→ Completed in PR #7**
+- **v0.1 Foundation Polish**: Simple live parameter controls in the sidebar + tuning hunger/consumption to make starvation meaningfully punishing (simple variables + hardcoded sliders approach approved for initial foundation) **→ Completed in PR #8**
 
 **v0.1 Polish Priorities** (original list — kept for historical reference):
-- Hunger and consumption tuning (rates, thresholds, self-consumption logic) **→ Completed in PR #7**
+- Hunger and consumption tuning (rates, thresholds, self-consumption logic) **→ Completed in PR #8**
 - Basic metrics and observability (population stability, average lifespan, food availability)
 - Visual feedback improvements
 - Overall code clarity while staying single-file
@@ -46,8 +46,8 @@ We use only one resource (Food) and keep the rules simple on purpose.
 ### Run History, Metrics & Observability (Captured 2026-05-28)
 After completing the v0.1 hunger parameter controls and tuning (plain lets + sliders), and through direct observation of simulation behavior (especially with high `groundEatRelief` values), the following became clearly valuable:
 
-- **Run History (Minimal v1)**: Store results of previous runs within the same browser session (longest survival time, final population, etc.) **→ Completed in PR #8**
-- Simple way to compare multiple runs side-by-side (e.g. "Run #3 had one agent survive 4m12s") **→ Completed in PR #8**
+- **Run History (Minimal v1)**: Store results of previous runs within the same browser session (longest survival time, final population, etc.) **→ Completed in PR #10**
+- Simple way to compare multiple runs side-by-side (e.g. "Run #3 had one agent survive 4m12s") **→ Completed in PR #10**
 - Basic per-run statistics panel (longest-lived agent, average lifetime, starvation deaths, etc.)
 - Click on an individual agent (dot) to inspect its personal stats (current hunger, food carried, lifetime, possibly future traits like HoardingBias, etc.)
 
@@ -86,3 +86,9 @@ These ideas should be revisited when designing the reproduction + inheritance sy
 **Explicitly deprioritized for now**: Government, policy, multiple goods, complex production chains, financial systems.
 
 We will only consider these much later, once the core evolutionary dynamics are clear and well-observed.
+
+---
+
+**Note on PR References (updated 2026-05-29)**
+
+The completion markers above were updated directly in this PR to reflect the actual merged PRs that delivered the features (#8 for v0.1 Foundation Polish, #10 for Run History Minimal v1). This was done as an explicit exception to the normal "add, don't replace" rule for historical logs, at the human's request. Previous incorrect references (#7 and #8) have been corrected in place for accuracy. The `design-docs/` folder was created in PR #10.

@@ -17,7 +17,7 @@
 
 This establishes the project's vision, scope, three locked traits, and collaboration workflow before any code is written in `index.html`.
 
-Next steps will focus on developing the simulation in subsequent PRs after this documentation foundation is reviewed and merged.
+Next steps will focus on developing the simulation in subsequent PRs after this documentation foundation was reviewed and merged.
 
 ## 2026 — v0.1 Foundation Design Approved (Simple Approach)
 
@@ -37,7 +37,7 @@ Additional ideas from the design (starvation deaths counter, presets, future tra
 
 ## 2026 — v0.1 Foundation Polish Implemented (Live Hunger Sliders)
 
-**Pull Request**: [#7 - feat: v0.1 Foundation Polish - Live hunger & consumption parameter controls](https://github.com/tiagomdv/trait-evolution-sim/pull/7)
+**Pull Request**: [#8 - feat: v0.1 Foundation Polish - Live hunger & consumption parameter controls](https://github.com/tiagomdv/trait-evolution-sim/pull/8)
 
 **Status**: PR opened.
 
@@ -59,7 +59,7 @@ This marks the completion of the approved v0.1 simple approach. The project now 
 
 ## 2026 — Run History + Basic Stats (Minimal v1) Implemented
 
-**Pull Request**: [#8 - feat: Run History + Basic Stats (Minimal v1) — in-memory run tracking and sidebar UI](https://github.com/tiagomdv/trait-evolution-sim/pull/8)
+**Pull Request**: [#10 - feat: Run History + Basic Stats (Minimal v1) — in-memory run tracking and sidebar UI](https://github.com/tiagomdv/trait-evolution-sim/pull/10)
 
 **Status**: PR opened.
 
@@ -81,3 +81,11 @@ This marks the completion of the approved v0.1 simple approach. The project now 
 - This entry in `IMPLEMENTATION_LOG.md`.
 
 This delivers the first post-v0.1 observability feature that emerged from actual usage of the simulation.
+
+## 2026 — PR Reference Corrections + Design Docs Clarification
+
+**Pull Request**: [New PR from this branch - direct fixes to historical references]
+
+**Note**: The PR numbers in the two sections above were corrected in-place in this commit (v0.1 Polish section now correctly points to merged PR #8; Run History section now correctly points to merged PR #10). This was done as an explicit exception to the project's normal "add, don't replace" rule for historical logs, per direct human request.
+
+The previous incorrect references have been updated directly for long-term accuracy of the project record. The `design-docs/` folder and its two detailed step-by-step guides were created during PR #10 alongside the Run History feature.
