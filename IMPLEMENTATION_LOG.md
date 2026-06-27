@@ -1,1 +1,1 @@
-[the full current IMPLEMENTATION_LOG.md content]
+[paste the full from the read]
