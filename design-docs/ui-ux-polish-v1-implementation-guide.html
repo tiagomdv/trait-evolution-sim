@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI/UX Polish v1 — Implementation Guide • trait-evolution-sim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0a0c10; color: #c5d1e0; }
+    .prose h1, .prose h2, .prose h3 { color: #f1f5f9; }
+    .prose code { background: #1e2937; padding: 2px 6px; border-radius: 4px; }
+    .prose pre { background: #11151f; padding: 14px 16px; border-radius: 8px; overflow-x: auto; }
+    .section { scroll-margin-top: 80px; }
+    .phase { background: #11151f; border-left: 4px solid #22c55e; }
+    .warning { background: #451a03; border-left: 4px solid #f59e0b; }
+    .code-block { background: #11151f; padding: 12px 16px; border-radius: 6px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.5; overflow-x: auto; }
+    .nav a { color: #60a5fa; transition: color .1s; }
+    .nav a:hover { text-decoration: underline; }
+    .step-num { font-size: 10px; padding: 1px 6px; background: #1e2937; border-radius: 999px; }
+    table { border-collapse: collapse; }
+    td, th { padding: 6px 10px; border: 1px solid #334155; }
+    .metric { font-family: ui-monospace, monospace; }
+  </style>
+</head>
+<body class="p-6 max-w-[1080px] mx-auto">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-semibold text-white">UI/UX Polish v1</h1>
+      <p class="text-slate-400">Implementation Guide — trait-evolution-sim</p>
+    </div>
+    <div class="text-right text-sm">
+      <div class="text-emerald-400 font-medium">One focused PR</div>
+      <div class="text-slate-500">2026-05-30</div>
+    </div>
+  </div>
+
+  <div class="flex gap-3 mb-8 text-sm">
+    <a href="#scope" class="nav">Scope</a>
+    <a href="#decisions" class="nav">Decisions</a>
+    <a href="#variables" class="nav">Variables</a>
+    <a href="#phases" class="nav">Phases (1-9)</a>
+    <a href="#helpers" class="nav">Key Helpers</a>
+    <a href="#checklist" class="nav">Testing Checklist</a>
+  </div>
+
+  <!-- Summary -->
+  <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6 mb-8">
+    <div class="text-emerald-400 text-sm font-semibold mb-2">WHAT THIS PR DELIVERS</div>
+    <div class="grid md:grid-cols-2 gap-x-8 gap-y-1 text-[15px]">
+      <div>• Floating bottom-right Agent Inspector card</div>
+      <div>• Sidebar refactored into 4 clean tabs</div>
+      <div>• Live metrics (deaths, food, hunger min/max/avg)</div>
+      <div>• Speed controls: 1× / 2× / 5× / 10×</div>
+      <div>• Current-run trend graphs (pop, food, hunger)</div>
+      <div>• Pulsing selection outline on canvas</div>
+      <div>• Continuous food spawning while agents alive</div>
+      <div>• Improved run history summaries</div>
+    </div>
+    <div class="mt-4 text-xs text-slate-400 border-t border-slate-700 pt-3">
+      All changes stay inside the single <code>index.html</code>. Radical simplicity preserved.
+    </div>
+  </div>
+
+  <!-- Scope -->
+  <div id="scope" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3 text-white">Confirmed Scope for This PR</h2>
+    <div class="prose prose-invert max-w-none bg-slate-900 border border-slate-700 rounded-xl p-6 text-[14.5px]">
+      <ul class="space-y-1">
+        <li><strong>Inspector</strong>: Click any agent → beautiful floating panel (bottom-right of canvas) showing hunger, food, lifetime, etc.</li>
+        <li><strong>Sidebar Tabs</strong>: Controls | Metrics | Trends | History (solves future clutter)</li>
+        <li><strong>Metrics</strong>: Alive agents, starvation deaths this run, food count + total biomass, hunger min/max/avg, avg food carried</li>
+        <li><strong>Speed</strong>: Simple multiplier (recommended). Buttons with active state.</li>
+        <li><strong>Trends</strong>: Current-run time series + 1–2 clean line charts (population, food, avg hunger)</li>
+        <li><strong>Visual</strong>: Pulsing pink/magenta outline on selected agent</li>
+        <li><strong>Food</strong>: Respawn logic changed so food keeps appearing while agents are alive</li>
+        <li><strong>Run History</strong>: Enhanced with starvation deaths and other useful stats</li>
+      </ul>
+      <div class="mt-4 text-amber-300 text-sm">Explicitly out of scope (captured in FUTURE_FEATURES.md): Full multi-run generational overlay graphs, trait visualization, reproduction.</div>
+    </div>
+  </div>
+
+  <!-- Architecture Decisions -->
+  <div id="decisions" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3 text-white">Key Architecture Decisions</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="bg-slate-900 border border-slate-700 rounded-xl p-5">
+        <div class="font-semibold text-emerald-300 mb-2">Floating Inspector</div>
+        <div class="text-sm">Absolute positioned card inside a <code>relative</code> wrapper around the canvas. Appears only when an agent is selected. Clean, non-intrusive, scalable.</div>
+      </div>
+      <div class="bg-slate-900 border border-slate-700 rounded-xl p-5">
+        <div class="font-semibold text-emerald-300 mb-2">Speed Implementation</div>
+        <div class="text-sm">Simple multiplier inside <code>gameLoop</code>: <code>for (let i=0; i&lt;simSpeed; i++) update();</code> then one draw. Fast to implement, good enough for years.</div>
+      </div>
+      <div class="bg-slate-900 border border-slate-700 rounded-xl p-5">
+        <div class="font-semibold text-emerald-300 mb-2">Tabs</div>
+        <div class="text-sm">Four tabs using show/hide divs (simplest, most reliable). Single <code>activeTab</code> variable + <code>renderSidebar()</code> function.</div>
+      </div>
+      <div class="bg-slate-900 border border-slate-700 rounded-xl p-5">
+        <div class="font-semibold text-emerald-300 mb-2">Time Series</div>
+        <div class="text-sm">Three capped arrays (<code>trendPop</code>, <code>trendFood</code>, <code>trendAvgHunger</code>). Sample every 30 ticks. Max 400 points. Ring-buffer style (shift when full).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Variables -->
+  <div id="variables" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3 text-white">New Top-Level Variables</h2>
+    <div class="code-block text-emerald-300">
+<pre>let selectedAgent = null;
+let simSpeed = 1;                    // 1, 2, 5, or 10
+
+// Live counters (reset every run)
+let starvationDeaths = 0;
+
+// Time-series for current run (sampled, capped)
+let trendPop = [];
+let trendFood = [];
+let trendAvgHunger = [];
+const MAX_TREND_SAMPLES = 400;
+let lastTrendSampleTick = 0;
+
+// Optional: expose a few computed metrics for inspector / tabs
+let currentMetrics = { alive: 0, deaths: 0, totalFood: 0, avgHunger: 0, minHunger: 0, maxHunger: 0, avgFood: 0 };</pre>
+    </div>
+    <div class="text-xs text-slate-400 mt-2">Add these right after the existing run history variables (around line 142 in current file).</div>
+  </div>
+
+  <!-- PHASES -->
+  <div id="phases" class="section mb-12">
+    <h2 class="text-2xl font-semibold mb-4 text-white">Implementation Phases (Follow in Order)</h2>
+    <p class="text-sm text-slate-400 mb-6">Each phase is safe to commit/test in isolation. Work in small focused sessions even inside the single PR.</p>
+
+    <!-- Phase 1 -->
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">PHASE 1</span>
+        <span class="font-semibold text-lg">Groundwork + Death Tracking + Speed Skeleton</span>
+      </div>
+      <div class="text-sm space-y-2">
+        <div><strong>Goal:</strong> Add all new variables, wire starvation deaths, add speed multiplier stub.</div>
+        <div class="pt-2">
+          <div class="font-medium">Actions:</div>
+          <ol class="list-decimal ml-5 space-y-1">
+            <li>Add the 8 new variables listed above.</li>
+            <li>In <code>Agent.update()</code>, when hunger exceeds 100: <code>starvationDeaths++;</code> before returning false.</li>
+            <li>In <code>startNewRun()</code> (and reset path): reset <code>starvationDeaths = 0</code>, clear the three trend arrays, <code>lastTrendSampleTick = 0</code>.</li>
+            <li>Modify <code>gameLoop</code> to use the speed multiplier (even if it starts at 1):
+              <pre class="code-block mt-1 text-xs">for (let i = 0; i &lt; simSpeed; i++) { update(); }</pre>
+            </li>
+          </ol>
+        </div>
+        <div class="pt-2 text-emerald-300 text-sm">✓ Verification: Reset simulation. Watch starvationDeaths increment in console. Change simSpeed manually in dev tools and see simulation accelerate.</div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">PHASE 2</span>
+        <span class="font-semibold text-lg">Click-to-Select + Pulsing Outline</span>
+      </div>
+      <div class="text-sm space-y-2">
+        <div><strong>Goal:</strong> Make agents selectable with a nice visual.</div>
+        <div class="pt-2">
+          <div>1. Add canvas click listener (place after the existing script setup):</div>
+          <pre class="code-block mt-1 text-xs">canvas.addEventListener('click', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const cx = e.clientX - rect.left;
+  const cy = e.clientY - rect.top;
+  selectedAgent = null;
+  for (let i = agents.length - 1; i &gt;= 0; i--) {
+    const a = agents[i];
+    const dist = Math.hypot(a.x - cx, a.y - cy);
+    const size = 3 + Math.sqrt(Math.max(0, a.food)) * 0.3;
+    if (dist &lt; size + 5) { selectedAgent = a; break; }
+  }
+  updateInspector();   // will be defined later
+});</pre>
+          <div class="mt-3">2. Add pulsing outline inside the agent drawing loop (in <code>draw()</code> or after normal agent draw):</div>
+          <pre class="code-block mt-1 text-xs">if (agent === selectedAgent) {
+  const pulse = 1.0 + Math.sin(tick * 0.12) * 0.28;
+  ctx.strokeStyle = '#f472b6';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(agent.x, agent.y, size * pulse + 3, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.lineWidth = 1;
+}</pre>
+        </div>
+        <div class="pt-2 text-emerald-300 text-sm">✓ Verification: Click agents. Pink pulsing ring appears. Clicking empty space or another agent switches selection.</div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">PHASE 3</span>
+        <span class="font-semibold text-lg">Floating Bottom-Right Inspector Card</span>
+      </div>
+      <div class="text-sm space-y-2">
+        <div><strong>Goal:</strong> Beautiful, always-available detail panel that doesn't fight the sidebar.</div>
+        
+        <div class="mt-2">A. Change the canvas parent to a relative container (small layout edit):</div>
+        <pre class="code-block text-xs"> &lt;!-- replace the canvas line with this --&gt;
+ &lt;div class="relative" style="width: 800px; height: 600px;"&gt;
+   &lt;canvas id="canvas" width="800" height="600" class="rounded"&gt;&lt;/canvas&gt;
+
+   &lt;!-- Floating Inspector --&gt;
+   &lt;div id="inspector"
+        class="hidden absolute bottom-3 right-3 w-72 bg-slate-900/95 border border-slate-600 
+               rounded-2xl p-3.5 text-sm shadow-2xl backdrop-blur z-10"&gt;
+     &lt;div class="flex justify-between items-center mb-2"&gt;
+       &lt;div class="text-emerald-300 text-xs font-semibold tracking-widest"&gt;SELECTED AGENT&lt;/div&gt;
+       &lt;button onclick="deselectAgent()" class="text-[10px] px-2 py-px bg-slate-800 hover:bg-slate-700 rounded"&gt;✕&lt;/button&gt;
+     &lt;/div&gt;
+     &lt;div id="inspector-content" class="text-xs leading-tight space-y-1"&gt;&lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/div&gt;</pre>
+
+        <div class="mt-3">B. Add these two functions (anywhere in script):</div>
+        <pre class="code-block text-xs">function deselectAgent() {
+  selectedAgent = null;
+  updateInspector();
+}
+
+function updateInspector() {
+  const el = document.getElementById('inspector');
+  const content = document.getElementById('inspector-content');
+  if (!el || !content) return;
+
+  if (!selectedAgent) {
+    el.classList.add('hidden');
+    return;
+  }
+  el.classList.remove('hidden');
+
+  const life = tick - selectedAgent.birthTick;
+  content.innerHTML = `
+    &lt;div class="grid grid-cols-2 gap-x-3 gap-y-1"&gt;
+      &lt;div class="text-slate-400"&gt;Hunger&lt;/div&gt;
+      &lt;div class="font-mono text-right"&gt;${selectedAgent.hunger.toFixed(1)}&lt;/div&gt;
+      
+      &lt;div class="text-slate-400"&gt;Food carried&lt;/div&gt;
+      &lt;div class="font-mono text-right text-amber-300"&gt;${selectedAgent.food.toFixed(1)}&lt;/div&gt;
+      
+      &lt;div class="text-slate-400"&gt;Age (ticks)&lt;/div&gt;
+      &lt;div class="font-mono text-right"&gt;${life}&lt;/div&gt;
+      
+      &lt;div class="text-slate-400"&gt;Age (sec)&lt;/div&gt;
+      &lt;div class="font-mono text-right"&gt;${(life/60).toFixed(1)}s&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="mt-2 text-[10px] text-slate-500"&gt;Click another dot or press ✕ to deselect&lt;/div&gt;
+  `;
+}</pre>
+        <div class="pt-2 text-emerald-300 text-sm">✓ Verification: Click agent → nice card appears bottom-right. Close it. Selection is cleared on reset.</div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">PHASE 4</span>
+        <span class="font-semibold text-lg">Live Metrics Computation</span>
+      </div>
+      <div class="text-sm">
+        <div>Add <code>computeMetrics()</code> and call it periodically from <code>update()</code> (every 20 ticks is plenty).</div>
+        <pre class="code-block mt-2 text-xs">function computeMetrics() {
+  if (agents.length === 0) {
+    currentMetrics = { alive: 0, deaths: starvationDeaths, totalFood: 0, avgHunger: 0, minHunger: 0, maxHunger: 0, avgFood: 0 };
+    return;
+  }
+  let minH = Infinity, maxH = -Infinity, sumH = 0, sumFood = 0, totalFood = 0;
+  for (let a of agents) {
+    minH = Math.min(minH, a.hunger);
+    maxH = Math.max(maxH, a.hunger);
+    sumH += a.hunger;
+    sumFood += a.food;
+  }
+  for (let f of food) totalFood += f.amount;
+
+  currentMetrics = {
+    alive: agents.length,
+    deaths: starvationDeaths,
+    totalFood: Math.round(totalFood * 10) / 10,
+    avgHunger: sumH / agents.length,
+    minHunger: minH,
+    maxHunger: maxH,
+    avgFood: sumFood / agents.length
+  };
+}</pre>
+        <div class="mt-2">Call <code>computeMetrics()</code> inside <code>update()</code> when <code>tick % 20 === 0</code>.</div>
+      </div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">PHASE 5</span>
+        <span class="font-semibold text-lg">Sidebar Tabs Foundation</span>
+      </div>
+      <div class="text-sm space-y-2">
+        <div>Replace the current sidebar inner content with a tab bar + four content sections.</div>
+        <div class="mt-2">Recommended simple pattern:</div>
+        <pre class="code-block text-xs">let activeSidebarTab = 'controls';
+
+function renderSidebar() {
+  const container = document.getElementById('sidebar-content'); // new wrapper div
+  if (!container) return;
+
+  // You can either swap innerHTML or use show/hide on 4 divs.
+  // Show/hide is usually cleaner for keeping slider listeners alive.
+}</pre>
+        <div class="mt-1">Create four divs with ids <code>tab-controls</code>, <code>tab-metrics</code>, <code>tab-trends</code>, <code>tab-history</code>.</div>
+        <div class="text-xs mt-2">Move the 5 hunger sliders into the Controls tab. Move the existing Run History into the History tab.</div>
+      </div>
+    </div>
+
+    <!-- Phase 6 -->
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">PHASE 6</span>
+        <span class="font-semibold text-lg">Time Series + Trends Tab + Charts</span>
+      </div>
+      <div class="text-sm">
+        <div>1. Sampling (in <code>update()</code>, after computeMetrics):</div>
+        <pre class="code-block text-xs">if (tick - lastTrendSampleTick &gt;= 30) {
+  lastTrendSampleTick = tick;
+  trendPop.push(agents.length);
+  trendFood.push(currentMetrics.totalFood);
+  trendAvgHunger.push(currentMetrics.avgHunger);
+
+  if (trendPop.length &gt; MAX_TREND_SAMPLES) {
+    trendPop.shift(); trendFood.shift(); trendAvgHunger.shift();
+  }
+}</pre>
+        <div class="mt-3">2. Add a small canvas in the Trends tab (260×110 recommended).</div>
+        <div class="mt-2">3. Write one reusable drawing function:</div>
+        <pre class="code-block text-xs">function drawTrendChart(canvasEl, data, color, label) {
+  if (!canvasEl || data.length &lt; 2) return;
+  const ctx = canvasEl.getContext('2d');
+  ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+  const w = canvasEl.width, h = canvasEl.height;
+  const min = Math.min(...data), max = Math.max(...data);
+  ctx.strokeStyle = color; ctx.lineWidth = 1.75;
+  ctx.beginPath();
+  for (let i = 0; i &lt; data.length; i++) {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - ((data[i] - min) / (max - min || 1)) * (h - 4);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+}</pre>
+        <div class="mt-1">Call the three charts whenever the Trends tab is visible (or on every draw when Trends is active).</div>
+      </div>
+    </div>
+
+    <!-- Phase 7 -->
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">PHASE 7</span>
+        <span class="font-semibold text-lg">Speed Controls (Buttons + State)</span>
+      </div>
+      <div class="text-sm">Add four small buttons in the Controls tab. On click call <code>setSpeed(n)</code> which updates <code>simSpeed</code> and applies active styling (Tailwind <code>bg-emerald-400 text-black</code> on the active one).</div>
+    </div>
+
+    <!-- Phase 8 -->
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">PHASE 8</span>
+        <span class="font-semibold text-lg">Food Respawn Improvement</span>
+      </div>
+      <div class="text-sm">Replace the old spawn condition with a version that keeps food flowing while agents exist:</div>
+      <pre class="code-block mt-1 text-xs">if (agents.length &gt; 0 &amp;&amp; tick % 8 === 0 &amp;&amp; food.length &lt; NUM_FOOD * 1.35) {
+  spawnFood(1);
+}</pre>
+      <div class="text-xs mt-1">This prevents the environment from slowly starving to death even when the population is healthy.</div>
+    </div>
+
+    <!-- Phase 9 -->
+    <div class="phase rounded-r-2xl p-5">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">PHASE 9</span>
+        <span class="font-semibold text-lg">Final Wiring, Run History Upgrades &amp; Polish</span>
+      </div>
+      <div class="text-sm space-y-1">
+        <div>• Wire <code>updateInspector()</code> and <code>renderSidebar()</code> calls in the right places (gameLoop + after selection changes).</div>
+        <div>• Enhance <code>recordCurrentRun()</code> to also store starvationDeaths for that run.</div>
+        <div>• Show starvation deaths in the run history list items.</div>
+        <div>• Add small labels and polish to all new UI elements.</div>
+        <div>• Make sure everything resets cleanly on Reset button.</div>
+        <div>• Test with different speeds and long runs.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Helpers -->
+  <div id="helpers" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3 text-white">Recommended Helper Functions (Add These)</h2>
+    <div class="space-y-4 text-sm">
+      <div>
+        <div class="font-semibold mb-1">renderSidebarTab(tab)</div>
+        <div class="text-slate-400">Show the correct content div, hide the others, and optionally redraw charts when Trends becomes active.</div>
+      </div>
+      <div>
+        <div class="font-semibold mb-1">updateAllUI()</div>
+        <div class="text-slate-400">Call this from gameLoop every 15–20 ticks. Inside it: computeMetrics, update any visible metric numbers, updateInspector, optionally redraw trends.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testing Checklist -->
+  <div id="checklist" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3 text-white">Testing &amp; Polish Checklist</h2>
+    <div class="bg-slate-900 border border-slate-700 rounded-xl p-5 text-sm">
+      <ul class="grid md:grid-cols-2 gap-x-8 gap-y-1">
+        <li>☐ Click agents → inspector appears with correct values</li>
+        <li>☐ Deselect works (button + clicking background)</li>
+        <li>☐ Pulsing outline looks good at different hunger/food levels</li>
+        <li>☐ All 4 tabs switch cleanly</li>
+        <li>☐ Sliders still work after tab refactor</li>
+        <li>☐ Speed buttons change simulation rate visibly</li>
+        <li>☐ 10× speed does not explode CPU on your machine</li>
+        <li>☐ Trends charts render and scroll nicely</li>
+        <li>☐ Metrics numbers update live</li>
+        <li>☐ Starvation deaths counter is accurate</li>
+        <li>☐ Food keeps appearing during long healthy runs</li>
+        <li>☐ Reset clears everything (trends, deaths, selection)</li>
+        <li>☐ Run history shows deaths + new stats</li>
+        <li>☐ No console errors during 10+ minute runs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="text-center text-xs text-slate-500 mt-8 pb-8">
+    Follow the phases in order. Test after every phase. Human manually applies every change.<br>
+    When everything works beautifully, update IMPLEMENTATION_LOG.md and request the PR.
+  </div>
+</body>
+</html>
