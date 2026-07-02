@@ -15,23 +15,39 @@
 4. **Never** push code or documentation yourself. Only the human commits and pushes.
 5. Always respect the current phase scope.
 
-**Standing PR Directive** (added 2026-05-28)
-
-Every pull request description **must** explicitly state that:
-- All changes were manually applied by the human (tiagomdv).
-- The human tested the changes in the running simulation.
-- The PR was only requested after the human verified the work.
-
-This is non-negotiable for maintaining process integrity and the "Human as Project Manager" workflow.
+**Standing PR Directive**: Every pull request description must explicitly state that the changes were manually applied by the human, tested in the simulation (for code PRs), and that the human requested the PR only after verification. This is non-negotiable for maintaining project process integrity.
 
 ## File Discipline (Non-Negotiable)
 
-- **Never create new files.** All work and new information must be integrated into existing files in the repository.
-- The simulation must remain a single `index.html` for as long as possible. Do not introduce separate `.js`, `.css`, `.json`, configuration files, or any other new assets without explicit approval from the human.
+- **Do not create new files** unless the human has explicitly approved them for the current phase.
+- The simulation must remain a single runnable `index.html` for as long as possible. Do not introduce separate `.js`, `.css`, `.json`, configuration files, or any other new assets without explicit approval from the human.
+- **Approved exceptions** (from `0.4.0-docs-resteer`):
+  - `VERSION` — one-line label for the live release
+  - `archive/index-<version>.html` — frozen sim snapshots (never edit in place)
+  - `archive/docs/*` — safety copies before large doc restructuring
+  - `archive/MANIFEST.md` — archive index (not an archived README)
+  - `design-docs/` — human-approved design artifacts
 - When adding design decisions, parameter rationale, tuning notes, or other supporting information:
   - Keep `index.html` clean and minimal. Only add brief references or short comments when strictly necessary for the code to be understandable.
   - Place detailed explanations in the most appropriate existing documentation file (`README.md`, `IMPLEMENTATION_LOG.md`, `FUTURE_FEATURES.md`, `AGENTS.md`, etc.).
 - This rule protects radical simplicity and long-term maintainability across many AI collaboration sessions.
+
+## Versioning Ritual (added 2026-07-02)
+
+**Scheme:** `N.x.y-codename` where **major N = phase number** (`0.x` = Phase 0 · Survive, `1.x` = Phase 1 · Differ, etc.)
+
+**Before any PR that changes `index.html` simulation logic or sim UI identity:**
+
+1. Copy current `index.html` → `archive/index-<version>.html`
+2. Update `VERSION` file
+3. Update version/phase display in `index.html` (phase rail when shipped)
+4. Update README live-release line
+5. Add a row to `archive/MANIFEST.md`
+6. After merge: git tag `v<version>` (e.g. `v0.5.0-phase-rail`)
+
+**Docs-only PRs:** bump `VERSION`; copy docs to `archive/docs/` before large restructuring.
+
+**Never edit files inside `archive/`.**
 
 ## Capturing Deferred Ideas
 
@@ -43,34 +59,36 @@ When suggesting new features, mechanics, UI improvements, tuning ideas, or other
 
 ## Project Focus (Important)
 
-This is a deliberately simple spatial agent-based simulation focused on **generational evolution of behavioral traits**.
+**Thematic arc:** Survive → Differ → Evolve → Economy
 
-Core themes:
-- Agents in 2D space with one resource (Food)
-- Survival through movement and harvesting
-- Simple trade
-- Three heritable traits: HoardingBias, ExplorationRate, TradeBoldness
-- Reproduction with inheritance + mutation
-- Observing how trait distributions evolve across generations
+| Phase | Name | Focus |
+|-------|------|-------|
+| 0 | Survive | Hunger, observability, run comparison ← **now** |
+| 1 | Differ | Behavioral traits (no genetics) |
+| 2 | Evolve | In-run reproduction, inheritance, generations |
+| 3 | Economy | Trade → storage → production → labor → … |
 
-We are intentionally avoiding government policy, complex economies, or many goods in the early phases.
+One mechanic per PR. Stay observable. Trait set finalized when Phase 1 begins.
 
 ## Documentation Responsibilities
 
 After the human approves a feature, help update:
-- `FUTURE_FEATURES.md` (mark as complete with notes)
-- `IMPLEMENTATION_LOG.md` (detailed, honest entry about what was added and what emerged)
+- `VERSION` file + README live-release line
+- `FUTURE_FEATURES.md` (mark items with version + PR; append new ideas)
+- `IMPLEMENTATION_LOG.md` (new dated section at the bottom)
 - `README.md` (if the change affects how the project should be understood)
+- `archive/MANIFEST.md` (when a new `index.html` snapshot is archived)
 
-## Log Files Philosophy (Add, Don't Replace)  [Added 2026-05-28]
+## Log Files Philosophy (Add, Don't Replace)
 
-`IMPLEMENTATION_LOG.md` and `FUTURE_FEATURES.md` are **historical records**, not living documents that get rewritten.
+`IMPLEMENTATION_LOG.md` and `FUTURE_FEATURES.md` are **living historical records**.
 
-- **Never delete or replace** existing sections or entries.
-- When a feature or polish item is completed, **add** a completion note next to it (e.g. "→ Completed in PR #7") and append any relevant details.
-- New future ideas or observations should be **added** (new bullets or new dated sections), never replace older ones.
-- `IMPLEMENTATION_LOG.md` works like a dev log: new work = new dated section at the bottom.
-- This preserves the project's decision history and evolution of ideas over time.
+- **Never delete** existing sections or entries.
+- When a feature ships, **add** completion notes with version + PR (e.g. `0.3.0-observability` · PR #13).
+- New ideas → **append** new bullets or dated sections.
+- When version/phase names change, **update references inline** — keep the original narrative.
+- `IMPLEMENTATION_LOG.md`: new work = new dated section at the bottom.
+- Before large doc restructuring, copy current files to `archive/docs/` first (`0.4.0-docs-resteer` did this).
 
 ## Session & Process Discipline
 
@@ -81,7 +99,7 @@ After the human approves a feature, help update:
 ## Anti-Patterns
 
 - Do not write code directly into `index.html` expecting it to be committed.
-- Do not push for scope creep without strong justification tied to understanding trait evolution.
+- Do not push for scope creep without strong justification tied to observability or the active phase.
 - Do not over-document minor tweaks.
 
 ---
