@@ -1,64 +1,86 @@
 # trait-evolution-sim
 
-A simple **spatial agent-based evolutionary simulation**.
+A **spatial agent-based evolutionary simulation** that starts as a survival sandbox and grows into an observable micro-economy.
 
-**Core Idea**: Agents move in 2D space, need food to survive, can trade with each other, and possess a small number of heritable behavioral traits. Over many generations, we observe how these traits evolve under natural selection pressures.
+**North star:** Watch what helps agents survive become what helps them thrive as the world gets richer — hunger first, then behavioral differences, then generations, then economic interaction.
 
-This project serves as a deliberate learning vehicle for:
-- Understanding emergent evolutionary dynamics in simple economic systems
+**Right now:** Phase 0 · Survive. Passive agents, hunger, food, starvation. Observability shipped (`0.3.0-observability`). Traits, reproduction, and trade are not implemented yet.
+
+This project is also a deliberate learning vehicle for:
+- Understanding emergent evolutionary dynamics in simple (then richer) economic systems
 - Practicing structured project management while collaborating with AI coding agents
 - Building good habits around incremental development and GitHub workflows
 
-## Current Focus (Locked In)
+---
 
-- 2D continuous space with moving agents ("dots")
-- One resource: **Food**
-- Basic hunger and survival mechanics
-- Simple proximity-based trade
-- **Three heritable behavioral traits**:
-  1. **HoardingBias** — How reluctant an agent is to trade away food.
-  2. **ExplorationRate** — Tendency to explore randomly vs exploit known food sources.
-  3. **TradeBoldness** — Risk tolerance when making trades.
+## Thematic arc
 
-The goal is to clearly observe and measure how the distribution of these traits shifts across generations.
+| Phase | Name | Focus |
+|-------|------|-------|
+| **0** | **Survive** | Hunger, food, death, run setup & comparison ← **now** |
+| **1** | **Differ** | Behavioral traits; agents become heterogeneous |
+| **2** | **Evolve** | In-run reproduction, inheritance, generations |
+| **3** | **Economy** | Trade, storage, production, labor, … (one PR each) |
+
+Full task list and ideas backlog: `FUTURE_FEATURES.md`.
+
+---
+
+## Current version
+
+**`VERSION` file** is the single source of truth. Update it on every release PR, and update the live-release line below at the same time.
+
+> **Live release:** `0.4.0-docs-resteer` · Phase 0 · Survive
+
+Upcoming Phase 0 work: `FUTURE_FEATURES.md` (`0.5.0-phase-rail` → `0.6.0-run-setup` → `0.7.0-run-compare`).
+
+---
 
 ## Philosophy
 
-- **Radical simplicity**: We only add features when they help us better observe and understand generational trait evolution.
-- Strong emphasis on **observability** (graphs, statistics, visualizations of trait distributions over time).
-- No government policy, complex multi-good economies, or heavy macro features in the early phases.
+- **Observability first** — every feature must make it easier to see *why* populations change.
+- **Radical simplicity on the core path** — complexity earns its place with clear signal.
+- **Ambitious vision, disciplined execution** — we ship one focused PR at a time.
 
-## Tech Stack
+---
+
+## Tech stack
 
 - Single-file `index.html` (for now)
 - Tailwind CSS (via CDN)
 - Vanilla JavaScript + HTML Canvas
 - No build tools
 
-## Project Structure
+---
+
+## Project structure
 
 ```
 trait-evolution-sim/
+├── VERSION
+├── index.html
 ├── README.md
 ├── AGENTS.md
 ├── FUTURE_FEATURES.md
 ├── IMPLEMENTATION_LOG.md
-├── .gitignore
-├── index.html
+├── archive/
+│   ├── MANIFEST.md
+│   ├── index-<version>.html
+│   └── docs/
 └── design-docs/
-    ├── run-history-v1-design.html
-    └── v0.1-simple-hunger-design-step-by-step.html
 ```
 
-## Development Approach
+---
 
-This repository is developed with a strict "Human as Project Manager" workflow:
+## Development approach
+
+This repository uses a strict **Human as Project Manager** workflow:
 - The human manually implements features in `index.html`
 - AI assists with design and documentation updates
 - One focused feature per session / PR
 - Emphasis on clear documentation and reviewable changes
 
-See `AGENTS.md` for the detailed rules followed when collaborating with AI.
+See `AGENTS.md` for versioning ritual and collaboration rules.
 
 ---
 
