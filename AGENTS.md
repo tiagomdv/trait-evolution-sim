@@ -49,6 +49,22 @@
 
 **Never edit files inside `archive/`.**
 
+**Design Artifact Nomenclature (established 2026-07-09, applies from here forward)**
+
+Design documents and implementation guides in `design-docs/` follow the project version codename:
+
+- `<version>-<codename>-design.html` (or `-implementation-guide.html` when the artifact is a detailed step-by-step guide)
+
+Examples (aligned to shipped versions):
+- `0.1.0-foundation-design.html`
+- `0.2.0-run-history-design.html`
+- `0.3.0-observability-design.html`
+- `0.4.1-observability-metrics-design.html`
+
+When creating new designs (including output from `/design`), produce a versioned HTML artifact in `design-docs/`. Markdown drafts from the design process may be retained temporarily for reference but the canonical committed artifact is the versioned HTML. Update any internal title/metadata in the design to include the version.
+
+This keeps traceability between designs, the VERSION file, archive snapshots, and shipped milestones.
+
 ## Capturing Deferred Ideas
 
 When suggesting new features, mechanics, UI improvements, tuning ideas, or other changes:

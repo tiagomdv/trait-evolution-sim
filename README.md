@@ -30,9 +30,11 @@ Full task list and ideas backlog: `FUTURE_FEATURES.md`.
 
 **`VERSION` file** is the single source of truth. Update it on every release PR, and update the live-release line below at the same time.
 
-> **Live release:** `0.4.0-docs-resteer` · Phase 0 · Survive
+> **Live release:** `0.7.0-run-compare` · Phase 0 · Survive
 
-Upcoming Phase 0 work: `FUTURE_FEATURES.md` (`0.5.0-phase-rail` → `0.6.0-run-setup` → `0.7.0-run-compare`).
+0.7.0 completed: full-run trends, richer history cards, agent IDs, pin-to-trends with separate graphs, search by ID.
+
+See `FUTURE_FEATURES.md` for remaining Phase 0 work and whether 0.8.0/0.9.0 are needed.
 
 ---
 
@@ -80,7 +82,7 @@ This repository uses a strict **Human as Project Manager** workflow:
 - One focused feature per session / PR
 - Emphasis on clear documentation and reviewable changes
 
-See `AGENTS.md` for versioning ritual and collaboration rules.
+See `AGENTS.md` for versioning ritual, design artifact nomenclature, and collaboration rules. Design docs live in `design-docs/` using the `<version>-<codename>-design.html` pattern (e.g. `0.4.1-observability-metrics-design.html`).
 
 ---
 

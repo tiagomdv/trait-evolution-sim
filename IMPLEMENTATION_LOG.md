@@ -23,7 +23,7 @@ Dev log. **Append** new dated sections at the bottom. When version/phase names c
 - `IMPLEMENTATION_LOG.md`
 - `.gitignore`
 
-This establishes the project's vision, scope, three locked traits, and collaboration workflow before any code is written in `index.html`.
+This establishes the project's vision, scope, three locked traits, and collaboration workflow before any code was written in `index.html`.
 
 Next steps will focus on developing the simulation in subsequent PRs after this documentation foundation is reviewed and merged.
 
@@ -159,3 +159,61 @@ This completes the UI/UX Polish + Advanced Observability section and creates the
 3. `0.7.0-run-compare` — full-run trends, richer history, agent pin
 
 ---
+
+## 2026 — Design artifact nomenclature standardized (0.4.1+)
+
+**Applies from here forward.**
+
+- Design docs / implementation guides in `design-docs/` now use version codename prefix matching the shipped `N.x.y-codename` scheme (e.g. `0.4.1-observability-metrics-design.html`).
+- Previous design docs renamed in-repo for consistency:
+  - `0.1.0-foundation-design.html`
+  - `0.2.0-run-history-design.html`
+  - `0.3.0-observability-design.html`
+- New rule documented in `AGENTS.md` (Versioning Ritual) and `FUTURE_FEATURES.md` (Version scheme).
+- Canonical artifact is the versioned `.html` in `design-docs/`. Markdown drafts from `/design` may be kept as `.md` alongside when useful.
+- All future `/design` outputs and manual design docs must follow this nomenclature.
+
+This change was prepared together with the 0.4.1 observability metrics design and will ship in the same PR as the implementation changes.
+
+## 2026 — `0.7.0-run-compare` Implemented
+
+**Version / Phase:** `0.7.0-run-compare` · Phase 0 · Survive
+
+**Pull Request**: (to be opened by human)
+
+**Archive:** `archive/index-0.7.0-run-compare.html`
+
+**Status**: Implementation complete. PR description prepared. Human will review/test further and decide on 0.8.0/0.9.0 before closing Phase 0.
+
+**What was implemented** (changes applied iteratively with AI assistance, final state committed by human; this PR bundles 0.5.0-phase-rail + 0.6.0-run-setup + 0.7.0-run-compare):
+
+- 0.5.0-phase-rail: Thematic arc UI label in sim (updated to v0.7.0-run-compare as part of this PR).
+- 0.6.0-run-setup: Initial agent count slider, presets (Lenient / Balanced / Punishing), simplified controls + Advanced collapse, currentPreset tracking.
+- 0.7.0-run-compare:
+  - Full-run trends: trend arrays reset on `startNewRun()`, `MAX_TREND_SAMPLES=4000`, sampling conditioned on `!currentRunEnded`, x-scaling across full run duration.
+  - Richer history cards: two-row compact cards with left color bar (by preset), ended badges, duration/initial pop on top, alive/end + avgs with readable labels on bottom.
+  - Agent IDs: `nextAgentId`, `this.id` on Agent, shown in inspector.
+  - Pin agent: "Pin to trends" button in inspector header (static, reliable). Creates separate "Pinned Agent Trends" section below main charts with dedicated Hunger + Food canvases.
+  - Pinned box status: ID + `(alive)` / `(dead)` (color-coded) shown live in the pinned trends box header.
+  - Remove/unpin: "Remove" button in pinned box header fully resets pinned state + graphs. Pin/unpin always clears pinned trend data.
+  - Search by ID: input + Pin button in Trends tab; `searchAndPinAgent()` locates and pins.
+  - History tab overview: added "Session Overview" stats (runs, avg dur, extinction rate, avg longest, avg peak pop, best).
+- Cleanup per user feedback: removed top "Pinned:" status line near search input; removed bottom pin button from inside inspector content (kept only the reliable header button); pinned graphs are distinctly separate section.
+- Tab switching robustness: forced re-renders on tab switch to prevent charts "stopping".
+
+All changes respect single-file `index.html`, AGENTS.md rules, and radical simplicity.
+
+**Documentation updates** (this PR):
+- Archived previous state.
+- Updated `VERSION`, `README.md`, `IMPLEMENTATION_LOG.md`, `FUTURE_FEATURES.md`.
+- 0.7.0 marked shipped; roadmap updated.
+
+**Testing notes**:
+- Long runs show full history from beginning.
+- Pin from inspector or search works; graphs appear below with status.
+- Unpin resets cleanly.
+- History cards readable and informative.
+- Trends update after tab switches and speed changes.
+- User will do further testing post-PR.
+
+This completes the core 0.7.0 scope. Further Phase 0 work (0.8.0/0.9.0) TBD after testing.

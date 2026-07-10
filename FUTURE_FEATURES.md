@@ -14,6 +14,8 @@
 
 Major version = phase number (`0.x` = Phase 0, `1.x` = Phase 1, …). Codename describes the milestone.
 
+Design artifacts in `design-docs/` follow the same nomenclature (e.g. `0.4.1-observability-metrics-design.html`). See AGENTS.md "Design Artifact Nomenclature" for the rule established 2026-07-09.
+
 ### Phase 0 · Survive — shipped
 
 | Version | PR | Milestone |
@@ -22,14 +24,13 @@ Major version = phase number (`0.x` = Phase 0, `1.x` = Phase 1, …). Codename d
 | `0.2.0-run-history` | #8 | Session run history + basic stats |
 | `0.3.0-observability` | #13 | Tabs, metrics, trends, inspector, speed *(was "UI/UX Polish v1")* |
 | `0.4.0-docs-resteer` | — | Archive infra + vision resteer (docs only) |
+| `0.7.0-run-compare` | (PR to open) | Full-run trends, richer cards, agent IDs, pin-to-trends + separate graphs, search by ID **(this PR also delivers the 0.5.0-phase-rail and 0.6.0-run-setup work)** |
 
 ### Phase 0 · Survive — next
 
 | Version | Milestone |
 |---------|-----------|
-| `0.5.0-phase-rail` | Thematic arc UI in sim — Survive → Differ → Evolve → Economy; highlight active phase + version badge |
-| `0.6.0-run-setup` | Initial agent count, presets (Lenient / Balanced / Punishing), simplified controls + Advanced collapse |
-| `0.7.0-run-compare` | Full current-run trends, richer History cards, agent IDs, pin-to-trends |
+| (0.8.0 / 0.9.0 TBD after testing) | Remaining Phase 0 items if needed before moving to Phase 1 |
 
 ### Future phases (thematic arc)
 
@@ -93,19 +94,19 @@ Additional candidates (2026-07-02): Patience / FutureOrientation, SocialAffinity
 
 **Future Polish Ideas** (not in v0.1):
 - Lightweight "Starvation Deaths" counter → `0.3.0-observability` **PR #13**
-- Presets for the parameter panel (e.g. Lenient / Balanced / Punishing) → planned `0.6.0-run-setup`
+- Presets for the parameter panel (e.g. Lenient / Balanced / Punishing) → delivered via 0.7.0-run-compare PR (bundled 0.6.0-run-setup)
 - Ability for traits (once active) to modulate hunger parameters
 - Long-term: Extracting the parameter panel code into a well-commented section inside the single `index.html` for better organization (no new files)
-- Thematic arc phase rail in sim UI → planned `0.5.0-phase-rail`
-- Initial agent count control → planned `0.6.0-run-setup`
-- Full-run trends + richer history + agent pin → planned `0.7.0-run-compare`
+- Thematic arc phase rail in sim UI → delivered via 0.7.0-run-compare PR (bundled 0.5.0-phase-rail)
+- Initial agent count control → delivered via 0.7.0-run-compare PR (bundled 0.6.0-run-setup)
+- Full-run trends + richer history + agent pin → delivered via 0.7.0-run-compare PR
 
 ### Run History, Metrics & Observability (Captured 2026-05-28)
 
 After completing the v0.1 hunger parameter controls and tuning (plain lets + sliders), and through direct observation of simulation behavior (especially with high `groundEatRelief` values), the following became clearly valuable:
 
 - **Run History (Minimal v1)**: Store results of previous runs within the same browser session (longest survival time, final population, etc.) → `0.2.0-run-history` **PR #8**
-- Simple way to compare multiple runs side-by-side (e.g. "Run #3 had one agent survive 4m12s") → `0.2.0-run-history` **PR #8**; richer UI → `0.7.0-run-compare` (planned)
+- Simple way to compare multiple runs side-by-side (e.g. "Run #3 had one agent survive 4m12s") → `0.2.0-run-history` **PR #8**; richer UI → delivered in `0.7.0-run-compare` PR
 - Basic per-run statistics panel (longest-lived agent, average lifetime, starvation deaths, etc.) → `0.3.0-observability` **PR #13**
 - Click on an individual agent (dot) to inspect its personal stats (current hunger, food carried, lifetime, possibly future traits like HoardingBias, etc.) → `0.3.0-observability` **PR #13**
 
