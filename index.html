@@ -17,7 +17,10 @@
         <div class="max-w-5xl mx-auto">
             <div class="flex items-center gap-4 mb-4">
                 <h1 class="text-2xl font-semibold text-white">Evol-Econ Sim</h1>
-                <div class="text-sm text-slate-400">UI/UX Polish v1</div>
+                <div class="text-xs text-slate-400 mt-0.5">
+                    Phase 0 · Survive 
+                    <span class="ml-2 px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.7.0-run-compare</span>
+                </div>
                 <div class="ml-auto flex gap-2">
                     <button onclick="toggleSim()" 
                         class="px-3 py-1 bg-slate-700 hover:bg-slate-600 rounded text-sm">
@@ -45,15 +48,18 @@
                             rounded-2xl p-3.5 text-sm shadow-2xl backdrop-blur z-10">
                             <div class="flex justify-between items-center mb-2">
                                 <div class="text-emerald-300 text-xs font-semibold tracking-widest">SELECTED AGENT</div>
-                                <button onclick="deselectAgent()" class="text-[10px] px-2 py-px bg-slate-800 hover:bg-slate-700 rounded">✕</button>
+                                <div class="flex gap-1">
+                                    <button id="inspector-pin-btn" class="text-[10px] px-2 py-px bg-slate-800 hover:bg-slate-700 rounded">Pin to trends</button>
+                                    <button onclick="deselectAgent()" class="text-[10px] px-2 py-px bg-slate-800 hover:bg-slate-700 rounded">✕</button>
+                                </div>
                             </div>
                             <div id="inspector-content" class="text-xs leading-tight space-y-1"></div>
                         </div>
                     </div>
 
                     <div class="mt-3 text-sm text-slate-400">
-                        <strong>Current Phase:</strong> UI/UX Polish v1 — Tabs + Trends + Speed + History<br>
-                        Agents move, get hungry, eat food, and can die from starvation.
+                        <strong>Current Phase:</strong> Phase 0 . Survive<br>
+                        Agents move, get hungry, eat food, and can die from starvation. The goal is observability and run comparison.
                     </div>
 
                 </div>
@@ -78,42 +84,18 @@
 
                         <div class="mb-2">
                             <div class="flex justify-between text-xs mb-0.5">
+                                <span>Initial Agents</span>
+                                <span id="val-number-agents" class="font-mono text-emerald-300">100</span>
+                            </div>
+                            <input type="range" id="slider-number-agents" min="1" max="100" step="1" value="100" class="w-full accent-emerald-400">
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs mb-0.5">
                                 <span>Hunger Rate</span>
                                 <span id="val-hunger-rate" class="font-mono text-emerald-300">0.055</span>
                             </div>
                             <input type="range" id="slider-hunger-rate" min="0.01" max="0.15" step="0.001" value="0.055" class="w-full accent-emerald-400">
-                        </div>
-
-                        <div class="mb-2">
-                            <div class="flex justify-between text-xs mb-0.5">
-                                <span>Self-Consume Relief</span>
-                                <span id="val-self-relief" class="font-mono text-emerald-300">1.300</span>
-                            </div>
-                            <input type="range" id="slider-self-relief" min="0.5" max="3.0" step="0.05" value="1.3" class="w-full accent-emerald-400">
-                        </div>
-
-                        <div class="mb-2">
-                            <div class="flex justify-between text-xs mb-0.5">
-                                <span>Ground Eat Relief</span>
-                                <span id="val-ground-relief" class="font-mono text-emerald-300">1.900</span>
-                            </div>
-                            <input type="range" id="slider-ground-relief" min="0.5" max="3.0" step="0.05" value="1.9" class="w-full accent-emerald-400">
-                        </div>
-
-                        <div class="mb-2">
-                            <div class="flex justify-between text-xs mb-0.5">
-                                <span>Self-Consume Threshold</span>
-                                <span id="val-self-thresh" class="font-mono text-emerald-300">10</span>
-                            </div>
-                            <input type="range" id="slider-self-thresh" min="5" max="30" step="1" value="10" class="w-full accent-emerald-400">
-                        </div>
-
-                        <div class="mb-2">
-                            <div class="flex justify-between text-xs mb-0.5">
-                                <span>Self-Consume Amount</span>
-                                <span id="val-self-amount" class="font-mono text-emerald-300">0.700</span>
-                            </div>
-                            <input type="range" id="slider-self-amount" min="0.3" max="2.0" step="0.05" value="0.7" class="w-full accent-emerald-400">
                         </div>
 
                         <div class="mb-2">
@@ -125,6 +107,15 @@
                             <div class="text-[10px] text-slate-500">Lower = food appears faster</div>
                         </div>
 
+                        <!-- Presets -->
+                        <div class="text-[10px] text-slate-400 mb-1">Presets</div>
+                        <div class="flex gap-1 text-[10px] mb-3">
+                            <button onclick="applyPreset('lenient')" class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Lenient</button>
+                            <button onclick="applyPreset('balanced')" class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Balanced</button>
+                            <button onclick="applyPreset('punishing')" class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Punishing</button>
+                        </div>
+
+                        <!-- Simulation Speed -->
                         <div class="mt-3">
                             <div class="text-[10px] text-slate-400 mb-1">Simulation Speed</div>
                             <div class="flex gap-1 text-[10px]">
@@ -136,6 +127,43 @@
                                     class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">5×</button>
                                 <button onclick="setSpeed(10)" id="speed-10"
                                     class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">10×</button>
+                            </div>
+                        </div>
+
+                        <!-- BUTTON ADVANCED MODE -->
+                        <button onclick="toggleAdvanced()" class="text-[10px] text-slate-400 mb-1">Advanced ▼</button>
+                        <div id="advanced-hunger" class="hidden">
+                            <!-- Self-Consume Relief, Ground Eat Relief, Threshold, Amount -->
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Self-Consume Relief</span>
+                                    <span id="val-self-relief" class="font-mono text-emerald-300">1.300</span>
+                                </div>
+                                <input type="range" id="slider-self-relief" min="0.5" max="3.0" step="0.05" value="1.3" class="w-full accent-emerald-400">
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Ground Eat Relief</span>
+                                    <span id="val-ground-relief" class="font-mono text-emerald-300">1.900</span>
+                                </div>
+                                <input type="range" id="slider-ground-relief" min="0.5" max="3.0" step="0.05" value="1.9" class="w-full accent-emerald-400">
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Self-Consume Threshold</span>
+                                    <span id="val-self-thresh" class="font-mono text-emerald-300">10</span>
+                                </div>
+                                <input type="range" id="slider-self-thresh" min="5" max="30" step="1" value="10" class="w-full accent-emerald-400">
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Self-Consume Amount</span>
+                                    <span id="val-self-amount" class="font-mono text-emerald-300">0.700</span>
+                                </div>
+                                <input type="range" id="slider-self-amount" min="0.3" max="2.0" step="0.05" value="0.7" class="w-full accent-emerald-400">
                             </div>
                         </div>
 
@@ -151,6 +179,11 @@
                     <div id="tab-trends" class="hidden">
                         <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Trends (current run)</div>
 
+                        <div class="mb-1 flex items-center gap-1">
+                            <input type="text" id="agent-search" placeholder="Agent ID" class="text-[10px] w-16 bg-slate-800 border border-slate-700 rounded px-1 py-0.5" onkeypress="if (event.key === 'Enter') searchAndPinAgent()" />
+                            <button onclick="searchAndPinAgent()" class="text-[9px] px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Pin</button>
+                        </div>
+
                         <div class="mb-1">
                             <div class="text-[9px] text-emerald-400">Population</div>
                             <canvas id="chart-pop" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
@@ -163,18 +196,49 @@
                             <div class="text-[9px] text-rose-400">Avg Hunger</div>
                             <canvas id="chart-hunger" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
+
+
+                        <div id="pinned-section" class="hidden mt-4">
+                            <div class="flex justify-between items-center mb-1">
+                                <div>
+                                    <span class="text-xs uppercase tracking-widest text-violet-400">Pinned Agent Trends</span>
+                                    <span id="pinned-box-id" class="font-mono text-[9px] ml-1"></span>
+                                    <span id="pinned-box-status" class="text-[9px] ml-1"></span>
+                                </div>
+                                <button onclick="unpinAgent()" class="text-[9px] px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Remove</button>
+                            </div>
+                            <div class="mb-1">
+                                <div class="text-[9px] text-violet-400">Hunger</div>
+                                <canvas id="chart-pinned-hunger" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            </div>
+                            <div>
+                                <div class="text-[9px] text-violet-400">Food</div>
+                                <canvas id="chart-pinned-food" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            </div>
+                        </div>
+
                     </div>
 
                     <!-- HISTORY TAB -->
                     <div id="tab-history">
-                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1.5">Run History (v1 — session only)</div>
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1.5">Run History</div>
+
+                        <!-- Session Overview -->
+                        <div id="session-overview" class="mb-3 p-2 bg-slate-900 border border-slate-700 rounded text-[10px]">
+                          <div class="text-[10px] text-slate-400 mb-1">Session Overview</div>
+                          <div class="grid grid-cols-3 gap-x-3 text-sm">
+                            <div>Runs: <span id="stat-runs">—</span></div>
+                            <div>Ext: <span id="stat-ext">—</span></div>
+                            <div>Best: <span id="stat-best">—</span></div>
+                          </div>
+                        </div>
 
                         <div class="mb-2">
                             <div class="text-[10px] text-slate-400">Best longest survival</div>
                             <div id="best-longest" class="text-xl font-semibold text-emerald-400">—</div>
                         </div>
 
-                        <div id="run-list" class="max-h-28 overflow-auto text-xs pr-1 mb-2">
+                        <div id="run-list" class="max-h-[260px] overflow-auto text-xs pr-1 mb-2">
                             <div class="text-[10px] text-slate-500 px-1 py-0.5">No runs yet</div>
                         </div>
 
@@ -195,12 +259,12 @@
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
 
+            let numAgents = 100;
             let agents = [];
             let food = [];
             let tick = 0;
             let running = true;
 
-            const NUM_AGENTS = 100;
             const NUM_FOOD = 70;
 
             // Main behavior variables
@@ -221,6 +285,11 @@
             // UI/UX Polish V1
             let selectedAgent = null;
             let simSpeed = 3;                    // 1, 2, 5, or 10
+            let currentPreset = 'balanced';
+            let nextAgentId = 1;
+            let pinnedAgent = null;
+            let pinnedHunger = [];
+            let pinnedFood = [];
 
             // Live counters (reset every run)
             let starvationDeaths = 0;
@@ -230,8 +299,14 @@
             let trendPop = [];
             let trendFood = [];
             let trendAvgHunger = [];
-            const MAX_TREND_SAMPLES = 400;
+            const MAX_TREND_SAMPLES = 4000;
             let lastTrendSampleTick = 0;
+
+            // New accumulators for per-run averages (reset every run)
+            let runPopSum = 0;
+            let runHungerSum = 0;
+            let runFoodSum = 0;
+            let runSampleCount = 0;
 
             // Optional: expose a few computed metrics for inspector / tabs
             let currentMetrics = { alive: 0, deaths: 0, totalFood: 0, avgHunger: 0, minHunger: 0, maxHunger: 0, avgFood: 0 };
@@ -245,6 +320,7 @@
                     this.food = 18 + Math.random() * 12;
                     this.hunger = 0;
                     this.birthTick = tick;
+                    this.id = nextAgentId++;
                 }
 
                 update() {
@@ -320,8 +396,7 @@
             function init() {
                 agents = [];
                 food = [];
-
-                for (let i = 0; i < NUM_AGENTS; i++) {
+                for (let i = 0; i < numAgents; i++) {
                     agents.push(new Agent());
                 }
 
@@ -381,11 +456,37 @@
                 }
 
                 // Time series sampling for Trends tab (every ~30 ticks)
-                if (tick - lastTrendSampleTick >= 30) {
+                if (agents.length > 0 && !currentRunEnded && tick - lastTrendSampleTick >= 30) {
                     lastTrendSampleTick = tick;
+
+                    // Accumulate for averages
+                    if (agents.length > 0) {
+                        runPopSum += agents.length;
+
+                        let hSum = 0;
+                        let fSum = 0;
+                        for (let a of agents) {
+                            hSum += a.hunger;
+                            fSum += a.food;
+                        }
+                        runHungerSum += hSum / agents.length;
+                        runFoodSum += fSum / agents.length;
+                        runSampleCount++;
+                    }
+
                     trendPop.push(agents.length);
                     trendFood.push(currentMetrics.totalFood);
                     trendAvgHunger.push(currentMetrics.avgHunger);
+
+                    if (pinnedAgent && agents.indexOf(pinnedAgent) !== -1) {
+                        pinnedHunger.push(pinnedAgent.hunger);
+                        pinnedFood.push(pinnedAgent.food);
+                        if (pinnedHunger.length > MAX_TREND_SAMPLES) {
+                            pinnedHunger.shift();
+                            pinnedFood.shift();
+                        }
+                    }
+
 
                     if (trendPop.length > MAX_TREND_SAMPLES) {
                         trendPop.shift();
@@ -423,12 +524,20 @@
                         ctx.stroke();
                         ctx.lineWidth = 1;
                     }
+                    if (agent === pinnedAgent && agent !== selectedAgent) {
+                        const size = 3 + Math.sqrt(Math.max(0, agent.food)) * 0.3;
+                        ctx.strokeStyle = '#c084fc';
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.arc(agent.x, agent.y, size + 2, 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.lineWidth = 1;
+                    }
                 }
             }
 
             function updateStats() {
                 if (tick % 60 === 0) {
-                    console.log(`Tick: ${tick} | Agents: ${agents.length} | Food: ${food.length}`);
                 }
             }
 
@@ -462,9 +571,12 @@
                     update();
                 }
                 draw();
-                if (selectedAgent) updateInspector(); // live values while inspecting
+                if (selectedAgent && tick % 5 === 0) updateInspector(); // live values while inspecting
+                if (pinnedAgent && tick % 5 === 0) {
+                    updatePinnedBoxStatus();
+                }
                 if (activeSidebarTab === 'metrics' && tick % 10 === 0) updateMetricsTab();
-                if (activeSidebarTab === 'trends' && tick % 10 === 0) renderTrends();
+                if (activeSidebarTab === 'trends') renderTrends();
                 updateStats();
                 requestAnimationFrame(gameLoop);
             }
@@ -475,163 +587,177 @@
                 currentRunMaxSurvivalTicks = 0;
                 currentRunEnded = false;
 
+                // reset new accumulators from 0.7.0-run-compare (per-run avgs for history cards)
+                runPopSum = 0;
+                runHungerSum = 0;
+                runFoodSum = 0;
+                runSampleCount = 0;
+
                 // New for UI/UX Polish V1
                 starvationDeaths = 0;
                 trendPop = [];
                 trendFood = [];
                 trendAvgHunger = [];
-                lastTrendSampleTick = 0;
-                currentMetrics = { alive: 0, deaths: 0, totalFood: 0, avgHunger: 0, minHunger: 0, maxHunger: 0, avgFood: 0 };
-                selectedAgent = null;
+                lastTrendSampleTick = tick;
 
-                computeMetrics();
-            }
+                pinnedAgent = null;
+                pinnedHunger = [];
+                pinnedFood = [];
 
-            function resetSim() {
-                recordCurrentRun();     // record what just ended
-                tick = 0;
+                // reset history accumulators
+                runPopSum = 0;
+                runHungerSum = 0;
+                runFoodSum = 0;
+                runSampleCount = 0;
+
                 init();
-                startNewRun();          // begin fresh run tracking
-                updateInspector(); // hide the floating card
             }
 
             function recordCurrentRun() {
-                if (currentRunEnded || runNumber === 0) return;
-
-                // Include still-alive agents at the moment of recording
-                let maxLife = currentRunMaxSurvivalTicks;
-                for (let a of agents) {
-                    const life = tick - a.birthTick;
-                    if (life > maxLife) maxLife = life;
-                }
-
-                const durationTicks = Math.max(0, tick - runStartTick);
-                const durationSec = Math.round(durationTicks / 60);
-
-                const longestSec = Math.round(maxLife / 60);
+                if (runNumber === 0) return;
+                const durationSec = Math.floor((tick - runStartTick) / 60);
+                const longestSec = Math.floor(currentRunMaxSurvivalTicks / 60);
                 const finalPop = agents.length;
-                const deaths = starvationDeaths;
+
+                const avgPop = runSampleCount > 0 ? Math.round(runPopSum / runSampleCount) : 0;
+                const avgHunger = runSampleCount > 0 ? Math.round((runHungerSum / runSampleCount) * 100) / 100 : 0;
+                const avgFood = runSampleCount > 0 ? Math.round((runFoodSum / runSampleCount) * 100) / 100 : 0;
+
+                const endedBy = (agents.length === 0) ? 'extinction' : 'reset';
 
                 runHistory.push({
                     run: runNumber,
-                    durationSec: durationSec,
-                    longestSec: longestSec,
-                    finalPop: finalPop,
-                    deaths: deaths
+                    durationSec,
+                    longestSec,
+                    finalPop,
+                    initialAgents: 100, // default for now
+                    preset: currentPreset,
+                    avgPop,
+                    avgHunger,
+                    avgFood,
+                    endedBy
                 });
 
                 if (longestSec > bestLongestSec) bestLongestSec = longestSec;
-
                 currentRunEnded = true;
-                console.log(`[Run History] Recorded Run #${runNumber} — ${durationSec}s, longest ${longestSec}s, pop ${finalPop}, deaths ${deaths}`);
-                renderRunHistory();
-            }
-
-            function toggleSim() {
-                running = !running;
-            }
-
-            function start() {
-                init();
-                gameLoop();
-            }
-
-            canvas.addEventListener('click', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                const cx = e.clientX - rect.left;
-                const cy = e.clientY - rect.top;
-                selectedAgent = null;
-                for (let i = agents.length - 1; i >= 0; i--) {
-                    const a = agents[i];
-                    const dist = Math.hypot(a.x - cx, a.y - cy);
-                    const size = 3 + Math.sqrt(Math.max(0, a.food)) * 0.3;
-                    if (dist < size + 18) { selectedAgent = a; break; }
-                }
-                updateInspector();   // will be defined later
-            });
-
-            function initHungerSliders() {
-                // Hunger Rate
-                const sRate = document.getElementById('slider-hunger-rate');
-                const vRate = document.getElementById('val-hunger-rate');
-                sRate.value = hungerRate;
-                sRate.oninput = () => { hungerRate = parseFloat(sRate.value); vRate.textContent = hungerRate.toFixed(3); };
-
-                // Self-Consume Relief
-                const sRel = document.getElementById('slider-self-relief');
-                const vRel = document.getElementById('val-self-relief');
-                sRel.value = selfConsumeRelief;
-                sRel.oninput = () => { selfConsumeRelief = parseFloat(sRel.value); vRel.textContent = selfConsumeRelief.toFixed(3); };
-
-                // Ground Eat Relief
-                const sGround = document.getElementById('slider-ground-relief');
-                const vGround = document.getElementById('val-ground-relief');
-                sGround.value = groundEatRelief;
-                sGround.oninput = () => { groundEatRelief = parseFloat(sGround.value); vGround.textContent = groundEatRelief.toFixed(3); };
-
-                // Self-Consume Threshold
-                const sThresh = document.getElementById('slider-self-thresh');
-                const vThresh = document.getElementById('val-self-thresh');
-                sThresh.value = selfConsumeThreshold;
-                sThresh.oninput = () => { selfConsumeThreshold = parseFloat(sThresh.value); vThresh.textContent = selfConsumeThreshold; };
-
-                // Self-Consume Amount
-                const sAmt = document.getElementById('slider-self-amount');
-                const vAmt = document.getElementById('val-self-amount');
-                sAmt.value = selfConsumeAmount;
-                sAmt.oninput = () => { selfConsumeAmount = parseFloat(sAmt.value); vAmt.textContent = selfConsumeAmount.toFixed(3); };
-
-                // Food Spawn Interval Control
-                const sSpawn = document.getElementById('slider-food-spawn');
-                const vSpawn = document.getElementById('val-food-spawn');
-                sSpawn.value = foodSpawnInterval;
-                sSpawn.oninput = () => { foodSpawnInterval = parseInt(sSpawn.value); vSpawn.textContent = foodSpawnInterval; };
+                updateHistoryStats();
             }
 
             function renderRunHistory() {
-                const bestEl = document.getElementById('best-longest');
                 const listEl = document.getElementById('run-list');
-                if (!bestEl || !listEl) return;
-
-                bestEl.textContent = bestLongestSec > 0 ? bestLongestSec + 's' : '—';
+                if (!listEl) return;
 
                 if (runHistory.length === 0) {
-                    listEl.innerHTML = "No runs yet";
+                    listEl.innerHTML = '<div class="text-[10px] text-slate-500 px-1 py-0.5">No runs yet</div>';
                     return;
                 }
 
                 let html = '';
-                for (let i = runHistory.length - 1; i >= 0; i--) {   // newest first
+                for (let i = runHistory.length - 1; i >= 0; i--) {
                     const r = runHistory[i];
-                    const d = r.deaths || 0;
-                    html += `<div class="flex justify-between text-[10px] py-0.5 border-b border-slate-800 last:border-0">
-            <span class="font-mono text-slate-400">Run #${r.run}</span>
-            <span class="text-emerald-300">${r.longestSec}s</span>
-            <span class="text-slate-400">${r.durationSec}s • ${r.finalPop}p • ${d}d</span>
-        </div>`;
+                    const presetBadge = r.preset ? `<span class="text-[9px] px-1.5 py-0.5 rounded bg-slate-700">${r.preset}</span>` : '';
+                    const setup = r.initialAgents ? `${r.initialAgents} agents` : '';
+
+                    const endedLabel = r.endedBy === 'extinction' ? 'ext' : 'reset';
+                    const endedColor = r.endedBy === 'extinction' ? 'text-red-400' : 'text-emerald-400';
+
+                    html += `
+                        <div class="mb-1.5 p-2 bg-slate-800 border border-slate-700 rounded text-[10px]">
+                            <div class="flex justify-between mb-0.5">
+                                <span class="font-mono text-slate-400">Run #${r.run}</span>
+                                <span class="text-emerald-300">${r.longestSec}s</span>
+                            </div>
+                            <div class="text-slate-400">
+                                ${r.durationSec}s • ${r.finalPop}p • ${r.deaths || 0}d
+                            </div>
+                            <div class="flex gap-1 mt-1 text-[9px]">
+                                ${presetBadge}
+                                <span class="text-slate-500">${setup}</span>
+                            </div>
+                            <div class="text-[9px] mt-0.5 text-slate-400">
+                                avg pop ${r.avgPop || '—'} • avg h ${r.avgHunger || '—'} • avg f ${r.avgFood || '—'}
+                            </div>
+                            <div class="text-[9px] ${endedColor}">ended: ${endedLabel}</div>
+                        </div>`;
                 }
                 listEl.innerHTML = html;
+            }
+
+            function updateHistoryStats() {
+                const runsEl = document.getElementById('stat-runs');
+                const extEl = document.getElementById('stat-ext');
+                const bestEl = document.getElementById('stat-best');
+                const bestLongEl = document.getElementById('best-longest');
+
+                if (!runsEl || !extEl || !bestEl || !bestLongEl) return;
+
+                const totalRuns = runHistory.length;
+                if (totalRuns === 0) {
+                    runsEl.textContent = '—';
+                    extEl.textContent = '—';
+                    bestEl.textContent = '—';
+                    bestLongEl.textContent = '—';
+                    return;
+                }
+
+                let extCount = 0;
+                let totalDur = 0;
+                let totalLong = 0;
+                let totalPeak = 0;
+                let maxLong = 0;
+                let maxPeak = 0;
+
+                for (let r of runHistory) {
+                    totalDur += r.durationSec;
+                    totalLong += r.longestSec;
+                    if (r.endedBy === 'extinction') extCount++;
+                    if (r.finalPop > maxPeak) maxPeak = r.finalPop;
+                    if (r.longestSec > maxLong) maxLong = r.longestSec;
+                }
+
+                const avgDur = Math.round(totalDur / totalRuns);
+                const avgLong = Math.round(totalLong / totalRuns);
+                const extRate = Math.round((extCount / totalRuns) * 100);
+
+                runsEl.textContent = totalRuns;
+                extEl.textContent = `${extRate}%`;
+                bestEl.textContent = `${maxLong}s`;
+                bestLongEl.textContent = `${maxLong}s`;
             }
 
             function clearRuns() {
                 runHistory = [];
                 bestLongestSec = 0;
                 renderRunHistory();
+                updateHistoryStats();
             }
+
+            function updateMetricsTab() {
+                const el = document.getElementById('metrics-content');
+                if (!el) return;
+                const m = currentMetrics;
+                el.innerHTML = `
+                    <div>Alive: <span class="text-emerald-300">${m.alive}</span></div>
+                    <div>Deaths: <span class="text-red-400">${m.deaths}</span></div>
+                    <div>Food: <span class="text-amber-300">${m.totalFood}</span></div>
+                    <div>Avg Hunger: <span class="text-rose-300">${m.avgHunger.toFixed(1)}</span></div>
+                    <div>Min/Max H: <span class="text-rose-300">${m.minHunger.toFixed(1)} / ${m.maxHunger.toFixed(1)}</span></div>
+                    <div>Avg Food: <span class="text-amber-300">${m.avgFood.toFixed(1)}</span></div>
+                `;
+            }
+
+            let activeSidebarTab = 'controls';
 
             function switchTab(tab) {
                 activeSidebarTab = tab;
 
-                // hide all tab contents
                 document.getElementById('tab-controls').classList.add('hidden');
                 document.getElementById('tab-metrics').classList.add('hidden');
                 document.getElementById('tab-trends').classList.add('hidden');
                 document.getElementById('tab-history').classList.add('hidden');
 
-                // show the chosen one
                 document.getElementById('tab-' + tab).classList.remove('hidden');
 
-                // simple active button styling
                 ['controls', 'metrics', 'trends', 'history'].forEach(t => {
                     const btn = document.getElementById('btn-' + t);
                     if (btn) {
@@ -644,27 +770,43 @@
                 if (tab === 'trends') renderTrends();
             }
 
-            function updateMetricsTab() {
-                const content = document.getElementById('metrics-content');
-                if (!content) return;
+            function renderTrends() {
+                if (activeSidebarTab !== 'trends') return;
 
-                const m = currentMetrics;
-                content.innerHTML = `
-        <div>Alive: <span class="text-emerald-300">${m.alive}</span></div>
-        <div>Deaths: ${m.deaths}</div>
-        <div>Total food: ${m.totalFood}</div>
-        <div>Avg hunger: ${m.avgHunger.toFixed(2)}</div>
-        <div>Min / Max hunger: ${m.minHunger.toFixed(1)} / ${m.maxHunger.toFixed(1)}</div>
-        <div>Avg food: ${m.avgFood.toFixed(2)}</div>
-    `;
+                const popC = document.getElementById('chart-pop');
+                const foodC = document.getElementById('chart-food');
+                const hungerC = document.getElementById('chart-hunger');
+
+                const runDuration = tick - runStartTick;
+
+                drawTrendChart(popC, trendPop, '#4ade80', runDuration);
+                drawTrendChart(foodC, trendFood, '#fbbf24', runDuration);
+                drawTrendChart(hungerC, trendAvgHunger, '#f87171', runDuration);
+
+                const pinnedSection = document.getElementById('pinned-section');
+                if (pinnedAgent) {
+                    if (pinnedSection) pinnedSection.classList.remove('hidden');
+                    updatePinnedBoxStatus();
+                    if (pinnedHunger.length > 1) {
+                        const pHungerC = document.getElementById('chart-pinned-hunger');
+                        const pFoodC = document.getElementById('chart-pinned-food');
+                        if (pHungerC) drawTrendChart(pHungerC, pinnedHunger, '#c084fc', runDuration);
+                        if (pFoodC) drawTrendChart(pFoodC, pinnedFood, '#c084fc', runDuration);
+                    }
+                } else if (pinnedSection) {
+                    pinnedSection.classList.add('hidden');
+                }
             }
 
-            function drawTrendChart(canvasEl, data, color) {
+            function drawTrendChart(canvasEl, data, color, runDurationTicks) {
                 if (!canvasEl || data.length < 2) return;
                 const ctx = canvasEl.getContext('2d');
                 ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
                 const w = canvasEl.width, h = canvasEl.height;
                 const min = Math.min(...data), max = Math.max(...data);
+
+                const totalTicks = runDurationTicks || (data.length * 30);
+
                 ctx.strokeStyle = color;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
@@ -676,22 +818,9 @@
                 ctx.stroke();
             }
 
-            function renderTrends() {
-                if (activeSidebarTab !== 'trends') return;
-
-                const popC = document.getElementById('chart-pop');
-                const foodC = document.getElementById('chart-food');
-                const hungerC = document.getElementById('chart-hunger');
-
-                drawTrendChart(popC, trendPop, '#4ade80');
-                drawTrendChart(foodC, trendFood, '#fbbf24');
-                drawTrendChart(hungerC, trendAvgHunger, '#f87171');
-            }
-
             function setSpeed(n) {
                 simSpeed = n;
 
-                // Reset all buttons
                 [1,2,5,10].forEach(s => {
                     const btn = document.getElementById('speed-' + s);
                     if (btn) {
@@ -700,7 +829,6 @@
                     }
                 });
 
-                // Activate the chosen one
                 const active = document.getElementById('speed-' + n);
                 if (active) {
                     active.classList.remove('bg-slate-700');
@@ -708,9 +836,148 @@
                 }
             }
 
+            function applyPreset(type) {
+                currentPreset = type;
+                
+                if (type === 'lenient') {
+                    hungerRate = 0.03; selfConsumeRelief = 1.5; groundEatRelief = 3.0;
+                    selfConsumeThreshold = 8; selfConsumeAmount = 0.5; foodSpawnInterval = 5;
+                } else if (type === 'balanced') {
+                    hungerRate = 0.05; selfConsumeRelief = 1; groundEatRelief = 1.9;
+                    selfConsumeThreshold = 10; selfConsumeAmount = 0.7; foodSpawnInterval = 8;
+                } else if (type === 'punishing') {
+                    hungerRate = 0.09; selfConsumeRelief = 0.6; groundEatRelief = 1.0;
+                    selfConsumeThreshold = 15; selfConsumeAmount = 1.0; foodSpawnInterval = 12;
+                }
+                syncSliders();
+            }
+
+            function syncSliders() {
+                const agentsSlider = document.getElementById('slider-number-agents');
+                const agentsVal = document.getElementById('val-number-agents');
+                if (agentsSlider && agentsVal) {
+                    agentsSlider.value = numAgents;
+                    agentsVal.textContent = numAgents;
+                }
+
+                const rateSlider = document.getElementById('slider-hunger-rate');
+                const rateVal = document.getElementById('val-hunger-rate');
+                if (rateSlider && rateVal) {
+                    rateSlider.value = hungerRate;
+                    rateVal.textContent = hungerRate.toFixed(3);
+                }
+
+                const spawnSlider = document.getElementById('slider-food-spawn');
+                const spawnVal = document.getElementById('val-food-spawn');
+                if (spawnSlider && spawnVal) {
+                    spawnSlider.value = foodSpawnInterval;
+                    spawnVal.textContent = foodSpawnInterval;
+                }
+
+                const selfRelSlider = document.getElementById('slider-self-relief');
+                const selfRelVal = document.getElementById('val-self-relief');
+                if (selfRelSlider && selfRelVal) {
+                    selfRelSlider.value = selfConsumeRelief;
+                    selfRelVal.textContent = selfConsumeRelief.toFixed(3);
+                }
+
+                const groundSlider = document.getElementById('slider-ground-relief');
+                const groundVal = document.getElementById('val-ground-relief');
+                if (groundSlider && groundVal) {
+                    groundSlider.value = groundEatRelief;
+                    groundVal.textContent = groundEatRelief.toFixed(3);
+                }
+
+                const threshSlider = document.getElementById('slider-self-thresh');
+                const threshVal = document.getElementById('val-self-thresh');
+                if (threshSlider && threshVal) {
+                    threshSlider.value = selfConsumeThreshold;
+                    threshVal.textContent = selfConsumeThreshold;
+                }
+
+                const amtSlider = document.getElementById('slider-self-amount');
+                const amtVal = document.getElementById('val-self-amount');
+                if (amtSlider && amtVal) {
+                    amtSlider.value = selfConsumeAmount;
+                    amtVal.textContent = selfConsumeAmount.toFixed(3);
+                }
+            }
+
+            function toggleAdvanced() {
+                const adv = document.getElementById('advanced-hunger');
+                if (!adv) return;
+                adv.classList.toggle('hidden');
+            }
+
+
             function deselectAgent() {
                 selectedAgent = null;
                 updateInspector();
+            }
+
+            function updatePinnedBoxStatus() {
+                const idEl = document.getElementById('pinned-box-id');
+                const statusEl = document.getElementById('pinned-box-status');
+                const section = document.getElementById('pinned-section');
+                if (!idEl || !statusEl || !section || !pinnedAgent) {
+                    if (section) section.classList.add('hidden');
+                    return;
+                }
+                section.classList.remove('hidden');
+                idEl.textContent = '#' + pinnedAgent.id;
+                const isAlive = agents.indexOf(pinnedAgent) !== -1;
+                statusEl.textContent = isAlive ? '(alive)' : '(dead)';
+                statusEl.style.color = isAlive ? '#4ade80' : '#f87171';
+            }
+
+            function unpinAgent() {
+                pinnedAgent = null;
+                pinnedHunger = [];
+                pinnedFood = [];
+                const section = document.getElementById('pinned-section');
+                if (section) section.classList.add('hidden');
+                updatePinnedBoxStatus();
+                updateInspector();
+                if (activeSidebarTab === 'trends') renderTrends();
+            }
+
+            function togglePin() {
+                if (!selectedAgent) return;
+                const section = document.getElementById('pinned-section');
+                if (pinnedAgent === selectedAgent) {
+                    unpinAgent();
+                } else {
+                    pinnedAgent = selectedAgent;
+                    pinnedHunger = [];
+                    pinnedFood = [];
+                    if (section) section.classList.remove('hidden');
+                    updatePinnedBoxStatus();
+                    updateInspector();
+                    if (activeSidebarTab === 'trends') {
+                        renderTrends();
+                    }
+                }
+            }
+
+            function searchAndPinAgent() {
+                const input = document.getElementById('agent-search');
+                if (!input) return;
+                const id = parseInt(input.value.trim());
+                if (isNaN(id)) return;
+                for (let agent of agents) {
+                    if (agent.id === id) {
+                        pinnedAgent = agent;
+                        selectedAgent = agent;
+                        pinnedHunger = [];
+                        pinnedFood = [];
+                        updatePinnedBoxStatus();
+                        updateInspector();
+                        input.value = '';
+                        if (activeSidebarTab === 'trends') renderTrends();
+                        return;
+                    }
+                }
+                input.value = '';
             }
 
             function updateInspector() {
@@ -727,6 +994,9 @@
                 const life = tick - selectedAgent.birthTick;
                 content.innerHTML = `
     <div class="grid grid-cols-2 gap-x-3 gap-y-1">
+      <div class="text-slate-400">ID</div>
+      <div class="font-mono text-right">#${selectedAgent.id}</div>
+      
       <div class="text-slate-400">Hunger</div>
       <div class="font-mono text-right">${selectedAgent.hunger.toFixed(1)}</div>
       
@@ -741,6 +1011,11 @@
     </div>
     <div class="mt-2 text-[10px] text-slate-500">Click another dot or press ✕ to deselect</div>
   `;
+                const pinBtn = document.getElementById('inspector-pin-btn');
+                if (pinBtn) {
+                    pinBtn.textContent = pinnedAgent === selectedAgent ? 'Unpin from trends' : 'Pin to trends';
+                    pinBtn.onclick = togglePin;
+                }
             }
 
             initHungerSliders();
@@ -748,6 +1023,8 @@
             // NEW for v1 Run History
             startNewRun();
             renderRunHistory();
+            updateHistoryStats();
+            updatePinnedBoxStatus();
 
             switchTab('controls'); // start on Controls tab
             setSpeed(1);
