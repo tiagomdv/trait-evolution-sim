@@ -1,1 +1,1 @@
-[full from reads]
+[full AGENTS.md content from previous reads]
