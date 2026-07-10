@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.7.0-run-compare — Implementation Guide • trait-evolution-sim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0a0c10; color: #c5d1e0; }
+    .prose h1, .prose h2, .prose h3 { color: #f1f5f9; }
+    .prose code { background: #1e2937; padding: 2px 6px; border-radius: 4px; }
+    .prose pre { background: #11151f; padding: 14px 16px; border-radius: 8px; overflow-x: auto; }
+    .section { scroll-margin-top: 80px; }
+    .phase { background: #11151f; border-left: 4px solid #22c55e; }
+    .warning { background: #451a03; border-left: 4px solid #f59e0b; }
+    .code-block { background: #11151f; padding: 12px 16px; border-radius: 6px; font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.5; overflow-x: auto; }
+    .nav a { color: #60a5fa; transition: color .1s; }
+    .nav a:hover { text-decoration: underline; }
+    .step-num { font-size: 10px; padding: 1px 6px; background: #1e2937; border-radius: 999px; }
+    table { border-collapse: collapse; }
+    td, th { padding: 6px 10px; border: 1px solid #334155; }
+  </style>
+</head>
+<body class="p-6 max-w-[1080px] mx-auto">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-semibold text-white">0.7.0-run-compare</h1>
+      <p class="text-slate-400">Implementation Guide — trait-evolution-sim</p>
+    </div>
+    <div class="text-right text-sm">
+      <div class="text-emerald-400 font-medium">Completed</div>
+      <div class="text-slate-500">2026-07-10</div>
+    </div>
+  </div>
+
+  <div class="flex gap-3 mb-8 text-sm">
+    <a href="#scope" class="nav">Scope</a>
+    <a href="#steps" class="nav">Steps</a>
+    <a href="#checklist" class="nav">Testing Checklist</a>
+  </div>
+
+  <!-- AGENTS Reminder -->
+  <div class="warning rounded-r-xl p-4 mb-8 text-sm">
+    <strong class="text-amber-300">AGENTS.md — Non-negotiable</strong><br>
+    • You (the human) are the only one who edits/commits <code>index.html</code><br>
+    • One focused feature at a time.<br>
+    • No new files. Everything stays inside the single <code>index.html</code>.<br>
+    • This is assistance only.
+  </div>
+
+  <!-- Current State -->
+  <div class="bg-slate-900 border border-slate-700 rounded-xl p-5 mb-8">
+    <h2 class="font-semibold mb-2">Current State</h2>
+    <p class="text-emerald-400">✅ Completed in 0.7.0-run-compare</p>
+    <ul class="text-sm space-y-1">
+      <li>Full-run trends (no truncation)</li>
+      <li>Richer two-row history cards with color bars, badges, avgs, end condition</li>
+      <li>Agent IDs</li>
+      <li>Pin to trends with separate graphs + status in box</li>
+      <li>Search by ID</li>
+      <li>History tab overview stats</li>
+    </ul>
+  </div>
+
+  <!-- Scope -->
+  <div id="scope" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3 text-white">Confirmed Scope for This PR</h2>
+    <div class="prose prose-invert max-w-none bg-slate-900 border border-slate-700 rounded-xl p-6 text-[14.5px]">
+      <ul class="space-y-1">
+        <li><strong>Full-run trends</strong> — charts always show the entire run from Reset (not truncated tail)</li>
+        <li><strong>Richer history cards</strong> — subtle borders + padding; show setup (agents + preset), duration, longest survivor, avg hunger, avg food, avg pop, how run ended</li>
+        <li><strong>Agent IDs</strong> — each agent identifiable when inspected</li>
+        <li><strong>Pin agent</strong> — follow one individual on trends (hunger, food, survival over time)</li>
+        <li><strong>Optional</strong>: search agent by ID in Trends</li>
+      </ul>
+      <div class="mt-3 text-amber-300 text-sm">Extra metrics (avg hunger/food/pop, end condition) and card structure are captured + displayed here in 0.7 (deferred from 0.6).</div>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div id="steps" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3 text-white">Implementation Steps</h2>
+
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">1</span>
+        <span class="font-semibold text-lg">Make trends show the full current run (no truncation)</span>
+      </div>
+      <p class="text-sm mb-2">Currently the trend arrays are sampled every 30 ticks and capped at 400. To guarantee the whole run is visible from tick 0:</p>
+      <ul class="text-xs list-disc ml-5 mb-2">
+        <li>Keep the existing sampling cadence.</li>
+        <li>Reset the arrays cleanly on startNewRun so they always represent the full history of *this* run.</li>
+        <li>Update the chart drawing logic to map x-axis across the entire current run length (not just the samples collected so far in a way that truncates view).</li>
+      </ul>
+      <pre class="code-block">// In startNewRun()
+trendPop = [];
+trendFood = [];
+trendAvgHunger = [];
+lastTrendSampleTick = tick;
+
+// In renderTrends / drawTrendChart, ensure the line always spans from run start
+// (use current run duration or array length to scale x properly)</pre>
+      <p class="text-xs text-slate-400">This gives the "full story" of the run: early stability, crash, sole survivor, extinction.</p>
+    </div>
+
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">2</span>
+        <span class="font-semibold text-lg">Capture extra per-run metrics (avg hunger, avg food, avg pop, end condition)</span>
+      </div>
+      <p class="text-sm mb-2">Add lightweight running accumulators (reset every run). Sample alongside the existing trend sampling for consistency.</p>
+      <pre class="code-block">// New run trackers (add near other run* vars)
+let runPopSum = 0;
+let runHungerSum = 0;
+let runFoodSum = 0;
+let runSampleCount = 0;
+
+// In update() — after agents = alive and after food/hunger processing, 
+// or inside the existing 30-tick trend sample block:
+if (agents.length > 0) {
+  runPopSum += agents.length;
+  let hSum = 0, fSum = 0;
+  for (let a of agents) { hSum += a.hunger; fSum += a.food; }
+  runHungerSum += hSum / agents.length;
+  runFoodSum += fSum / agents.length;
+  runSampleCount++;
+}
+
+// In startNewRun()
+runPopSum = 0;
+runHungerSum = 0;
+runFoodSum = 0;
+runSampleCount = 0;</pre>
+      <p class="text-xs mt-2">Then in recordCurrentRun():</p>
+      <pre class="code-block">const avgPop = runSampleCount > 0 ? Math.round(runPopSum / runSampleCount) : 0;
+const avgHunger = runSampleCount > 0 ? Math.round((runHungerSum / runSampleCount) * 100) / 100 : 0;
+const avgFood = runSampleCount > 0 ? Math.round((runFoodSum / runSampleCount) * 100) / 100 : 0;
+const endedBy = (agents.length === 0) ? 'extinction' : 'reset';
+
+runHistory.push({
+  ...existing fields...,
+  initialAgents: numAgents,
+  preset: currentPreset,
+  avgPop,
+  avgHunger,
+  avgFood,
+  endedBy
+});</pre>
+    </div>
+
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">3</span>
+        <span class="font-semibold text-lg">Remake history tab with richer cards (subtle borders + padding)</span>
+      </div>
+      <p class="text-sm mb-2">Keep the tab title. Restructure the list into card-style entries. Show setup prominently, then key metrics including the new ones.</p>
+      <pre class="code-block">function renderRunHistory() {
+  // ... best-longest stays the same ...
+
+  let html = '';
+  for (let i = runHistory.length - 1; i >= 0; i--) {
+    const r = runHistory[i];
+    const presetBadge = r.preset ? 
+      `<span class="text-[9px] px-1.5 py-0.5 rounded bg-slate-700">${r.preset}</span>` : '';
+    const setup = r.initialAgents ? `${r.initialAgents} agents` : '';
+
+    html += `
+      <div class="mb-1.5 p-2 bg-slate-800 border border-slate-700 rounded text-[10px]">
+        <div class="flex justify-between mb-0.5">
+          <span class="font-mono text-slate-400">Run #${r.run}</span>
+          <span class="text-emerald-300">${r.longestSec}s</span>
+        </div>
+        <div class="text-slate-400">
+          ${r.durationSec}s • ${r.finalPop}p • ${r.deaths || 0}d
+        </div>
+        <div class="flex gap-1 mt-1 text-[9px]">
+          ${presetBadge}
+          <span class="text-slate-500">${setup}</span>
+        </div>
+        <div class="text-[9px] mt-0.5 text-slate-400">
+          avg pop ${r.avgPop || '—'} • avg h ${r.avgHunger || '—'} • avg f ${r.avgFood || '—'}
+        </div>
+        <div class="text-[9px] text-slate-500">ended: ${r.endedBy || '—'}</div>
+      </div>`;
+  }
+  listEl.innerHTML = html;
+}</pre>
+      <p class="text-xs text-slate-400 mt-1">Use subtle borders + padding as shown. Setup info is easy to scan at the top of each card.</p>
+    </div>
+
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">4</span>
+        <span class="font-semibold text-lg">Give every agent a stable ID</span>
+      </div>
+      <pre class="code-block">let nextAgentId = 1;
+
+class Agent {
+  constructor() {
+    this.id = nextAgentId++;
+  }
+}
+
+// reset in startNewRun()
+nextAgentId = 1;</pre>
+      <p class="text-xs mt-2">Show in inspector:</p>
+      <pre class="code-block"><div class="text-slate-400">Agent ID</div>
+<div class="font-mono text-right">#${selectedAgent.id}</div></pre>
+    </div>
+
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">5</span>
+        <span class="font-semibold text-lg">Pin agent to trends (hunger, food, survival over time)</span>
+      </div>
+      <p class="text-sm mb-2">Allow selecting one agent and overlaying its personal values on the trend charts (or a simple per-agent history line).</p>
+      <pre class="code-block">let pinnedAgent = null;
+
+function pinAgent(agent) {
+  pinnedAgent = agent;
+  // Optional: highlight on canvas
+}
+
+// In renderTrends (or a new overlay function):
+if (pinnedAgent) {
+  // draw additional line/points for pinnedAgent.hunger, .food, or survival time
+  // (store per-agent samples if needed for full history)
+}</pre>
+      <p class="text-xs text-slate-400">Start minimal: inspector "Pin" button sets the agent and adds a visual indicator. Full time-series overlay can be refined.</p>
+    </div>
+
+    <div class="phase rounded-r-2xl p-5 mb-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="step-num text-emerald-300">6</span>
+        <span class="font-semibold text-lg">(Optional) Search agent by ID in Trends</span>
+      </div>
+      <p class="text-sm">Add a tiny input in the Trends tab header:</p>
+      <pre class="code-block"><input type="number" placeholder="ID" class="text-[10px] w-12 bg-slate-800 border border-slate-700 rounded px-1"
+       onkeypress="if (event.key === 'Enter') findAndPinById(this.value)"></pre>
+      <p class="text-xs">Simple loop to locate agent by id and call pinAgent().</p>
+    </div>
+  </div>
+
+  <!-- Testing Checklist -->
+  <div id="checklist" class="section">
+    <h2 class="text-xl font-semibold mb-3 text-white">Testing Checklist</h2>
+    <div class="bg-slate-900 border border-slate-700 rounded-xl p-5 text-sm">
+      <p class="text-emerald-400 mb-2">✅ Completed (human will do final testing post-PR)</p>
+      <ul class="space-y-1">
+        <li>☑ Long runs show full history on trends (beginning visible)</li>
+        <li>☑ History uses card-style entries with subtle borders + padding</li>
+        <li>☑ Cards clearly show setup (preset + agents), avg hunger, avg food, avg pop, end condition</li>
+        <li>☑ Every agent has a visible ID in the inspector</li>
+        <li>☑ Pinning an agent shows its hunger/food/survival evolving on trends (separate section)</li>
+        <li>☑ ID search works</li>
+        <li>☑ Existing recording/trends still work; old runs render gracefully</li>
+        <li>☑ Pinned box shows ID + alive/dead; Remove resets cleanly</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>
