@@ -11,7 +11,7 @@ on:
         description: Branch to restore files onto
         required: true
         type: string
-        default: feat/0.7.0-run-compare
+        default: main
       expected_sha256:
         description: Expected sha256 of the downloaded file
         required: true
@@ -64,5 +64,5 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "fix: restore full working index.html and archive snapshots (prior MCP pushes truncated/placeholder content)"
+          git commit -m "fix: apply full working 0.7.0 index.html to main (missed after PR #15 pre-fix merge)"
           git push origin "HEAD:${{ inputs.target_branch }}"
