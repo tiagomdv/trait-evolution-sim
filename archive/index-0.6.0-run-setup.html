@@ -1,1 +1,1179 @@
-[Full content of current index.html at 0.7 state, representing bundled 0.6.0 milestone - see local archive/index-0.6.0-run-setup.html for exact]
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Evol-Econ Sim</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            body { background: #0a0c10; color: #c5d1e0; }
+            canvas { 
+                background: #11151f; 
+                border: 1px solid #1e2d3d;
+                image-rendering: crisp-edges;
+            }
+        </style>
+    </head>
+    <body class="p-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center gap-4 mb-4">
+                <h1 class="text-2xl font-semibold text-white">Evol-Econ Sim</h1>
+                <div class="text-xs text-slate-400 mt-0.5">
+                    Phase 0 · Survive 
+                    <span class="ml-2 px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.7.0-run-compare</span>
+                </div>
+                <div class="ml-auto flex gap-2">
+                    <button onclick="toggleSim()" 
+                        class="px-3 py-1 bg-slate-700 hover:bg-slate-600 rounded text-sm">
+                        Pause / Resume
+                    </button>
+                    <button onclick="resetSim()" 
+                        class="px-3 py-1 bg-slate-700 hover:bg-slate-600 rounded text-sm">
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- NEW: flex container starts here -->
+            <div class="flex gap-6 items-start">
+
+                <!-- Left column: simulation -->
+                <div class="flex-1">
+
+                    <div class="relative" style="width: 800px; height: 600px;">
+                        <canvas id="canvas" width="800" height="600" class="rounded"></canvas>
+
+                        <!-- Floating Inspector -->
+                        <div id="inspector"
+                            class="hidden absolute bottom-3 right-3 w-72 bg-slate-900/95 border border-slate-600 
+                            rounded-2xl p-3.5 text-sm shadow-2xl backdrop-blur z-10">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="text-emerald-300 text-xs font-semibold tracking-widest">SELECTED AGENT</div>
+                                <div class="flex gap-1">
+                                    <button id="inspector-pin-btn" class="text-[10px] px-2 py-px bg-slate-800 hover:bg-slate-700 rounded">Pin to trends</button>
+                                    <button onclick="deselectAgent()" class="text-[10px] px-2 py-px bg-slate-800 hover:bg-slate-700 rounded">✕</button>
+                                </div>
+                            </div>
+                            <div id="inspector-content" class="text-xs leading-tight space-y-1"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 text-sm text-slate-400">
+                        <strong>Current Phase:</strong> Phase 0 . Survive<br>
+                        Agents move, get hungry, eat food, and can die from starvation. The goal is observability and run comparison.
+                    </div>
+
+                </div>
+
+                <div class="w-72 bg-slate-900 border border-slate-700 rounded p-3 text-sm flex-shrink-0">
+
+                    <!-- Tab bar -->
+                    <div class="flex text-[10px] mb-2 border-b border-slate-700">
+                        <div onclick="switchTab('controls')" id="btn-controls"
+                            class="px-2 py-0.5 cursor-pointer text-emerald-300 font-medium">Controls</div>
+                        <div onclick="switchTab('metrics')" id="btn-metrics"
+                            class="px-2 py-0.5 cursor-pointer">Metrics</div>
+                        <div onclick="switchTab('trends')" id="btn-trends"
+                            class="px-2 py-0.5 cursor-pointer">Trends</div>
+                        <div onclick="switchTab('history')" id="btn-history"
+                            class="px-2 py-0.5 cursor-pointer">History</div>
+                    </div>
+
+                    <!-- CONTROLS TAB -->
+                    <div id="tab-controls">
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Hunger &amp; Environment</div>
+
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs mb-0.5">
+                                <span>Initial Agents</span>
+                                <span id="val-number-agents" class="font-mono text-emerald-300">100</span>
+                            </div>
+                            <input type="range" id="slider-number-agents" min="1" max="100" step="1" value="100" class="w-full accent-emerald-400">
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs mb-0.5">
+                                <span>Hunger Rate</span>
+                                <span id="val-hunger-rate" class="font-mono text-emerald-300">0.055</span>
+                            </div>
+                            <input type="range" id="slider-hunger-rate" min="0.01" max="0.15" step="0.001" value="0.055" class="w-full accent-emerald-400">
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs mb-0.5">
+                                <span>Food Spawn Interval</span>
+                                <span id="val-food-spawn" class="font-mono text-emerald-300">8</span>
+                            </div>
+                            <input type="range" id="slider-food-spawn" min="2" max="30" step="1" value="8" class="w-full accent-emerald-400">
+                            <div class="text-[10px] text-slate-500">Lower = food appears faster</div>
+                        </div>
+
+                        <!-- Presets -->
+                        <div class="text-[10px] text-slate-400 mb-1">Presets</div>
+                        <div class="flex gap-1 text-[10px] mb-3">
+                            <button onclick="applyPreset('lenient')" class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Lenient</button>
+                            <button onclick="applyPreset('balanced')" class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Balanced</button>
+                            <button onclick="applyPreset('punishing')" class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Punishing</button>
+                        </div>
+
+                        <!-- Simulation Speed -->
+                        <div class="mt-3">
+                            <div class="text-[10px] text-slate-400 mb-1">Simulation Speed</div>
+                            <div class="flex gap-1 text-[10px]">
+                                <button onclick="setSpeed(1)" id="speed-1"
+                                    class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">1×</button>
+                                <button onclick="setSpeed(2)" id="speed-2"
+                                    class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">2×</button>
+                                <button onclick="setSpeed(5)" id="speed-5"
+                                    class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">5×</button>
+                                <button onclick="setSpeed(10)" id="speed-10"
+                                    class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">10×</button>
+                            </div>
+                        </div>
+
+                        <!-- BUTTON ADVANCED MODE -->
+                        <button onclick="toggleAdvanced()" class="text-[10px] text-slate-400 mb-1">Advanced ▼</button>
+                        <div id="advanced-hunger" class="hidden">
+                            <!-- Self-Consume Relief, Ground Eat Relief, Threshold, Amount -->
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Self-Consume Relief</span>
+                                    <span id="val-self-relief" class="font-mono text-emerald-300">1.300</span>
+                                </div>
+                                <input type="range" id="slider-self-relief" min="0.5" max="3.0" step="0.05" value="1.3" class="w-full accent-emerald-400">
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Ground Eat Relief</span>
+                                    <span id="val-ground-relief" class="font-mono text-emerald-300">1.900</span>
+                                </div>
+                                <input type="range" id="slider-ground-relief" min="0.5" max="3.0" step="0.05" value="1.9" class="w-full accent-emerald-400">
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Self-Consume Threshold</span>
+                                    <span id="val-self-thresh" class="font-mono text-emerald-300">10</span>
+                                </div>
+                                <input type="range" id="slider-self-thresh" min="5" max="30" step="1" value="10" class="w-full accent-emerald-400">
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Self-Consume Amount</span>
+                                    <span id="val-self-amount" class="font-mono text-emerald-300">0.700</span>
+                                </div>
+                                <input type="range" id="slider-self-amount" min="0.3" max="2.0" step="0.05" value="0.7" class="w-full accent-emerald-400">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- METRICS TAB -->
+                    <div id="tab-metrics" class="hidden">
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Live Metrics</div>
+                        <div id="metrics-content" class="text-[11px] space-y-0.5 font-mono"></div>
+                    </div>
+
+                    <!-- TRENDS TAB -->
+                    <div id="tab-trends" class="hidden">
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Trends (current run)</div>
+
+                        <div class="mb-1 flex items-center gap-1">
+                            <input type="text" id="agent-search" placeholder="Agent ID" class="text-[10px] w-16 bg-slate-800 border border-slate-700 rounded px-1 py-0.5" onkeypress="if (event.key === 'Enter') searchAndPinAgent()" />
+                            <button onclick="searchAndPinAgent()" class="text-[9px] px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Pin</button>
+                        </div>
+
+                        <div class="mb-1">
+                            <div class="text-[9px] text-emerald-400">Population</div>
+                            <canvas id="chart-pop" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                        </div>
+                        <div class="mb-1">
+                            <div class="text-[9px] text-yellow-400">Total Food</div>
+                            <canvas id="chart-food" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                        </div>
+                        <div>
+                            <div class="text-[9px] text-rose-400">Avg Hunger</div>
+                            <canvas id="chart-hunger" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                        </div>
+
+
+                        <div id="pinned-section" class="hidden mt-4">
+                            <div class="flex justify-between items-center mb-1">
+                                <div>
+                                    <span class="text-xs uppercase tracking-widest text-violet-400">Pinned Agent Trends</span>
+                                    <span id="pinned-box-id" class="font-mono text-[9px] ml-1"></span>
+                                    <span id="pinned-box-status" class="text-[9px] ml-1"></span>
+                                </div>
+                                <button onclick="unpinAgent()" class="text-[9px] px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Remove</button>
+                            </div>
+                            <div class="mb-1">
+                                <div class="text-[9px] text-violet-400">Hunger</div>
+                                <canvas id="chart-pinned-hunger" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            </div>
+                            <div>
+                                <div class="text-[9px] text-violet-400">Food</div>
+                                <canvas id="chart-pinned-food" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- HISTORY TAB -->
+                    <div id="tab-history">
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1.5">Run History</div>
+
+                        <!-- Session Overview -->
+                        <div id="session-overview" class="mb-3 p-2 bg-slate-900 border border-slate-700 rounded text-[10px]">
+                          <div class="text-[10px] text-slate-400 mb-1">Session Overview</div>
+                          <div class="grid grid-cols-3 gap-x-3 text-sm">
+                            <div>Runs: <span id="stat-runs">—</span></div>
+                            <div>Ext: <span id="stat-ext">—</span></div>
+                            <div>Best: <span id="stat-best">—</span></div>
+                          </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="text-[10px] text-slate-400">Best longest survival</div>
+                            <div id="best-longest" class="text-xl font-semibold text-emerald-400">—</div>
+                        </div>
+
+                        <div id="run-list" class="max-h-[260px] overflow-auto text-xs pr-1 mb-2">
+                            <div class="text-[10px] text-slate-500 px-1 py-0.5">No runs yet</div>
+                        </div>
+
+                        <button onclick="clearRuns()"
+                            class="text-[10px] px-2 py-0.5 bg-slate-800 hover:bg-slate-700 rounded text-slate-400">
+                            Clear Runs
+                        </button>
+                    </div>
+
+                    <div class="mt-3 text-[10px] text-slate-500">Changes apply live (next frame).</div>
+                </div>
+
+            </div>
+            <!-- flex container ends here -->
+        </div>
+
+        <script>
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            let numAgents = 100;
+            let agents = [];
+            let food = [];
+            let tick = 0;
+            let running = true;
+
+            const NUM_FOOD = 70;
+
+            // Main behavior variables
+            let hungerRate = 0.05;              // hunger increase per tick
+            let selfConsumeRelief = 1;         // hunger reduced when eating own carried food
+            let groundEatRelief = 5;            // hunger reduced when eating from ground food
+            let selfConsumeThreshold = 10;       // hunger level needed before eating carried food
+            let selfConsumeAmount = 0.7;        // amount of carried food eaten per tick 
+
+            // === v1 Run History (minimal, in-memory only) ===
+            let runNumber = 0;
+            let runStartTick = 0;
+            let runHistory = [];                 // {run, durationSec, longestSec, finalPop}[]
+            let currentRunMaxSurvivalTicks = 0;
+            let currentRunEnded = false;
+            let bestLongestSec = 0;
+
+            // UI/UX Polish V1
+            let selectedAgent = null;
+            let simSpeed = 3;                    // 1, 2, 5, or 10
+            let currentPreset = 'balanced';
+            let nextAgentId = 1;
+            let pinnedAgent = null;
+            let pinnedHunger = [];
+            let pinnedFood = [];
+
+            // Live counters (reset every run)
+            let starvationDeaths = 0;
+            let foodSpawnInterval = 8;
+
+            // Time-series for current run (sampled, capped)
+            let trendPop = [];
+            let trendFood = [];
+            let trendAvgHunger = [];
+            const MAX_TREND_SAMPLES = 4000;
+            let lastTrendSampleTick = 0;
+
+            // New accumulators for per-run averages (reset every run)
+            let runPopSum = 0;
+            let runHungerSum = 0;
+            let runFoodSum = 0;
+            let runSampleCount = 0;
+
+            // Optional: expose a few computed metrics for inspector / tabs
+            let currentMetrics = { alive: 0, deaths: 0, totalFood: 0, avgHunger: 0, minHunger: 0, maxHunger: 0, avgFood: 0 };
+
+            class Agent {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 1.5;
+                    this.vy = (Math.random() - 0.5) * 1.5;
+                    this.food = 18 + Math.random() * 12;
+                    this.hunger = 0;
+                    this.birthTick = tick;
+                    this.id = nextAgentId++;
+                }
+
+                update() {
+                    // Basic random movement
+                    this.vx += (Math.random() - 0.5) * 0.5;
+                    this.vy += (Math.random() - 0.5) * 0.5;
+
+                    // Speed limit
+                    const speed = Math.hypot(this.vx, this.vy);
+                    if (speed > 2) {
+                        this.vx = (this.vx / speed) * 2;
+                        this.vy = (this.vy / speed) * 2;
+                    }
+
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    // Wrap around edges
+                    if (this.x < 0) this.x = canvas.width;
+                    if (this.x > canvas.width) this.x = 0;
+                    if (this.y < 0) this.y = canvas.height;
+                    if (this.y > canvas.height) this.y = 0;
+
+                    // Hunger
+                    this.hunger += hungerRate;
+
+                    // Die
+                    if (this.hunger > 100) {
+                        const life = tick - this.birthTick;
+                        if (life > currentRunMaxSurvivalTicks) currentRunMaxSurvivalTicks = life;
+                        starvationDeaths++; // Variable for UX/UI Polish V1
+                        return false;
+                    }
+
+                    // Consume carried food
+                    if (this.food > 0 && this.hunger > selfConsumeThreshold) {
+                        const eat = Math.min(selfConsumeAmount, this.food);
+                        this.food -= eat;
+                        this.hunger = Math.max(0, this.hunger - selfConsumeRelief);
+                    }
+
+                    return true;
+                }
+
+                draw() {
+                    const size = 3 + Math.sqrt(Math.max(0, this.food)) * 0.3;
+
+                    ctx.fillStyle = this.hunger > 75 ? '#f87171' : '#64748b';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Small food dot
+                    if (this.food > 6) {
+                        ctx.fillStyle = '#fbbf24';
+                        ctx.beginPath();
+                        ctx.arc(this.x + 1.5, this.y - 1.5, 1.2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            function spawnFood(count) {
+                for (let i = 0; i < count; i++) {
+                    food.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        amount: 3 + Math.random() * 5
+                    });
+                }
+            }
+
+            function init() {
+                agents = [];
+                food = [];
+
+                for (let i = 0; i < numAgents; i++) {
+                    agents.push(new Agent());
+                }
+
+                spawnFood(NUM_FOOD);
+            }
+
+            function update() {
+                if (!running) return;
+
+                tick++;
+
+                // Update agents
+                const alive = [];
+                for (let agent of agents) {
+                    if (agent.update()) alive.push(agent);
+                }
+                agents = alive;
+
+                // NEW: detect natural population crash for run history
+                if (agents.length === 0 && !currentRunEnded && runNumber > 0) {
+                    recordCurrentRun();
+                }
+
+                // Agents eat nearby food (less relief)
+                for (let i = food.length - 1; i >= 0; i--) {
+                    const f = food[i];
+                    let eaten = false;
+
+                    for (let agent of agents) {
+                        const dx = f.x - agent.x;
+                        const dy = f.y - agent.y;
+                        if (dx * dx + dy * dy < 20 * 20 && f.amount > 0.2) {
+                            const eat = Math.min(1.0, f.amount);
+                            agent.food += eat;
+                            f.amount -= eat;
+                            agent.hunger = Math.max(0, agent.hunger - groundEatRelief);
+                            eaten = true;
+                            break;
+                        }
+                    }
+
+                    if (f.amount < 0.2 || eaten) {
+                        food.splice(i, 1);
+                    }
+                }
+
+                // Food respawn (improved + tunable via slider)
+                if (agents.length > 0 && 
+                    tick % foodSpawnInterval === 0 
+                    && food.length < NUM_FOOD * 1.3) {
+                    spawnFood(1);
+                }
+
+                // Live Metrics (UI/UX Polish v1)
+                if (tick % 20 === 0) {
+                    computeMetrics();
+                }
+
+                // Time series sampling for Trends tab (every ~30 ticks)
+                if (agents.length > 0 && !currentRunEnded && tick - lastTrendSampleTick >= 30) {
+                    lastTrendSampleTick = tick;
+
+                    // Accumulate for averages
+                    if (agents.length > 0) {
+                        runPopSum += agents.length;
+
+                        let hSum = 0;
+                        let fSum = 0;
+                        for (let a of agents) {
+                            hSum += a.hunger;
+                            fSum += a.food;
+                        }
+                        runHungerSum += hSum / agents.length;
+                        runFoodSum += fSum / agents.length;
+                        runSampleCount++;
+                    }
+
+                    trendPop.push(agents.length);
+                    trendFood.push(currentMetrics.totalFood);
+                    trendAvgHunger.push(currentMetrics.avgHunger);
+
+                    if (pinnedAgent && agents.indexOf(pinnedAgent) !== -1) {
+                        pinnedHunger.push(pinnedAgent.hunger);
+                        pinnedFood.push(pinnedAgent.food);
+                        if (pinnedHunger.length > MAX_TREND_SAMPLES) {
+                            pinnedHunger.shift();
+                            pinnedFood.shift();
+                        }
+                    }
+
+
+                    if (trendPop.length > MAX_TREND_SAMPLES) {
+                        trendPop.shift();
+                        trendFood.shift();
+                        trendAvgHunger.shift();
+                    }
+                }
+            }
+
+            function draw() {
+                ctx.fillStyle = 'rgba(17, 21, 31, 0.9)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Food
+                ctx.fillStyle = '#4ade80';
+                for (let f of food) {
+                    const r = Math.sqrt(f.amount) * 0.7;
+                    ctx.beginPath();
+                    ctx.arc(f.x, f.y, r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Agents
+                for (let agent of agents) {
+                    agent.draw();
+
+                    // Pulsing selection outline (UX/UI Polish V1)
+                    if (agent === selectedAgent) {
+                        const size = 3 + Math.sqrt(Math.max(0, agent.food)) * 0.3;
+                        const pulse = 1.0 + Math.sin(tick * 0.12) * 0.28;
+                        ctx.strokeStyle = '#f472b6';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.arc(agent.x, agent.y, size * pulse + 3, 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.lineWidth = 1;
+                    }
+                    if (agent === pinnedAgent && agent !== selectedAgent) {
+                        const size = 3 + Math.sqrt(Math.max(0, agent.food)) * 0.3;
+                        ctx.strokeStyle = '#c084fc';
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.arc(agent.x, agent.y, size + 2, 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.lineWidth = 1;
+                    }
+                }
+            }
+
+            function updateStats() {
+                if (tick % 60 === 0) {
+                }
+            }
+
+            function computeMetrics() {
+                if (agents.length === 0) {
+                    currentMetrics = { alive: 0, deaths: starvationDeaths, totalFood: 0, avgHunger: 0, minHunger: 0, maxHunger: 0, avgFood: 0 };
+                    return;
+                }
+                let minH = Infinity, maxH = -Infinity, sumH = 0, sumFood = 0, totalFood = 0;
+                for (let a of agents) {
+                    minH = Math.min(minH, a.hunger);
+                    maxH = Math.max(maxH, a.hunger);
+                    sumH += a.hunger;
+                    sumFood += a.food;
+                }
+                for (let f of food) totalFood += f.amount;
+
+                currentMetrics = {
+                    alive: agents.length,
+                    deaths: starvationDeaths,
+                    totalFood: Math.round(totalFood * 10) / 10,
+                    avgHunger: sumH / agents.length,
+                    minHunger: minH,
+                    maxHunger: maxH,
+                    avgFood: sumFood / agents.length
+                };
+            }
+
+            function gameLoop() {
+                for (let i = 0; i < simSpeed; i++) {
+                    update();
+                }
+                draw();
+                if (selectedAgent && tick % 5 === 0) updateInspector(); // live values while inspecting
+                if (pinnedAgent && tick % 5 === 0) {
+                    updatePinnedBoxStatus();
+                }
+                if (activeSidebarTab === 'metrics' && tick % 10 === 0) updateMetricsTab();
+                if (activeSidebarTab === 'trends') renderTrends();
+                updateStats();
+                requestAnimationFrame(gameLoop);
+            }
+
+            function startNewRun() {
+                runNumber++;
+                runStartTick = tick;
+                currentRunMaxSurvivalTicks = 0;
+                currentRunEnded = false;
+
+                // reset new accumulators from 0.7.0-run-compare (per-run avgs for history cards)
+                runPopSum = 0;
+                runHungerSum = 0;
+                runFoodSum = 0;
+                runSampleCount = 0;
+
+                // New for UI/UX Polish V1
+                starvationDeaths = 0;
+                trendPop = [];
+                trendFood = [];
+                trendAvgHunger = [];
+                lastTrendSampleTick = tick;
+                currentMetrics = { alive: 0, deaths: 0, totalFood: 0, avgHunger: 0, minHunger: 0, maxHunger: 0, avgFood: 0 };
+                selectedAgent = null;
+                pinnedAgent = null;
+                nextAgentId = 1;
+                pinnedHunger = [];
+                pinnedFood = [];
+
+                computeMetrics();
+            }
+
+            function resetSim() {
+                recordCurrentRun();     // record what just ended
+                tick = 0;
+                init();
+                startNewRun();          // begin fresh run tracking
+                updateInspector(); // hide the floating card
+            }
+
+            function recordCurrentRun() {
+                if (currentRunEnded || runNumber === 0) return;
+
+                // Include still-alive agents at the moment of recording
+                let maxLife = currentRunMaxSurvivalTicks;
+                for (let a of agents) {
+                    const life = tick - a.birthTick;
+                    if (life > maxLife) maxLife = life;
+                }
+
+                const durationTicks = Math.max(0, tick - runStartTick);
+                const durationSec = Math.round(durationTicks / 60);
+
+                const longestSec = Math.round(maxLife / 60);
+                const finalPop = agents.length;
+                const deaths = starvationDeaths;
+
+                const avgPop = runSampleCount > 0 ? Math.round(runPopSum / runSampleCount) : 0;
+                const avgHunger = runSampleCount > 0 ? Math.round((runHungerSum / runSampleCount) * 100) / 100 : 0;
+                const avgFood = runSampleCount > 0 ? Math.round((runFoodSum / runSampleCount) * 100) / 100 : 0;
+                const endedBy = (agents.length === 0) ? 'extinction' : 'reset';
+
+                runHistory.push({
+                    run: runNumber,
+                    durationSec: durationSec,
+                    longestSec: longestSec,
+                    finalPop: finalPop,
+                    deaths: deaths,
+                    initialAgents: numAgents,
+                    preset: currentPreset,
+                    avgPop: avgPop,
+                    avgHunger: avgHunger,
+                    avgFood: avgFood,
+                    endedBy: endedBy
+                });
+
+                if (longestSec > bestLongestSec) bestLongestSec = longestSec;
+
+                currentRunEnded = true;
+                console.log(`[Run History] Recorded Run #${runNumber} — ${durationSec}s, longest ${longestSec}s, avgPop ${avgPop}, avgH ${avgHunger}, ended ${endedBy}`);
+                renderRunHistory();
+            }
+
+            function toggleSim() {
+                running = !running;
+            }
+
+            function start() {
+                init();
+                gameLoop();
+            }
+
+            canvas.addEventListener('click', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const cx = e.clientX - rect.left;
+                const cy = e.clientY - rect.top;
+                selectedAgent = null;
+                for (let i = agents.length - 1; i >= 0; i--) {
+                    const a = agents[i];
+                    const dist = Math.hypot(a.x - cx, a.y - cy);
+                    const size = 3 + Math.sqrt(Math.max(0, a.food)) * 0.3;
+                    if (dist < size + 18) { selectedAgent = a; break; }
+                }
+                updateInspector();   // will be defined later
+            });
+
+            function initHungerSliders() {
+                
+                // Initial Agents
+                const sAgents = document.getElementById('slider-number-agents');
+                const vAgents = document.getElementById('val-number-agents');
+                sAgents.value = numAgents;
+                sAgents.oninput = () => { numAgents = parseFloat(sAgents.value); vAgents.textContent = numAgents;};
+                
+                // Hunger Rate
+                const sRate = document.getElementById('slider-hunger-rate');
+                const vRate = document.getElementById('val-hunger-rate');
+                sRate.value = hungerRate;
+                sRate.oninput = () => { hungerRate = parseFloat(sRate.value); vRate.textContent = hungerRate.toFixed(3);currentPreset = 'custom'; };
+
+                // Self-Consume Relief
+                const sRel = document.getElementById('slider-self-relief');
+                const vRel = document.getElementById('val-self-relief');
+                sRel.value = selfConsumeRelief;
+                sRel.oninput = () => { selfConsumeRelief = parseFloat(sRel.value); vRel.textContent = selfConsumeRelief.toFixed(3);currentPreset = 'custom'; };
+
+                // Ground Eat Relief
+                const sGround = document.getElementById('slider-ground-relief');
+                const vGround = document.getElementById('val-ground-relief');
+                sGround.value = groundEatRelief;
+                sGround.oninput = () => { groundEatRelief = parseFloat(sGround.value); vGround.textContent = groundEatRelief.toFixed(3);currentPreset = 'custom'; };
+
+                // Self-Consume Threshold
+                const sThresh = document.getElementById('slider-self-thresh');
+                const vThresh = document.getElementById('val-self-thresh');
+                sThresh.value = selfConsumeThreshold;
+                sThresh.oninput = () => { selfConsumeThreshold = parseFloat(sThresh.value); vThresh.textContent = selfConsumeThreshold; currentPreset = 'custom';};
+
+                // Self-Consume Amount
+                const sAmt = document.getElementById('slider-self-amount');
+                const vAmt = document.getElementById('val-self-amount');
+                sAmt.value = selfConsumeAmount;
+                sAmt.oninput = () => { selfConsumeAmount = parseFloat(sAmt.value); vAmt.textContent = selfConsumeAmount.toFixed(3); currentPreset = 'custom';};
+
+                // Food Spawn Interval Control
+                const sSpawn = document.getElementById('slider-food-spawn');
+                const vSpawn = document.getElementById('val-food-spawn');
+                sSpawn.value = foodSpawnInterval;
+                sSpawn.oninput = () => { foodSpawnInterval = parseInt(sSpawn.value); vSpawn.textContent = foodSpawnInterval;currentPreset = 'custom'; };
+            }
+
+            function renderRunHistory() {
+                const bestEl = document.getElementById('best-longest');
+                const listEl = document.getElementById('run-list');
+                if (!bestEl || !listEl) return;
+
+                bestEl.textContent = bestLongestSec > 0 ? bestLongestSec + 's' : '—';
+
+                updateHistoryStats();
+
+                if (runHistory.length === 0) {
+                    listEl.innerHTML = "No runs yet";
+                    return;
+                }
+
+                let html = '';
+                for (let i = runHistory.length - 1; i >= 0; i--) {
+                    const r = runHistory[i];
+
+                    let barColor = 'bg-slate-600';
+                    let presetClass = 'bg-slate-700 text-slate-200';
+                    if (r.preset === 'lenient') {
+                        barColor = 'bg-green-600';
+                        presetClass = 'bg-green-700 text-green-200';
+                    } else if (r.preset === 'balanced') {
+                        barColor = 'bg-blue-600';
+                        presetClass = 'bg-blue-700 text-blue-200';
+                    } else if (r.preset === 'punishing') {
+                        barColor = 'bg-red-600';
+                        presetClass = 'bg-red-700 text-red-200';
+                    } else if (r.preset === 'custom') {
+                        barColor = 'bg-yellow-600';
+                        presetClass = 'bg-yellow-700 text-yellow-200';
+                    }
+
+                    const presetBadge = r.preset 
+                        ? `<span class="px-1 py-px text-[9px] rounded ${presetClass}">${r.preset}</span>` 
+                        : '';
+
+                    const agents = r.initialAgents ? `${r.initialAgents} pop` : '';
+
+                    let endedClass = r.endedBy === 'extinction' ? 'bg-red-900 text-red-300' : 'bg-sky-900 text-sky-300';
+                    const endedBadge = r.endedBy 
+                        ? `<span class="px-1 py-px text-[9px] rounded ${endedClass}">${r.endedBy}</span>` 
+                        : '';
+
+                    html += `
+<div class="mb-0.5 flex text-[10px]">
+  <div class="w-1.5 ${barColor} rounded-l"></div>
+  <div class="flex-1 p-1 bg-slate-800 border border-slate-700 border-l-0 rounded-r">
+    <!-- top row: run# + preset + ended + duration + initial pop -->
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-1">
+        <span class="font-mono text-slate-400">Run #${r.run}</span>
+        ${presetBadge}
+        ${endedBadge}
+      </div>
+      <span class="text-slate-400">${r.durationSec}s • ${agents}</span>
+    </div>
+    <!-- divider -->
+    <div class="border-t border-slate-700 my-0.5"></div>
+    <!-- bottom row: remaining (longest + alive/end pop + avgs with proper labels) -->
+    <div class="text-[9px] text-slate-400">
+      alive: ${r.finalPop} (avg ${r.avgPop ?? '—'}) • avg hunger: ${r.avgHunger ?? '—'} • avg food: ${r.avgFood ?? '—'}
+    </div>
+  </div>
+</div>`;
+                }
+                listEl.innerHTML = html;
+            }
+
+            function clearRuns() {
+                runHistory = [];
+                bestLongestSec = 0;
+                renderRunHistory();
+                updateHistoryStats();
+            }
+
+            function computeOverallStats() {
+                if (!runHistory || runHistory.length === 0) return null;
+                let totalDur = 0, totalLong = 0, extinctions = 0, totalPeak = 0;
+                let best = { longest: 0, run: 0, preset: '' };
+                for (let r of runHistory) {
+                    totalDur += r.durationSec || 0;
+                    totalLong += r.longestSec || 0;
+                    if (r.endedBy === 'extinction') extinctions++;
+                    totalPeak += r.avgPop || 0;
+                    if ((r.longestSec || 0) > best.longest) {
+                        best = { longest: r.longestSec, run: r.run, preset: r.preset || '' };
+                    }
+                }
+                const n = runHistory.length;
+                return {
+                    runs: n,
+                    avgDuration: Math.round(totalDur / n),
+                    avgLongest: Math.round(totalLong / n),
+                    extinctionRate: extinctions + ' / ' + n,
+                    avgPeakPop: Math.round(totalPeak / n),
+                    bestLongest: best.longest,
+                    bestRun: best.run,
+                    bestPreset: best.preset
+                };
+            }
+
+            function updateHistoryStats() {
+                const stats = computeOverallStats();
+                const runsEl = document.getElementById('stat-runs');
+                const avgDurEl = document.getElementById('stat-avg-dur');
+                const extEl = document.getElementById('stat-ext');
+                const avgLongEl = document.getElementById('stat-avg-long');
+                const avgPeakEl = document.getElementById('stat-avg-peak');
+                const bestEl = document.getElementById('stat-best');
+                if (!stats) {
+                    if (runsEl) runsEl.textContent = '—';
+                    if (avgDurEl) avgDurEl.textContent = '—';
+                    if (extEl) extEl.textContent = '—';
+                    if (avgLongEl) avgLongEl.textContent = '—';
+                    if (avgPeakEl) avgPeakEl.textContent = '—';
+                    if (bestEl) bestEl.textContent = '—';
+                    return;
+                }
+                if (runsEl) runsEl.textContent = stats.runs;
+                if (avgDurEl) avgDurEl.textContent = stats.avgDuration;
+                if (extEl) extEl.textContent = stats.extinctionRate;
+                if (avgLongEl) avgLongEl.textContent = stats.avgLongest;
+                if (avgPeakEl) avgPeakEl.textContent = stats.avgPeakPop;
+                if (bestEl) bestEl.textContent = stats.bestLongest + 's';
+            }
+
+            function switchTab(tab) {
+                activeSidebarTab = tab;
+
+                // hide all tab contents
+                document.getElementById('tab-controls').classList.add('hidden');
+                document.getElementById('tab-metrics').classList.add('hidden');
+                document.getElementById('tab-trends').classList.add('hidden');
+                document.getElementById('tab-history').classList.add('hidden');
+
+                // show the chosen one
+                document.getElementById('tab-' + tab).classList.remove('hidden');
+
+                // simple active button styling
+                ['controls', 'metrics', 'trends', 'history'].forEach(t => {
+                    const btn = document.getElementById('btn-' + t);
+                    if (btn) {
+                        btn.classList.remove('text-emerald-300', 'font-medium');
+                        if (t === tab) btn.classList.add('text-emerald-300', 'font-medium');
+                    }
+                });
+
+                if (tab === 'metrics') updateMetricsTab();
+                if (tab === 'trends') {
+                    renderTrends();
+                    updatePinnedBoxStatus();
+                    // Force redraw after tab switch to prevent stop
+                    setTimeout(function() {
+                        if (activeSidebarTab === 'trends') renderTrends();
+                    }, 16);
+                    setTimeout(function() {
+                        if (activeSidebarTab === 'trends') renderTrends();
+                    }, 50);
+                }
+            }
+
+            function updateMetricsTab() {
+                const content = document.getElementById('metrics-content');
+                if (!content) return;
+
+                const m = currentMetrics;
+                content.innerHTML = `
+        <div>Alive: <span class="text-emerald-300">${m.alive}</span></div>
+        <div>Deaths: ${m.deaths}</div>
+        <div>Total food: ${m.totalFood}</div>
+        <div>Avg hunger: ${m.avgHunger.toFixed(2)}</div>
+        <div>Min / Max hunger: ${m.minHunger.toFixed(1)} / ${m.maxHunger.toFixed(1)}</div>
+        <div>Avg food: ${m.avgFood.toFixed(2)}</div>
+    `;
+            }
+
+            function drawTrendChart(canvasEl, data, color, runDurationTicks) {
+                if (!canvasEl || data.length < 2) return;
+                const ctx = canvasEl.getContext('2d');
+                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+                const w = canvasEl.width, h = canvasEl.height;
+                const min = Math.min(...data), max = Math.max(...data);
+
+                // Use actual run length for x-scaling so early data isn't visually lost
+                const totalTicks = runDurationTicks || (data.length * 30);
+
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    const x = (i / (data.length - 1)) * w;
+                    const y = h - ((data[i] - min) / (max - min || 1)) * (h - 3);
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+
+            function renderTrends() {
+                if (activeSidebarTab !== 'trends') return;
+
+                const popC = document.getElementById('chart-pop');
+                const foodC = document.getElementById('chart-food');
+                const hungerC = document.getElementById('chart-hunger');
+
+                const runDuration = tick - runStartTick;
+
+                drawTrendChart(popC, trendPop, '#4ade80', runDuration);
+                drawTrendChart(foodC, trendFood, '#fbbf24', runDuration);
+                drawTrendChart(hungerC, trendAvgHunger, '#f87171', runDuration);
+
+                const pinnedSection = document.getElementById('pinned-section');
+                if (pinnedAgent) {
+                    if (pinnedSection) pinnedSection.classList.remove('hidden');
+                    updatePinnedBoxStatus();
+                    if (pinnedHunger.length > 1) {
+                        const pHungerC = document.getElementById('chart-pinned-hunger');
+                        const pFoodC = document.getElementById('chart-pinned-food');
+                        if (pHungerC) drawTrendChart(pHungerC, pinnedHunger, '#c084fc', runDuration);
+                        if (pFoodC) drawTrendChart(pFoodC, pinnedFood, '#c084fc', runDuration);
+                    }
+                } else if (pinnedSection) {
+                    pinnedSection.classList.add('hidden');
+                }
+            }
+
+            function setSpeed(n) {
+                simSpeed = n;
+
+                // Reset all buttons
+                [1,2,5,10].forEach(s => {
+                    const btn = document.getElementById('speed-' + s);
+                    if (btn) {
+                        btn.classList.remove('bg-emerald-400', 'text-black');
+                        btn.classList.add('bg-slate-700');
+                    }
+                });
+
+                // Activate the chosen one
+                const active = document.getElementById('speed-' + n);
+                if (active) {
+                    active.classList.remove('bg-slate-700');
+                    active.classList.add('bg-emerald-400', 'text-black');
+                }
+            }
+
+            function applyPreset(type) {
+                currentPreset = type;
+                
+                if (type === 'lenient') {
+                    hungerRate = 0.03; selfConsumeRelief = 1.5; groundEatRelief = 3.0;
+                    selfConsumeThreshold = 8; selfConsumeAmount = 0.5; foodSpawnInterval = 5;
+                } else if (type === 'balanced') {
+                    hungerRate = 0.05; selfConsumeRelief = 1; groundEatRelief = 1.9;
+                    selfConsumeThreshold = 10; selfConsumeAmount = 0.7; foodSpawnInterval = 8;
+                } else if (type === 'punishing') {
+                    hungerRate = 0.09; selfConsumeRelief = 0.6; groundEatRelief = 1.0;
+                    selfConsumeThreshold = 15; selfConsumeAmount = 1.0; foodSpawnInterval = 12;
+                }
+                syncSliders();
+            }
+
+            function syncSliders() {
+                // Initial Agents (setup control)
+                const agentsSlider = document.getElementById('slider-number-agents');
+                const agentsVal = document.getElementById('val-number-agents');
+                if (agentsSlider && agentsVal) {
+                    agentsSlider.value = numAgents;
+                    agentsVal.textContent = numAgents;
+                }
+
+                // Hunger Rate (main visible)
+                const rateSlider = document.getElementById('slider-hunger-rate');
+                const rateVal = document.getElementById('val-hunger-rate');
+                if (rateSlider && rateVal) {
+                    rateSlider.value = hungerRate;
+                    rateVal.textContent = hungerRate.toFixed(3);
+                }
+
+                // Food Spawn Interval (main visible)
+                const spawnSlider = document.getElementById('slider-food-spawn');
+                const spawnVal = document.getElementById('val-food-spawn');
+                if (spawnSlider && spawnVal) {
+                    spawnSlider.value = foodSpawnInterval;
+                    spawnVal.textContent = foodSpawnInterval;
+                }
+
+                // === Advanced sliders (sync them even when collapsed so they are correct when opened) ===
+                const selfRelSlider = document.getElementById('slider-self-relief');
+                const selfRelVal = document.getElementById('val-self-relief');
+                if (selfRelSlider && selfRelVal) {
+                    selfRelSlider.value = selfConsumeRelief;
+                    selfRelVal.textContent = selfConsumeRelief.toFixed(3);
+                }
+
+                const groundSlider = document.getElementById('slider-ground-relief');
+                const groundVal = document.getElementById('val-ground-relief');
+                if (groundSlider && groundVal) {
+                    groundSlider.value = groundEatRelief;
+                    groundVal.textContent = groundEatRelief.toFixed(3);
+                }
+
+                const threshSlider = document.getElementById('slider-self-thresh');
+                const threshVal = document.getElementById('val-self-thresh');
+                if (threshSlider && threshVal) {
+                    threshSlider.value = selfConsumeThreshold;
+                    threshVal.textContent = selfConsumeThreshold;
+                }
+
+                const amtSlider = document.getElementById('slider-self-amount');
+                const amtVal = document.getElementById('val-self-amount');
+                if (amtSlider && amtVal) {
+                    amtSlider.value = selfConsumeAmount;
+                    amtVal.textContent = selfConsumeAmount.toFixed(3);
+                }
+            }
+
+            function toggleAdvanced() {
+                const adv = document.getElementById('advanced-hunger');
+                if (!adv) return;
+                adv.classList.toggle('hidden');
+            }
+
+
+            function deselectAgent() {
+                selectedAgent = null;
+                updateInspector();
+            }
+
+            function updatePinnedBoxStatus() {
+                const idEl = document.getElementById('pinned-box-id');
+                const statusEl = document.getElementById('pinned-box-status');
+                const section = document.getElementById('pinned-section');
+                if (!idEl || !statusEl || !section || !pinnedAgent) {
+                    if (section) section.classList.add('hidden');
+                    return;
+                }
+                section.classList.remove('hidden');
+                idEl.textContent = '#' + pinnedAgent.id;
+                const isAlive = agents.indexOf(pinnedAgent) !== -1;
+                statusEl.textContent = isAlive ? '(alive)' : '(dead)';
+                statusEl.style.color = isAlive ? '#4ade80' : '#f87171';
+            }
+
+            function unpinAgent() {
+                pinnedAgent = null;
+                pinnedHunger = [];
+                pinnedFood = [];
+                const section = document.getElementById('pinned-section');
+                if (section) section.classList.add('hidden');
+                updatePinnedBoxStatus();
+                updateInspector();
+                if (activeSidebarTab === 'trends') renderTrends();
+            }
+
+            function togglePin() {
+                if (!selectedAgent) return;
+                const section = document.getElementById('pinned-section');
+                if (pinnedAgent === selectedAgent) {
+                    unpinAgent();
+                } else {
+                    pinnedAgent = selectedAgent;
+                    pinnedHunger = [];
+                    pinnedFood = [];
+                    if (section) section.classList.remove('hidden');
+                    updatePinnedBoxStatus();
+                    updateInspector();
+                    if (activeSidebarTab === 'trends') {
+                        renderTrends();
+                    }
+                }
+            }
+
+            function searchAndPinAgent() {
+                const input = document.getElementById('agent-search');
+                if (!input) return;
+                const id = parseInt(input.value.trim());
+                if (isNaN(id)) return;
+                for (let agent of agents) {
+                    if (agent.id === id) {
+                        pinnedAgent = agent;
+                        selectedAgent = agent;
+                        pinnedHunger = [];
+                        pinnedFood = [];
+                        updatePinnedBoxStatus();
+                        updateInspector();
+                        input.value = '';
+                        if (activeSidebarTab === 'trends') renderTrends();
+                        return;
+                    }
+                }
+                input.value = '';
+            }
+
+            function updateInspector() {
+                const el = document.getElementById('inspector');
+                const content = document.getElementById('inspector-content');
+                if (!el || !content) return;
+
+                if (!selectedAgent) {
+                    el.classList.add('hidden');
+                    return;
+                }
+                el.classList.remove('hidden');
+
+                const life = tick - selectedAgent.birthTick;
+                content.innerHTML = `
+    <div class="grid grid-cols-2 gap-x-3 gap-y-1">
+      <div class="text-slate-400">ID</div>
+      <div class="font-mono text-right">#${selectedAgent.id}</div>
+      
+      <div class="text-slate-400">Hunger</div>
+      <div class="font-mono text-right">${selectedAgent.hunger.toFixed(1)}</div>
+      
+      <div class="text-slate-400">Food carried</div>
+      <div class="font-mono text-right text-amber-300">${selectedAgent.food.toFixed(1)}</div>
+      
+      <div class="text-slate-400">Age (ticks)</div>
+      <div class="font-mono text-right">${life}</div>
+      
+      <div class="text-slate-400">Age (sec)</div>
+      <div class="font-mono text-right">${(life/60).toFixed(1)}s</div>
+    </div>
+    <div class="mt-2 text-[10px] text-slate-500">Click another dot or press ✕ to deselect</div>
+  `;
+                const pinBtn = document.getElementById('inspector-pin-btn');
+                if (pinBtn) {
+                    pinBtn.textContent = pinnedAgent === selectedAgent ? 'Unpin from trends' : 'Pin to trends';
+                    pinBtn.onclick = togglePin;
+                }
+            }
+
+            initHungerSliders();
+
+            // NEW for v1 Run History
+            startNewRun();
+            renderRunHistory();
+            updateHistoryStats();
+            updatePinnedBoxStatus();
+
+            switchTab('controls'); // start on Controls tab
+            setSpeed(1);
+            
+            start();
+        </script>
+    </body>
+</html>

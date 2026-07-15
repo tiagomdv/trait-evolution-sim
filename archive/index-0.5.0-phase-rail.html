@@ -19,7 +19,7 @@
                 <h1 class="text-2xl font-semibold text-white">Evol-Econ Sim</h1>
                 <div class="text-xs text-slate-400 mt-0.5">
                     Phase 0 · Survive 
-                    <span class="ml-2 px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.5.0-phase-rail</span>
+                    <span class="ml-2 px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.7.0-run-compare</span>
                 </div>
                 <div class="ml-auto flex gap-2">
                     <button onclick="toggleSim()" 
@@ -396,6 +396,7 @@
             function init() {
                 agents = [];
                 food = [];
+
                 for (let i = 0; i < numAgents; i++) {
                     agents.push(new Agent());
                 }
@@ -599,130 +600,203 @@
                 trendFood = [];
                 trendAvgHunger = [];
                 lastTrendSampleTick = tick;
-
+                currentMetrics = { alive: 0, deaths: 0, totalFood: 0, avgHunger: 0, minHunger: 0, maxHunger: 0, avgFood: 0 };
+                selectedAgent = null;
                 pinnedAgent = null;
+                nextAgentId = 1;
                 pinnedHunger = [];
                 pinnedFood = [];
 
-                // reset history accumulators
-                runPopSum = 0;
-                runHungerSum = 0;
-                runFoodSum = 0;
-                runSampleCount = 0;
+                computeMetrics();
+            }
 
+            function resetSim() {
+                recordCurrentRun();     // record what just ended
+                tick = 0;
                 init();
+                startNewRun();          // begin fresh run tracking
+                updateInspector(); // hide the floating card
             }
 
             function recordCurrentRun() {
-                if (runNumber === 0) return;
-                const durationSec = Math.floor((tick - runStartTick) / 60);
-                const longestSec = Math.floor(currentRunMaxSurvivalTicks / 60);
+                if (currentRunEnded || runNumber === 0) return;
+
+                // Include still-alive agents at the moment of recording
+                let maxLife = currentRunMaxSurvivalTicks;
+                for (let a of agents) {
+                    const life = tick - a.birthTick;
+                    if (life > maxLife) maxLife = life;
+                }
+
+                const durationTicks = Math.max(0, tick - runStartTick);
+                const durationSec = Math.round(durationTicks / 60);
+
+                const longestSec = Math.round(maxLife / 60);
                 const finalPop = agents.length;
+                const deaths = starvationDeaths;
 
                 const avgPop = runSampleCount > 0 ? Math.round(runPopSum / runSampleCount) : 0;
                 const avgHunger = runSampleCount > 0 ? Math.round((runHungerSum / runSampleCount) * 100) / 100 : 0;
                 const avgFood = runSampleCount > 0 ? Math.round((runFoodSum / runSampleCount) * 100) / 100 : 0;
-
                 const endedBy = (agents.length === 0) ? 'extinction' : 'reset';
 
                 runHistory.push({
                     run: runNumber,
-                    durationSec,
-                    longestSec,
-                    finalPop,
-                    initialAgents: 100, // default for now
+                    durationSec: durationSec,
+                    longestSec: longestSec,
+                    finalPop: finalPop,
+                    deaths: deaths,
+                    initialAgents: numAgents,
                     preset: currentPreset,
-                    avgPop,
-                    avgHunger,
-                    avgFood,
-                    endedBy
+                    avgPop: avgPop,
+                    avgHunger: avgHunger,
+                    avgFood: avgFood,
+                    endedBy: endedBy
                 });
 
                 if (longestSec > bestLongestSec) bestLongestSec = longestSec;
+
                 currentRunEnded = true;
-                updateHistoryStats();
+                console.log(`[Run History] Recorded Run #${runNumber} — ${durationSec}s, longest ${longestSec}s, avgPop ${avgPop}, avgH ${avgHunger}, ended ${endedBy}`);
+                renderRunHistory();
+            }
+
+            function toggleSim() {
+                running = !running;
+            }
+
+            function start() {
+                init();
+                gameLoop();
+            }
+
+            canvas.addEventListener('click', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const cx = e.clientX - rect.left;
+                const cy = e.clientY - rect.top;
+                selectedAgent = null;
+                for (let i = agents.length - 1; i >= 0; i--) {
+                    const a = agents[i];
+                    const dist = Math.hypot(a.x - cx, a.y - cy);
+                    const size = 3 + Math.sqrt(Math.max(0, a.food)) * 0.3;
+                    if (dist < size + 18) { selectedAgent = a; break; }
+                }
+                updateInspector();   // will be defined later
+            });
+
+            function initHungerSliders() {
+                
+                // Initial Agents
+                const sAgents = document.getElementById('slider-number-agents');
+                const vAgents = document.getElementById('val-number-agents');
+                sAgents.value = numAgents;
+                sAgents.oninput = () => { numAgents = parseFloat(sAgents.value); vAgents.textContent = numAgents;};
+                
+                // Hunger Rate
+                const sRate = document.getElementById('slider-hunger-rate');
+                const vRate = document.getElementById('val-hunger-rate');
+                sRate.value = hungerRate;
+                sRate.oninput = () => { hungerRate = parseFloat(sRate.value); vRate.textContent = hungerRate.toFixed(3);currentPreset = 'custom'; };
+
+                // Self-Consume Relief
+                const sRel = document.getElementById('slider-self-relief');
+                const vRel = document.getElementById('val-self-relief');
+                sRel.value = selfConsumeRelief;
+                sRel.oninput = () => { selfConsumeRelief = parseFloat(sRel.value); vRel.textContent = selfConsumeRelief.toFixed(3);currentPreset = 'custom'; };
+
+                // Ground Eat Relief
+                const sGround = document.getElementById('slider-ground-relief');
+                const vGround = document.getElementById('val-ground-relief');
+                sGround.value = groundEatRelief;
+                sGround.oninput = () => { groundEatRelief = parseFloat(sGround.value); vGround.textContent = groundEatRelief.toFixed(3);currentPreset = 'custom'; };
+
+                // Self-Consume Threshold
+                const sThresh = document.getElementById('slider-self-thresh');
+                const vThresh = document.getElementById('val-self-thresh');
+                sThresh.value = selfConsumeThreshold;
+                sThresh.oninput = () => { selfConsumeThreshold = parseFloat(sThresh.value); vThresh.textContent = selfConsumeThreshold; currentPreset = 'custom';};
+
+                // Self-Consume Amount
+                const sAmt = document.getElementById('slider-self-amount');
+                const vAmt = document.getElementById('val-self-amount');
+                sAmt.value = selfConsumeAmount;
+                sAmt.oninput = () => { selfConsumeAmount = parseFloat(sAmt.value); vAmt.textContent = selfConsumeAmount.toFixed(3); currentPreset = 'custom';};
+
+                // Food Spawn Interval Control
+                const sSpawn = document.getElementById('slider-food-spawn');
+                const vSpawn = document.getElementById('val-food-spawn');
+                sSpawn.value = foodSpawnInterval;
+                sSpawn.oninput = () => { foodSpawnInterval = parseInt(sSpawn.value); vSpawn.textContent = foodSpawnInterval;currentPreset = 'custom'; };
             }
 
             function renderRunHistory() {
+                const bestEl = document.getElementById('best-longest');
                 const listEl = document.getElementById('run-list');
-                if (!listEl) return;
+                if (!bestEl || !listEl) return;
+
+                bestEl.textContent = bestLongestSec > 0 ? bestLongestSec + 's' : '—';
+
+                updateHistoryStats();
 
                 if (runHistory.length === 0) {
-                    listEl.innerHTML = '<div class="text-[10px] text-slate-500 px-1 py-0.5">No runs yet</div>';
+                    listEl.innerHTML = "No runs yet";
                     return;
                 }
 
                 let html = '';
                 for (let i = runHistory.length - 1; i >= 0; i--) {
                     const r = runHistory[i];
-                    const presetBadge = r.preset ? `<span class="text-[9px] px-1.5 py-0.5 rounded bg-slate-700">${r.preset}</span>` : '';
-                    const setup = r.initialAgents ? `${r.initialAgents} agents` : '';
 
-                    const endedLabel = r.endedBy === 'extinction' ? 'ext' : 'reset';
-                    const endedColor = r.endedBy === 'extinction' ? 'text-red-400' : 'text-emerald-400';
+                    let barColor = 'bg-slate-600';
+                    let presetClass = 'bg-slate-700 text-slate-200';
+                    if (r.preset === 'lenient') {
+                        barColor = 'bg-green-600';
+                        presetClass = 'bg-green-700 text-green-200';
+                    } else if (r.preset === 'balanced') {
+                        barColor = 'bg-blue-600';
+                        presetClass = 'bg-blue-700 text-blue-200';
+                    } else if (r.preset === 'punishing') {
+                        barColor = 'bg-red-600';
+                        presetClass = 'bg-red-700 text-red-200';
+                    } else if (r.preset === 'custom') {
+                        barColor = 'bg-yellow-600';
+                        presetClass = 'bg-yellow-700 text-yellow-200';
+                    }
+
+                    const presetBadge = r.preset 
+                        ? `<span class="px-1 py-px text-[9px] rounded ${presetClass}">${r.preset}</span>` 
+                        : '';
+
+                    const agents = r.initialAgents ? `${r.initialAgents} pop` : '';
+
+                    let endedClass = r.endedBy === 'extinction' ? 'bg-red-900 text-red-300' : 'bg-sky-900 text-sky-300';
+                    const endedBadge = r.endedBy 
+                        ? `<span class="px-1 py-px text-[9px] rounded ${endedClass}">${r.endedBy}</span>` 
+                        : '';
 
                     html += `
-                        <div class="mb-1.5 p-2 bg-slate-800 border border-slate-700 rounded text-[10px]">
-                            <div class="flex justify-between mb-0.5">
-                                <span class="font-mono text-slate-400">Run #${r.run}</span>
-                                <span class="text-emerald-300">${r.longestSec}s</span>
-                            </div>
-                            <div class="text-slate-400">
-                                ${r.durationSec}s • ${r.finalPop}p • ${r.deaths || 0}d
-                            </div>
-                            <div class="flex gap-1 mt-1 text-[9px]">
-                                ${presetBadge}
-                                <span class="text-slate-500">${setup}</span>
-                            </div>
-                            <div class="text-[9px] mt-0.5 text-slate-400">
-                                avg pop ${r.avgPop || '—'} • avg h ${r.avgHunger || '—'} • avg f ${r.avgFood || '—'}
-                            </div>
-                            <div class="text-[9px] ${endedColor}">ended: ${endedLabel}</div>
-                        </div>`;
+<div class="mb-0.5 flex text-[10px]">
+  <div class="w-1.5 ${barColor} rounded-l"></div>
+  <div class="flex-1 p-1 bg-slate-800 border border-slate-700 border-l-0 rounded-r">
+    <!-- top row: run# + preset + ended + duration + initial pop -->
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-1">
+        <span class="font-mono text-slate-400">Run #${r.run}</span>
+        ${presetBadge}
+        ${endedBadge}
+      </div>
+      <span class="text-slate-400">${r.durationSec}s • ${agents}</span>
+    </div>
+    <!-- divider -->
+    <div class="border-t border-slate-700 my-0.5"></div>
+    <!-- bottom row: remaining (longest + alive/end pop + avgs with proper labels) -->
+    <div class="text-[9px] text-slate-400">
+      alive: ${r.finalPop} (avg ${r.avgPop ?? '—'}) • avg hunger: ${r.avgHunger ?? '—'} • avg food: ${r.avgFood ?? '—'}
+    </div>
+  </div>
+</div>`;
                 }
                 listEl.innerHTML = html;
-            }
-
-            function updateHistoryStats() {
-                const runsEl = document.getElementById('stat-runs');
-                const extEl = document.getElementById('stat-ext');
-                const bestEl = document.getElementById('stat-best');
-                const bestLongEl = document.getElementById('best-longest');
-
-                if (!runsEl || !extEl || !bestEl || !bestLongEl) return;
-
-                const totalRuns = runHistory.length;
-                if (totalRuns === 0) {
-                    runsEl.textContent = '—';
-                    extEl.textContent = '—';
-                    bestEl.textContent = '—';
-                    bestLongEl.textContent = '—';
-                    return;
-                }
-
-                let extCount = 0;
-                let totalDur = 0;
-                let totalLong = 0;
-                let totalPeak = 0;
-                let maxLong = 0;
-                let maxPeak = 0;
-
-                for (let r of runHistory) {
-                    totalDur += r.durationSec;
-                    totalLong += r.longestSec;
-                    if (r.endedBy === 'extinction') extCount++;
-                    if (r.finalPop > maxPeak) maxPeak = r.finalPop;
-                    if (r.longestSec > maxLong) maxLong = r.longestSec;
-                }
-
-                const avgDur = Math.round(totalDur / totalRuns);
-                const avgLong = Math.round(totalLong / totalRuns);
-                const extRate = Math.round((extCount / totalRuns) * 100);
-
-                runsEl.textContent = totalRuns;
-                extEl.textContent = `${extRate}%`;
-                bestEl.textContent = `${maxLong}s`;
-                bestLongEl.textContent = `${maxLong}s`;
             }
 
             function clearRuns() {
@@ -732,32 +806,70 @@
                 updateHistoryStats();
             }
 
-            function updateMetricsTab() {
-                const el = document.getElementById('metrics-content');
-                if (!el) return;
-                const m = currentMetrics;
-                el.innerHTML = `
-                    <div>Alive: <span class="text-emerald-300">${m.alive}</span></div>
-                    <div>Deaths: <span class="text-red-400">${m.deaths}</span></div>
-                    <div>Food: <span class="text-amber-300">${m.totalFood}</span></div>
-                    <div>Avg Hunger: <span class="text-rose-300">${m.avgHunger.toFixed(1)}</span></div>
-                    <div>Min/Max H: <span class="text-rose-300">${m.minHunger.toFixed(1)} / ${m.maxHunger.toFixed(1)}</span></div>
-                    <div>Avg Food: <span class="text-amber-300">${m.avgFood.toFixed(1)}</span></div>
-                `;
+            function computeOverallStats() {
+                if (!runHistory || runHistory.length === 0) return null;
+                let totalDur = 0, totalLong = 0, extinctions = 0, totalPeak = 0;
+                let best = { longest: 0, run: 0, preset: '' };
+                for (let r of runHistory) {
+                    totalDur += r.durationSec || 0;
+                    totalLong += r.longestSec || 0;
+                    if (r.endedBy === 'extinction') extinctions++;
+                    totalPeak += r.avgPop || 0;
+                    if ((r.longestSec || 0) > best.longest) {
+                        best = { longest: r.longestSec, run: r.run, preset: r.preset || '' };
+                    }
+                }
+                const n = runHistory.length;
+                return {
+                    runs: n,
+                    avgDuration: Math.round(totalDur / n),
+                    avgLongest: Math.round(totalLong / n),
+                    extinctionRate: extinctions + ' / ' + n,
+                    avgPeakPop: Math.round(totalPeak / n),
+                    bestLongest: best.longest,
+                    bestRun: best.run,
+                    bestPreset: best.preset
+                };
             }
 
-            let activeSidebarTab = 'controls';
+            function updateHistoryStats() {
+                const stats = computeOverallStats();
+                const runsEl = document.getElementById('stat-runs');
+                const avgDurEl = document.getElementById('stat-avg-dur');
+                const extEl = document.getElementById('stat-ext');
+                const avgLongEl = document.getElementById('stat-avg-long');
+                const avgPeakEl = document.getElementById('stat-avg-peak');
+                const bestEl = document.getElementById('stat-best');
+                if (!stats) {
+                    if (runsEl) runsEl.textContent = '—';
+                    if (avgDurEl) avgDurEl.textContent = '—';
+                    if (extEl) extEl.textContent = '—';
+                    if (avgLongEl) avgLongEl.textContent = '—';
+                    if (avgPeakEl) avgPeakEl.textContent = '—';
+                    if (bestEl) bestEl.textContent = '—';
+                    return;
+                }
+                if (runsEl) runsEl.textContent = stats.runs;
+                if (avgDurEl) avgDurEl.textContent = stats.avgDuration;
+                if (extEl) extEl.textContent = stats.extinctionRate;
+                if (avgLongEl) avgLongEl.textContent = stats.avgLongest;
+                if (avgPeakEl) avgPeakEl.textContent = stats.avgPeakPop;
+                if (bestEl) bestEl.textContent = stats.bestLongest + 's';
+            }
 
             function switchTab(tab) {
                 activeSidebarTab = tab;
 
+                // hide all tab contents
                 document.getElementById('tab-controls').classList.add('hidden');
                 document.getElementById('tab-metrics').classList.add('hidden');
                 document.getElementById('tab-trends').classList.add('hidden');
                 document.getElementById('tab-history').classList.add('hidden');
 
+                // show the chosen one
                 document.getElementById('tab-' + tab).classList.remove('hidden');
 
+                // simple active button styling
                 ['controls', 'metrics', 'trends', 'history'].forEach(t => {
                     const btn = document.getElementById('btn-' + t);
                     if (btn) {
@@ -767,7 +879,53 @@
                 });
 
                 if (tab === 'metrics') updateMetricsTab();
-                if (tab === 'trends') renderTrends();
+                if (tab === 'trends') {
+                    renderTrends();
+                    updatePinnedBoxStatus();
+                    // Force redraw after tab switch to prevent stop
+                    setTimeout(function() {
+                        if (activeSidebarTab === 'trends') renderTrends();
+                    }, 16);
+                    setTimeout(function() {
+                        if (activeSidebarTab === 'trends') renderTrends();
+                    }, 50);
+                }
+            }
+
+            function updateMetricsTab() {
+                const content = document.getElementById('metrics-content');
+                if (!content) return;
+
+                const m = currentMetrics;
+                content.innerHTML = `
+        <div>Alive: <span class="text-emerald-300">${m.alive}</span></div>
+        <div>Deaths: ${m.deaths}</div>
+        <div>Total food: ${m.totalFood}</div>
+        <div>Avg hunger: ${m.avgHunger.toFixed(2)}</div>
+        <div>Min / Max hunger: ${m.minHunger.toFixed(1)} / ${m.maxHunger.toFixed(1)}</div>
+        <div>Avg food: ${m.avgFood.toFixed(2)}</div>
+    `;
+            }
+
+            function drawTrendChart(canvasEl, data, color, runDurationTicks) {
+                if (!canvasEl || data.length < 2) return;
+                const ctx = canvasEl.getContext('2d');
+                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+                const w = canvasEl.width, h = canvasEl.height;
+                const min = Math.min(...data), max = Math.max(...data);
+
+                // Use actual run length for x-scaling so early data isn't visually lost
+                const totalTicks = runDurationTicks || (data.length * 30);
+
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    const x = (i / (data.length - 1)) * w;
+                    const y = h - ((data[i] - min) / (max - min || 1)) * (h - 3);
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+                ctx.stroke();
             }
 
             function renderTrends() {
@@ -798,29 +956,10 @@
                 }
             }
 
-            function drawTrendChart(canvasEl, data, color, runDurationTicks) {
-                if (!canvasEl || data.length < 2) return;
-                const ctx = canvasEl.getContext('2d');
-                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-                const w = canvasEl.width, h = canvasEl.height;
-                const min = Math.min(...data), max = Math.max(...data);
-
-                const totalTicks = runDurationTicks || (data.length * 30);
-
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                for (let i = 0; i < data.length; i++) {
-                    const x = (i / (data.length - 1)) * w;
-                    const y = h - ((data[i] - min) / (max - min || 1)) * (h - 3);
-                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-            }
-
             function setSpeed(n) {
                 simSpeed = n;
 
+                // Reset all buttons
                 [1,2,5,10].forEach(s => {
                     const btn = document.getElementById('speed-' + s);
                     if (btn) {
@@ -829,6 +968,7 @@
                     }
                 });
 
+                // Activate the chosen one
                 const active = document.getElementById('speed-' + n);
                 if (active) {
                     active.classList.remove('bg-slate-700');
@@ -853,6 +993,7 @@
             }
 
             function syncSliders() {
+                // Initial Agents (setup control)
                 const agentsSlider = document.getElementById('slider-number-agents');
                 const agentsVal = document.getElementById('val-number-agents');
                 if (agentsSlider && agentsVal) {
@@ -860,6 +1001,7 @@
                     agentsVal.textContent = numAgents;
                 }
 
+                // Hunger Rate (main visible)
                 const rateSlider = document.getElementById('slider-hunger-rate');
                 const rateVal = document.getElementById('val-hunger-rate');
                 if (rateSlider && rateVal) {
@@ -867,6 +1009,7 @@
                     rateVal.textContent = hungerRate.toFixed(3);
                 }
 
+                // Food Spawn Interval (main visible)
                 const spawnSlider = document.getElementById('slider-food-spawn');
                 const spawnVal = document.getElementById('val-food-spawn');
                 if (spawnSlider && spawnVal) {
@@ -874,6 +1017,7 @@
                     spawnVal.textContent = foodSpawnInterval;
                 }
 
+                // === Advanced sliders (sync them even when collapsed so they are correct when opened) ===
                 const selfRelSlider = document.getElementById('slider-self-relief');
                 const selfRelVal = document.getElementById('val-self-relief');
                 if (selfRelSlider && selfRelVal) {
