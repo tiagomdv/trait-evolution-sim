@@ -13,6 +13,9 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-0.1.0-foundation.html` | 0.1.0-foundation | 0 · Survive | #7 | `11388dd` | Live hunger sliders + sidebar |
 | `index-0.2.0-run-history.html` | 0.2.0-run-history | 0 · Survive | #8 | `11fa5a2` | In-memory run history + basic stats |
 | `index-0.3.0-observability.html` | 0.3.0-observability | 0 · Survive | #13 | `2af4746` | Tabs, metrics, trends, inspector, speed |
+| `index-0.5.0-phase-rail.html` | 0.5.0-phase-rail | 0 · Survive | #15 (bundled) | — | Thematic arc UI label + phase rail (bundled in 0.7) |
+| `index-0.6.0-run-setup.html` | 0.6.0-run-setup | 0 · Survive | #15 (bundled) | — | Presets, agent count, controls (bundled in 0.7) |
+| `index-0.7.0-run-compare.html` | 0.7.0-run-compare | 0 · Survive | #15 | `b828355` | Full-run trends, richer cards, agent IDs, pin-to-trends |
 
 ---
 
