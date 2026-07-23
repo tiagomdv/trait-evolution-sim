@@ -16,6 +16,11 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-0.5.0-phase-rail.html` | 0.5.0-phase-rail | 0 · Survive | #15 (bundled) | — | Thematic arc UI label + phase rail (bundled in 0.7) |
 | `index-0.6.0-run-setup.html` | 0.6.0-run-setup | 0 · Survive | #15 (bundled) | — | Presets, agent count, controls (bundled in 0.7) |
 | `index-0.7.0-run-compare.html` | 0.7.0-run-compare | 0 · Survive | #15 | `b828355` | Full-run trends, richer cards, agent IDs, pin-to-trends |
+| `index-0.8.0-layout-dashboard.html` | 0.8.0-layout-dashboard | 0 · Survive | (local) | — | Tall Command layout + Arctic Ice (pre metrics/inspector dock polish) |
+| `index-0.8.1-metrics-dock.html` | 0.8.1-metrics-dock | 0 · Survive | (local) | — | KPI metrics + inspector dock in left column |
+| `index-0.8.2-history-table.html` | 0.8.2-history-table | 0 · Survive | (local) | — | History table D+ · best top-right · pin-by-ID in dock |
+| `index-0.8.3-layout-flex.html` | 0.8.3-layout-flex | 0 · Survive | (local) | — | Layout flex attempt (pre tight A) |
+| `index-0.8.4-tight-layout.html` | 0.8.4-tight-layout | 0 · Survive | (this PR) | — | 260/1fr/260, in-column hide, edge tabs, canvas resize, flush host |
 
 ---
 
