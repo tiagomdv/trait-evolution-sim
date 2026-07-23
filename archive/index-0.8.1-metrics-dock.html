@@ -64,37 +64,14 @@
                 flex: 1;
                 min-height: 0;
                 display: grid;
-                /* A: tight equal sides */
-                grid-template-columns: 260px minmax(0, 1fr) 260px;
-                gap: 0.4rem;
-            }
-            /* Remove side from layout entirely (0-width still overflowed over canvas) */
-            .app-body.hide-left {
-                grid-template-columns: minmax(0, 1fr) 260px;
-            }
-            .app-body.hide-right {
-                grid-template-columns: 260px minmax(0, 1fr);
-            }
-            .app-body.hide-left.hide-right {
-                grid-template-columns: minmax(0, 1fr);
-            }
-            .app-body.hide-left .col-left,
-            .app-body.hide-right .col-right {
-                display: none !important;
+                grid-template-columns: 220px minmax(0, 1fr) 300px;
+                gap: 0.5rem;
             }
             .col {
                 min-height: 0;
-                min-width: 0;
                 display: flex;
                 flex-direction: column;
-                gap: 0.4rem;
-            }
-            .col-center {
-                position: relative;
-                min-width: 0;
-                min-height: 0;
-                display: flex;
-                flex-direction: column;
+                gap: 0.5rem;
             }
             .col-panel {
                 background: var(--panel);
@@ -104,48 +81,6 @@
                 min-height: 0;
                 overflow: auto;
             }
-            .panel-head {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 0.35rem;
-                margin-bottom: 0.4rem;
-            }
-            .panel-head .section-title { margin-bottom: 0; }
-            .btn-hide-col {
-                font-size: 9px;
-                padding: 0.12rem 0.35rem;
-                border-radius: var(--radius-sm);
-                border: 1px solid var(--border);
-                background: #0a1220;
-                color: var(--muted);
-                cursor: pointer;
-                flex-shrink: 0;
-            }
-            .btn-hide-col:hover {
-                border-color: var(--accent);
-                color: var(--accent);
-            }
-            .show-tab {
-                display: none;
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                z-index: 6;
-                writing-mode: vertical-rl;
-                text-orientation: mixed;
-                font-size: 9px;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                padding: 0.55rem 0.22rem;
-                border: 1px solid var(--border);
-                background: var(--panel);
-                color: var(--accent);
-                border-radius: var(--radius-sm);
-                cursor: pointer;
-            }
-            .app-body.hide-left .show-tab-left { display: block; left: 0.15rem; }
-            .app-body.hide-right .show-tab-right { display: block; right: 0.15rem; }
             .canvas-host {
                 flex: 1;
                 min-height: 0;
@@ -153,51 +88,34 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: var(--canvas-bg);
+                background: var(--panel);
                 border: 1px solid var(--border);
                 border-radius: var(--radius-lg);
                 overflow: hidden;
-                padding: 0; /* flush — no padding around sim */
             }
             #canvas {
                 background: var(--canvas-bg);
-                border: none;
+                border: 1px solid var(--border);
                 image-rendering: crisp-edges;
-                display: block;
-                width: 100%;
-                height: 100%;
-                border-radius: 0;
+                max-width: 100%;
+                max-height: 100%;
+                border-radius: var(--radius-md);
             }
-            /* Right: history fills leftover; trends sized for charts */
-            .col-right {
-                min-height: 0;
-            }
+            /* Right column pin rules — history floor */
             #panel-trends {
                 flex: 0 1 auto;
-                max-height: 46%;
+                max-height: 48%;
                 overflow: auto;
             }
             #panel-trends.is-pinned {
-                max-height: 54%;
+                max-height: 55%;
             }
             #panel-history {
                 flex: 1 1 auto;
-                min-height: 0;
-                overflow: hidden;
+                min-height: max(200px, 42%);
+                overflow: auto;
                 display: flex;
                 flex-direction: column;
-            }
-            #panel-history #run-list {
-                flex: 1 1 auto;
-                min-height: 0;
-                overflow: auto;
-            }
-            /* Trend charts fill column width */
-            #panel-trends canvas {
-                display: block;
-                width: 100% !important;
-                height: 52px;
-                max-width: 100%;
             }
             .section-title {
                 font-size: 10px;
@@ -254,7 +172,7 @@
                 border-color: #7dd3fc;
             }
             .val-accent { color: var(--accent); font-family: ui-monospace, monospace; }
-            .chart-row { display: block; clear: both; margin-bottom: 0.35rem; width: 100%; }
+            .chart-row { display: block; clear: both; margin-bottom: 0.35rem; }
             .chart-label { display: block; font-size: 9px; margin-bottom: 2px; }
             .chart-label.pop { color: var(--chart-pop); }
             .chart-label.food { color: var(--chart-food); }
@@ -319,74 +237,6 @@
                 color: var(--pin);
                 border-color: var(--pin-border);
             }
-            /* History table (0.8.2) */
-            .history-head {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                gap: 0.5rem;
-                margin-bottom: 0.45rem;
-            }
-            .history-best {
-                text-align: right;
-                line-height: 1.15;
-                flex-shrink: 0;
-            }
-            .history-best .val {
-                font-size: 1.05rem;
-                font-weight: 600;
-                font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-                color: var(--good);
-            }
-            .history-best .sub {
-                font-size: 9px;
-                color: var(--muted);
-            }
-            table.hist {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 10px;
-            }
-            table.hist th {
-                text-align: left;
-                color: var(--muted);
-                font-weight: 500;
-                padding: 0.25rem 0.2rem;
-                border-bottom: 1px solid var(--border);
-                white-space: nowrap;
-            }
-            table.hist th.r,
-            table.hist td.r { text-align: right; }
-            table.hist td {
-                padding: 0.35rem 0.2rem;
-                border-bottom: 1px solid #0f172a;
-                font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-                color: var(--text);
-            }
-            table.hist tr:last-child td { border-bottom: none; }
-            table.hist td.preset-len { color: #4ade80; }
-            table.hist td.preset-bal { color: #60a5fa; }
-            table.hist td.preset-pun { color: #f87171; }
-            table.hist td.preset-cust { color: #fbbf24; }
-            table.hist td.preset-unk { color: var(--muted); }
-            table.hist td.end-zero { color: #f87171; }
-            table.hist td.food-col { color: var(--warn); }
-            .agent-jump {
-                display: flex;
-                gap: 0.3rem;
-                align-items: center;
-                margin-bottom: 0.45rem;
-            }
-            .agent-jump input {
-                width: 3.25rem;
-                font-size: 10px;
-                padding: 0.2rem 0.3rem;
-                border-radius: var(--radius-sm);
-                border: 1px solid var(--border);
-                background: #020617;
-                color: var(--text);
-                font-family: ui-monospace, monospace;
-            }
             /* use flex, NOT float:right on KPI values — avoids floating labels */
             input[type="range"] { accent-color: var(--accent); width: 100%; }
             .scroll-thin { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
@@ -400,7 +250,7 @@
             <header class="app-header">
                 <h1>Evol-Econ Sim</h1>
                 <span>Phase 0 · Survive</span>
-                <span class="badge-version">v0.8.4-tight-layout</span>
+                <span class="badge-version">v0.8.1-metrics-dock</span>
                 <div class="ml-auto flex items-center gap-2">
                     <div class="speed-group">
                         <span class="text-[10px] text-slate-500">Speed</span>
@@ -414,15 +264,11 @@
                 </div>
             </header>
 
-            <div class="app-body" id="app-body">
+            <div class="app-body">
 
                 <!-- LEFT: controls + metrics -->
-                <div class="col col-left">
+                <div class="col">
                     <div class="col-panel flex-1 scroll-thin" id="panel-controls">
-                        <div class="panel-head">
-                            <div class="section-title">Controls</div>
-                            <button type="button" class="btn-hide-col" onclick="hideCol('left')" title="Hide left column">Hide ✕</button>
-                        </div>
                         <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Hunger &amp; Environment</div>
 
                         <div class="mb-2">
@@ -499,9 +345,9 @@
                             <div class="kpi"><span>Alive</span><b id="m-alive" class="good">—</b></div>
                             <div class="kpi"><span>Deaths</span><b id="m-deaths" class="bad">—</b></div>
                             <div class="kpi"><span>Food</span><b id="m-food" class="warn">—</b></div>
-                            <div class="kpi"><span>Hunger</span><b id="m-avgh">—</b></div>
-                            <div class="kpi"><span>Min</span><b id="m-minh">—</b></div>
-                            <div class="kpi"><span>Max</span><b id="m-maxh">—</b></div>
+                            <div class="kpi"><span>Avg H</span><b id="m-avgh">—</b></div>
+                            <div class="kpi"><span>Min H</span><b id="m-minh">—</b></div>
+                            <div class="kpi"><span>Max H</span><b id="m-maxh">—</b></div>
                             <div class="kpi" style="grid-column:1 / -1"><span>Avg food / agent</span><b id="m-avgf">—</b></div>
                         </div>
 
@@ -514,12 +360,6 @@
                                     <button type="button" onclick="deselectAgent()" class="btn-tiny">✕</button>
                                 </div>
                             </div>
-                            <div class="agent-jump">
-                                <input type="text" id="agent-search" placeholder="ID" title="Jump to agent ID and pin"
-                                    onkeypress="if (event.key === 'Enter') searchAndPinAgent()" />
-                                <button type="button" class="btn-tiny pin" onclick="searchAndPinAgent()">Pin</button>
-                                <span style="font-size:9px;color:var(--muted)">by ID</span>
-                            </div>
                             <div id="inspector-content" class="text-xs leading-tight space-y-1">
                                 <div style="color:var(--muted)">Click an agent on the canvas</div>
                             </div>
@@ -527,34 +367,33 @@
                     </div>
                 </div>
 
-                <!-- CENTER: canvas (no padding; inspector in left column) -->
-                <div class="col col-center">
-                    <button type="button" class="show-tab show-tab-left" id="show-tab-left" onclick="showCol('left')" title="Show left column">Left</button>
-                    <div class="canvas-host" id="canvas-host">
-                        <canvas id="canvas" width="800" height="600"></canvas>
+                <!-- CENTER: canvas (selection outline drawn in JS; inspector lives in left column) -->
+                <div class="col">
+                    <div class="canvas-host">
+                        <canvas id="canvas" width="800" height="600" class="rounded"></canvas>
                     </div>
-                    <button type="button" class="show-tab show-tab-right" id="show-tab-right" onclick="showCol('right')" title="Show right column">Right</button>
                 </div>
 
-                <!-- RIGHT: trends then history (history flex-grows) -->
-                <div class="col col-right">
+                <!-- RIGHT: trends then history -->
+                <div class="col">
                     <div class="col-panel" id="panel-trends">
-                        <div class="panel-head">
-                            <div class="section-title">Trends</div>
-                            <button type="button" class="btn-hide-col" onclick="hideCol('right')" title="Hide right column">Hide ✕</button>
-                        </div>
-                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Current run</div>
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Trends (current run)</div>
 
-                        <div class="chart-row">
-                            <div class="chart-label pop">Population</div>
+                        <div class="mb-1 flex items-center gap-1">
+                            <input type="text" id="agent-search" placeholder="Agent ID" class="text-[10px] w-16 bg-slate-800 border border-slate-700 rounded px-1 py-0.5" onkeypress="if (event.key === 'Enter') searchAndPinAgent()" />
+                            <button onclick="searchAndPinAgent()" class="text-[9px] px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Pin</button>
+                        </div>
+
+                        <div class="mb-1">
+                            <div class="text-[9px] text-sky-400">Population</div>
                             <canvas id="chart-pop" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
-                        <div class="chart-row">
-                            <div class="chart-label food">Total Food</div>
+                        <div class="mb-1">
+                            <div class="text-[9px] text-yellow-400">Total Food</div>
                             <canvas id="chart-food" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
-                        <div class="chart-row">
-                            <div class="chart-label hunger">Avg Hunger</div>
+                        <div>
+                            <div class="text-[9px] text-rose-400">Avg Hunger</div>
                             <canvas id="chart-hunger" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
 
@@ -579,19 +418,33 @@
                         </div>
                     </div>
                     <div class="col-panel" id="panel-history">
-                        <div class="history-head">
-                            <div class="section-title" style="margin:0">History</div>
-                            <div class="history-best" id="history-best" title="Best longest survival this session">
-                                <div class="val" id="history-best-val">—</div>
-                                <div class="sub" id="history-best-sub">no runs yet</div>
+                        <!-- HISTORY TAB -->
+
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1.5">Run History</div>
+
+                        <!-- Session Overview -->
+                        <div id="session-overview" class="mb-3 p-2 bg-slate-900 border border-slate-700 rounded text-[10px]">
+                            <div class="text-[10px] text-slate-400 mb-1">Session Overview</div>
+                            <div class="grid grid-cols-3 gap-x-3 text-sm">
+                                <div>Runs: <span id="stat-runs">—</span></div>
+                                <div>Ext: <span id="stat-ext">—</span></div>
+                                <div>Best: <span id="stat-best">—</span></div>
                             </div>
                         </div>
 
-                        <div id="run-list" class="overflow-auto pr-0.5 mb-2">
-                            <div style="font-size:10px;color:var(--muted);padding:0.25rem 0">No runs yet</div>
+                        <div class="mb-2">
+                            <div class="text-[10px] text-slate-400">Best longest survival</div>
+                            <div id="best-longest" class="text-xl font-semibold text-sky-400">—</div>
                         </div>
 
-                        <button type="button" onclick="clearRuns()" class="btn-tiny">Clear</button>
+                        <div id="run-list" class="max-h-[260px] overflow-auto text-xs pr-1 mb-2">
+                            <div class="text-[10px] text-slate-500 px-1 py-0.5">No runs yet</div>
+                        </div>
+
+                        <button onclick="clearRuns()"
+                            class="text-[10px] px-2 py-0.5 bg-slate-800 hover:bg-slate-700 rounded text-slate-400">
+                            Clear Runs
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1009,7 +862,6 @@
             }
 
             function start() {
-                resizeSimCanvas();
                 init();
                 gameLoop();
             }
@@ -1075,70 +927,74 @@
                 sSpawn.oninput = () => { foodSpawnInterval = parseInt(sSpawn.value); vSpawn.textContent = foodSpawnInterval;currentPreset = 'custom'; };
             }
 
-            function presetShort(preset) {
-                if (preset === 'lenient') return 'len';
-                if (preset === 'balanced') return 'bal';
-                if (preset === 'punishing') return 'pun';
-                if (preset === 'custom') return 'cust';
-                return preset ? String(preset).slice(0, 4) : '—';
-            }
-
-            function presetClass(preset) {
-                if (preset === 'lenient') return 'preset-len';
-                if (preset === 'balanced') return 'preset-bal';
-                if (preset === 'punishing') return 'preset-pun';
-                if (preset === 'custom') return 'preset-cust';
-                return 'preset-unk';
-            }
-
-            function formatHistNum(v, digits) {
-                if (v === undefined || v === null || !Number.isFinite(Number(v))) return '—';
-                const n = Number(v);
-                return digits === 0 ? String(Math.round(n)) : n.toFixed(digits);
-            }
-
             function renderRunHistory() {
+                const bestEl = document.getElementById('best-longest');
                 const listEl = document.getElementById('run-list');
-                if (!listEl) return;
+                if (!bestEl || !listEl) return;
+
+                bestEl.textContent = bestLongestSec > 0 ? bestLongestSec + 's' : '—';
 
                 updateHistoryStats();
 
                 if (runHistory.length === 0) {
-                    listEl.innerHTML = '<div style="font-size:10px;color:var(--muted);padding:0.25rem 0">No runs yet</div>';
+                    listEl.innerHTML = "No runs yet";
                     return;
                 }
 
-                let rows = '';
+                let html = '';
                 for (let i = runHistory.length - 1; i >= 0; i--) {
                     const r = runHistory[i];
-                    const end = r.finalPop ?? 0;
-                    const endClass = end === 0 ? 'end-zero' : '';
-                    const hung = formatHistNum(r.avgHunger, 0);
-                    const food = formatHistNum(r.avgFood, 1);
-                    rows += `<tr>
-  <td style="color:var(--muted)">${r.run}</td>
-  <td class="${presetClass(r.preset)}">${presetShort(r.preset)}</td>
-  <td class="r">${r.durationSec ?? 0}s</td>
-  <td class="r ${endClass}">${end}</td>
-  <td class="r">${hung}</td>
-  <td class="r food-col">${food}</td>
-</tr>`;
-                }
 
-                listEl.innerHTML = `
-<table class="hist">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Pre</th>
-      <th class="r">Dur</th>
-      <th class="r">End</th>
-      <th class="r">Hung</th>
-      <th class="r">Food</th>
-    </tr>
-  </thead>
-  <tbody>${rows}</tbody>
-</table>`;
+                    let barColor = 'bg-slate-600';
+                    let presetClass = 'bg-slate-700 text-slate-200';
+                    if (r.preset === 'lenient') {
+                        barColor = 'bg-green-600';
+                        presetClass = 'bg-green-700 text-green-200';
+                    } else if (r.preset === 'balanced') {
+                        barColor = 'bg-blue-600';
+                        presetClass = 'bg-blue-700 text-blue-200';
+                    } else if (r.preset === 'punishing') {
+                        barColor = 'bg-red-600';
+                        presetClass = 'bg-red-700 text-red-200';
+                    } else if (r.preset === 'custom') {
+                        barColor = 'bg-yellow-600';
+                        presetClass = 'bg-yellow-700 text-yellow-200';
+                    }
+
+                    const presetBadge = r.preset 
+                        ? `<span class="px-1 py-px text-[9px] rounded ${presetClass}">${r.preset}</span>` 
+                        : '';
+
+                    const agents = r.initialAgents ? `${r.initialAgents} pop` : '';
+
+                    let endedClass = r.endedBy === 'extinction' ? 'bg-red-900 text-red-300' : 'bg-sky-900 text-sky-300';
+                    const endedBadge = r.endedBy 
+                        ? `<span class="px-1 py-px text-[9px] rounded ${endedClass}">${r.endedBy}</span>` 
+                        : '';
+
+                    html += `
+<div class="mb-0.5 flex text-[10px]">
+  <div class="w-1.5 ${barColor} rounded-l"></div>
+  <div class="flex-1 p-1 bg-slate-800 border border-slate-700 border-l-0 rounded-r">
+    <!-- top row: run# + preset + ended + duration + initial pop -->
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-1">
+        <span class="font-mono text-slate-400">Run #${r.run}</span>
+        ${presetBadge}
+        ${endedBadge}
+      </div>
+      <span class="text-slate-400">${r.durationSec}s • ${agents}</span>
+    </div>
+    <!-- divider -->
+    <div class="border-t border-slate-700 my-0.5"></div>
+    <!-- bottom row: remaining (longest + alive/end pop + avgs with proper labels) -->
+    <div class="text-[9px] text-slate-400">
+      alive: ${r.finalPop} (avg ${r.avgPop ?? '—'}) • avg hunger: ${r.avgHunger ?? '—'} • avg food: ${r.avgFood ?? '—'}
+    </div>
+  </div>
+</div>`;
+                }
+                listEl.innerHTML = html;
             }
 
             function clearRuns() {
@@ -1150,41 +1006,53 @@
 
             function computeOverallStats() {
                 if (!runHistory || runHistory.length === 0) return null;
+                let totalDur = 0, totalLong = 0, extinctions = 0, totalPeak = 0;
                 let best = { longest: 0, run: 0, preset: '' };
                 for (let r of runHistory) {
-                    // Prefer longestSec; fall back to durationSec for older records
-                    const long = (r.longestSec != null) ? r.longestSec : (r.durationSec || 0);
-                    if (long > best.longest) {
-                        best = { longest: long, run: r.run, preset: r.preset || '' };
+                    totalDur += r.durationSec || 0;
+                    totalLong += r.longestSec || 0;
+                    if (r.endedBy === 'extinction') extinctions++;
+                    totalPeak += r.avgPop || 0;
+                    if ((r.longestSec || 0) > best.longest) {
+                        best = { longest: r.longestSec, run: r.run, preset: r.preset || '' };
                     }
                 }
-                // Keep global bestLongestSec in sync for display
-                if (bestLongestSec > best.longest) {
-                    best.longest = bestLongestSec;
-                }
+                const n = runHistory.length;
                 return {
-                    bestLongest: best.longest || bestLongestSec,
+                    runs: n,
+                    avgDuration: Math.round(totalDur / n),
+                    avgLongest: Math.round(totalLong / n),
+                    extinctionRate: extinctions + ' / ' + n,
+                    avgPeakPop: Math.round(totalPeak / n),
+                    bestLongest: best.longest,
                     bestRun: best.run,
                     bestPreset: best.preset
                 };
             }
 
             function updateHistoryStats() {
-                const valEl = document.getElementById('history-best-val');
-                const subEl = document.getElementById('history-best-sub');
-                if (!valEl || !subEl) return;
-
                 const stats = computeOverallStats();
-                if (!stats || !stats.bestLongest) {
-                    valEl.textContent = '—';
-                    subEl.textContent = 'no runs yet';
+                const runsEl = document.getElementById('stat-runs');
+                const avgDurEl = document.getElementById('stat-avg-dur');
+                const extEl = document.getElementById('stat-ext');
+                const avgLongEl = document.getElementById('stat-avg-long');
+                const avgPeakEl = document.getElementById('stat-avg-peak');
+                const bestEl = document.getElementById('stat-best');
+                if (!stats) {
+                    if (runsEl) runsEl.textContent = '—';
+                    if (avgDurEl) avgDurEl.textContent = '—';
+                    if (extEl) extEl.textContent = '—';
+                    if (avgLongEl) avgLongEl.textContent = '—';
+                    if (avgPeakEl) avgPeakEl.textContent = '—';
+                    if (bestEl) bestEl.textContent = '—';
                     return;
                 }
-                valEl.textContent = stats.bestLongest + 's';
-                const pre = presetShort(stats.bestPreset);
-                subEl.textContent = stats.bestRun
-                    ? `best · run #${stats.bestRun} · ${pre}`
-                    : 'best this session';
+                if (runsEl) runsEl.textContent = stats.runs;
+                if (avgDurEl) avgDurEl.textContent = stats.avgDuration;
+                if (extEl) extEl.textContent = stats.extinctionRate;
+                if (avgLongEl) avgLongEl.textContent = stats.avgLongest;
+                if (avgPeakEl) avgPeakEl.textContent = stats.avgPeakPop;
+                if (bestEl) bestEl.textContent = stats.bestLongest + 's';
             }
 
             function updateMetricsTab() {
@@ -1202,50 +1070,29 @@
                 set('m-avgf', Number.isFinite(m.avgFood) ? m.avgFood.toFixed(1) : '—');
             }
 
-            function sizeTrendCanvas(canvasEl) {
-                if (!canvasEl) return;
-                const parent = canvasEl.parentElement || canvasEl;
-                const cssW = Math.max(80, Math.floor(parent.clientWidth || canvasEl.clientWidth || 240));
-                const cssH = 52;
-                // Match buffer to CSS width so the line fills the column (not a 240px stub)
-                if (canvasEl.width !== cssW) canvasEl.width = cssW;
-                if (canvasEl.height !== cssH) canvasEl.height = cssH;
-            }
-
             function drawTrendChart(canvasEl, data, color, runDurationTicks) {
-                if (!canvasEl || !data || data.length < 2) return;
-                sizeTrendCanvas(canvasEl);
+                if (!canvasEl || data.length < 2) return;
                 const ctx = canvasEl.getContext('2d');
-                if (!ctx) return;
+                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
                 const w = canvasEl.width, h = canvasEl.height;
-                ctx.clearRect(0, 0, w, h);
+                const min = Math.min(...data), max = Math.max(...data);
 
-                let min = Infinity, max = -Infinity;
-                for (let i = 0; i < data.length; i++) {
-                    const v = data[i];
-                    if (!Number.isFinite(v)) continue;
-                    if (v < min) min = v;
-                    if (v > max) max = v;
-                }
-                if (!Number.isFinite(min) || !Number.isFinite(max)) return;
-                const range = (max - min) || 1;
+                // Use actual run length for x-scaling so early data isn't visually lost
+                const totalTicks = runDurationTicks || (data.length * 30);
 
                 ctx.strokeStyle = color;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
-                let started = false;
                 for (let i = 0; i < data.length; i++) {
-                    const v = data[i];
-                    if (!Number.isFinite(v)) continue;
-                    const x = (i / (data.length - 1)) * (w - 1);
-                    const y = h - 2 - ((v - min) / range) * (h - 4);
-                    if (!started) { ctx.moveTo(x, y); started = true; }
-                    else ctx.lineTo(x, y);
+                    const x = (i / (data.length - 1)) * w;
+                    const y = h - ((data[i] - min) / (max - min || 1)) * (h - 3);
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
                 }
-                if (started) ctx.stroke();
+                ctx.stroke();
             }
 
             function renderTrends() {
+
                 const popC = document.getElementById('chart-pop');
                 const foodC = document.getElementById('chart-food');
                 const hungerC = document.getElementById('chart-hunger');
@@ -1303,80 +1150,6 @@
                 if (!panel) return;
                 if (pinnedAgent) panel.classList.add('is-pinned');
                 else panel.classList.remove('is-pinned');
-            }
-
-            // Column show/hide (toggles live on columns; edge tabs restore)
-            let showLeftCol = true;
-            let showRightCol = true;
-
-            /** Match sim canvas buffer to host size so the world grows when columns hide. */
-            function resizeSimCanvas() {
-                const host = document.getElementById('canvas-host');
-                if (!host || !canvas) return;
-                const w = Math.max(120, Math.floor(host.clientWidth));
-                const h = Math.max(120, Math.floor(host.clientHeight));
-                if (w < 2 || h < 2) return;
-                if (canvas.width === w && canvas.height === h) return;
-                canvas.width = w;
-                canvas.height = h;
-                // Keep agents inside the new bounds (world grew/shrank)
-                for (let i = 0; i < agents.length; i++) {
-                    const a = agents[i];
-                    if (a.x > w) a.x = a.x % w;
-                    if (a.y > h) a.y = a.y % h;
-                    if (a.x < 0) a.x = 0;
-                    if (a.y < 0) a.y = 0;
-                }
-                for (let i = 0; i < food.length; i++) {
-                    const f = food[i];
-                    if (f.x > w) f.x = f.x % w;
-                    if (f.y > h) f.y = f.y % h;
-                }
-            }
-
-            function afterLayoutChange() {
-                // Two frames: grid must finish after display:none / column change
-                requestAnimationFrame(function () {
-                    requestAnimationFrame(function () {
-                        resizeSimCanvas();
-                        try { renderTrends(); } catch (_) {}
-                    });
-                });
-            }
-
-            function applyColVisibility() {
-                const body = document.getElementById('app-body');
-                if (!body) return;
-                body.classList.toggle('hide-left', !showLeftCol);
-                body.classList.toggle('hide-right', !showRightCol);
-                try {
-                    localStorage.setItem('tes-cols-v2', JSON.stringify({ left: showLeftCol, right: showRightCol }));
-                } catch (_) {}
-                afterLayoutChange();
-            }
-
-            function hideCol(which) {
-                if (which === 'left') showLeftCol = false;
-                if (which === 'right') showRightCol = false;
-                applyColVisibility();
-            }
-
-            function showCol(which) {
-                if (which === 'left') showLeftCol = true;
-                if (which === 'right') showRightCol = true;
-                applyColVisibility();
-            }
-
-            function loadColVisibility() {
-                try {
-                    const raw = localStorage.getItem('tes-cols-v2');
-                    if (raw) {
-                        const o = JSON.parse(raw);
-                        if (typeof o.left === 'boolean') showLeftCol = o.left;
-                        if (typeof o.right === 'boolean') showRightCol = o.right;
-                    }
-                } catch (_) {}
-                applyColVisibility();
             }
 
             function syncSliders() {
@@ -1567,12 +1340,6 @@
             setSpeed(1);
             updateInspector(); // empty-state dock (pin disabled until select)
             updateMetricsTab();
-            loadColVisibility();
-            // Fit sim canvas + charts after layout; again on window resize
-            setTimeout(function () { afterLayoutChange(); }, 0);
-            window.addEventListener('resize', function () {
-                afterLayoutChange();
-            });
             
             start();
         </script>

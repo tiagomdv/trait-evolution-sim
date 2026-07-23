@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.8.4 Tight layout · design</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d1524;
+      --border: #1e3a5f;
+      --text: #cbd5e1;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --good: #7dd3fc;
+      --warn: #67e8f9;
+      --bad: #fb7185;
+    }
+    body { background: var(--bg); color: var(--text); margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 0.65rem; }
+    .section-label {
+      font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.4rem;
+    }
+    .tag {
+      font-size: 10px; padding: 1px 6px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9;
+    }
+    code { color: #7dd3fc; font-size: 0.88em; }
+
+    /* ========== LIVE MOCK SHELL ========== */
+    .shell {
+      height: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 0.5rem;
+      background: #05080e;
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+    }
+    .hdr {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.4rem 0.55rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .body {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr) 260px;
+      gap: 0.4rem;
+    }
+    .body.right-hidden { grid-template-columns: 260px minmax(0, 1fr) 0; }
+    .body.left-hidden { grid-template-columns: 0 minmax(0, 1fr) 260px; }
+    .body.both-hidden { grid-template-columns: 0 minmax(0, 1fr) 0; }
+
+    .side {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      position: relative;
+    }
+    .side.collapsed {
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .side-panel {
+      flex: 1;
+      min-height: 0;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.45rem;
+      font-size: 10px;
+      color: var(--muted);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .side-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+      flex-shrink: 0;
+    }
+    .side-head .ttl {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .hide-btn {
+      font-size: 9px;
+      padding: 0.12rem 0.35rem;
+      border-radius: 0.25rem;
+      border: 1px solid var(--border);
+      background: #0a1220;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .hide-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Floating re-show tab when column hidden */
+    .show-tab {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.55rem 0.25rem;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--accent);
+      border-radius: 0.35rem;
+      cursor: pointer;
+      display: none;
+    }
+    .body.left-hidden .show-tab-left { display: block; left: 0; }
+    .body.right-hidden .show-tab-right { display: block; right: 0; }
+    .center-wrap { position: relative; min-width: 0; min-height: 0; display: flex; }
+
+    .canvas-host {
+      flex: 1;
+      min-height: 0;
+      background: #0a101c;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      /* NO padding — canvas flush to host edges */
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fake-canvas {
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(56,189,248,0.08), transparent 45%),
+        #0a101c;
+      position: relative;
+    }
+    .dot {
+      position: absolute; width: 7px; height: 7px; border-radius: 999px;
+      background: #64748b;
+    }
+
+    .spark {
+      height: 40px; width: 100%;
+      background: #020617; border: 1px solid var(--border);
+      border-radius: 0.25rem; margin-bottom: 0.3rem;
+    }
+    .spark svg { width: 100%; height: 100%; display: block; }
+
+    .hist-best { text-align: right; font-family: ui-monospace, monospace; }
+    .hist-best .v { color: var(--good); font-weight: 600; font-size: 13px; }
+    .hist-best .s { color: var(--muted); font-size: 9px; }
+
+    table.mini { width: 100%; border-collapse: collapse; font-size: 9px; font-family: ui-monospace, monospace; }
+    table.mini th { color: var(--muted); text-align: left; font-weight: 500; padding: 0.15rem; border-bottom: 1px solid var(--border); }
+    table.mini td { padding: 0.2rem 0.15rem; border-bottom: 1px solid #0f172a; }
+    table.mini .r { text-align: right; }
+    table.mini .bal { color: #60a5fa; }
+    table.mini .zero { color: var(--bad); }
+
+    .opt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    @media (max-width: 800px) { .opt-grid { grid-template-columns: 1fr; } }
+    .opt-card {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.65rem;
+      background: #0a1220;
+      cursor: pointer;
+    }
+    .opt-card.active { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(56,189,248,.3); }
+    .opt-card h3 { margin: 0 0 0.25rem; font-size: 13px; color: #f0f9ff; }
+    .opt-card p { margin: 0; font-size: 11px; color: var(--muted); }
+
+    .check li { margin-bottom: 0.3rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="mb-5 flex flex-wrap items-start justify-between gap-2">
+      <div>
+        <h1 class="text-2xl font-semibold text-sky-50 m-0">0.8.4 Tight layout</h1>
+        <p class="text-sm text-slate-400 mt-1 mb-0">
+          Design only. Goals: <strong class="text-slate-200">260 / fluid / 260</strong> (or similar),
+          <strong class="text-slate-200">column hide toggles inside columns</strong>,
+          <strong class="text-slate-200">no canvas padding</strong>, charts full column width.
+        </p>
+      </div>
+      <span class="tag">preview before implement</span>
+    </header>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label">Problems with 0.8.3 attempt</div>
+      <ul class="list-disc pl-5 space-y-1 text-slate-300 m-0">
+        <li>Header toggles + big fr-grid + stretch canvas felt like too much chrome.</li>
+        <li>Charts stayed ~240px wide while the column was wider.</li>
+        <li>History flex was fine; hide UX was in the wrong place.</li>
+      </ul>
+    </section>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label">Locked directions (this design)</div>
+      <ul class="list-disc pl-5 space-y-1 text-slate-300 m-0">
+        <li><strong class="text-sky-100">Grid:</strong> <code>260px · 1fr · 260px</code> — both sides tight and equal; canvas takes the middle. (Optional alt: right 280 if table feels tight.)</li>
+        <li><strong class="text-sky-100">Hide toggles:</strong> live <em>on the column</em> (top of left / right panel), not in the global header.</li>
+        <li><strong class="text-sky-100">When hidden:</strong> a slim edge tab on the canvas side re-opens that column.</li>
+        <li><strong class="text-sky-100">Canvas host:</strong> <code>padding: 0</code> — sim flush to the panel border (no empty frame).</li>
+        <li><strong class="text-sky-100">Charts:</strong> width 100% of right column (already fixed in live; keep in this design).</li>
+        <li><strong class="text-sky-100">History:</strong> still flex-fills leftover right height (from 0.8.2–0.8.3).</li>
+      </ul>
+    </section>
+
+    <!-- Width options -->
+    <section class="mb-4">
+      <div class="section-label">Side width options (click to preview mock)</div>
+      <div class="opt-grid mb-3">
+        <div class="opt-card active" id="opt-a" onclick="setWidth('a')">
+          <h3>A · 260 / 1fr / 260</h3>
+          <p>Equal tight sides. Recommended default — simple and balanced.</p>
+        </div>
+        <div class="opt-card" id="opt-b" onclick="setWidth('b')">
+          <h3>B · 260 / 1fr / 300</h3>
+          <p>Slightly wider history/table. Use if Hung/Food columns feel cramped.</p>
+        </div>
+        <div class="opt-card" id="opt-c" onclick="setWidth('c')">
+          <h3>C · 240 / 1fr / 280</h3>
+          <p>Even tighter overall. More canvas, less chrome.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive mock -->
+    <section class="mb-6">
+      <div class="section-label">Interactive mock · try Hide on each column</div>
+      <div class="shell">
+        <div class="hdr">
+          <span class="font-semibold text-sky-50">Evol-Econ Sim</span>
+          <span class="text-slate-500 text-[11px]">Phase 0 · Survive</span>
+          <span class="tag">v0.8.4?</span>
+          <div class="ml-auto flex gap-1 text-[10px]">
+            <span class="px-1.5 py-0.5 rounded border border-slate-600 text-slate-400">1×</span>
+            <span class="px-1.5 py-0.5 rounded border border-sky-600 text-sky-300">Pause</span>
+            <span class="px-1.5 py-0.5 rounded border border-sky-500 text-sky-200">Reset</span>
+          </div>
+        </div>
+
+        <div class="body" id="mock-body">
+          <!-- LEFT -->
+          <div class="side" id="side-left">
+            <div class="side-panel">
+              <div class="side-head">
+                <span class="ttl">Controls</span>
+                <button type="button" class="hide-btn" onclick="hideSide('left')" title="Hide left column">Hide ✕</button>
+              </div>
+              <div class="text-[10px] mb-1">Sliders · presets · metrics · inspector</div>
+              <div class="grid grid-cols-2 gap-1 mb-2">
+                <div class="px-1 py-0.5 rounded bg-slate-950 border border-slate-700">Alive <b class="float-right text-sky-300">47</b></div>
+                <div class="px-1 py-0.5 rounded bg-slate-950 border border-slate-700">Deaths <b class="float-right text-rose-300">53</b></div>
+                <div class="px-1 py-0.5 rounded bg-slate-950 border border-slate-700">Food <b class="float-right text-cyan-300">128</b></div>
+                <div class="px-1 py-0.5 rounded bg-slate-950 border border-slate-700">Hunger <b class="float-right">62</b></div>
+              </div>
+              <div class="rounded border border-sky-800/60 p-1.5 bg-slate-950/80 text-[9px]">
+                Selected · ID pin here
+              </div>
+            </div>
+          </div>
+
+          <!-- CENTER -->
+          <div class="center-wrap col" style="display:flex;flex:1;min-width:0;min-height:0;position:relative">
+            <button type="button" class="show-tab show-tab-left" onclick="showSide('left')">Left</button>
+            <div class="canvas-host" style="flex:1;width:100%">
+              <div class="fake-canvas">
+                <span class="absolute top-1 left-1 text-[8px] uppercase tracking-wider text-slate-600">canvas · no padding</span>
+                <span class="dot" style="left:22%;top:35%"></span>
+                <span class="dot" style="left:48%;top:50%;background:#fb7185"></span>
+                <span class="dot" style="left:70%;top:28%"></span>
+                <span class="dot" style="left:40%;top:70%"></span>
+              </div>
+            </div>
+            <button type="button" class="show-tab show-tab-right" onclick="showSide('right')">Right</button>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="side" id="side-right">
+            <div class="side-panel" style="flex:0 1 46%;max-height:46%">
+              <div class="side-head">
+                <span class="ttl">Trends</span>
+                <button type="button" class="hide-btn" onclick="hideSide('right')" title="Hide right column">Hide ✕</button>
+              </div>
+              <div class="text-[9px] text-sky-400/80 mb-0.5">Population</div>
+              <div class="spark">
+                <svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#38bdf8" stroke-width="1.5" points="0,8 20,12 40,18 60,26 80,30 100,34"/></svg>
+              </div>
+              <div class="text-[9px] text-cyan-300/80 mb-0.5">Food · full width</div>
+              <div class="spark">
+                <svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#67e8f9" stroke-width="1.5" points="0,28 30,20 60,18 100,10"/></svg>
+              </div>
+            </div>
+            <div class="side-panel" style="flex:1;min-height:0">
+              <div class="side-head">
+                <span class="ttl">History</span>
+                <div class="hist-best">
+                  <div class="v">142s</div>
+                  <div class="s">best · #1 · len</div>
+                </div>
+              </div>
+              <div style="flex:1;overflow:auto;min-height:0">
+                <table class="mini">
+                  <thead><tr><th>#</th><th>Pre</th><th class="r">Dur</th><th class="r">End</th><th class="r">Hung</th><th class="r">Food</th></tr></thead>
+                  <tbody>
+                    <tr><td class="text-slate-500">12</td><td class="bal">bal</td><td class="r">87s</td><td class="r zero">0</td><td class="r">62</td><td class="r text-cyan-300/80">4.1</td></tr>
+                    <tr><td class="text-slate-500">11</td><td class="bal">bal</td><td class="r">54s</td><td class="r">2</td><td class="r">55</td><td class="r text-cyan-300/80">6.0</td></tr>
+                    <tr><td class="text-slate-500">10</td><td style="color:#f87171">pun</td><td class="r">31s</td><td class="r zero">0</td><td class="r">71</td><td class="r text-cyan-300/80">2.2</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500 mt-2 mb-0">
+        Click <strong>Hide ✕</strong> on a side panel → column collapses, canvas grows, edge tab reappears to restore.
+        Header stays clean (speed / pause / reset only).
+      </p>
+    </section>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label">Toggle placement detail</div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <div class="text-sky-200 font-medium mb-1">Left column</div>
+          <pre class="text-[11px] p-2 rounded overflow-x-auto m-0" style="background:#0a1220;border:1px solid var(--border)">[ CONTROLS                    Hide ✕ ]
+  sliders / metrics / inspector</pre>
+          <p class="text-xs text-slate-500 mt-1 mb-0">One hide control for the whole left stack.</p>
+        </div>
+        <div>
+          <div class="text-sky-200 font-medium mb-1">Right column</div>
+          <pre class="text-[11px] p-2 rounded overflow-x-auto m-0" style="background:#0a1220;border:1px solid var(--border)">[ TRENDS                      Hide ✕ ]
+  charts…
+[ HISTORY              best 142s    ]
+  table…</pre>
+          <p class="text-xs text-slate-500 mt-1 mb-0">
+            Prefer <strong>one</strong> Hide on the Trends header (hides entire right column).
+            History keeps best top-right; no second hide button.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label">Canvas · no padding</div>
+      <ul class="list-disc pl-5 space-y-1 text-slate-300 m-0">
+        <li><code>.canvas-host { padding: 0; }</code> — no inset around the sim.</li>
+        <li>Optional: 1px border only on the host (current Arctic Ice), not a second padded frame.</li>
+        <li>Canvas still letterboxes with <code>max-width/max-height: 100%</code> + click scale (keep existing).</li>
+        <li>Remove extra body padding around the whole app if you want edge-to-edge later (<code>body.p-6</code> → shell padding only).</li>
+      </ul>
+    </section>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label">Implement sketch (after you approve)</div>
+      <ol class="list-decimal pl-5 space-y-1 text-slate-300 m-0">
+        <li>Freeze live → <code>archive/index-0.8.3-layout-flex.html</code> (or current).</li>
+        <li>Set grid to chosen width (default A: <code>260px 1fr 260px</code>).</li>
+        <li>Add Hide on left panel head + Trends head; edge tabs to restore.</li>
+        <li>Ensure <code>canvas-host</code> has zero padding; charts stay <code>width:100%</code> + <code>sizeTrendCanvas</code>.</li>
+        <li><code>localStorage</code> for column visibility (optional, nice).</li>
+        <li>Badge <code>0.8.4-tight-layout</code>.</li>
+      </ol>
+    </section>
+
+    <section class="panel p-4 text-sm">
+      <div class="section-label">Checklist</div>
+      <ul class="check list-none pl-0 m-0 text-slate-300">
+        <li>☐ Sides feel tight at 260 (or chosen B/C)</li>
+        <li>☐ Hide lives in columns, not header</li>
+        <li>☐ Edge tab restores hidden side</li>
+        <li>☐ Canvas flush (no pad)</li>
+        <li>☐ Charts span full right column width</li>
+        <li>☐ History still uses leftover vertical space</li>
+      </ul>
+    </section>
+
+    <footer class="text-center text-[10px] text-slate-600 mt-8">
+      design-docs/0.8.4-tight-layout-design.html · preview only · not applied to index.html
+    </footer>
+  </div>
+
+  <script>
+    let leftOn = true, rightOn = true;
+    let widths = { a: '260px minmax(0,1fr) 260px', b: '260px minmax(0,1fr) 300px', c: '240px minmax(0,1fr) 280px' };
+    let currentW = 'a';
+
+    function syncBody() {
+      const b = document.getElementById('mock-body');
+      b.style.gridTemplateColumns = widths[currentW];
+      b.classList.toggle('left-hidden', !leftOn);
+      b.classList.toggle('right-hidden', !rightOn);
+      if (!leftOn && !rightOn) {
+        b.style.gridTemplateColumns = '0 minmax(0,1fr) 0';
+      } else if (!leftOn) {
+        const parts = widths[currentW].split(' ');
+        b.style.gridTemplateColumns = '0 ' + parts[1] + ' ' + parts[2];
+      } else if (!rightOn) {
+        const parts = widths[currentW].split(' ');
+        b.style.gridTemplateColumns = parts[0] + ' ' + parts[1] + ' 0';
+      }
+      document.getElementById('side-left').classList.toggle('collapsed', !leftOn);
+      document.getElementById('side-right').classList.toggle('collapsed', !rightOn);
+    }
+
+    function hideSide(which) {
+      if (which === 'left') leftOn = false;
+      if (which === 'right') rightOn = false;
+      syncBody();
+    }
+    function showSide(which) {
+      if (which === 'left') leftOn = true;
+      if (which === 'right') rightOn = true;
+      syncBody();
+    }
+    function setWidth(key) {
+      currentW = key;
+      document.querySelectorAll('.opt-card').forEach(el => el.classList.remove('active'));
+      document.getElementById('opt-' + key).classList.add('active');
+      syncBody();
+    }
+    syncBody();
+  </script>
+</body>
+</html>

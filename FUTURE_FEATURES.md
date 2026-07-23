@@ -24,13 +24,16 @@ Design artifacts in `design-docs/` follow the same nomenclature (e.g. `0.4.1-obs
 | `0.2.0-run-history` | #8 | Session run history + basic stats |
 | `0.3.0-observability` | #13 | Tabs, metrics, trends, inspector, speed *(was "UI/UX Polish v1")* |
 | `0.4.0-docs-resteer` | — | Archive infra + vision resteer (docs only) |
-| `0.7.0-run-compare` | (PR to open) | Full-run trends, richer cards, agent IDs, pin-to-trends + separate graphs, search by ID **(this PR also delivers the 0.5.0-phase-rail and 0.6.0-run-setup work)** |
+| `0.7.0-run-compare` | #15 | Full-run trends, richer cards, agent IDs, pin-to-trends + search by ID (bundled 0.5 + 0.6) |
+| `0.8.0` → `0.8.4-tight-layout` | (this PR) | Layout dashboard arc: Tall Command + Arctic Ice, metrics dock, history table, column hide, canvas resize — **Track A** |
 
 ### Phase 0 · Survive — next
 
 | Version | Milestone |
 |---------|-----------|
-| (0.8.0 / 0.9.0 TBD after testing) | Remaining Phase 0 items if needed before moving to Phase 1 |
+| (optional UI polish) | Slide left/right column drawers (see deferred UI below) |
+| `0.9.0-forage` (planned) | Environment-aware movement / always-seek food (Track B) |
+| Then | Close Phase 0 or more observability if needed before Phase 1 |
 
 ### Future phases (thematic arc)
 
@@ -45,6 +48,23 @@ Design artifacts in `design-docs/` follow the same nomenclature (e.g. `0.4.1-obs
 **Phase 3 note:** Trade is the entry point to Economy, not a standalone phase.
 
 > Safety snapshot before this resteer: `archive/docs/FUTURE_FEATURES-pre-resteer-2026-07-02.md`
+
+---
+
+## Deferred UI (appended 2026-07-23)
+
+### Slide left / slide right column drawers
+
+**Status:** deferred (not in 0.8.4)
+
+**Idea:** Animate side panels as drawers (`transform: translateX`) instead of hard show/hide. Options discussed:
+
+1. **Overlay drawers** — canvas full-width; panels slide over it (smoother, less reflow).
+2. **Layout + slide** — grid still resizes canvas (like current hide); panel slides while width collapses (harder, can jank).
+
+**Why wait:** Current Hide ✕ + edge tab + `resizeSimCanvas` is enough; motion is polish, not blocking Phase 0 close or 0.9 forage.
+
+**When to pick up:** After forage/traits if chrome still feels abrupt; keep as pure Track A.
 
 ---
 

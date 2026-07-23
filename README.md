@@ -30,11 +30,11 @@ Full task list and ideas backlog: `FUTURE_FEATURES.md`.
 
 **`VERSION` file** is the single source of truth. Update it on every release PR, and update the live-release line below at the same time.
 
-> **Live release:** `0.7.0-run-compare` · Phase 0 · Survive
+> **Live release:** `0.8.4-tight-layout` · Phase 0 · Survive
 
-0.7.0 completed: full-run trends, richer history cards, agent IDs, pin-to-trends with separate graphs, search by ID.
+**0.8.x layout dashboard (Track A)** ships Tall Command chrome (Arctic Ice), KPI metrics + inspector dock, history table (best top-right), pin-by-ID in dock, column hide with edge restore, and canvas resize when columns hide. Builds on 0.7.0 observability.
 
-See `FUTURE_FEATURES.md` for remaining Phase 0 work and whether 0.8.0/0.9.0 are needed.
+See `FUTURE_FEATURES.md` for 0.9 forage, slide-drawer polish, and Phase 1.
 
 ---
 
@@ -76,13 +76,20 @@ trait-evolution-sim/
 
 ## Development approach
 
-This repository uses a strict **Human as Project Manager** workflow:
-- The human manually implements features in `index.html`
-- AI assists with design and documentation updates
-- One focused feature per session / PR
-- Emphasis on clear documentation and reviewable changes
+**Human as Project Manager** remains: one focused goal per session when possible, reviewable changes, and the human decides when to ship.
 
-See `AGENTS.md` for versioning ritual, design artifact nomenclature, and collaboration rules. Design docs live in `design-docs/` using the `<version>-<codename>-design.html` pattern (e.g. `0.4.1-observability-metrics-design.html`).
+Early on, every feature was **manually implemented** in `index.html` (design → section paste → AI never touched the sim). That was great for learning GitHub workflows and owning the first survival mechanics. After several releases it became **too slow for low-risk work** (layout, chrome, presentation).
+
+**Process resteer (2026-07-23):** match process cost to risk.
+
+| Track | What | Who implements |
+|-------|------|----------------|
+| **A — Layout / presentation** | Structure, CSS, panels, docks, tabs, labels — no behavior change | AI may edit `index.html` directly; human smoke-tests in the browser |
+| **B — Mechanics / sensibility** | Parameters, functions, algorithms, hunger/food/movement, run rules | Human leads (or closely supervises); AI proposes patches |
+
+**Always:** live app is a single `index.html`; freeze good states as `archive/index-<version>.html`; human verifies and requests PRs/pushes. Version label lives in `VERSION` + the UI, not in the live filename.
+
+Full rules, next-PR checklist, and PR template: **`AGENTS.md`**. History of this change: **`IMPLEMENTATION_LOG.md`** (2026-07-23). Optional design docs still live in `design-docs/` (`<version>-<codename>-design.html`) when useful — not required for pure layout work.
 
 ---
 

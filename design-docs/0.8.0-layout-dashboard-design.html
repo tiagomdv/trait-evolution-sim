@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.8.0-layout-dashboard Design — Arctic Ice · trait-evolution-sim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #070b12; color: #cbd5e1; }
+    .prose h1, .prose h2, .prose h3 { color: #f0f9ff; }
+    .prose code { background: #0f1c2e; padding: 2px 6px; border-radius: 4px; color: #7dd3fc; }
+    .prose pre, .code-block {
+      background: #0a1220;
+      border: 1px solid #1e3a5f;
+      padding: 14px 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 12.5px;
+      line-height: 1.5;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .section { scroll-margin-top: 72px; }
+    .nav a { color: #38bdf8; }
+    .nav a:hover { text-decoration: underline; }
+    .callout {
+      background: #0d1524;
+      border: 1px solid #1e3a5f;
+      border-left: 4px solid #38bdf8;
+      border-radius: 0 0.75rem 0.75rem 0;
+    }
+    .warning {
+      background: #1c1008;
+      border: 1px solid #78350f;
+      border-left: 4px solid #f59e0b;
+      border-radius: 0 0.75rem 0.75rem 0;
+    }
+    .ok {
+      background: #0a1f1a;
+      border: 1px solid #115e59;
+      border-left: 4px solid #2dd4bf;
+      border-radius: 0 0.75rem 0.75rem 0;
+    }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    th, td { border: 1px solid #1e3a5f; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #0d1524; color: #7dd3fc; font-weight: 600; }
+    .swatch {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+    .mock-frame {
+      background: #070b12;
+      border: 1px solid #1e3a5f;
+      border-radius: 0.75rem;
+      padding: 0.5rem;
+    }
+    .mock-header {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+      background: #0d1524;
+      border: 1px solid #1e3a5f;
+      border-radius: 0.65rem;
+      padding: 0.45rem 0.65rem;
+      font-size: 11px;
+      margin-bottom: 0.4rem;
+    }
+    .mock-body {
+      display: grid;
+      grid-template-columns: 160px 1fr 200px;
+      gap: 0.4rem;
+      min-height: 280px;
+    }
+    .mock-col {
+      background: #0d1524;
+      border: 1px solid #1e3a5f;
+      border-radius: 0.65rem;
+      padding: 0.4rem;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+    .mock-canvas {
+      background:
+        radial-gradient(circle at 30% 30%, rgba(56,189,248,0.12), transparent 40%),
+        #0a101c;
+      border: 1px solid #1e3a5f;
+      border-radius: 0.65rem;
+      position: relative;
+      min-height: 280px;
+    }
+    .badge-ice {
+      background: #0c4a6e;
+      color: #bae6fd;
+      border: 1px solid #0ea5e9;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 999px;
+    }
+    .btn-ice {
+      background: linear-gradient(180deg, #1e3a5f, #0f1c2e);
+      border: 1px solid #38bdf8;
+      color: #e0f2fe;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 0.35rem;
+    }
+    .btn-ice-on {
+      background: #0369a1;
+      border-color: #38bdf8;
+      color: #e0f2fe;
+      box-shadow: 0 0 12px rgba(56,189,248,0.35);
+    }
+    .check li { margin-bottom: 0.35rem; }
+    .check input { margin-right: 0.4rem; accent-color: #38bdf8; }
+  </style>
+</head>
+<body class="p-6 max-w-[1080px] mx-auto">
+
+  <!-- Title -->
+  <header class="mb-8">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+      <div>
+        <h1 class="text-3xl font-semibold text-sky-50 tracking-tight">0.8.0-layout-dashboard</h1>
+        <p class="text-slate-400 mt-1">Final design · Layout F (Tall Command) + <span class="text-sky-300">Arctic Ice</span> visual system</p>
+      </div>
+      <div class="text-right text-sm">
+        <div class="text-sky-300 font-medium">Ready to implement</div>
+        <div class="text-slate-500">Phase 0 · Survive · 2026-07-15</div>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-3 mt-4 text-sm nav">
+      <a href="#decision">Decision</a>
+      <a href="#layout">Layout</a>
+      <a href="#theme">Arctic Ice</a>
+      <a href="#pin">Pin behavior</a>
+      <a href="#html">HTML map</a>
+      <a href="#css">CSS tokens</a>
+      <a href="#steps">Steps</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#out">Out of scope</a>
+    </div>
+  </header>
+
+  <!-- Decision -->
+  <section id="decision" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3">Decision summary</h2>
+    <div class="callout p-4 text-sm leading-relaxed">
+      <p class="mb-2">
+        <strong class="text-sky-100">Ship 0.8.0 as a pure UI redesign:</strong> no simulation mechanics changes.
+        Replace the tabbed sidebar with an always-visible multi-pane lab dashboard and re-skin chrome to Arctic Ice.
+      </p>
+      <ul class="list-disc pl-5 space-y-1 text-slate-300">
+        <li><strong class="text-sky-200">Structure:</strong> Layout F — Tall Command (chosen from layout options A–E + F hybrid)</li>
+        <li><strong class="text-sky-200">Look:</strong> Arctic Ice (chosen from style options 1–5)</li>
+        <li><strong class="text-sky-200">References:</strong>
+          <code>0.8.0-layout-options.html</code>,
+          <code>0.8.0-layout-F-tall-command.html</code>,
+          <code>0.8.0-style-options.html</code> (theme <code>arctic</code>)
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Wireframe -->
+  <section id="layout" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3">Layout F — Tall Command</h2>
+
+    <div class="mock-frame mb-4">
+      <div class="mock-header">
+        <span class="font-semibold text-sky-50">Evol-Econ Sim</span>
+        <span class="text-slate-500">Phase 0 · Survive</span>
+        <span class="badge-ice">v0.8.0-layout-dashboard</span>
+        <div class="ml-auto flex flex-wrap items-center gap-1">
+          <span class="text-[9px] text-slate-500 uppercase tracking-wide">Speed</span>
+          <span class="btn-ice btn-ice-on">1×</span>
+          <span class="btn-ice">2×</span>
+          <span class="btn-ice">5×</span>
+          <span class="btn-ice">10×</span>
+          <span class="btn-ice ml-1">Pause</span>
+          <span class="btn-ice btn-ice-on">Reset</span>
+        </div>
+      </div>
+      <div class="mock-body">
+        <div class="mock-col">
+          <div class="text-[9px] uppercase tracking-widest text-slate-500 mb-1">Left · Controls</div>
+          <div>Agents / Hunger / Food spawn</div>
+          <div class="mt-1">Presets</div>
+          <div class="mt-1">Advanced ▼</div>
+          <div class="mt-2 text-[9px] uppercase tracking-widest text-slate-500">Metrics</div>
+          <div>Alive · Deaths · Food · Avg H</div>
+        </div>
+        <div class="mock-canvas">
+          <div class="absolute top-2 left-2 text-[9px] uppercase tracking-widest text-slate-500">Center · Canvas (full height)</div>
+          <div class="absolute bottom-2 right-2 w-28 rounded-xl border border-sky-500/60 bg-slate-950/90 p-1.5 text-[9px]">
+            <div class="text-sky-300 font-semibold">SELECTED · #42</div>
+            <div class="text-slate-400">Inspector + Pin</div>
+          </div>
+        </div>
+        <div class="mock-col flex flex-col gap-1" style="display:flex;flex-direction:column;gap:0.35rem">
+          <div class="flex-1 border border-slate-700/50 rounded p-1 min-h-[100px]">
+            <div class="text-[9px] uppercase tracking-widest text-slate-500 mb-1">Right · Trends (top)</div>
+            <div class="h-4 bg-slate-950 rounded mb-1 border border-slate-800"></div>
+            <div class="h-4 bg-slate-950 rounded mb-1 border border-slate-800"></div>
+            <div class="h-4 bg-slate-950 rounded border border-slate-800"></div>
+            <div class="text-[9px] text-indigo-300 mt-1">+ pinned charts (scroll)</div>
+          </div>
+          <div class="flex-1 border border-slate-700/50 rounded p-1 min-h-[90px]">
+            <div class="text-[9px] uppercase tracking-widest text-slate-500 mb-1">Right · History (below)</div>
+            <div>Session overview</div>
+            <div>Run cards (scroll)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="text-base font-semibold text-sky-100 mb-2">Structural rules</h3>
+    <table class="mb-4">
+      <thead>
+        <tr><th>Region</th><th>Content</th><th>Sizing</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Header</strong></td>
+          <td>Title, phase label, version badge, <strong>speed 1×/2×/5×/10×</strong>, Pause, Reset</td>
+          <td>Full width, fixed height, no wrap if possible</td>
+        </tr>
+        <tr>
+          <td><strong>Left column</strong></td>
+          <td>Controls (sliders, presets, Advanced collapse) + compact live metrics</td>
+          <td>~200–240px fixed; independent scroll if needed</td>
+        </tr>
+        <tr>
+          <td><strong>Center</strong></td>
+          <td>Canvas + floating inspector (bottom-right of canvas)</td>
+          <td><code>flex: 1</code>; column stretches to bottom of viewport shell; canvas fills center cell</td>
+        </tr>
+        <tr>
+          <td><strong>Right column</strong></td>
+          <td><strong>Trends (top)</strong> then <strong>History (below)</strong> — no tabs</td>
+          <td>~280–320px fixed; stacked flex panels</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="warning p-3 text-sm mb-3">
+      <strong class="text-amber-300">No bottom trends dock.</strong>
+      Unlike early Layout B, charts live only in the right column. Canvas reaches the bottom of the app shell.
+    </div>
+
+    <h3 class="text-base font-semibold text-sky-100 mb-2">Viewport shell</h3>
+    <div class="code-block mb-3">/* App fills useful viewport under page chrome */
+.app-shell {
+  height: calc(100vh - &lt;page-padding&gt;);  /* ~ calc(100vh - 2–3rem) if full-bleed body */
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.app-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 300px;
+  gap: 0.5rem;
+}</div>
+
+    <h3 class="text-base font-semibold text-sky-100 mb-2">Canvas sizing policy</h3>
+    <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+      <li>Center column is fluid; canvas element should <strong>fill the center cell</strong> (CSS width/height 100% of the cell).</li>
+      <li>Keep internal simulation coordinates consistent: either (a) resize canvas buffer to client size on load/resize, or (b) keep logical 800×600 and letterbox scale with CSS. <strong>Prefer (a)</strong> if agents already use <code>canvas.width/height</code>.</li>
+      <li>On resize: update canvas buffer, keep agents in bounds (clamp or leave wrap logic as-is).</li>
+    </ul>
+  </section>
+
+  <!-- Theme -->
+  <section id="theme" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3">Visual system — Arctic Ice</h2>
+    <p class="text-sm text-slate-400 mb-3">
+      Cool blue lab chrome. Soft radii, cyan accent glow on active controls, sky-tinted panels.
+      Source of truth for tokens: theme <code>arctic</code> in <code>0.8.0-style-options.html</code>.
+    </p>
+
+    <h3 class="text-base font-semibold text-sky-100 mb-2">Core palette</h3>
+    <table class="mb-4">
+      <thead><tr><th>Role</th><th>Token</th><th>Hex</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Page background</td><td><code>--bg</code></td><td><code>#070b12</code></td><td><span class="swatch" style="background:#070b12"></span></td></tr>
+        <tr><td>Panel</td><td><code>--panel</code></td><td><code>#0d1524</code></td><td><span class="swatch" style="background:#0d1524"></span></td></tr>
+        <tr><td>Border</td><td><code>--border</code></td><td><code>#1e3a5f</code></td><td><span class="swatch" style="background:#1e3a5f"></span></td></tr>
+        <tr><td>Text</td><td><code>--text</code></td><td><code>#cbd5e1</code></td><td><span class="swatch" style="background:#cbd5e1"></span></td></tr>
+        <tr><td>Text strong</td><td><code>--text-strong</code></td><td><code>#f0f9ff</code></td><td><span class="swatch" style="background:#f0f9ff"></span></td></tr>
+        <tr><td>Muted</td><td><code>--muted</code></td><td><code>#64748b</code></td><td><span class="swatch" style="background:#64748b"></span></td></tr>
+        <tr><td>Accent / primary</td><td><code>--accent</code></td><td><code>#38bdf8</code></td><td><span class="swatch" style="background:#38bdf8"></span></td></tr>
+        <tr><td>Accent strong</td><td><code>--accent-strong</code></td><td><code>#0284c7</code></td><td><span class="swatch" style="background:#0284c7"></span></td></tr>
+        <tr><td>Good / alive</td><td><code>--good</code></td><td><code>#7dd3fc</code></td><td><span class="swatch" style="background:#7dd3fc"></span></td></tr>
+        <tr><td>Warn / food</td><td><code>--warn</code> / chart food</td><td><code>#67e8f9</code></td><td><span class="swatch" style="background:#67e8f9"></span></td></tr>
+        <tr><td>Bad / hunger / hot agent</td><td><code>--bad</code></td><td><code>#fb7185</code></td><td><span class="swatch" style="background:#fb7185"></span></td></tr>
+        <tr><td>Pin / violet accent</td><td><code>--pin</code></td><td><code>#818cf8</code></td><td><span class="swatch" style="background:#818cf8"></span></td></tr>
+        <tr><td>Canvas bg</td><td><code>--canvas-bg</code></td><td><code>#0a101c</code></td><td><span class="swatch" style="background:#0a101c"></span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="text-base font-semibold text-sky-100 mb-2">Component styling</h3>
+    <table class="mb-4">
+      <thead><tr><th>Component</th><th>Behavior</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Speed buttons</td>
+          <td>Grouped in a bordered pill; inactive = dark blue-gray; <strong>active</strong> = <code>#0369a1</code> fill, <code>#38bdf8</code> border, cyan glow shadow</td>
+        </tr>
+        <tr>
+          <td>Pause / Reset</td>
+          <td>Gradient action buttons (<code>#1e3a5f → #0f1c2e</code>) with cyan border; Reset may use stronger primary fill <code>#0284c7</code></td>
+        </tr>
+        <tr>
+          <td>Version badge</td>
+          <td><code>#0c4a6e</code> bg, <code>#bae6fd</code> text, <code>#0ea5e9</code> border, pill radius</td>
+        </tr>
+        <tr>
+          <td>Presets</td>
+          <td>Stacked or compact row; active = teal-blue fill + cyan border + inset glow</td>
+        </tr>
+        <tr>
+          <td>Sliders</td>
+          <td>Track height ~5px, border <code>#1e3a5f</code>; thumb accent with glow; replace emerald accent with sky</td>
+        </tr>
+        <tr>
+          <td>Run history cards</td>
+          <td>Left color bar: default cyan, balanced indigo, punishing rose; card bg <code>#0a1220</code></td>
+        </tr>
+        <tr>
+          <td>Charts</td>
+          <td>Pop = <code>#38bdf8</code>, Food = <code>#67e8f9</code>, Hunger = <code>#fb7185</code>, Pinned = <code>#818cf8</code></td>
+        </tr>
+        <tr>
+          <td>Agents on canvas</td>
+          <td>Default slate; hungry/hot = rose <code>#fb7185</code> with soft glow. Food pellets = cyan-lime <code>#67e8f9</code></td>
+        </tr>
+        <tr>
+          <td>Radius</td>
+          <td>Slightly softer than current: sm ~0.35rem, panels ~0.65rem, inspector ~0.85rem</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="ok p-3 text-sm">
+      <strong class="text-teal-300">Migration note:</strong>
+      Current UI leans on Tailwind emerald utility classes (<code>text-emerald-300</code>, <code>accent-emerald-400</code>, etc.).
+      For 0.8.0 either (1) swap those utilities to sky/cyan equivalents, or (2) introduce a small <code>:root</code> CSS variable layer + custom classes for chrome while keeping Tailwind for layout.
+      Prefer a hybrid: Tailwind for grid/flex spacing; CSS variables for Arctic Ice chrome.
+    </div>
+  </section>
+
+  <!-- Pin -->
+  <section id="pin" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3">Pin / trends / history behavior</h2>
+    <table class="mb-4">
+      <thead><tr><th>State</th><th>Trends panel</th><th>History panel</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Default (no pin)</strong></td>
+          <td>Main 3 charts only (Population, Total Food, Avg Hunger). Compact height (~40px charts). Panel max ~48% of right column.</td>
+          <td>Gets remaining space. Floor: <code>min-height: max(200px, 42%)</code> of right column.</td>
+        </tr>
+        <tr>
+          <td><strong>Pinned</strong></td>
+          <td>Show pinned block (Hunger + Food carried) under main charts. Charts slightly taller (~52px) for pinned only. Panel max ~55%; <strong>overflow-y: auto</strong> so content scrolls inside trends.</td>
+          <td><strong>Does not collapse.</strong> Keeps the same floor. May shrink only within flex remaining space above the floor.</td>
+        </tr>
+        <tr>
+          <td><strong>Unpin / Remove</strong></td>
+          <td>Hide pinned block; main charts stay compact.</td>
+          <td>Reclaims any freed flex space.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="warning p-3 text-sm mb-3">
+      <strong class="text-amber-300">Do not</strong> increase the height of the three main run charts when pinning.
+      That was the squeeze bug in the F mock — only the pinned agent charts may grow slightly, and trends must scroll rather than steal history’s floor.
+    </div>
+
+    <div class="code-block">#right-trends {
+  flex: 0 1 auto;
+  max-height: 48%;
+  overflow: auto;
+}
+#right-trends.pinned {
+  max-height: 55%;
+}
+#right-history {
+  flex: 1 1 auto;
+  min-height: max(200px, 42%);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}</div>
+  </section>
+
+  <!-- HTML map -->
+  <section id="html" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3">HTML structure map (from current <code>index.html</code>)</h2>
+    <p class="text-sm text-slate-400 mb-3">Remove tab bar and tab show/hide. Re-home existing panels into the F grid. Keep IDs used by JS where possible.</p>
+
+    <table class="mb-4">
+      <thead><tr><th>Current (0.7.0)</th><th>0.8.0 home</th><th>JS notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Top title + Pause/Reset</td>
+          <td>Header row (+ move speed here)</td>
+          <td><code>toggleSim</code>, <code>resetSim</code>, <code>setSpeed</code> unchanged</td>
+        </tr>
+        <tr>
+          <td>Speed buttons in Controls tab</td>
+          <td>Header speed group</td>
+          <td>Keep <code>id="speed-1"</code> … <code>speed-10</code></td>
+        </tr>
+        <tr>
+          <td><code>#tab-controls</code> content</td>
+          <td>Left column · Controls</td>
+          <td>Sliders / presets / advanced unchanged</td>
+        </tr>
+        <tr>
+          <td><code>#tab-metrics</code> / <code>#metrics-content</code></td>
+          <td>Left column · Metrics (always visible)</td>
+          <td><code>updateStats</code> / metrics render always on</td>
+        </tr>
+        <tr>
+          <td>Canvas + <code>#inspector</code></td>
+          <td>Center column full height</td>
+          <td>Inspector stays absolute inside canvas wrapper</td>
+        </tr>
+        <tr>
+          <td><code>#tab-trends</code> charts + pin search</td>
+          <td>Right · Trends panel top</td>
+          <td>Chart canvases may need width resize when column width changes</td>
+        </tr>
+        <tr>
+          <td>Pinned section</td>
+          <td>Inside Trends panel (collapsible block)</td>
+          <td>Toggle class <code>pinned</code> on trends panel; do not grow main sparks</td>
+        </tr>
+        <tr>
+          <td><code>#tab-history</code></td>
+          <td>Right · History panel bottom</td>
+          <td><code>renderRunHistory</code> always available; no tab switch required</td>
+        </tr>
+        <tr>
+          <td><code>switchTab()</code></td>
+          <td>Remove or no-op</td>
+          <td>Delete tab button handlers; stop hiding panels</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout p-3 text-sm">
+      <strong class="text-sky-200">Chart canvas widths:</strong>
+      Today charts are fixed ~240px. After layout, measure the trends panel content width and set
+      <code>canvas.width</code> (and redraw) on init, pin toggle, and <code>window.resize</code>.
+      Avoid labels “floating” beside charts: each chart is a block stack
+      <code>.chart-row &gt; .chart-label + canvas</code> with <code>clear: both</code> and no floats on KPI values
+      (use flex space-between instead of <code>float: right</code>).
+    </div>
+  </section>
+
+  <!-- CSS tokens -->
+  <section id="css" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3">Suggested CSS variable block</h2>
+    <p class="text-sm text-slate-400 mb-2">Paste into <code>&lt;style&gt;</code> in <code>index.html</code> (or replace emerald utilities). Values match Arctic Ice.</p>
+    <div class="code-block">:root {
+  --bg: #070b12;
+  --panel: #0d1524;
+  --panel-raised: #132033;
+  --border: #1e3a5f;
+  --text: #cbd5e1;
+  --text-strong: #f0f9ff;
+  --muted: #64748b;
+  --accent: #38bdf8;
+  --accent-strong: #0284c7;
+  --good: #7dd3fc;
+  --warn: #67e8f9;
+  --bad: #fb7185;
+  --pin: #818cf8;
+  --pin-bg: #1e1b4b;
+  --pin-border: #4338ca;
+  --badge-bg: #0c4a6e;
+  --badge-fg: #bae6fd;
+  --badge-border: #0ea5e9;
+  --canvas-bg: #0a101c;
+  --chart-pop: #38bdf8;
+  --chart-food: #67e8f9;
+  --chart-hunger: #fb7185;
+  --radius-sm: 0.35rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.65rem;
+  --radius-xl: 0.85rem;
+}
+body { background: var(--bg); color: var(--text); }
+canvas {
+  background: var(--canvas-bg);
+  border: 1px solid var(--border);
+}</div>
+  </section>
+
+  <!-- Steps -->
+  <section id="steps" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3">Implementation steps (human)</h2>
+    <ol class="list-decimal pl-5 text-sm text-slate-300 space-y-3">
+      <li>
+        <strong class="text-sky-100">Versioning ritual</strong> —
+        Archive current <code>index.html</code> → <code>archive/index-0.7.0-run-compare.html</code> only if not already frozen as the pre-0.8 baseline.
+        If 0.7.0 archive already matches live, copy live to a working backup then set <code>VERSION</code> → <code>0.8.0-layout-dashboard</code>.
+      </li>
+      <li>
+        <strong class="text-sky-100">Restructure HTML shell</strong> —
+        Header · 3-column body · remove tab bar and <code>hidden</code> tab panels. Wire regions per table above.
+      </li>
+      <li>
+        <strong class="text-sky-100">Move speed controls</strong> into header; keep IDs; restyle Arctic Ice.
+      </li>
+      <li>
+        <strong class="text-sky-100">Right column flex rules</strong> for trends/history + pin class; fix squeeze.
+      </li>
+      <li>
+        <strong class="text-sky-100">Apply Arctic Ice tokens</strong> — body, panels, buttons, badge, sliders, metrics, run cards, chart stroke colors, agent/food draw colors.
+      </li>
+      <li>
+        <strong class="text-sky-100">Canvas fill</strong> — center column full height; resize/redraw charts and optionally sim canvas buffer.
+      </li>
+      <li>
+        <strong class="text-sky-100">JS cleanup</strong> — remove or gut <code>switchTab</code>; ensure metrics/history/trends update every frame without tab visibility checks; on pin, toggle trends <code>.pinned</code> class only.
+      </li>
+      <li>
+        <strong class="text-sky-100">Docs for release PR</strong> —
+        Update <code>VERSION</code>, README live-release line, <code>IMPLEMENTATION_LOG.md</code>, <code>FUTURE_FEATURES.md</code>, <code>archive/MANIFEST.md</code>.
+      </li>
+    </ol>
+  </section>
+
+  <!-- Checklist -->
+  <section id="checklist" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3">Testing checklist</h2>
+    <ul class="check text-sm text-slate-300">
+      <li><label><input type="checkbox"> Header shows version <code>v0.8.0-layout-dashboard</code>, speed, Pause, Reset</label></li>
+      <li><label><input type="checkbox"> No tab bar; Controls + Metrics + Trends + History all visible without clicking tabs</label></li>
+      <li><label><input type="checkbox"> Canvas fills center column to bottom of shell (no empty bottom graph band)</label></li>
+      <li><label><input type="checkbox"> Speed 1×/2×/5×/10× works from header; active style uses ice glow</label></li>
+      <li><label><input type="checkbox"> All sliders + presets + Advanced still live-update sim</label></li>
+      <li><label><input type="checkbox"> Metrics update every frame</label></li>
+      <li><label><input type="checkbox"> Trend charts draw correctly; labels sit above each chart (no floating “Total Food”)</label></li>
+      <li><label><input type="checkbox"> Pin agent → pinned charts appear; history still readable (min floor); trends scroll if needed</label></li>
+      <li><label><input type="checkbox"> Unpin / Remove restores compact trends</label></li>
+      <li><label><input type="checkbox"> Search by ID + pin still works</label></li>
+      <li><label><input type="checkbox"> History session overview + cards + Clear Runs work</label></li>
+      <li><label><input type="checkbox"> Inspector select / deselect / pin button work</label></li>
+      <li><label><input type="checkbox"> Window resize: layout holds; charts not clipped badly</label></li>
+      <li><label><input type="checkbox"> Pause / Reset / extinction / new run still correct</label></li>
+      <li><label><input type="checkbox"> Visual pass: Arctic Ice (not leftover emerald-only chrome)</label></li>
+    </ul>
+  </section>
+
+  <!-- Out of scope -->
+  <section id="out" class="section mb-10">
+    <h2 class="text-xl font-semibold mb-3">Out of scope for 0.8.0</h2>
+    <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+      <li>Foraging / seek-food movement → <strong>0.9.0-forage</strong></li>
+      <li>Traits / HoardingBias / greed analysis → Phase 1</li>
+      <li>Goal presets library / auto fine-tune / config search → later</li>
+      <li>Multi-run chart overlay, CSV export, persistent storage</li>
+      <li>Mobile-first responsive redesign (optional later: collapse side columns; tabs only as compact escape hatch)</li>
+      <li>Other style themes (Amber, Biolume, Terminal) — keep as optional future skins</li>
+    </ul>
+  </section>
+
+  <!-- Done definition -->
+  <section class="section mb-12">
+    <h2 class="text-xl font-semibold mb-3">Definition of done</h2>
+    <div class="ok p-4 text-sm leading-relaxed">
+      <p class="mb-2">
+        Opening <code>index.html</code> shows a full-height Arctic Ice lab: header ops controls,
+        left tuning + metrics, big center world, right trends-over-history — with pin that does not crush history.
+      </p>
+      <p class="mb-0 text-slate-400">
+        Simulation behavior matches 0.7.0. Version label and docs updated for
+        <code>0.8.0-layout-dashboard</code>. Ready for human test + PR.
+      </p>
+    </div>
+  </section>
+
+  <footer class="text-center text-[11px] text-slate-600 pb-8 border-t border-slate-800 pt-4">
+    trait-evolution-sim · design-docs/0.8.0-layout-dashboard-design.html ·
+    Layout F + Arctic Ice · implementation design (not code)
+  </footer>
+</body>
+</html>

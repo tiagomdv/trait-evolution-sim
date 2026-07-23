@@ -217,3 +217,80 @@ All changes respect single-file `index.html`, AGENTS.md rules, and radical simpl
 - User will do further testing post-PR.
 
 This completes the core 0.7.0 scope. Further Phase 0 work (0.8.0/0.9.0) TBD after testing.
+
+---
+
+## 2026-07-23 — Collaboration process resteer (Track A / Track B)
+
+**Version / Phase:** process change (docs) · Phase 0 · Survive still active  
+**Sim code:** not required by this entry alone (layout work may ship under separate 0.8.x entries)
+
+### Why
+
+After several releases, **manually implementing every feature** (full design doc → section-by-section paste into `index.html` → AI never touches the sim) became too time-consuming relative to the risk of the change. Layout and chrome work especially did not need that level of ceremony.
+
+### What changed
+
+Collaboration split into two tracks (documented in `AGENTS.md` and summarized in `README.md`):
+
+| Track | Scope | Who implements | Gate |
+|-------|--------|----------------|------|
+| **A — Layout / presentation** | CSS, DOM, panels, docks, tabs, labels, visual hierarchy; no behavior change | AI may edit `index.html` directly | Browser smoke test; keep or restore archive |
+| **B — Mechanics / sensibility** | Parameters, functions, algorithms, hunger/food/movement, run lifecycle, anything that changes sim behavior | Human leads; AI proposes or applies only with explicit supervision | Human judges sim feel + metrics |
+
+**Still required:** single-file live `index.html`, versioned `archive/index-<version>.html` snapshots on meaningful steps and before PRs, human owns verification and “open the PR / push” decisions.
+
+**Relaxed for Track A:** mandatory full design-docs and hand-typing every layout change. Design artifacts remain optional when the human wants them (especially Track B / non-trivial mechanics).
+
+### Files updated for this resteer
+
+- `AGENTS.md` — process resteer, Track A/B, lightweight versioning, next-PR checklist + PR template, updated Standing PR Directive, anti-patterns, new-chat paste blurb
+- `README.md` — Development approach rewritten to match (why the change + two tracks)
+- `IMPLEMENTATION_LOG.md` — this section
+
+### Intent
+
+Match process cost to risk: layout stays reversible via archives; **sensitive** changes (parameters, mechanics, algorithms) stay under human hands or close supervision.
+---
+
+## 2026-07-23 — `0.8.4-tight-layout` (Track A layout dashboard arc)
+
+**Version / Phase:** `0.8.4-tight-layout` · Phase 0 · Survive  
+**Track:** **A — Layout / presentation** (no hunger/food/movement algorithm changes)  
+**Pull Request:** (to open after human verification)
+
+### Arc included in this ship
+
+| Step | Version | What |
+|------|---------|------|
+| Layout shell | `0.8.0-layout-dashboard` | Tall Command: header + left/center/right, Arctic Ice tokens, no tabs |
+| Metrics + dock | `0.8.1-metrics-dock` | KPI live metrics; inspector dock in left column (not over canvas) |
+| History table | `0.8.2-history-table` | Table D+: `# Pre Dur End Hung Food`; best top-right only; End=0 red; preset font colors; pin-by-ID in dock |
+| Layout experiments | `0.8.3-layout-flex` | Intermediate flex/hide attempts (archived) |
+| Tight A | `0.8.4-tight-layout` | `260 / 1fr / 260`; Hide on column heads; edge restore tabs; flush canvas; `resizeSimCanvas` when columns hide/show |
+
+### Supporting fixes (still Track A)
+
+- UI redraw gated on `uiFrame` (not `tick % N`) so 5×/10× charts keep updating after speed changes.
+- Trend charts sized to column width (`sizeTrendCanvas`).
+- Hide right/left uses `display: none` + 2-column grid so panels do not overlap the canvas.
+
+### Archives
+
+- `archive/index-0.8.0-layout-dashboard.html` … `archive/index-0.8.4-tight-layout.html` (intermediate freezes + live snapshot)
+- `archive/MANIFEST.md` rows updated
+
+### Docs
+
+- Process resteer already in `AGENTS.md` / README Development approach / this log (2026-07-23 process section)
+- `FUTURE_FEATURES.md` — 0.8.x marked shipped; deferred **slide left/right column drawers**; next mechanics note `0.9.0-forage`
+
+### Explicitly not in this PR (Track B / later)
+
+- Forage / seek-food movement
+- Traits / greed analysis
+- Animated slide drawers (registered in FUTURE_FEATURES only)
+
+### How code was applied
+
+AI Track A direct edits to `index.html` under human direction and iterative browser testing; human is Project Manager and owns verification + shipping.

@@ -2,122 +2,232 @@
 
 **Repository**: https://github.com/tiagomdv/trait-evolution-sim
 
-**Your Role**: You are a coding collaborator. The human (tiagomdv) is the strict Project Manager.
+**Your Role**: Coding collaborator. The human (tiagomdv) is Project Manager and final decider on mechanics/tuning.
 
-## Core Rules (Non-Negotiable)
+**Read this whole file** at the start of any session that implements, versions, or opens a PR for the sim.
 
-1. **One feature at a time** — Never work on multiple features in the same session.
-2. The human manually edits and commits `index.html` (they are practicing GitHub workflows and want full ownership of the simulation code).
-3. Your main jobs are:
-   - Helping with **design** (`/design` for anything non-trivial)
-   - Writing or updating **supporting documentation** after the human has tested and approved a feature
-   - Suggesting clean, well-commented code the human can copy into `index.html`
-4. **Never** push code or documentation yourself. Only the human commits and pushes.
-5. Always respect the current phase scope.
+---
 
-**Standing PR Directive**: Every pull request description must explicitly state that the changes were manually applied by the human, tested in the simulation (for code PRs), and that the human requested the PR only after verification. This is non-negotiable for maintaining project process integrity.
+## Process resteer (2026-07-23) — READ FIRST
+
+The old flow (full design doc → section-by-section human paste into `index.html` → AI never touches the sim) was too slow for layout work. **New default:**
+
+| Track | What | Who implements | Design doc? | Gate |
+|-------|------|----------------|-------------|------|
+| **A — Layout / chrome / presentation** | CSS, DOM structure, panels, docks, tabs, labels, spacing, visual hierarchy, non-behavioral UI | **AI may edit `index.html` directly** | Optional bullets/sketch only; skip full design-docs unless human asks | Human opens in browser; short smoke test; keep or restore archive |
+| **B — Mechanics / sensibility** | Parameters, functions, algorithms, hunger/food/movement rules, run lifecycle, anything that changes sim *behavior* | **Human leads** (AI may propose patches; human applies/tunes or explicitly asks AI to apply under supervision) | Short design when behavior is ambiguous; `/design` for non-trivial mechanics | Human runs the sim and judges feel + metrics |
+
+**Match process cost to risk.** Layout is reversible if snapshots exist. Mechanics are not.
+
+**Still true:**
+
+- Live app remains a **single** runnable `index.html` (do not rename the live entrypoint; version lives in `VERSION` + archive filenames + UI label).
+- **One feature at a time** per session / PR when possible.
+- **Never push** unless the human explicitly asks you to push.
+- Prefer **human commits** unless the human says otherwise for that session.
+- Respect phase scope (Phase 0 · Survive until the human moves on).
+
+---
+
+## Handoff for the next PR (checklist)
+
+Use this when shipping the next version (e.g. layout 0.8.x work currently local).
+
+### Before coding
+
+1. Read `VERSION`, live `index.html` version label, and `archive/MANIFEST.md`.
+2. Classify the work as **Track A** (layout) or **Track B** (mechanics). Do not mix tracks in one PR without human approval.
+3. If live `index.html` is ahead of the latest archive snapshot for the *previous* good state, **archive first** (see Versioning).
+
+### While coding (Track A — default for layout)
+
+1. Edit `index.html` in place.
+2. Bump `VERSION` and the in-sim version/phase label together.
+3. Snapshot **meaningful** steps only (not every CSS tweak):
+   - Before a risky rewrite
+   - When a codename/version feels “done enough”
+   - Before switching tracks or opening a PR
+4. Do **not** silently change mechanics while doing layout.
+
+### Smoke test (layout PRs) — human or AI-guided
+
+- Start a new run; pause / resume; change speed
+- Open Trends and History tabs; charts still draw after tab switch
+- Inspector: select agent, pin/unpin if present, search-by-ID if present
+- Resize window; nothing critical overflows or vanishes
+- Confirm UI version string matches `VERSION`
+
+### Before opening the PR
+
+1. `archive/index-<previous-or-current-version>.html` exists for the pre-PR baseline if this PR changes the sim
+2. `VERSION` matches in-sim label
+3. `archive/MANIFEST.md` has a row for any new archive file
+4. README live-release line updated if this ships a new version
+5. Short `IMPLEMENTATION_LOG.md` section at the bottom (add, don’t replace)
+6. `FUTURE_FEATURES.md` only if items completed or deferred
+7. **No** requirement for a full design-docs package on Track A unless the human wanted one
+
+### PR description template
+
+```markdown
+## Track
+A (layout) | B (mechanics) | mixed (human approved)
+
+## Summary
+- What changed in plain language
+- Version: `x.y.z-codename` (from VERSION)
+
+## Process
+- [ ] Snapshot/archive step done for baseline
+- [ ] VERSION + in-sim label + MANIFEST (+ README if needed) updated
+- [ ] Smoke test passed (layout) / sim feel checked (mechanics)
+- [ ] Human reviewed and requested this PR after verification
+
+## Notes
+- AI applied layout directly / human applied mechanics / other: …
+- Known follow-ups (optional)
+```
+
+**Standing PR Directive (updated):** Every PR must state that the human **requested the PR after verification**, and how the code was applied (**AI Track A**, **human Track B**, or **paired**). Simulation/code PRs must note that the human (or paired session) **tested in the browser**. Process integrity = human ownership of *shipping*, not necessarily hand-typing every line of CSS.
+
+---
 
 ## File Discipline (Non-Negotiable)
 
-- **Do not create new files** unless the human has explicitly approved them for the current phase.
-- The simulation must remain a single runnable `index.html` for as long as possible. Do not introduce separate `.js`, `.css`, `.json`, configuration files, or any other new assets without explicit approval from the human.
-- **Approved exceptions** (from `0.4.0-docs-resteer`):
-  - `VERSION` — one-line label for the live release
-  - `archive/index-<version>.html` — frozen sim snapshots (never edit in place)
+- **Do not create new files** unless the human has explicitly approved them for the current work, or they fall under approved exceptions.
+- Keep the sim as a **single** `index.html` for as long as possible. No new `.js` / `.css` / `.json` splits without explicit approval.
+- **Approved exceptions:**
+  - `VERSION` — one-line live release label
+  - `archive/index-<version>.html` — frozen sim snapshots (**never edit in place**)
   - `archive/docs/*` — safety copies before large doc restructuring
-  - `archive/MANIFEST.md` — archive index (not an archived README)
-  - `design-docs/` — human-approved design artifacts
-- When adding design decisions, parameter rationale, tuning notes, or other supporting information:
-  - Keep `index.html` clean and minimal. Only add brief references or short comments when strictly necessary for the code to be understandable.
-  - Place detailed explanations in the most appropriate existing documentation file (`README.md`, `IMPLEMENTATION_LOG.md`, `FUTURE_FEATURES.md`, `AGENTS.md`, etc.).
-- This rule protects radical simplicity and long-term maintainability across many AI collaboration sessions.
+  - `archive/MANIFEST.md` — archive index only
+  - `design-docs/` — design artifacts when the human wants them (not mandatory for Track A)
+- Keep `index.html` readable; put long rationale in docs (`README.md`, `IMPLEMENTATION_LOG.md`, `FUTURE_FEATURES.md`, `AGENTS.md`).
 
-## Versioning Ritual (added 2026-07-02)
+### Naming
 
-**Scheme:** `N.x.y-codename` where **major N = phase number** (`0.x` = Phase 0 · Survive, `1.x` = Phase 1 · Differ, etc.)
+- **Live entrypoint stays `index.html`.** Do not rename it to carry the version.
+- Version identity: `VERSION` file + UI label + `archive/index-<version>-<codename>.html`.
 
-**Before any PR that changes `index.html` simulation logic or sim UI identity:**
+---
 
-1. Copy current `index.html` → `archive/index-<version>.html`
-2. Update `VERSION` file
-3. Update version/phase display in `index.html` (phase rail when shipped)
-4. Update README live-release line
-5. Add a row to `archive/MANIFEST.md`
-6. After merge: git tag `v<version>` (e.g. `v0.5.0-phase-rail`)
+## Versioning Ritual (lightweight + milestone)
 
-**Docs-only PRs:** bump `VERSION`; copy docs to `archive/docs/` before large restructuring.
+**Scheme:** `N.x.y-codename` where **major N = phase number** (`0.x` = Phase 0 · Survive, …).
 
-**Never edit files inside `archive/`.**
+### Lightweight (Track A iteration)
 
-**Design Artifact Nomenclature (established 2026-07-09, applies from here forward)**
+1. If the current good state is not archived yet:  
+   `cp index.html archive/index-<VERSION>.html` (use the version *being left behind*)
+2. Implement; bump `VERSION` + in-sim label
+3. Smoke test
+4. Optional: commit when the human is happy
 
-Design documents and implementation guides in `design-docs/` follow the project version codename:
+Do **not** spam archives every ten lines of CSS. Snapshot on meaningful steps and before PRs.
 
-- `<version>-<codename>-design.html` (or `-implementation-guide.html` when the artifact is a detailed step-by-step guide)
+### Milestone / PR that ships a version
 
-Examples (aligned to shipped versions):
-- `0.1.0-foundation-design.html`
-- `0.2.0-run-history-design.html`
-- `0.3.0-observability-design.html`
-- `0.4.1-observability-metrics-design.html`
+1. Ensure archive snapshot(s) for previous live version exist
+2. `VERSION` + in-sim version/phase display
+3. README live-release line
+4. `archive/MANIFEST.md` row(s)
+5. `IMPLEMENTATION_LOG.md` dated section
+6. After merge (human): git tag `v<version>` when they care
 
-When creating new designs (including output from `/design`), produce a versioned HTML artifact in `design-docs/`. Markdown drafts from the design process may be retained temporarily for reference but the canonical committed artifact is the versioned HTML. Update any internal title/metadata in the design to include the version.
+**Docs-only PRs:** bump `VERSION` if release identity changes; copy docs to `archive/docs/` before large restructuring.
 
-This keeps traceability between designs, the VERSION file, archive snapshots, and shipped milestones.
+**Never edit files inside `archive/`** (only add new snapshots + update `MANIFEST.md`).
+
+### Design artifacts (optional, not the default gate)
+
+When the human asks for design docs or `/design` (especially Track B):
+
+- `design-docs/<version>-<codename>-design.html`
+- or `…-implementation-guide.html` for step-by-step guides
+
+Track A does **not** require these by default.
+
+---
+
+## Core Rules (summary)
+
+1. **One feature at a time** (don’t bundle unrelated mechanics + layout without approval).
+2. **Track A:** AI may write `index.html`. **Track B:** human leads; AI assists.
+3. **Human owns ship:** verification + “open the PR” decision; no surprise pushes.
+4. **Phase scope** always.
+5. **Add, don’t replace** history in log/roadmap files.
+
+---
 
 ## Capturing Deferred Ideas
 
-When suggesting new features, mechanics, UI improvements, tuning ideas, or other changes:
+Out of scope ideas → offer to append to `FUTURE_FEATURES.md` (living list, not only high-level phases).
 
-- If the human decides the idea is out of scope for the current session or phase, proactively offer to record it in `FUTURE_FEATURES.md`.
-- `FUTURE_FEATURES.md` should be treated as a living collection of future possibilities and deferred ideas (not only the high-level phase roadmap).
-- This keeps the current focus tight while preventing potentially valuable directions from being forgotten.
+---
 
-## Project Focus (Important)
+## Project Focus
 
 **Thematic arc:** Survive → Differ → Evolve → Economy
 
 | Phase | Name | Focus |
 |-------|------|-------|
-| 0 | Survive | Hunger, observability, run comparison ← **now** |
+| 0 | Survive | Hunger, observability, run comparison, layout/usability ← **now** |
 | 1 | Differ | Behavioral traits (no genetics) |
 | 2 | Evolve | In-run reproduction, inheritance, generations |
 | 3 | Economy | Trade → storage → production → labor → … |
 
-One mechanic per PR. Stay observable. Trait set finalized when Phase 1 begins.
-
-## Documentation Responsibilities
-
-After the human approves a feature, help update:
-- `VERSION` file + README live-release line
-- `FUTURE_FEATURES.md` (mark items with version + PR; append new ideas)
-- `IMPLEMENTATION_LOG.md` (new dated section at the bottom)
-- `README.md` (if the change affects how the project should be understood)
-- `archive/MANIFEST.md` (when a new `index.html` snapshot is archived)
-
-## Log Files Philosophy (Add, Don't Replace)
-
-`IMPLEMENTATION_LOG.md` and `FUTURE_FEATURES.md` are **living historical records**.
-
-- **Never delete** existing sections or entries.
-- When a feature ships, **add** completion notes with version + PR (e.g. `0.3.0-observability` · PR #13).
-- New ideas → **append** new bullets or dated sections.
-- When version/phase names change, **update references inline** — keep the original narrative.
-- `IMPLEMENTATION_LOG.md`: new work = new dated section at the bottom.
-- Before large doc restructuring, copy current files to `archive/docs/` first (`0.4.0-docs-resteer` did this).
-
-## Session & Process Discipline
-
-- Prefer **one fresh session per feature**.
-- Use `/design` for any feature that introduces new mechanics or changes how traits evolve.
-- Follow the standard flow: scoping → design (when needed) → human implements → human tests → documentation updates.
-
-## Anti-Patterns
-
-- Do not write code directly into `index.html` expecting it to be committed.
-- Do not push for scope creep without strong justification tied to observability or the active phase.
-- Do not over-document minor tweaks.
+Prefer one mechanic per PR. Stay observable. Trait set finalized when Phase 1 begins.
 
 ---
 
-This file is the single source of truth for how any AI should behave while working on this repository.
+## Documentation Responsibilities
+
+After the human approves a shipped change:
+
+- `VERSION` + README live-release line (if version ships)
+- `IMPLEMENTATION_LOG.md` — new dated section at the bottom
+- `FUTURE_FEATURES.md` — mark done / append deferred
+- `archive/MANIFEST.md` — when a new snapshot is added
+- Full design-docs only if used for that feature
+
+### Log philosophy
+
+`IMPLEMENTATION_LOG.md` and `FUTURE_FEATURES.md` are **living historical records**: never delete past sections; append; update references inline when names change.
+
+---
+
+## Session discipline
+
+- Prefer one clear goal per session (e.g. “metrics dock layout” or “hunger rate tuning”).
+- Track A: implement → smoke → version/archive as needed → PR when human is ready.
+- Track B: short design if needed → human (or supervised) apply → sim feel → docs → PR.
+- Do not over-document minor layout tweaks; batch docs at milestone PR time if iterating fast.
+
+---
+
+## Anti-Patterns
+
+- Changing hunger/food/movement/algorithms “while doing layout” without labeling Track B and human buy-in.
+- Skipping archive before a large rewrite of `index.html`.
+- Creating new source files / splitting the single-file sim without approval.
+- Full design-doc + section paste ritual for pure CSS/layout (obsolete default).
+- Pushing or opening PRs without human request.
+- Editing anything under `archive/` except adding new snapshots + MANIFEST rows.
+- Overwriting history in `IMPLEMENTATION_LOG.md` / `FUTURE_FEATURES.md`.
+
+---
+
+## Quick copy-paste for a new chat
+
+```
+Read AGENTS.md fully (process resteer 2026-07-23).
+This session is Track A (layout) / Track B (mechanics): <pick one>.
+Goal: <one sentence>.
+Live VERSION is the source of truth; archive before risky edits; single index.html.
+Do not push unless I ask. Open a PR only after I verify and request it.
+```
+
+---
+
+This file is the single source of truth for how any AI should behave in this repository.
+```

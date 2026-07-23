@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.8.0 Style Options — trait-evolution-sim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ========== Shared structure (Layout F) ========== */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.25s ease, color 0.2s ease;
+    }
+    .page-wrap { max-width: 1440px; margin: 0 auto; padding: 1rem 1rem 2.5rem; }
+    .intro-bar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+    .intro-bar h1 { margin: 0; font-size: 1.15rem; font-weight: 600; color: var(--text-strong); }
+    .intro-bar p { margin: 0; font-size: 0.75rem; color: var(--muted); width: 100%; max-width: 52rem; }
+    .theme-switcher {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.4rem;
+      margin-bottom: 0.85rem;
+    }
+    @media (max-width: 900px) {
+      .theme-switcher { grid-template-columns: 1fr 1fr; }
+    }
+    .theme-btn {
+      text-align: left;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.65rem;
+      cursor: pointer;
+      font: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    }
+    .theme-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .theme-btn.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-glow), var(--shadow-btn);
+      background: var(--panel-raised);
+    }
+    .theme-btn .t-name { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-strong); }
+    .theme-btn .t-desc { display: block; font-size: 0.65rem; color: var(--muted); margin-top: 0.15rem; }
+    .swatches { display: flex; gap: 3px; margin-top: 0.35rem; }
+    .swatch {
+      width: 12px; height: 12px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .app-shell {
+      height: calc(100vh - 11.5rem);
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .app-header {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem;
+      padding: 0.55rem 0.75rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-panel);
+    }
+    .app-title { font-weight: 600; font-size: 0.95rem; color: var(--text-strong); letter-spacing: var(--title-track); }
+    .phase { font-size: 0.7rem; color: var(--muted); }
+    .badge {
+      font-size: 0.65rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: var(--radius-pill);
+      background: var(--badge-bg);
+      color: var(--badge-fg);
+      border: 1px solid var(--badge-border);
+      font-weight: 500;
+    }
+    .hdr-right { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+    .speed-group {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--speed-gap);
+      padding: var(--speed-pad);
+      background: var(--speed-bg);
+      border: 1px solid var(--speed-border);
+      border-radius: var(--radius-md);
+    }
+    .speed-label { font-size: 0.62rem; color: var(--muted); margin-right: 0.15rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .btn {
+      font: inherit;
+      cursor: default;
+      border: 1px solid transparent;
+      transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .btn-speed {
+      padding: var(--btn-speed-pad);
+      font-size: 0.65rem;
+      border-radius: var(--radius-sm);
+      background: var(--btn-speed-bg);
+      color: var(--btn-speed-fg);
+      border-color: var(--btn-speed-border);
+    }
+    .btn-speed.on {
+      background: var(--btn-speed-on-bg);
+      color: var(--btn-speed-on-fg);
+      border-color: var(--btn-speed-on-border);
+      box-shadow: var(--btn-speed-on-shadow);
+      font-weight: 600;
+    }
+    .btn-action {
+      padding: var(--btn-action-pad);
+      font-size: 0.72rem;
+      border-radius: var(--radius-sm);
+      background: var(--btn-action-bg);
+      color: var(--btn-action-fg);
+      border-color: var(--btn-action-border);
+      box-shadow: var(--btn-action-shadow);
+    }
+    .btn-action.primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-fg);
+      border-color: var(--btn-primary-border);
+    }
+    .app-body {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr) 300px;
+      gap: 0.5rem;
+    }
+    .col { min-height: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+    .col-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 0.55rem;
+      min-height: 0;
+      box-shadow: var(--shadow-panel);
+    }
+    .section-title {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+    .label-row {
+      display: flex; justify-content: space-between;
+      font-size: 0.68rem; margin-bottom: 0.15rem;
+    }
+    .val { font-family: var(--mono); color: var(--accent); font-size: 0.68rem; }
+    .slider {
+      height: var(--slider-h);
+      background: var(--slider-track);
+      border-radius: 999px;
+      position: relative;
+      margin-bottom: 0.55rem;
+      border: 1px solid var(--slider-border);
+    }
+    .slider::after {
+      content: "";
+      position: absolute;
+      left: 58%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: var(--slider-thumb);
+      height: var(--slider-thumb);
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: var(--slider-thumb-shadow);
+      border: 1px solid var(--accent-strong);
+    }
+    .preset-row { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 0.5rem; }
+    .btn-preset {
+      text-align: center;
+      padding: 0.28rem 0.4rem;
+      font-size: 0.65rem;
+      border-radius: var(--radius-sm);
+      background: var(--btn-preset-bg);
+      color: var(--btn-preset-fg);
+      border: 1px solid var(--btn-preset-border);
+    }
+    .btn-preset.on {
+      background: var(--btn-preset-on-bg);
+      color: var(--btn-preset-on-fg);
+      border-color: var(--btn-preset-on-border);
+      box-shadow: var(--btn-preset-on-shadow);
+      font-weight: 600;
+    }
+    .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+    .kpi {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.35rem;
+      background: var(--kpi-bg);
+      border: 1px solid var(--kpi-border);
+      border-radius: var(--radius-sm);
+      padding: 0.3rem 0.4rem;
+      font-size: 0.65rem;
+    }
+    .kpi b { float: none; font-family: var(--mono); font-weight: 600; }
+    .kpi .g { color: var(--good); }
+    .kpi .w { color: var(--warn); }
+    .kpi .b { color: var(--bad); }
+    .chart-row {
+      display: block;
+      clear: both;
+      margin-bottom: 0.35rem;
+    }
+    .chart-label {
+      display: block;
+      clear: both;
+      font-size: 0.58rem;
+      margin-bottom: 0.15rem;
+      line-height: 1.2;
+    }
+
+    .fake-canvas {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--canvas-border);
+      background:
+        radial-gradient(circle at 22% 28%, var(--canvas-glow-a), transparent 42%),
+        radial-gradient(circle at 68% 62%, var(--canvas-glow-b), transparent 38%),
+        var(--canvas-bg);
+      box-shadow: var(--shadow-canvas);
+    }
+    .canvas-label {
+      position: absolute; top: 8px; left: 10px;
+      font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .dot { position: absolute; border-radius: 999px; }
+    .food {
+      position: absolute; width: 5px; height: 5px; border-radius: 999px;
+      background: var(--food);
+      box-shadow: 0 0 6px var(--food-glow);
+    }
+    .agent { background: var(--agent); }
+    .agent.hot { background: var(--agent-hot); box-shadow: 0 0 8px var(--agent-hot-glow); }
+    .inspector {
+      position: absolute; bottom: 12px; right: 12px; width: 152px;
+      background: var(--inspector-bg);
+      border: 1px solid var(--inspector-border);
+      border-radius: var(--radius-xl);
+      padding: 0.45rem 0.55rem;
+      font-size: 0.65rem;
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-panel);
+    }
+    .inspector .sel { color: var(--accent); font-weight: 600; font-size: 0.58rem; letter-spacing: 0.08em; }
+    .inspector-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.35rem;
+      margin-bottom: 0.2rem;
+    }
+    .inspector .pin {
+      float: none;
+      flex-shrink: 0;
+      color: var(--pin);
+      font-size: 0.58rem;
+      border: 1px solid var(--pin-border);
+      background: var(--pin-bg);
+      padding: 0 0.3rem;
+      border-radius: var(--radius-sm);
+    }
+
+    #right-trends {
+      flex: 0 1 auto;
+      max-height: 48%;
+      overflow: auto;
+    }
+    #right-trends.pinned {
+      max-height: 55%;
+    }
+    #right-history {
+      flex: 1 1 auto;
+      min-height: max(200px, 42%);
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .spark {
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--chart-bg);
+      border: 1px solid var(--chart-border);
+      overflow: hidden;
+      margin-bottom: 0.35rem;
+    }
+    .spark svg { width: 100%; height: 100%; display: block; }
+    .spark.pin-h { height: 52px; }
+    .chart-label.pop { color: var(--chart-pop); }
+    .chart-label.food { color: var(--chart-food); }
+    .chart-label.hunger { color: var(--chart-hunger); }
+    .chart-label.pin { color: var(--pin); }
+    .spark { clear: both; }
+    .pinned-block {
+      display: none;
+      margin-top: 0.4rem;
+      padding-top: 0.45rem;
+      border-top: 1px solid var(--pin-border);
+    }
+    #right-trends.pinned .pinned-block { display: block; }
+    .search-row { display: flex; gap: 0.25rem; align-items: center; }
+    .search-row input {
+      width: 2.6rem;
+      font-size: 0.58rem;
+      padding: 0.15rem 0.3rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
+      font-family: var(--mono);
+    }
+    .btn-tiny {
+      font-size: 0.58rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: var(--radius-sm);
+      background: var(--btn-tiny-bg);
+      color: var(--btn-tiny-fg);
+      border: 1px solid var(--btn-tiny-border);
+    }
+    .run-card {
+      border-left: 3px solid var(--run-default);
+      background: var(--run-bg);
+      border-top: 1px solid var(--run-border);
+      border-right: 1px solid var(--run-border);
+      border-bottom: 1px solid var(--run-border);
+      border-radius: var(--radius-sm);
+      padding: 0.35rem 0.45rem;
+      font-size: 0.62rem;
+      margin-bottom: 0.28rem;
+    }
+    .run-card.bal { border-left-color: var(--run-bal); }
+    .run-card.pun { border-left-color: var(--run-pun); }
+    .session-kpi {
+      background: var(--kpi-bg);
+      border: 1px solid var(--kpi-border);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem;
+      font-size: 0.65rem;
+      margin-bottom: 0.45rem;
+    }
+    .best {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--good);
+      margin: 0.15rem 0 0.45rem;
+      font-family: var(--mono);
+    }
+    .btn-clear {
+      align-self: flex-start;
+      margin-top: 0.35rem;
+      font-size: 0.62rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      background: var(--btn-clear-bg);
+      color: var(--btn-clear-fg);
+      border: 1px solid var(--btn-clear-border);
+    }
+    .scroll-thin { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+    .detail {
+      margin-top: 0.85rem;
+      padding: 0.85rem 1rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-panel);
+    }
+    .detail h2 { margin: 0 0 0.35rem; font-size: 1rem; color: var(--text-strong); }
+    .detail p { margin: 0 0 0.5rem; font-size: 0.8rem; color: var(--text); line-height: 1.45; }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      font-size: 0.72rem;
+    }
+    @media (max-width: 800px) { .detail-grid { grid-template-columns: 1fr; } }
+    .detail-grid h3 { margin: 0 0 0.3rem; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .detail-grid ul { margin: 0; padding-left: 1rem; color: var(--muted); }
+    .detail-grid li { margin-bottom: 0.2rem; }
+    .demo-row { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin-bottom: 0.65rem; }
+    .footer-note { text-align: center; font-size: 0.62rem; color: var(--muted); margin-top: 1rem; opacity: 0.8; }
+
+    /* ========== THEME 1: Lab Emerald (refined current) ========== */
+    [data-theme="emerald"] {
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --bg: #0a0c10;
+      --panel: #11151f;
+      --panel-raised: #151b28;
+      --border: #334155;
+      --text: #c5d1e0;
+      --text-strong: #f1f5f9;
+      --muted: #64748b;
+      --accent: #34d399;
+      --accent-strong: #059669;
+      --accent-glow: rgba(52, 211, 153, 0.35);
+      --good: #6ee7b7;
+      --warn: #fbbf24;
+      --bad: #fb7185;
+      --pin: #a78bfa;
+      --pin-bg: #1e1b4b;
+      --pin-border: #4c1d95;
+      --badge-bg: #064e3b;
+      --badge-fg: #a7f3d0;
+      --badge-border: #059669;
+      --speed-bg: #0b1220;
+      --speed-border: #1e293b;
+      --speed-gap: 0.15rem;
+      --speed-pad: 0.15rem 0.3rem;
+      --btn-speed-pad: 0.18rem 0.4rem;
+      --btn-speed-bg: #1e2937;
+      --btn-speed-fg: #94a3b8;
+      --btn-speed-border: transparent;
+      --btn-speed-on-bg: #064e3b;
+      --btn-speed-on-fg: #a7f3d0;
+      --btn-speed-on-border: #059669;
+      --btn-speed-on-shadow: none;
+      --btn-action-pad: 0.28rem 0.65rem;
+      --btn-action-bg: #334155;
+      --btn-action-fg: #e2e8f0;
+      --btn-action-border: #475569;
+      --btn-action-shadow: none;
+      --btn-primary-bg: #065f46;
+      --btn-primary-fg: #ecfdf5;
+      --btn-primary-border: #10b981;
+      --btn-preset-bg: #1e2937;
+      --btn-preset-fg: #cbd5e1;
+      --btn-preset-border: #334155;
+      --btn-preset-on-bg: rgba(6, 78, 59, 0.55);
+      --btn-preset-on-fg: #a7f3d0;
+      --btn-preset-on-border: #059669;
+      --btn-preset-on-shadow: none;
+      --btn-tiny-bg: #1e2937;
+      --btn-tiny-fg: #94a3b8;
+      --btn-tiny-border: #334155;
+      --btn-clear-bg: #1e2937;
+      --btn-clear-fg: #94a3b8;
+      --btn-clear-border: #334155;
+      --kpi-bg: #0b1220;
+      --kpi-border: #1e293b;
+      --slider-h: 4px;
+      --slider-thumb: 10px;
+      --slider-track: #1e2937;
+      --slider-border: transparent;
+      --slider-thumb-shadow: none;
+      --canvas-bg: #11151f;
+      --canvas-border: #1e2d3d;
+      --canvas-glow-a: rgba(16, 185, 129, 0.08);
+      --canvas-glow-b: rgba(251, 191, 36, 0.07);
+      --food: #fbbf24;
+      --food-glow: rgba(251, 191, 36, 0.45);
+      --agent: #64748b;
+      --agent-hot: #f87171;
+      --agent-hot-glow: rgba(248, 113, 113, 0.4);
+      --inspector-bg: rgba(15, 23, 42, 0.94);
+      --inspector-border: #475569;
+      --chart-bg: #020617;
+      --chart-border: #1e293b;
+      --chart-pop: #34d399;
+      --chart-food: #fbbf24;
+      --chart-hunger: #fb7185;
+      --input-bg: #0f172a;
+      --run-bg: #0b1220;
+      --run-border: #1e293b;
+      --run-default: #34d399;
+      --run-bal: #60a5fa;
+      --run-pun: #f87171;
+      --radius-sm: 0.25rem;
+      --radius-md: 0.375rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-pill: 999px;
+      --shadow-panel: none;
+      --shadow-canvas: none;
+      --shadow-btn: none;
+      --title-track: 0;
+    }
+
+    /* ========== THEME 2: Cyber Amber ========== */
+    [data-theme="amber"] {
+      --font: ui-sans-serif, system-ui, sans-serif;
+      --mono: ui-monospace, Menlo, monospace;
+      --bg: #0c0a09;
+      --panel: #1c1410;
+      --panel-raised: #261c14;
+      --border: #44403c;
+      --text: #e7e5e4;
+      --text-strong: #fafaf9;
+      --muted: #a8a29e;
+      --accent: #fbbf24;
+      --accent-strong: #d97706;
+      --accent-glow: rgba(251, 191, 36, 0.4);
+      --good: #fcd34d;
+      --warn: #fb923c;
+      --bad: #f87171;
+      --pin: #fb923c;
+      --pin-bg: #431407;
+      --pin-border: #c2410c;
+      --badge-bg: #78350f;
+      --badge-fg: #fde68a;
+      --badge-border: #f59e0b;
+      --speed-bg: #0c0a09;
+      --speed-border: #57534e;
+      --speed-gap: 0;
+      --speed-pad: 0;
+      --btn-speed-pad: 0.28rem 0.55rem;
+      --btn-speed-bg: transparent;
+      --btn-speed-fg: #a8a29e;
+      --btn-speed-border: #57534e;
+      --btn-speed-on-bg: #f59e0b;
+      --btn-speed-on-fg: #1c1917;
+      --btn-speed-on-border: #fbbf24;
+      --btn-speed-on-shadow: 0 0 12px rgba(245, 158, 11, 0.45);
+      --btn-action-pad: 0.32rem 0.75rem;
+      --btn-action-bg: transparent;
+      --btn-action-fg: #e7e5e4;
+      --btn-action-border: #78716c;
+      --btn-action-shadow: none;
+      --btn-primary-bg: #f59e0b;
+      --btn-primary-fg: #1c1917;
+      --btn-primary-border: #fbbf24;
+      --btn-preset-bg: transparent;
+      --btn-preset-fg: #d6d3d1;
+      --btn-preset-border: #57534e;
+      --btn-preset-on-bg: #f59e0b;
+      --btn-preset-on-fg: #1c1917;
+      --btn-preset-on-border: #fbbf24;
+      --btn-preset-on-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+      --btn-tiny-bg: transparent;
+      --btn-tiny-fg: #fbbf24;
+      --btn-tiny-border: #b45309;
+      --btn-clear-bg: transparent;
+      --btn-clear-fg: #a8a29e;
+      --btn-clear-border: #57534e;
+      --kpi-bg: #0c0a09;
+      --kpi-border: #44403c;
+      --slider-h: 3px;
+      --slider-thumb: 12px;
+      --slider-track: #292524;
+      --slider-border: #44403c;
+      --slider-thumb-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+      --canvas-bg: #120e0b;
+      --canvas-border: #57534e;
+      --canvas-glow-a: rgba(245, 158, 11, 0.1);
+      --canvas-glow-b: rgba(248, 113, 113, 0.06);
+      --food: #fbbf24;
+      --food-glow: rgba(251, 191, 36, 0.55);
+      --agent: #a8a29e;
+      --agent-hot: #ef4444;
+      --agent-hot-glow: rgba(239, 68, 68, 0.5);
+      --inspector-bg: rgba(28, 20, 16, 0.95);
+      --inspector-border: #a16207;
+      --chart-bg: #0c0a09;
+      --chart-border: #44403c;
+      --chart-pop: #fbbf24;
+      --chart-food: #fdba74;
+      --chart-hunger: #f87171;
+      --input-bg: #0c0a09;
+      --run-bg: #0c0a09;
+      --run-border: #44403c;
+      --run-default: #fbbf24;
+      --run-bal: #fb923c;
+      --run-pun: #ef4444;
+      --radius-sm: 0.15rem;
+      --radius-md: 0.2rem;
+      --radius-lg: 0.25rem;
+      --radius-xl: 0.35rem;
+      --radius-pill: 0.2rem;
+      --shadow-panel: 0 0 0 1px rgba(251, 191, 36, 0.04);
+      --shadow-canvas: inset 0 0 40px rgba(0,0,0,0.45);
+      --shadow-btn: 0 0 0 1px rgba(251, 191, 36, 0.2);
+      --title-track: 0.02em;
+    }
+    [data-theme="amber"] .speed-group { gap: 0; }
+    [data-theme="amber"] .btn-speed { border-radius: 0; }
+    [data-theme="amber"] .btn-speed:first-of-type { border-radius: 0.15rem 0 0 0.15rem; }
+    [data-theme="amber"] .btn-speed:last-of-type { border-radius: 0 0.15rem 0.15rem 0; }
+    [data-theme="amber"] .btn-speed + .btn-speed { margin-left: -1px; }
+
+    /* ========== THEME 3: Arctic Ice ========== */
+    [data-theme="arctic"] {
+      --font: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+      --mono: "Cascadia Code", ui-monospace, monospace;
+      --bg: #070b12;
+      --panel: #0d1524;
+      --panel-raised: #132033;
+      --border: #1e3a5f;
+      --text: #cbd5e1;
+      --text-strong: #f0f9ff;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --accent-strong: #0284c7;
+      --accent-glow: rgba(56, 189, 248, 0.4);
+      --good: #7dd3fc;
+      --warn: #67e8f9;
+      --bad: #fb7185;
+      --pin: #818cf8;
+      --pin-bg: #1e1b4b;
+      --pin-border: #4338ca;
+      --badge-bg: #0c4a6e;
+      --badge-fg: #bae6fd;
+      --badge-border: #0ea5e9;
+      --speed-bg: #0a1220;
+      --speed-border: #1e3a5f;
+      --speed-gap: 0.2rem;
+      --speed-pad: 0.2rem;
+      --btn-speed-pad: 0.22rem 0.5rem;
+      --btn-speed-bg: #0f1c2e;
+      --btn-speed-fg: #94a3b8;
+      --btn-speed-border: #1e3a5f;
+      --btn-speed-on-bg: #0369a1;
+      --btn-speed-on-fg: #e0f2fe;
+      --btn-speed-on-border: #38bdf8;
+      --btn-speed-on-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+      --btn-action-pad: 0.3rem 0.7rem;
+      --btn-action-bg: linear-gradient(180deg, #1e3a5f, #0f1c2e);
+      --btn-action-fg: #e0f2fe;
+      --btn-action-border: #38bdf8;
+      --btn-action-shadow: 0 1px 0 rgba(56, 189, 248, 0.15);
+      --btn-primary-bg: #0284c7;
+      --btn-primary-fg: #f0f9ff;
+      --btn-primary-border: #7dd3fc;
+      --btn-preset-bg: #0f1c2e;
+      --btn-preset-fg: #bae6fd;
+      --btn-preset-border: #1e3a5f;
+      --btn-preset-on-bg: #0c4a6e;
+      --btn-preset-on-fg: #e0f2fe;
+      --btn-preset-on-border: #38bdf8;
+      --btn-preset-on-shadow: inset 0 0 12px rgba(56, 189, 248, 0.15);
+      --btn-tiny-bg: #0f1c2e;
+      --btn-tiny-fg: #7dd3fc;
+      --btn-tiny-border: #0369a1;
+      --btn-clear-bg: #0f1c2e;
+      --btn-clear-fg: #94a3b8;
+      --btn-clear-border: #1e3a5f;
+      --kpi-bg: #0a1220;
+      --kpi-border: #1e3a5f;
+      --slider-h: 5px;
+      --slider-thumb: 11px;
+      --slider-track: #0f1c2e;
+      --slider-border: #1e3a5f;
+      --slider-thumb-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
+      --canvas-bg: #0a101c;
+      --canvas-border: #1e3a5f;
+      --canvas-glow-a: rgba(56, 189, 248, 0.1);
+      --canvas-glow-b: rgba(129, 140, 248, 0.08);
+      --food: #67e8f9;
+      --food-glow: rgba(103, 232, 249, 0.5);
+      --agent: #64748b;
+      --agent-hot: #fb7185;
+      --agent-hot-glow: rgba(251, 113, 133, 0.45);
+      --inspector-bg: rgba(13, 21, 36, 0.92);
+      --inspector-border: #38bdf8;
+      --chart-bg: #070b12;
+      --chart-border: #1e3a5f;
+      --chart-pop: #38bdf8;
+      --chart-food: #67e8f9;
+      --chart-hunger: #fb7185;
+      --input-bg: #070b12;
+      --run-bg: #0a1220;
+      --run-border: #1e3a5f;
+      --run-default: #38bdf8;
+      --run-bal: #818cf8;
+      --run-pun: #fb7185;
+      --radius-sm: 0.35rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.65rem;
+      --radius-xl: 0.85rem;
+      --radius-pill: 999px;
+      --shadow-panel: 0 4px 24px rgba(0, 20, 40, 0.35);
+      --shadow-canvas: 0 0 0 1px rgba(56, 189, 248, 0.08);
+      --shadow-btn: 0 0 0 1px rgba(56, 189, 248, 0.25);
+      --title-track: 0.01em;
+    }
+    [data-theme="arctic"] .btn-action {
+      background: linear-gradient(180deg, #1e3a5f, #0f1c2e);
+    }
+
+    /* ========== THEME 4: Soft Biolume ========== */
+    [data-theme="biolume"] {
+      --font: "Nunito", ui-rounded, "Segoe UI", system-ui, sans-serif;
+      --mono: ui-monospace, monospace;
+      --bg: #0b0f14;
+      --panel: #141a24;
+      --panel-raised: #1a2230;
+      --border: #2a3548;
+      --text: #d4dce8;
+      --text-strong: #f8fafc;
+      --muted: #8b9bb4;
+      --accent: #2dd4bf;
+      --accent-strong: #14b8a6;
+      --accent-glow: rgba(45, 212, 191, 0.35);
+      --good: #5eead4;
+      --warn: #f0abfc;
+      --bad: #fda4af;
+      --pin: #e879f9;
+      --pin-bg: #4a044e;
+      --pin-border: #a21caf;
+      --badge-bg: #134e4a;
+      --badge-fg: #99f6e4;
+      --badge-border: #2dd4bf;
+      --speed-bg: #0f141c;
+      --speed-border: #2a3548;
+      --speed-gap: 0.25rem;
+      --speed-pad: 0.25rem 0.35rem;
+      --btn-speed-pad: 0.28rem 0.55rem;
+      --btn-speed-bg: #1a2230;
+      --btn-speed-fg: #8b9bb4;
+      --btn-speed-border: transparent;
+      --btn-speed-on-bg: #134e4a;
+      --btn-speed-on-fg: #ccfbf1;
+      --btn-speed-on-border: #2dd4bf;
+      --btn-speed-on-shadow: 0 0 16px rgba(45, 212, 191, 0.25);
+      --btn-action-pad: 0.35rem 0.85rem;
+      --btn-action-bg: #1a2230;
+      --btn-action-fg: #e2e8f0;
+      --btn-action-border: #3d4f6a;
+      --btn-action-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      --btn-primary-bg: #0f766e;
+      --btn-primary-fg: #f0fdfa;
+      --btn-primary-border: #2dd4bf;
+      --btn-preset-bg: #1a2230;
+      --btn-preset-fg: #d4dce8;
+      --btn-preset-border: transparent;
+      --btn-preset-on-bg: #134e4a;
+      --btn-preset-on-fg: #ccfbf1;
+      --btn-preset-on-border: transparent;
+      --btn-preset-on-shadow: 0 0 0 2px rgba(45, 212, 191, 0.35);
+      --btn-tiny-bg: #1a2230;
+      --btn-tiny-fg: #e879f9;
+      --btn-tiny-border: transparent;
+      --btn-clear-bg: #1a2230;
+      --btn-clear-fg: #8b9bb4;
+      --btn-clear-border: transparent;
+      --kpi-bg: #0f141c;
+      --kpi-border: transparent;
+      --slider-h: 6px;
+      --slider-thumb: 14px;
+      --slider-track: #1a2230;
+      --slider-border: transparent;
+      --slider-thumb-shadow: 0 0 12px rgba(45, 212, 191, 0.55);
+      --canvas-bg: #0e131b;
+      --canvas-border: #2a3548;
+      --canvas-glow-a: rgba(45, 212, 191, 0.12);
+      --canvas-glow-b: rgba(232, 121, 249, 0.08);
+      --food: #f0abfc;
+      --food-glow: rgba(240, 171, 252, 0.5);
+      --agent: #7c8ba1;
+      --agent-hot: #fda4af;
+      --agent-hot-glow: rgba(253, 164, 175, 0.45);
+      --inspector-bg: rgba(20, 26, 36, 0.9);
+      --inspector-border: #2dd4bf;
+      --chart-bg: #0b0f14;
+      --chart-border: transparent;
+      --chart-pop: #2dd4bf;
+      --chart-food: #f0abfc;
+      --chart-hunger: #fda4af;
+      --input-bg: #0f141c;
+      --run-bg: #0f141c;
+      --run-border: transparent;
+      --run-default: #2dd4bf;
+      --run-bal: #a78bfa;
+      --run-pun: #fda4af;
+      --radius-sm: 0.65rem;
+      --radius-md: 0.85rem;
+      --radius-lg: 1rem;
+      --radius-xl: 1.15rem;
+      --radius-pill: 999px;
+      --shadow-panel: 0 8px 28px rgba(0, 0, 0, 0.28);
+      --shadow-canvas: 0 8px 32px rgba(0, 0, 0, 0.35);
+      --shadow-btn: 0 0 0 1px rgba(45, 212, 191, 0.2);
+      --title-track: 0;
+    }
+
+    /* ========== THEME 5: Phosphor Terminal ========== */
+    [data-theme="terminal"] {
+      --font: "IBM Plex Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+      --mono: inherit;
+      --bg: #050805;
+      --panel: #0a120a;
+      --panel-raised: #0f1a0f;
+      --border: #1a3d1a;
+      --text: #9fe89f;
+      --text-strong: #c8ffc8;
+      --muted: #4a7a4a;
+      --accent: #33ff66;
+      --accent-strong: #00cc44;
+      --accent-glow: rgba(51, 255, 102, 0.35);
+      --good: #33ff66;
+      --warn: #b8ff33;
+      --bad: #ff6644;
+      --pin: #66ffaa;
+      --pin-bg: #0a1f0a;
+      --pin-border: #33ff66;
+      --badge-bg: #0a1f0a;
+      --badge-fg: #33ff66;
+      --badge-border: #33ff66;
+      --speed-bg: #050805;
+      --speed-border: #1a3d1a;
+      --speed-gap: 0.15rem;
+      --speed-pad: 0.15rem;
+      --btn-speed-pad: 0.2rem 0.4rem;
+      --btn-speed-bg: transparent;
+      --btn-speed-fg: #4a7a4a;
+      --btn-speed-border: #1a3d1a;
+      --btn-speed-on-bg: #0a1f0a;
+      --btn-speed-on-fg: #33ff66;
+      --btn-speed-on-border: #33ff66;
+      --btn-speed-on-shadow: 0 0 8px rgba(51, 255, 102, 0.25);
+      --btn-action-pad: 0.25rem 0.55rem;
+      --btn-action-bg: transparent;
+      --btn-action-fg: #9fe89f;
+      --btn-action-border: #33ff66;
+      --btn-action-shadow: none;
+      --btn-primary-bg: #0a1f0a;
+      --btn-primary-fg: #33ff66;
+      --btn-primary-border: #33ff66;
+      --btn-preset-bg: transparent;
+      --btn-preset-fg: #4a7a4a;
+      --btn-preset-border: #1a3d1a;
+      --btn-preset-on-bg: #0a1f0a;
+      --btn-preset-on-fg: #33ff66;
+      --btn-preset-on-border: #33ff66;
+      --btn-preset-on-shadow: none;
+      --btn-tiny-bg: transparent;
+      --btn-tiny-fg: #33ff66;
+      --btn-tiny-border: #1a3d1a;
+      --btn-clear-bg: transparent;
+      --btn-clear-fg: #4a7a4a;
+      --btn-clear-border: #1a3d1a;
+      --kpi-bg: #050805;
+      --kpi-border: #1a3d1a;
+      --slider-h: 2px;
+      --slider-thumb: 8px;
+      --slider-track: #0a1f0a;
+      --slider-border: #1a3d1a;
+      --slider-thumb-shadow: 0 0 6px #33ff66;
+      --canvas-bg: #030503;
+      --canvas-border: #1a3d1a;
+      --canvas-glow-a: rgba(51, 255, 102, 0.06);
+      --canvas-glow-b: rgba(51, 255, 102, 0.03);
+      --food: #b8ff33;
+      --food-glow: rgba(184, 255, 51, 0.4);
+      --agent: #3d7a3d;
+      --agent-hot: #ff6644;
+      --agent-hot-glow: rgba(255, 102, 68, 0.4);
+      --inspector-bg: rgba(5, 12, 5, 0.95);
+      --inspector-border: #33ff66;
+      --chart-bg: #030503;
+      --chart-border: #1a3d1a;
+      --chart-pop: #33ff66;
+      --chart-food: #b8ff33;
+      --chart-hunger: #ff6644;
+      --input-bg: #050805;
+      --run-bg: #050805;
+      --run-border: #1a3d1a;
+      --run-default: #33ff66;
+      --run-bal: #66ffaa;
+      --run-pun: #ff6644;
+      --radius-sm: 0;
+      --radius-md: 0;
+      --radius-lg: 0;
+      --radius-xl: 0;
+      --radius-pill: 0;
+      --shadow-panel: none;
+      --shadow-canvas: inset 0 0 60px rgba(0, 40, 0, 0.35);
+      --shadow-btn: none;
+      --title-track: 0.04em;
+    }
+    [data-theme="terminal"] .fake-canvas::after {
+      content: "";
+      pointer-events: none;
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.12) 2px,
+        rgba(0, 0, 0, 0.12) 4px
+      );
+      opacity: 0.35;
+    }
+    [data-theme="terminal"] .app-title { text-transform: uppercase; }
+  </style>
+</head>
+<body data-theme="emerald">
+  <div class="page-wrap">
+    <div class="intro-bar">
+      <h1>0.8.0 Style Options</h1>
+      <span class="badge">Layout F shell</span>
+      <p>
+        Same Tall Command structure (header · left controls · full-height canvas · right trends→history).
+        Five visual systems: colors, buttons, radius, type. Pick one or mix tokens later into the final design doc.
+      </p>
+    </div>
+
+    <div class="theme-switcher" id="theme-switcher">
+      <button type="button" class="theme-btn active" data-theme="emerald" onclick="setTheme('emerald')">
+        <span class="t-name">1 · Lab Emerald</span>
+        <span class="t-desc">Refined current · soft slate + green</span>
+        <span class="swatches">
+          <span class="swatch" style="background:#0a0c10"></span>
+          <span class="swatch" style="background:#11151f"></span>
+          <span class="swatch" style="background:#34d399"></span>
+          <span class="swatch" style="background:#fbbf24"></span>
+        </span>
+      </button>
+      <button type="button" class="theme-btn" data-theme="amber" onclick="setTheme('amber')">
+        <span class="t-name">2 · Cyber Amber</span>
+        <span class="t-desc">Warm dark · sharp segmented controls</span>
+        <span class="swatches">
+          <span class="swatch" style="background:#0c0a09"></span>
+          <span class="swatch" style="background:#1c1410"></span>
+          <span class="swatch" style="background:#fbbf24"></span>
+          <span class="swatch" style="background:#ef4444"></span>
+        </span>
+      </button>
+      <button type="button" class="theme-btn" data-theme="arctic" onclick="setTheme('arctic')">
+        <span class="t-name">3 · Arctic Ice</span>
+        <span class="t-desc">Cool blue · glassier · soft glow</span>
+        <span class="swatches">
+          <span class="swatch" style="background:#070b12"></span>
+          <span class="swatch" style="background:#0d1524"></span>
+          <span class="swatch" style="background:#38bdf8"></span>
+          <span class="swatch" style="background:#818cf8"></span>
+        </span>
+      </button>
+      <button type="button" class="theme-btn" data-theme="biolume" onclick="setTheme('biolume')">
+        <span class="t-name">4 · Soft Biolume</span>
+        <span class="t-desc">Rounded · teal + magenta glow</span>
+        <span class="swatches">
+          <span class="swatch" style="background:#0b0f14"></span>
+          <span class="swatch" style="background:#141a24"></span>
+          <span class="swatch" style="background:#2dd4bf"></span>
+          <span class="swatch" style="background:#e879f9"></span>
+        </span>
+      </button>
+      <button type="button" class="theme-btn" data-theme="terminal" onclick="setTheme('terminal')">
+        <span class="t-name">5 · Phosphor Terminal</span>
+        <span class="t-desc">Mono CRT · zero radius · scanlines</span>
+        <span class="swatches">
+          <span class="swatch" style="background:#050805"></span>
+          <span class="swatch" style="background:#0a120a"></span>
+          <span class="swatch" style="background:#33ff66"></span>
+          <span class="swatch" style="background:#ff6644"></span>
+        </span>
+      </button>
+    </div>
+
+    <div class="demo-row">
+      <button type="button" class="btn btn-action" id="btn-pin" onclick="togglePin()">Simulate pin #42</button>
+      <span id="pin-hint" style="font-size:0.7rem;color:var(--muted)">History keeps a min floor when pinned</span>
+    </div>
+
+    <!-- Layout F mock -->
+    <div class="app-shell">
+      <header class="app-header">
+        <span class="app-title">Evol-Econ Sim</span>
+        <span class="phase">Phase 0 · Survive</span>
+        <span class="badge">v0.8.0-layout-dashboard</span>
+        <div class="hdr-right">
+          <div class="speed-group" aria-label="Speed">
+            <span class="speed-label">Speed</span>
+            <span class="btn btn-speed on">1×</span>
+            <span class="btn btn-speed">2×</span>
+            <span class="btn btn-speed">5×</span>
+            <span class="btn btn-speed">10×</span>
+          </div>
+          <span class="btn btn-action">Pause</span>
+          <span class="btn btn-action primary">Reset</span>
+        </div>
+      </header>
+
+      <div class="app-body">
+        <!-- Left -->
+        <div class="col">
+          <div class="col-panel flex-1 overflow-auto scroll-thin" style="flex:1">
+            <div class="section-title">Controls</div>
+            <div class="label-row"><span>Initial Agents</span><span class="val">100</span></div>
+            <div class="slider"></div>
+            <div class="label-row"><span>Hunger Rate</span><span class="val">0.055</span></div>
+            <div class="slider"></div>
+            <div class="label-row"><span>Food Spawn</span><span class="val">8</span></div>
+            <div class="slider"></div>
+            <div class="section-title" style="margin-top:0.4rem">Presets</div>
+            <div class="preset-row">
+              <span class="btn btn-preset">Lenient</span>
+              <span class="btn btn-preset on">Balanced</span>
+              <span class="btn btn-preset">Punishing</span>
+            </div>
+            <div class="section-title">Metrics</div>
+            <div class="kpi-grid">
+              <div class="kpi">Alive <b class="g">47</b></div>
+              <div class="kpi">Deaths <b class="b">53</b></div>
+              <div class="kpi">Food <b class="w">128</b></div>
+              <div class="kpi">Avg H <b class="b">62</b></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div class="col">
+          <div class="fake-canvas">
+            <span class="canvas-label">Canvas</span>
+            <span class="food" style="left:18%;top:22%"></span>
+            <span class="food" style="left:42%;top:50%"></span>
+            <span class="food" style="left:68%;top:30%"></span>
+            <span class="food" style="left:55%;top:70%"></span>
+            <span class="dot agent" style="width:7px;height:7px;left:26%;top:38%"></span>
+            <span class="dot agent hot" style="width:9px;height:9px;left:48%;top:44%"></span>
+            <span class="dot agent" style="width:6px;height:6px;left:62%;top:58%"></span>
+            <span class="dot agent" style="width:8px;height:8px;left:72%;top:28%"></span>
+            <div class="inspector">
+              <div class="inspector-head">
+                <div class="sel">SELECTED · #42</div>
+                <span class="pin">Pin</span>
+              </div>
+              <div style="opacity:0.85">Hunger 61 · Food 12</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="col">
+          <div class="col-panel" id="right-trends">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.35rem">
+              <div class="section-title" style="margin:0">Trends</div>
+              <div class="search-row">
+                <input readonly value="ID" />
+                <span class="btn btn-tiny">Pin</span>
+              </div>
+            </div>
+            <div class="chart-row">
+              <div class="chart-label pop">Population</div>
+              <div class="spark"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="var(--chart-pop)" stroke-width="1.5" points="0,8 20,12 40,18 60,26 80,30 100,34"/></svg></div>
+            </div>
+            <div class="chart-row">
+              <div class="chart-label food">Total Food</div>
+              <div class="spark"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="var(--chart-food)" stroke-width="1.5" points="0,30 25,22 50,24 75,14 100,10"/></svg></div>
+            </div>
+            <div class="chart-row">
+              <div class="chart-label hunger">Avg Hunger</div>
+              <div class="spark"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="var(--chart-hunger)" stroke-width="1.5" points="0,32 30,26 60,16 100,8"/></svg></div>
+            </div>
+            <div class="pinned-block">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem">
+                <span class="chart-label pin" style="margin:0">Pinned #42 (alive)</span>
+                <span class="btn btn-tiny">Remove</span>
+              </div>
+              <div class="chart-label pin">Hunger</div>
+              <div class="spark pin-h"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="var(--pin)" stroke-width="1.5" points="0,34 30,24 60,14 100,8"/></svg></div>
+              <div class="chart-label pin">Food carried</div>
+              <div class="spark pin-h"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="var(--pin)" stroke-width="1.5" points="0,28 40,20 70,14 100,10"/></svg></div>
+            </div>
+          </div>
+          <div class="col-panel" id="right-history">
+            <div class="section-title">History</div>
+            <div class="session-kpi">
+              <div style="color:var(--muted);font-size:0.58rem;margin-bottom:0.2rem">Session Overview</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.25rem">
+                <div>Runs <b style="color:var(--text-strong)">12</b></div>
+                <div>Ext <b style="color:var(--text-strong)">9/12</b></div>
+                <div>Best <b style="color:var(--good)">142s</b></div>
+              </div>
+            </div>
+            <div style="font-size:0.6rem;color:var(--muted)">Best longest survival</div>
+            <div class="best">142s</div>
+            <div class="scroll-thin" style="flex:1;overflow:auto;min-height:0">
+              <div class="run-card">#12 · 87s · bal · alive 0</div>
+              <div class="run-card bal">#11 · 54s · bal · alive 2</div>
+              <div class="run-card pun">#10 · 31s · punish · alive 0</div>
+              <div class="run-card">#9 · 102s · lenient · alive 14</div>
+              <div class="run-card bal">#8 · 44s · bal · alive 0</div>
+            </div>
+            <span class="btn btn-clear">Clear Runs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="detail" id="detail">
+      <!-- filled by JS -->
+    </section>
+
+    <p class="footer-note">
+      design-docs/0.8.0-style-options.html · Layout F · style exploration only ·
+      pin floor fix also applied in 0.8.0-layout-F-tall-command.html
+    </p>
+  </div>
+
+  <script>
+    const DETAILS = {
+      emerald: {
+        title: '1 · Lab Emerald',
+        pitch: 'Closest to today’s sim: slate panels, emerald accent, quiet chrome. Lowest surprise when shipping 0.8.0 — polish, not rebrand.',
+        pros: ['Familiar to you already', 'High readability', 'Safe default for Phase 0'],
+        cons: ['Least “wow”', 'Easy to look generic'],
+        mix: 'Keep structure; steal Biolume radius or Arctic button glow if you want a lift.'
+      },
+      amber: {
+        title: '2 · Cyber Amber',
+        pitch: 'Warm black + amber energy. Segmented speed control (joined toggles), sharper corners, high-contrast active states. Feels like a control board.',
+        pros: ['Strong identity', 'Active buttons read instantly', 'Food color matches accent'],
+        cons: ['Warmer cast may tire on long sessions', 'Less “nature sim,” more “ops UI”'],
+        mix: 'Take segmented speed bar into Emerald or Arctic.'
+      },
+      arctic: {
+        title: '3 · Arctic Ice',
+        pitch: 'Cool blue lab. Softer radii, cyan glow on active controls, gradient action buttons. Clean “instrument panel” without going neon-green CRT.',
+        pros: ['Modern / premium', 'Great for charts & KPIs', 'Pairs with future trait histograms'],
+        cons: ['Slightly colder emotionally', 'More CSS tokens to maintain'],
+        mix: 'Glow on speed “on” state + slightly larger radius into Emerald.'
+      },
+      biolume: {
+        title: '4 · Soft Biolume',
+        pitch: 'Rounded, soft shadows, teal primary + magenta pin/food. Feels alive — good for organism metaphor without terminal nostalgia.',
+        pros: ['Friendliest / most distinctive', 'Pin color pops', 'Big touch targets'],
+        cons: ['Can feel “app-y” vs scientific', 'Rounded everything softens density'],
+        mix: 'Use rounded pills + pin magenta with Emerald base.'
+      },
+      terminal: {
+        title: '5 · Phosphor Terminal',
+        pitch: 'Monospace phosphor green, zero radius, scanline canvas. Maximum character — great for demos, polarizing for daily tuning.',
+        pros: ['Unforgettable', 'On-theme for “sim” culture', 'Forces visual hierarchy via type'],
+        cons: ['Harder long-read comfort', 'Square UI feels dated to some', 'Accessibility of pure green-on-black'],
+        mix: 'Maybe only a “CRT mode” toggle later — not default.'
+      }
+    };
+
+    let pinned = false;
+
+    function setTheme(name) {
+      document.body.setAttribute('data-theme', name);
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === name);
+      });
+      const d = DETAILS[name];
+      document.getElementById('detail').innerHTML = `
+        <h2>${d.title}</h2>
+        <p>${d.pitch}</p>
+        <div class="detail-grid">
+          <div><h3>Pros</h3><ul>${d.pros.map(x => `<li>${x}</li>`).join('')}</ul></div>
+          <div><h3>Cons</h3><ul>${d.cons.map(x => `<li>${x}</li>`).join('')}</ul></div>
+          <div><h3>Mix tip</h3><ul><li>${d.mix}</li></ul></div>
+        </div>`;
+      try { localStorage.setItem('tes-0.8.0-style', name); } catch (_) {}
+    }
+
+    function togglePin() {
+      pinned = !pinned;
+      document.getElementById('right-trends').classList.toggle('pinned', pinned);
+      const btn = document.getElementById('btn-pin');
+      const hint = document.getElementById('pin-hint');
+      btn.textContent = pinned ? 'Simulate unpin #42' : 'Simulate pin #42';
+      hint.textContent = pinned
+        ? 'Pinned charts in trends (scroll) · history min floor intact'
+        : 'History keeps a min floor when pinned';
+    }
+
+    try {
+      const saved = localStorage.getItem('tes-0.8.0-style');
+      setTheme(saved && DETAILS[saved] ? saved : 'emerald');
+    } catch (_) {
+      setTheme('emerald');
+    }
+  </script>
+</body>
+</html>

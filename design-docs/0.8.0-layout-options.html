@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.8.0 Layout Options — trait-evolution-sim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --panel: #11151f;
+      --panel2: #0f141c;
+      --border: #1e2d3d;
+      --border2: #334155;
+      --muted: #94a3b8;
+      --text: #c5d1e0;
+      --emerald: #6ee7b7;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border2);
+      border-radius: 0.5rem;
+    }
+    .region-label {
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .kpi {
+      background: #0b1220;
+      border: 1px solid #1e293b;
+      border-radius: 0.375rem;
+      padding: 0.35rem 0.5rem;
+    }
+    .fake-canvas {
+      background:
+        radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.08), transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(251, 191, 36, 0.06), transparent 35%),
+        #11151f;
+      border: 1px solid #1e2d3d;
+      border-radius: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .dot {
+      position: absolute;
+      border-radius: 9999px;
+    }
+    .food {
+      background: #fbbf24;
+      width: 5px;
+      height: 5px;
+      border-radius: 9999px;
+      position: absolute;
+    }
+    .spark {
+      height: 40px;
+      border-radius: 0.25rem;
+      background: #020617;
+      border: 1px solid #1e293b;
+      position: relative;
+      overflow: hidden;
+    }
+    .spark svg { width: 100%; height: 100%; display: block; }
+    .opt-btn {
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #cbd5e1;
+      border-radius: 0.5rem;
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+    .opt-btn:hover { border-color: #64748b; background: #1e2937; }
+    .opt-btn.active {
+      border-color: #34d399;
+      background: #064e3b;
+      color: #d1fae5;
+      box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.35);
+    }
+    .stage-frame {
+      background: linear-gradient(180deg, #0c1018 0%, #0a0c10 100%);
+      border: 1px solid #1e293b;
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+    }
+    .tag {
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 9999px;
+      background: #1e2937;
+      color: #94a3b8;
+      border: 1px solid #334155;
+    }
+    .tag-rec {
+      background: #064e3b;
+      color: #a7f3d0;
+      border-color: #059669;
+    }
+    .mix-box:checked + span {
+      color: #6ee7b7;
+    }
+    .inspector-chip {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 140px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid #475569;
+      border-radius: 0.75rem;
+      padding: 0.4rem 0.5rem;
+      font-size: 10px;
+      backdrop-filter: blur(6px);
+    }
+    .scroll-thin {
+      scrollbar-width: thin;
+      scrollbar-color: #334155 transparent;
+    }
+    .section-title {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 0.35rem;
+    }
+    .slider-fake {
+      height: 4px;
+      background: #1e2937;
+      border-radius: 9999px;
+      position: relative;
+    }
+    .slider-fake::after {
+      content: "";
+      position: absolute;
+      left: 55%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 9999px;
+      background: #34d399;
+    }
+    .run-card {
+      border-left: 3px solid #34d399;
+      background: #0b1220;
+      border-top: 1px solid #1e293b;
+      border-right: 1px solid #1e293b;
+      border-bottom: 1px solid #1e293b;
+      border-radius: 0.25rem;
+      padding: 0.35rem 0.45rem;
+      font-size: 10px;
+      margin-bottom: 0.3rem;
+    }
+    .run-card.punish { border-left-color: #f87171; }
+    .run-card.bal { border-left-color: #60a5fa; }
+    .layout-hidden { display: none !important; }
+    .today-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 0.7fr;
+      gap: 0.5rem;
+      max-width: 420px;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Sticky header -->
+  <header class="sticky top-0 z-50 border-b border-slate-800 bg-[#0a0c10]/95 backdrop-blur">
+    <div class="max-w-[1400px] mx-auto px-4 py-3 flex flex-wrap items-center gap-3">
+      <div>
+        <div class="text-lg font-semibold text-white tracking-tight">0.8.0 Layout Options</div>
+        <div class="text-xs text-slate-500">Exploration mockups · pick one or mix · not the final design doc</div>
+      </div>
+      <div class="ml-auto flex items-center gap-2 text-[10px]">
+        <span class="tag">Phase 0 · Survive</span>
+        <span class="tag">from v0.7.0-run-compare</span>
+        <span class="tag tag-rec">wireframes only</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1400px] mx-auto px-4 py-6 space-y-6">
+
+    <!-- Intro -->
+    <section class="panel p-4">
+      <p class="text-sm text-slate-300 leading-relaxed max-w-4xl">
+        Today the sim lives in a fixed canvas + <strong class="text-slate-100">tabbed sidebar</strong> inside a narrow page.
+        These five layouts open that space into a real lab dashboard. Same regions in every option so you can compare fairly:
+        <span class="text-emerald-300/90">Header · Canvas · Controls · Metrics · Trends · History</span>.
+        Tabs can return later for compact / mobile modes.
+      </p>
+      <div class="mt-3 flex flex-wrap gap-4 items-start">
+        <div>
+          <div class="section-title">Today (0.7.0)</div>
+          <div class="today-grid">
+            <div class="fake-canvas h-20 flex items-center justify-center text-[10px] text-slate-500">Canvas 800×600</div>
+            <div class="panel p-2 text-[10px] text-slate-400 space-y-1">
+              <div class="text-emerald-300/80">Tabs</div>
+              <div>Controls | Metrics</div>
+              <div>Trends | History</div>
+              <div class="text-slate-600">one panel at a time</div>
+            </div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 max-w-sm pt-5">
+          Goal for 0.8.0: use wide screens, keep observability visible while the sim runs, reserve tabs for focus/compact modes later.
+        </div>
+      </div>
+    </section>
+
+    <!-- Option switcher -->
+    <section>
+      <div class="section-title mb-2">Choose a layout to preview</div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2" id="opt-switcher">
+        <button type="button" class="opt-btn active" data-opt="A" onclick="showOption('A')">
+          <div class="text-[10px] text-emerald-300/80 mb-0.5">A · recommended</div>
+          <div class="text-sm font-medium text-white">Lab Bench</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">Always-on rail + trends under canvas</div>
+        </button>
+        <button type="button" class="opt-btn" data-opt="B" onclick="showOption('B')">
+          <div class="text-[10px] text-slate-500 mb-0.5">B</div>
+          <div class="text-sm font-medium text-white">Command Center</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">KPI strip · controls · log · trends dock</div>
+        </button>
+        <button type="button" class="opt-btn" data-opt="C" onclick="showOption('C')">
+          <div class="text-[10px] text-slate-500 mb-0.5">C</div>
+          <div class="text-sm font-medium text-white">Observatory</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">Canvas-first · HUD · bottom sheet</div>
+        </button>
+        <button type="button" class="opt-btn" data-opt="D" onclick="showOption('D')">
+          <div class="text-[10px] text-slate-500 mb-0.5">D</div>
+          <div class="text-sm font-medium text-white">Quad Analysis</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">Equal 2×2 sim + analysis</div>
+        </button>
+        <button type="button" class="opt-btn" data-opt="E" onclick="showOption('E')">
+          <div class="text-[10px] text-slate-500 mb-0.5">E · lowest risk</div>
+          <div class="text-sm font-medium text-white">Stacked Rail</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">No tabs · same mental model</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- Stage -->
+    <section class="stage-frame">
+      <div class="flex items-center justify-between mb-2 px-1">
+        <div class="text-xs text-slate-400">
+          Preview: <span id="stage-name" class="text-emerald-300 font-medium">A — Lab Bench</span>
+        </div>
+        <div class="text-[10px] text-slate-600">Decorative mock · not interactive sim</div>
+      </div>
+
+      <!-- ===================== A LAB BENCH ===================== -->
+      <div id="layout-A" class="layout-panel">
+        <div class="panel p-2 mb-2 flex items-center gap-3 text-xs">
+          <span class="region-label">Header</span>
+          <span class="font-semibold text-white">Evol-Econ Sim</span>
+          <span class="text-slate-500">Phase 0 · Survive</span>
+          <span class="px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.8.0?</span>
+          <div class="ml-auto flex gap-1">
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">1× 2× 5× 10×</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Pause</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Reset</span>
+          </div>
+        </div>
+        <div class="grid gap-2" style="grid-template-columns: 1fr 280px;">
+          <div class="space-y-2">
+            <div class="fake-canvas h-[340px]" aria-label="Canvas">
+              <span class="absolute top-2 left-2 region-label text-slate-500">Canvas</span>
+              <span class="food" style="left:18%;top:22%"></span>
+              <span class="food" style="left:42%;top:55%"></span>
+              <span class="food" style="left:70%;top:30%"></span>
+              <span class="food" style="left:55%;top:70%"></span>
+              <span class="dot bg-slate-400" style="width:7px;height:7px;left:25%;top:40%"></span>
+              <span class="dot bg-rose-400" style="width:8px;height:8px;left:48%;top:28%"></span>
+              <span class="dot bg-slate-400" style="width:6px;height:6px;left:62%;top:58%"></span>
+              <span class="dot bg-slate-500" style="width:9px;height:9px;left:35%;top:65%"></span>
+              <span class="dot bg-slate-400" style="width:6px;height:6px;left:78%;top:45%"></span>
+              <div class="inspector-chip">
+                <div class="text-emerald-300 text-[9px] font-semibold tracking-wider">SELECTED · #42</div>
+                <div class="text-slate-400 mt-0.5">Hunger 61 · Food 12</div>
+                <div class="text-[9px] text-violet-300 mt-1">Pin to trends</div>
+              </div>
+            </div>
+            <div class="panel p-2">
+              <div class="section-title">Trends <span class="normal-case tracking-normal text-slate-600">(full width under canvas)</span></div>
+              <div class="grid grid-cols-3 gap-2">
+                <div>
+                  <div class="text-[9px] text-emerald-400 mb-0.5">Population</div>
+                  <div class="spark"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#34d399" stroke-width="1.5" points="0,8 15,10 30,12 45,20 60,28 75,30 100,34"/></svg></div>
+                </div>
+                <div>
+                  <div class="text-[9px] text-yellow-400 mb-0.5">Total Food</div>
+                  <div class="spark"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fbbf24" stroke-width="1.5" points="0,30 20,22 40,25 60,15 80,18 100,12"/></svg></div>
+                </div>
+                <div>
+                  <div class="text-[9px] text-rose-400 mb-0.5">Avg Hunger</div>
+                  <div class="spark"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fb7185" stroke-width="1.5" points="0,32 25,28 50,20 75,14 100,10"/></svg></div>
+                </div>
+              </div>
+              <div class="mt-2 panel p-1.5 border-violet-900/50">
+                <div class="text-[9px] text-violet-400">Pinned agent trends (slot)</div>
+                <div class="grid grid-cols-2 gap-2 mt-1">
+                  <div class="spark h-8 opacity-60"></div>
+                  <div class="spark h-8 opacity-60"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel p-2 flex flex-col gap-2 max-h-[480px] overflow-auto scroll-thin">
+            <div>
+              <div class="section-title">Controls</div>
+              <div class="space-y-1.5 text-[10px]">
+                <div class="flex justify-between"><span>Initial Agents</span><span class="text-emerald-300 font-mono">100</span></div>
+                <div class="slider-fake"></div>
+                <div class="flex justify-between"><span>Hunger Rate</span><span class="text-emerald-300 font-mono">0.055</span></div>
+                <div class="slider-fake"></div>
+                <div class="flex justify-between"><span>Food Spawn</span><span class="text-emerald-300 font-mono">8</span></div>
+                <div class="slider-fake"></div>
+                <div class="flex gap-1 mt-1">
+                  <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">Lenient</span>
+                  <span class="flex-1 text-center py-0.5 bg-emerald-900/50 text-emerald-300 rounded">Balanced</span>
+                  <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">Punishing</span>
+                </div>
+                <div class="text-slate-500">Advanced ▼</div>
+              </div>
+            </div>
+            <div class="border-t border-slate-800 pt-2">
+              <div class="section-title">Metrics</div>
+              <div class="grid grid-cols-2 gap-1 text-[10px]">
+                <div class="kpi">Alive <span class="text-emerald-300 font-mono float-right">47</span></div>
+                <div class="kpi">Deaths <span class="text-rose-300 font-mono float-right">53</span></div>
+                <div class="kpi">Food <span class="text-yellow-300 font-mono float-right">128</span></div>
+                <div class="kpi">Avg H <span class="text-rose-300 font-mono float-right">62</span></div>
+              </div>
+            </div>
+            <div class="border-t border-slate-800 pt-2 flex-1">
+              <div class="section-title">History</div>
+              <div class="kpi mb-1.5 text-[10px]">
+                <div class="text-slate-500 mb-0.5">Session Overview</div>
+                <div class="grid grid-cols-3 gap-1">
+                  <div>Runs <b class="text-white">12</b></div>
+                  <div>Ext <b class="text-white">9/12</b></div>
+                  <div>Best <b class="text-emerald-300">142s</b></div>
+                </div>
+              </div>
+              <div class="run-card">#12 · 87s · bal · alive 0</div>
+              <div class="run-card bal">#11 · 54s · bal · alive 2</div>
+              <div class="run-card punish">#10 · 31s · punish · alive 0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== B COMMAND CENTER ===================== -->
+      <div id="layout-B" class="layout-panel layout-hidden">
+        <div class="panel p-2 mb-2 flex items-center gap-3 text-xs">
+          <span class="region-label">Header</span>
+          <span class="font-semibold text-white">Evol-Econ Sim</span>
+          <span class="px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.8.0?</span>
+          <div class="ml-auto flex gap-1">
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Pause</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Reset</span>
+          </div>
+        </div>
+        <!-- KPI strip -->
+        <div class="panel p-2 mb-2">
+          <div class="section-title">Metrics · top KPI strip</div>
+          <div class="grid grid-cols-6 gap-2 text-[11px]">
+            <div class="kpi text-center">Alive<br><span class="text-lg font-mono text-emerald-300">47</span></div>
+            <div class="kpi text-center">Deaths<br><span class="text-lg font-mono text-rose-300">53</span></div>
+            <div class="kpi text-center">Food<br><span class="text-lg font-mono text-yellow-300">128</span></div>
+            <div class="kpi text-center">Avg Hunger<br><span class="text-lg font-mono text-rose-300">62</span></div>
+            <div class="kpi text-center">Peak Pop<br><span class="text-lg font-mono text-white">100</span></div>
+            <div class="kpi text-center">Run time<br><span class="text-lg font-mono text-white">1:24</span></div>
+          </div>
+        </div>
+        <div class="grid gap-2 mb-2" style="grid-template-columns: 200px 1fr 240px;">
+          <div class="panel p-2">
+            <div class="section-title">Controls</div>
+            <div class="space-y-1.5 text-[10px]">
+              <div class="flex justify-between"><span>Agents</span><span class="text-emerald-300 font-mono">100</span></div>
+              <div class="slider-fake"></div>
+              <div class="flex justify-between"><span>Hunger</span><span class="text-emerald-300 font-mono">0.055</span></div>
+              <div class="slider-fake"></div>
+              <div class="flex justify-between"><span>Food Δ</span><span class="text-emerald-300 font-mono">8</span></div>
+              <div class="slider-fake"></div>
+              <div class="flex flex-col gap-0.5 mt-1">
+                <span class="text-center py-0.5 bg-slate-800 rounded">Lenient</span>
+                <span class="text-center py-0.5 bg-emerald-900/50 text-emerald-300 rounded">Balanced</span>
+                <span class="text-center py-0.5 bg-slate-800 rounded">Punishing</span>
+              </div>
+              <div class="flex gap-0.5 mt-1 text-[9px]">
+                <span class="flex-1 text-center py-0.5 bg-emerald-900/40 text-emerald-300 rounded">1×</span>
+                <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">2×</span>
+                <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">5×</span>
+                <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">10×</span>
+              </div>
+              <div class="text-slate-500">Advanced ▼</div>
+            </div>
+          </div>
+          <div class="fake-canvas h-[280px]">
+            <span class="absolute top-2 left-2 region-label">Canvas</span>
+            <span class="food" style="left:22%;top:25%"></span>
+            <span class="food" style="left:60%;top:40%"></span>
+            <span class="food" style="left:40%;top:70%"></span>
+            <span class="dot bg-slate-400" style="width:7px;height:7px;left:30%;top:35%"></span>
+            <span class="dot bg-rose-400" style="width:8px;height:8px;left:55%;top:50%"></span>
+            <span class="dot bg-slate-400" style="width:6px;height:6px;left:72%;top:28%"></span>
+            <div class="inspector-chip">
+              <div class="text-emerald-300 text-[9px] font-semibold">SELECTED · #7</div>
+              <div class="text-slate-400">Hunger 88 · Food 3</div>
+            </div>
+          </div>
+          <div class="panel p-2 overflow-auto scroll-thin max-h-[280px]">
+            <div class="section-title">History · session log</div>
+            <div class="kpi mb-1.5 text-[10px]">
+              Runs 12 · Ext 9/12 · Best 142s
+            </div>
+            <div class="run-card">#12 · 87s · bal</div>
+            <div class="run-card bal">#11 · 54s · bal</div>
+            <div class="run-card punish">#10 · 31s · punish</div>
+            <div class="run-card">#9 · 102s · lenient</div>
+            <div class="run-card bal">#8 · 44s · bal</div>
+          </div>
+        </div>
+        <div class="panel p-2">
+          <div class="section-title">Trends · bottom dock (full width)</div>
+          <div class="grid grid-cols-4 gap-2">
+            <div>
+              <div class="text-[9px] text-emerald-400 mb-0.5">Population</div>
+              <div class="spark"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#34d399" stroke-width="1.5" points="0,8 20,12 40,18 60,26 80,30 100,34"/></svg></div>
+            </div>
+            <div>
+              <div class="text-[9px] text-yellow-400 mb-0.5">Total Food</div>
+              <div class="spark"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fbbf24" stroke-width="1.5" points="0,28 25,20 50,22 75,14 100,10"/></svg></div>
+            </div>
+            <div>
+              <div class="text-[9px] text-rose-400 mb-0.5">Avg Hunger</div>
+              <div class="spark"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fb7185" stroke-width="1.5" points="0,30 30,24 60,16 100,8"/></svg></div>
+            </div>
+            <div>
+              <div class="text-[9px] text-violet-400 mb-0.5">Pinned (optional)</div>
+              <div class="spark opacity-50"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== C OBSERVATORY ===================== -->
+      <div id="layout-C" class="layout-panel layout-hidden">
+        <div class="panel p-2 mb-2 flex items-center gap-3 text-xs">
+          <span class="region-label">Header</span>
+          <span class="font-semibold text-white">Evol-Econ Sim</span>
+          <span class="text-slate-500">Observatory mode</span>
+          <span class="px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.8.0?</span>
+          <div class="ml-auto flex gap-1">
+            <span class="px-2 py-0.5 bg-emerald-900/40 text-emerald-300 rounded text-[10px]">Controls ◀ open</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">1×</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Pause</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Reset</span>
+          </div>
+        </div>
+        <div class="grid gap-2 mb-2" style="grid-template-columns: 200px 1fr;">
+          <div class="panel p-2 border-emerald-900/40">
+            <div class="section-title">Controls · drawer</div>
+            <div class="space-y-1.5 text-[10px]">
+              <div class="flex justify-between"><span>Agents</span><span class="text-emerald-300 font-mono">100</span></div>
+              <div class="slider-fake"></div>
+              <div class="flex justify-between"><span>Hunger</span><span class="text-emerald-300 font-mono">0.055</span></div>
+              <div class="slider-fake"></div>
+              <div class="flex justify-between"><span>Food Δ</span><span class="text-emerald-300 font-mono">8</span></div>
+              <div class="slider-fake"></div>
+              <div class="flex gap-0.5 mt-1 text-[9px]">
+                <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">L</span>
+                <span class="flex-1 text-center py-0.5 bg-emerald-900/50 text-emerald-300 rounded">B</span>
+                <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">P</span>
+              </div>
+              <div class="text-slate-500 mt-2">Can collapse to icon rail</div>
+            </div>
+          </div>
+          <div class="fake-canvas h-[360px]">
+            <span class="absolute top-2 left-2 region-label">Canvas · dominant</span>
+            <!-- HUD metrics chips -->
+            <div class="absolute top-2 right-2 flex flex-wrap gap-1 justify-end max-w-[70%]" aria-label="Metrics HUD">
+              <span class="kpi text-[10px]">Alive <b class="text-emerald-300">47</b></span>
+              <span class="kpi text-[10px]">Deaths <b class="text-rose-300">53</b></span>
+              <span class="kpi text-[10px]">Food <b class="text-yellow-300">128</b></span>
+              <span class="kpi text-[10px]">Avg H <b class="text-rose-300">62</b></span>
+            </div>
+            <span class="food" style="left:15%;top:40%"></span>
+            <span class="food" style="left:50%;top:20%"></span>
+            <span class="food" style="left:75%;top:55%"></span>
+            <span class="food" style="left:35%;top:70%"></span>
+            <span class="dot bg-slate-400" style="width:8px;height:8px;left:28%;top:45%"></span>
+            <span class="dot bg-rose-400" style="width:9px;height:9px;left:58%;top:35%"></span>
+            <span class="dot bg-slate-400" style="width:6px;height:6px;left:70%;top:62%"></span>
+            <span class="dot bg-slate-500" style="width:7px;height:7px;left:40%;top:25%"></span>
+            <div class="inspector-chip" style="bottom:12px;right:12px;">
+              <div class="text-emerald-300 text-[9px] font-semibold">SELECTED · #19</div>
+              <div class="text-slate-400">Hunger 44 · Food 22</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel p-2">
+          <div class="section-title">Bottom sheet · Trends | History</div>
+          <div class="grid gap-2" style="grid-template-columns: 1.4fr 1fr;">
+            <div>
+              <div class="text-[9px] text-slate-500 mb-1">Trends</div>
+              <div class="grid grid-cols-3 gap-1">
+                <div class="spark h-12"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#34d399" stroke-width="1.5" points="0,10 40,18 70,28 100,32"/></svg></div>
+                <div class="spark h-12"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fbbf24" stroke-width="1.5" points="0,28 50,18 100,12"/></svg></div>
+                <div class="spark h-12"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fb7185" stroke-width="1.5" points="0,30 50,18 100,8"/></svg></div>
+              </div>
+            </div>
+            <div>
+              <div class="text-[9px] text-slate-500 mb-1">History</div>
+              <div class="flex gap-1">
+                <div class="run-card flex-1 mb-0">#12 · 87s</div>
+                <div class="run-card bal flex-1 mb-0">#11 · 54s</div>
+                <div class="run-card punish flex-1 mb-0">#10 · 31s</div>
+              </div>
+              <div class="kpi mt-1 text-[10px]">Session · Runs 12 · Best 142s</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== D QUAD ANALYSIS ===================== -->
+      <div id="layout-D" class="layout-panel layout-hidden">
+        <div class="panel p-2 mb-2 flex items-center gap-3 text-xs">
+          <span class="region-label">Header</span>
+          <span class="font-semibold text-white">Evol-Econ Sim</span>
+          <span class="text-slate-500">Quad Analysis</span>
+          <span class="px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.8.0?</span>
+          <div class="ml-auto flex gap-1">
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">1× 2× 5× 10×</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Pause</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Reset</span>
+          </div>
+        </div>
+        <div class="grid gap-2" style="grid-template-columns: 1fr 1fr; grid-template-rows: 260px 220px;">
+          <!-- TL Canvas -->
+          <div class="fake-canvas h-full min-h-[260px]">
+            <span class="absolute top-2 left-2 region-label">Canvas</span>
+            <span class="food" style="left:20%;top:30%"></span>
+            <span class="food" style="left:65%;top:50%"></span>
+            <span class="dot bg-slate-400" style="width:7px;height:7px;left:40%;top:40%"></span>
+            <span class="dot bg-rose-400" style="width:8px;height:8px;left:55%;top:60%"></span>
+            <div class="inspector-chip">
+              <div class="text-emerald-300 text-[9px] font-semibold">#3</div>
+              <div class="text-slate-400">H 55 · F 9</div>
+            </div>
+          </div>
+          <!-- TR Trends -->
+          <div class="panel p-2 h-full overflow-auto scroll-thin">
+            <div class="section-title">Trends · wide analysis pane</div>
+            <div class="space-y-2">
+              <div>
+                <div class="text-[9px] text-emerald-400">Population</div>
+                <div class="spark h-14"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#34d399" stroke-width="1.8" points="0,6 15,8 30,10 45,18 60,26 75,30 100,34"/></svg></div>
+              </div>
+              <div>
+                <div class="text-[9px] text-yellow-400">Total Food</div>
+                <div class="spark h-14"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fbbf24" stroke-width="1.8" points="0,32 20,24 40,26 60,14 80,16 100,10"/></svg></div>
+              </div>
+              <div>
+                <div class="text-[9px] text-rose-400">Avg Hunger</div>
+                <div class="spark h-14"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fb7185" stroke-width="1.8" points="0,34 30,26 60,14 100,6"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <!-- BL Controls + Metrics -->
+          <div class="panel p-2 h-full overflow-auto scroll-thin">
+            <div class="grid grid-cols-2 gap-3 h-full">
+              <div>
+                <div class="section-title">Controls</div>
+                <div class="space-y-1.5 text-[10px]">
+                  <div class="flex justify-between"><span>Agents</span><span class="text-emerald-300 font-mono">100</span></div>
+                  <div class="slider-fake"></div>
+                  <div class="flex justify-between"><span>Hunger</span><span class="text-emerald-300 font-mono">0.055</span></div>
+                  <div class="slider-fake"></div>
+                  <div class="flex justify-between"><span>Food Δ</span><span class="text-emerald-300 font-mono">8</span></div>
+                  <div class="slider-fake"></div>
+                  <div class="flex gap-0.5 mt-1 text-[9px]">
+                    <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">Len</span>
+                    <span class="flex-1 text-center py-0.5 bg-emerald-900/50 text-emerald-300 rounded">Bal</span>
+                    <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">Pun</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="section-title">Metrics</div>
+                <div class="space-y-1 text-[10px]">
+                  <div class="kpi">Alive <span class="float-right font-mono text-emerald-300">47</span></div>
+                  <div class="kpi">Deaths <span class="float-right font-mono text-rose-300">53</span></div>
+                  <div class="kpi">Food <span class="float-right font-mono text-yellow-300">128</span></div>
+                  <div class="kpi">Avg Hunger <span class="float-right font-mono text-rose-300">62</span></div>
+                  <div class="kpi">Min / Max H <span class="float-right font-mono text-slate-300">12 / 98</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- BR History -->
+          <div class="panel p-2 h-full overflow-auto scroll-thin">
+            <div class="section-title">History · session lab log</div>
+            <div class="kpi mb-2 text-[10px]">
+              <div class="grid grid-cols-3 gap-2">
+                <div>Runs <b class="text-white">12</b></div>
+                <div>Ext <b class="text-white">9/12</b></div>
+                <div>Best <b class="text-emerald-300">142s</b></div>
+              </div>
+            </div>
+            <div class="run-card">#12 · 87s · bal · end 0 · peak 100</div>
+            <div class="run-card bal">#11 · 54s · bal · end 2 · peak 88</div>
+            <div class="run-card punish">#10 · 31s · punish · end 0 · peak 100</div>
+            <div class="run-card">#9 · 102s · lenient · end 14 · peak 100</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== E STACKED RAIL ===================== -->
+      <div id="layout-E" class="layout-panel layout-hidden">
+        <div class="panel p-2 mb-2 flex items-center gap-3 text-xs">
+          <span class="region-label">Header</span>
+          <span class="font-semibold text-white">Evol-Econ Sim</span>
+          <span class="text-slate-500">Phase 0 · Survive</span>
+          <span class="px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.8.0?</span>
+          <div class="ml-auto flex gap-1">
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">1× 2× 5× 10×</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Pause</span>
+            <span class="px-2 py-0.5 bg-slate-700 rounded text-[10px]">Reset</span>
+          </div>
+        </div>
+        <div class="grid gap-2" style="grid-template-columns: 1fr 340px;">
+          <div class="fake-canvas h-[420px]">
+            <span class="absolute top-2 left-2 region-label">Canvas · slightly larger, wider page</span>
+            <span class="food" style="left:18%;top:22%"></span>
+            <span class="food" style="left:45%;top:48%"></span>
+            <span class="food" style="left:72%;top:33%"></span>
+            <span class="dot bg-slate-400" style="width:7px;height:7px;left:25%;top:40%"></span>
+            <span class="dot bg-rose-400" style="width:8px;height:8px;left:50%;top:30%"></span>
+            <span class="dot bg-slate-400" style="width:6px;height:6px;left:60%;top:60%"></span>
+            <div class="inspector-chip">
+              <div class="text-emerald-300 text-[9px] font-semibold">SELECTED · #11</div>
+              <div class="text-slate-400">Hunger 70 · Food 8</div>
+            </div>
+          </div>
+          <div class="panel p-0 overflow-hidden flex flex-col max-h-[420px]">
+            <div class="px-2 py-1 border-b border-slate-800 text-[10px] text-slate-500">
+              Stacked rail · <span class="text-slate-300">no tabs</span> · each section scrolls
+            </div>
+            <div class="overflow-auto scroll-thin flex-1 divide-y divide-slate-800">
+              <div class="p-2">
+                <div class="section-title">Controls</div>
+                <div class="space-y-1 text-[10px]">
+                  <div class="flex justify-between"><span>Initial Agents</span><span class="text-emerald-300 font-mono">100</span></div>
+                  <div class="slider-fake"></div>
+                  <div class="flex justify-between"><span>Hunger Rate</span><span class="text-emerald-300 font-mono">0.055</span></div>
+                  <div class="slider-fake"></div>
+                  <div class="flex justify-between"><span>Food Spawn</span><span class="text-emerald-300 font-mono">8</span></div>
+                  <div class="slider-fake"></div>
+                  <div class="flex gap-1 mt-1">
+                    <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">Lenient</span>
+                    <span class="flex-1 text-center py-0.5 bg-emerald-900/50 text-emerald-300 rounded">Balanced</span>
+                    <span class="flex-1 text-center py-0.5 bg-slate-800 rounded">Punishing</span>
+                  </div>
+                </div>
+              </div>
+              <div class="p-2">
+                <div class="section-title">Metrics</div>
+                <div class="grid grid-cols-2 gap-1 text-[10px]">
+                  <div class="kpi">Alive <span class="font-mono text-emerald-300 float-right">47</span></div>
+                  <div class="kpi">Deaths <span class="font-mono text-rose-300 float-right">53</span></div>
+                  <div class="kpi">Food <span class="font-mono text-yellow-300 float-right">128</span></div>
+                  <div class="kpi">Avg H <span class="font-mono text-rose-300 float-right">62</span></div>
+                </div>
+              </div>
+              <div class="p-2">
+                <div class="section-title">Trends</div>
+                <div class="space-y-1">
+                  <div class="text-[9px] text-emerald-400">Population</div>
+                  <div class="spark h-9"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#34d399" stroke-width="1.5" points="0,8 40,16 80,30 100,34"/></svg></div>
+                  <div class="text-[9px] text-yellow-400">Food</div>
+                  <div class="spark h-9"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fbbf24" stroke-width="1.5" points="0,28 50,18 100,12"/></svg></div>
+                  <div class="text-[9px] text-rose-400">Hunger</div>
+                  <div class="spark h-9"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fb7185" stroke-width="1.5" points="0,30 50,16 100,8"/></svg></div>
+                </div>
+              </div>
+              <div class="p-2">
+                <div class="section-title">History</div>
+                <div class="kpi mb-1 text-[10px]">Runs 12 · Best 142s</div>
+                <div class="run-card">#12 · 87s · bal</div>
+                <div class="run-card bal">#11 · 54s · bal</div>
+                <div class="run-card punish">#10 · 31s · punish</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Per-option detail card -->
+    <section class="panel p-4" id="detail-card">
+      <div id="detail-A">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold text-white">A — Lab Bench</h2>
+          <span class="tag tag-rec">recommended default</span>
+        </div>
+        <p class="text-sm text-slate-300 mb-3">Everything useful visible; tabs retired on desktop. Canvas + always-on right rail (controls + metrics + history), trends full-width under the sim for real chart room.</p>
+        <div class="grid sm:grid-cols-3 gap-3 text-sm">
+          <div>
+            <div class="text-emerald-300/90 text-xs font-medium mb-1">Pros</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Natural watch + tweak loop</li>
+              <li>Charts get horizontal space</li>
+              <li>Balanced density without feeling sparse</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-rose-300/90 text-xs font-medium mb-1">Cons</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Right rail can get long (scroll)</li>
+              <li>History competes with controls for height</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-sky-300/90 text-xs font-medium mb-1">Best if…</div>
+            <p class="text-slate-400 text-xs">You want a “lab bench” default for Phase 0→1 and still care about watching the canvas first.</p>
+            <div class="text-violet-300/90 text-xs font-medium mt-2 mb-1">Mix-friendly</div>
+            <p class="text-slate-400 text-xs">Steal B’s KPI strip; steal D’s larger trends pane height.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="detail-B" class="layout-hidden">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold text-white">B — Command Center</h2>
+          <span class="tag">ops room</span>
+        </div>
+        <p class="text-sm text-slate-300 mb-3">Live KPIs always on top, history as a session log on the right, trends docked full-width at the bottom. Strong “mission control” feel while tuning.</p>
+        <div class="grid sm:grid-cols-3 gap-3 text-sm">
+          <div>
+            <div class="text-emerald-300/90 text-xs font-medium mb-1">Pros</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Metrics never hidden</li>
+              <li>History always scannable</li>
+              <li>Bottom trends scale well</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-rose-300/90 text-xs font-medium mb-1">Cons</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Canvas is smaller vertically</li>
+              <li>More chrome; can feel busy</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-sky-300/90 text-xs font-medium mb-1">Best if…</div>
+            <p class="text-slate-400 text-xs">You run many short experiments and live numbers + log matter as much as the dots.</p>
+            <div class="text-violet-300/90 text-xs font-medium mt-2 mb-1">Mix-friendly</div>
+            <p class="text-slate-400 text-xs">Top KPI strip pairs well with A or E. Bottom trends dock pairs with C.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="detail-C" class="layout-hidden">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold text-white">C — Observatory</h2>
+          <span class="tag">canvas-first</span>
+        </div>
+        <p class="text-sm text-slate-300 mb-3">Watch first. Big canvas, metrics as HUD chips, controls in a collapsible drawer, trends + history in a bottom sheet. Tabs reserved for compact/focus later.</p>
+        <div class="grid sm:grid-cols-3 gap-3 text-sm">
+          <div>
+            <div class="text-emerald-300/90 text-xs font-medium mb-1">Pros</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Best for demos &amp; “feel” of agents</li>
+              <li>Clean cinematic stage</li>
+              <li>Natural home for future trails / paths</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-rose-300/90 text-xs font-medium mb-1">Cons</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Analysis secondary (sheet height limited)</li>
+              <li>More interaction to reach history/trends</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-sky-300/90 text-xs font-medium mb-1">Best if…</div>
+            <p class="text-slate-400 text-xs">0.9.0 forage paths and agent stories matter more than constant chart watching.</p>
+            <div class="text-violet-300/90 text-xs font-medium mt-2 mb-1">Mix-friendly</div>
+            <p class="text-slate-400 text-xs">HUD chips can sit on A/B canvas. Drawer controls work with any layout.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="detail-D" class="layout-hidden">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold text-white">D — Quad Analysis</h2>
+          <span class="tag">equal citizenship</span>
+        </div>
+        <p class="text-sm text-slate-300 mb-3">True 2×2: canvas · trends · controls+metrics · history. Analysis is not a sidebar afterthought — ideal for parameter science and future greed high/low comparisons.</p>
+        <div class="grid sm:grid-cols-3 gap-3 text-sm">
+          <div>
+            <div class="text-emerald-300/90 text-xs font-medium mb-1">Pros</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Best multi-signal visibility</li>
+              <li>Room for Phase 1 distribution charts</li>
+              <li>Strong “lab notebook” metaphor</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-rose-300/90 text-xs font-medium mb-1">Cons</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Canvas loses primacy</li>
+              <li>Can feel like a spreadsheet, not a world</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-sky-300/90 text-xs font-medium mb-1">Best if…</div>
+            <p class="text-slate-400 text-xs">You’re optimizing runs and comparing outcomes more than staring at individual dots.</p>
+            <div class="text-violet-300/90 text-xs font-medium mt-2 mb-1">Mix-friendly</div>
+            <p class="text-slate-400 text-xs">Take the wide trends pane only; keep A’s canvas scale.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="detail-E" class="layout-hidden">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold text-white">E — Stacked Rail</h2>
+          <span class="tag">lowest risk</span>
+        </div>
+        <p class="text-sm text-slate-300 mb-3">Closest to today’s chrome: canvas left, one taller/wider right rail, <strong class="text-slate-100">no tabs</strong> — Controls → Metrics → Trends → History stacked with section scroll. Widen past max-w-5xl.</p>
+        <div class="grid sm:grid-cols-3 gap-3 text-sm">
+          <div>
+            <div class="text-emerald-300/90 text-xs font-medium mb-1">Pros</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Smallest code/mental jump</li>
+              <li>Kills the main pain (hidden tabs)</li>
+              <li>Easy to implement first</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-rose-300/90 text-xs font-medium mb-1">Cons</div>
+            <ul class="text-slate-400 text-xs space-y-1 list-disc pl-4">
+              <li>Trends stay narrow</li>
+              <li>Long scroll on the rail</li>
+              <li>Less “redesign,” more cleanup</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-sky-300/90 text-xs font-medium mb-1">Best if…</div>
+            <p class="text-slate-400 text-xs">You want 0.8.0 shipped fast, then iterate layout again after 0.9.0 forage.</p>
+            <div class="text-violet-300/90 text-xs font-medium mt-2 mb-1">Mix-friendly</div>
+            <p class="text-slate-400 text-xs">Good stepping stone toward A (peel trends under canvas next).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Decision helper -->
+    <section class="panel p-4">
+      <h2 class="text-lg font-semibold text-white mb-1">Decision helper</h2>
+      <p class="text-xs text-slate-500 mb-3">Scratch pad for the final design doc. Nothing is sent anywhere — stays in this page / optional localStorage.</p>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <div class="section-title">Primary layout pick</div>
+          <div class="flex flex-wrap gap-3 text-sm mb-4">
+            <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="primary" value="A" class="accent-emerald-400" checked> A Lab Bench</label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="primary" value="B" class="accent-emerald-400"> B Command</label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="primary" value="C" class="accent-emerald-400"> C Observatory</label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="primary" value="D" class="accent-emerald-400"> D Quad</label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="primary" value="E" class="accent-emerald-400"> E Stacked</label>
+          </div>
+
+          <div class="section-title">Mix pieces I want</div>
+          <div class="space-y-1.5 text-sm text-slate-300">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="mix accent-emerald-400" value="kpi-strip"> <span>B — top KPI metrics strip</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="mix accent-emerald-400" value="trends-under"> <span>A — trends under canvas (full width)</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="mix accent-emerald-400" value="history-rail"> <span>B — always-visible history column</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="mix accent-emerald-400" value="hud"> <span>C — metrics as HUD chips on canvas</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="mix accent-emerald-400" value="drawer"> <span>C — collapsible controls drawer</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="mix accent-emerald-400" value="quad-trends"> <span>D — wide trends pane (equal weight)</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="mix accent-emerald-400" value="no-tabs"> <span>E — no tabs on desktop</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="mix accent-emerald-400" value="tabs-compact"> <span>Tabs only for compact / mobile later</span></label>
+          </div>
+        </div>
+        <div>
+          <div class="section-title">Notes for final design</div>
+          <textarea id="notes" rows="8" placeholder="e.g. Primary A, but add B's top KPI strip. Keep inspector floating. Trends must support pin graphs. History session overview stays..."
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-emerald-700"></textarea>
+          <div class="flex gap-2 mt-2">
+            <button type="button" onclick="saveDecision()" class="text-xs px-3 py-1.5 bg-emerald-900/50 hover:bg-emerald-900 text-emerald-200 rounded border border-emerald-800">Save locally</button>
+            <button type="button" onclick="clearDecision()" class="text-xs px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded">Clear</button>
+            <span id="save-status" class="text-[10px] text-slate-500 self-center"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Compare strip -->
+    <section class="panel p-4">
+      <h2 class="text-lg font-semibold text-white mb-3">At-a-glance compare</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left">
+          <thead>
+            <tr class="text-slate-500 border-b border-slate-800">
+              <th class="py-2 pr-3 font-medium">Aspect</th>
+              <th class="py-2 px-2 font-medium text-emerald-300/80">A Lab Bench</th>
+              <th class="py-2 px-2 font-medium">B Command</th>
+              <th class="py-2 px-2 font-medium">C Observatory</th>
+              <th class="py-2 px-2 font-medium">D Quad</th>
+              <th class="py-2 px-2 font-medium">E Stacked</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-400">
+            <tr class="border-b border-slate-900">
+              <td class="py-2 pr-3 text-slate-300">Canvas primacy</td>
+              <td class="px-2">High</td><td class="px-2">Medium</td><td class="px-2 text-emerald-300/90">Highest</td><td class="px-2">Medium</td><td class="px-2">High</td>
+            </tr>
+            <tr class="border-b border-slate-900">
+              <td class="py-2 pr-3 text-slate-300">Metrics always visible</td>
+              <td class="px-2">Yes (rail)</td><td class="px-2 text-emerald-300/90">Yes (top strip)</td><td class="px-2">HUD chips</td><td class="px-2">Yes (BL)</td><td class="px-2">Yes (scroll)</td>
+            </tr>
+            <tr class="border-b border-slate-900">
+              <td class="py-2 pr-3 text-slate-300">Trend chart width</td>
+              <td class="px-2 text-emerald-300/90">Wide</td><td class="px-2 text-emerald-300/90">Widest</td><td class="px-2">Medium</td><td class="px-2">Wide pane</td><td class="px-2">Narrow</td>
+            </tr>
+            <tr class="border-b border-slate-900">
+              <td class="py-2 pr-3 text-slate-300">History glanceability</td>
+              <td class="px-2">Good</td><td class="px-2 text-emerald-300/90">Best</td><td class="px-2">Fair</td><td class="px-2">Best</td><td class="px-2">Fair</td>
+            </tr>
+            <tr class="border-b border-slate-900">
+              <td class="py-2 pr-3 text-slate-300">Impl. risk</td>
+              <td class="px-2">Medium</td><td class="px-2">Medium</td><td class="px-2">Higher</td><td class="px-2">Medium</td><td class="px-2 text-emerald-300/90">Lowest</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-3 text-slate-300">Fits future greed analysis</td>
+              <td class="px-2">Good</td><td class="px-2">Good</td><td class="px-2">OK</td><td class="px-2 text-emerald-300/90">Best</td><td class="px-2">OK</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-[10px] text-slate-600 mt-3">
+        Narrow screens may reintroduce tabs or accordion later — not decided here.
+        Next step after you pick/mix: write <code class="text-slate-400">design-docs/0.8.0-layout-dashboard-design.html</code>.
+      </p>
+    </section>
+
+    <footer class="text-center text-[10px] text-slate-600 pb-8">
+      trait-evolution-sim · design-docs/0.8.0-layout-options.html · exploration only · not a release
+    </footer>
+  </main>
+
+  <script>
+    const NAMES = {
+      A: 'A — Lab Bench',
+      B: 'B — Command Center',
+      C: 'C — Observatory',
+      D: 'D — Quad Analysis',
+      E: 'E — Stacked Rail'
+    };
+
+    function showOption(key) {
+      document.querySelectorAll('.layout-panel').forEach(el => el.classList.add('layout-hidden'));
+      document.querySelectorAll('[id^="detail-"]').forEach(el => el.classList.add('layout-hidden'));
+      const layout = document.getElementById('layout-' + key);
+      const detail = document.getElementById('detail-' + key);
+      if (layout) layout.classList.remove('layout-hidden');
+      if (detail) detail.classList.remove('layout-hidden');
+      document.getElementById('stage-name').textContent = NAMES[key] || key;
+      document.querySelectorAll('.opt-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.opt === key);
+      });
+      try { localStorage.setItem('tes-0.8.0-preview', key); } catch (_) {}
+    }
+
+    function saveDecision() {
+      const primary = (document.querySelector('input[name="primary"]:checked') || {}).value || 'A';
+      const mixes = [...document.querySelectorAll('.mix:checked')].map(el => el.value);
+      const notes = document.getElementById('notes').value;
+      const payload = { primary, mixes, notes, savedAt: new Date().toISOString() };
+      try {
+        localStorage.setItem('tes-0.8.0-decision', JSON.stringify(payload));
+        document.getElementById('save-status').textContent = 'Saved · ' + new Date().toLocaleTimeString();
+      } catch (_) {
+        document.getElementById('save-status').textContent = 'Could not save (storage blocked)';
+      }
+    }
+
+    function clearDecision() {
+      document.querySelectorAll('.mix').forEach(el => { el.checked = false; });
+      document.querySelector('input[name="primary"][value="A"]').checked = true;
+      document.getElementById('notes').value = '';
+      try { localStorage.removeItem('tes-0.8.0-decision'); } catch (_) {}
+      document.getElementById('save-status').textContent = 'Cleared';
+    }
+
+    function loadDecision() {
+      try {
+        const raw = localStorage.getItem('tes-0.8.0-decision');
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (data.primary) {
+          const radio = document.querySelector('input[name="primary"][value="' + data.primary + '"]');
+          if (radio) radio.checked = true;
+        }
+        if (Array.isArray(data.mixes)) {
+          data.mixes.forEach(v => {
+            const cb = document.querySelector('.mix[value="' + v + '"]');
+            if (cb) cb.checked = true;
+          });
+        }
+        if (data.notes) document.getElementById('notes').value = data.notes;
+        document.getElementById('save-status').textContent = 'Restored previous notes';
+      } catch (_) {}
+    }
+
+    // Boot
+    loadDecision();
+    try {
+      const prev = localStorage.getItem('tes-0.8.0-preview');
+      showOption(prev && NAMES[prev] ? prev : 'A');
+    } catch (_) {
+      showOption('A');
+    }
+  </script>
+</body>
+</html>
