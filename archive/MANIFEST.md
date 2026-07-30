@@ -21,6 +21,8 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-0.8.2-history-table.html` | 0.8.2-history-table | 0 · Survive | (local) | — | History table D+ · best top-right · pin-by-ID in dock |
 | `index-0.8.3-layout-flex.html` | 0.8.3-layout-flex | 0 · Survive | (local) | — | Layout flex attempt (pre tight A) |
 | `index-0.8.4-tight-layout.html` | 0.8.4-tight-layout | 0 · Survive | (this PR) | — | 260/1fr/260, in-column hide, edge tabs, canvas resize, flush host |
+| `index-0.9.0-seek.html` | 0.9.0-seek | 0 · Survive | (local I1 freeze) | — | Seek MVP + feel-tunes (spawn 1–50, ceiling ×10, batch 3, fatter agents, min/max carried food KPIs); human A/B Seek vs Random OK |
+| `index-0.9.1-ui-chrome.html` | 0.9.1-ui-chrome | 0 · Survive | (local freeze) | — | Viewport lock, Movement dual toggle, quiet badge, speed spacing, preset highlight + Seek retune, Advanced + Help modals; seek mechanics unchanged from 0.9.0-seek |
 
 ---
 

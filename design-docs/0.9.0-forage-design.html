@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.9.0-forage · design</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d1524;
+      --border: #1e3a5f;
+      --text: #cbd5e1;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --good: #7dd3fc;
+      --warn: #fbbf24;
+      --bad: #fb7185;
+      --food: #67e8f9;
+    }
+    body { background: var(--bg); color: var(--text); margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 1.5rem 1.1rem 4rem; }
+    h1 { font-size: 1.65rem; font-weight: 650; color: #f1f5f9; margin: 0 0 0.35rem; }
+    h2 { font-size: 1.1rem; font-weight: 650; color: #e2e8f0; margin: 2rem 0 0.65rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 0.95rem; font-weight: 600; color: #bae6fd; margin: 1.25rem 0 0.45rem; }
+    h4 { font-size: 0.85rem; font-weight: 600; color: #94a3b8; margin: 1rem 0 0.35rem; }
+    p, li { font-size: 0.92rem; color: var(--text); }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+    .panel {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 0.65rem;
+      padding: 0.9rem 1rem; margin: 0.75rem 0;
+    }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9; margin-right: 0.35rem;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.bad { background: #450a0a; color: #fecaca; border-color: #ef4444; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.5rem 0 0.75rem; }
+    th, td { border: 1px solid var(--border); padding: 0.4rem 0.55rem; text-align: left; vertical-align: top; }
+    th { background: #0a1220; color: #94a3b8; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--good); font-size: 0.86em; }
+    pre {
+      background: #05080e; border: 1px solid var(--border); border-radius: 0.5rem;
+      padding: 0.75rem 0.9rem; overflow-x: auto; font-size: 0.78rem; line-height: 1.45;
+      color: #a5f3fc;
+    }
+    ul, ol { padding-left: 1.25rem; margin: 0.4rem 0 0.6rem; }
+    li { margin: 0.25rem 0; }
+    .callout { border-left: 3px solid var(--accent); padding-left: 0.75rem; margin: 0.75rem 0; }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.bad { border-left-color: var(--bad); }
+    .toc a { color: var(--accent); text-decoration: none; font-size: 0.88rem; }
+    .toc a:hover { text-decoration: underline; }
+    .toc li { margin: 0.15rem 0; }
+    .meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0 1.25rem; align-items: center; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.75rem 0; }
+    .check { list-style: none; padding-left: 0; }
+    .check li::before { content: "☐ "; color: var(--muted); }
+    footer { margin-top: 2.5rem; font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="meta">
+      <span class="tag">v0.9.0-forage</span>
+      <span class="tag warn">Track B · Mechanics</span>
+      <span class="tag">Phase 0 · Survive</span>
+      <span class="tag good">Design only · not implemented</span>
+    </div>
+
+    <h1>0.9.0-forage — design</h1>
+    <p class="muted">
+      Environment-responsive foraging movement for trait-evolution-sim.
+      Replaces pure random walk as the default agent locomotion so hunger and food on the map
+      drive visible, analyzable behavior — without yet introducing the full Phase 1 trait system.
+    </p>
+    <p class="muted">
+      <strong>Canonical artifact</strong> for version <code>0.9.0-forage</code>.
+      Sources: session brainstorm (2026-07-15, layout + movement + greed/analysis notes),
+      live <code>index.html</code> as of <code>0.8.4-tight-layout</code>,
+      <code>FUTURE_FEATURES.md</code>, <code>AGENTS.md</code> Track A/B.
+    </p>
+
+    <div class="panel toc">
+      <div class="muted" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem">Contents</div>
+      <ol>
+        <li><a href="#goals">Goals &amp; non-goals</a></li>
+        <li><a href="#context">Current baseline (0.8.4)</a></li>
+        <li><a href="#problem">Problem statement</a></li>
+        <li><a href="#concepts">Core concepts</a></li>
+        <li><a href="#scope">Scope for 0.9.0</a></li>
+        <li><a href="#algo">Movement algorithm (normative)</a></li>
+        <li><a href="#params">Parameters &amp; UI</a></li>
+        <li><a href="#greed">Greed / heterogeneity (optional in 0.9)</a></li>
+        <li><a href="#eat">Eating &amp; interaction with existing rules</a></li>
+        <li><a href="#observability">Observability &amp; analysis</a></li>
+        <li><a href="#presets">Presets &amp; later “fine-tune” roadmap</a></li>
+        <li><a href="#phasing">Phasing vs Phase 1 traits</a></li>
+        <li><a href="#alternatives">Alternatives considered</a></li>
+        <li><a href="#risks">Risks &amp; tuning guardrails</a></li>
+        <li><a href="#impl">Implementation plan (PR-sized steps)</a></li>
+        <li><a href="#acceptance">Acceptance / smoke criteria</a></li>
+        <li><a href="#open">Open decisions for the human</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 1 ========== -->
+    <h2 id="goals">1. Goals &amp; non-goals</h2>
+
+    <h3>Goals</h3>
+    <ul>
+      <li><strong>Replace pure Brownian motion</strong> as the default movement so agents respond to the environment (food locations) and internal state (hunger).</li>
+      <li><strong>Make survival readable:</strong> starving agents look purposeful; paths toward food are obvious when watching the canvas or a pinned agent.</li>
+      <li><strong>Keep residual randomness</strong> so runs remain diverse and “lucky survivor” dynamics do not vanish entirely.</li>
+      <li><strong>Build a behavior foundation for Phase 1:</strong> expose knobs (sense range, seek strength, wander noise, optional greed) that traits can later modulate without rewriting the engine.</li>
+      <li><strong>Stay Phase 0:</strong> no inheritance, no reproduction, no full trait UI/distributions yet.</li>
+      <li><strong>Stay single-file:</strong> all changes in live <code>index.html</code> (+ VERSION / archive / docs ritual).</li>
+    </ul>
+
+    <h3>Non-goals (explicitly out of 0.9.0)</h3>
+    <ul>
+      <li>Full trait system (HoardingBias, ExplorationRate, TradeBoldness as first-class Phase 1 features).</li>
+      <li>A* / grid pathfinding, flocking, multi-resource utility AI, neural nets.</li>
+      <li>Automatic ML parameter search / Bayesian optimization of presets.</li>
+      <li>Layout chrome work (already shipped 0.8.x Track A).</li>
+      <li>Silent changes to hunger rates, eat relief, or death threshold “while fixing movement” without labeling them and human tuning.</li>
+    </ul>
+
+    <div class="panel callout">
+      <strong>Track classification:</strong> <span class="tag warn">Track B · Mechanics</span>
+      Human leads sensibility and browser feel. AI may propose patches or implement under explicit supervision per AGENTS.md.
+      This document is the design gate before implementation.
+    </div>
+
+    <!-- ========== 2 ========== -->
+    <h2 id="context">2. Current baseline (0.8.4-tight-layout)</h2>
+
+    <p>As of live <code>index.html</code> after the layout dashboard arc:</p>
+
+    <h3>Movement today</h3>
+    <pre>// Agent.update() — locomotion only (simplified)
+this.vx += (Math.random() - 0.5) * 0.5;
+this.vy += (Math.random() - 0.5) * 0.5;
+// clamp speed to 2
+this.x += this.vx; this.y += this.vy;
+// wrap edges
+// hunger += hungerRate; die if hunger &gt; 100
+// self-consume carried food if hunger &gt; threshold</pre>
+
+    <ul>
+      <li>No awareness of food positions while moving.</li>
+      <li>Speed cap ≈ <code>2</code> world units/tick; jitter amplitude ≈ <code>0.5</code> per axis per tick.</li>
+      <li>Spawn: random position + random initial velocity in ≈ <code>[-0.75, 0.75]</code> per axis.</li>
+    </ul>
+
+    <h3>Eating today (unchanged contract unless called out)</h3>
+    <ul>
+      <li>Global loop: each food pellet, each agent; if distance² &lt; <code>20²</code> and pellet has amount, transfer up to <code>1.0</code> food units, reduce hunger by <code>groundEatRelief</code>.</li>
+      <li>Carried food self-consume when <code>hunger &gt; selfConsumeThreshold</code>.</li>
+      <li>Food respawn while agents alive: interval slider + cap ~ <code>NUM_FOOD * 1.3</code>.</li>
+    </ul>
+
+    <h3>What 0.8.x already provides (leverage, don’t rebuild)</h3>
+    <ul>
+      <li>Tall Command layout, metrics dock, history table, pin-by-ID, trends.</li>
+      <li>Speed 1×–10×; pin agent hunger/food series.</li>
+      <li>Presets Lenient / Balanced / Punishing (environment + hunger knobs — not movement).</li>
+    </ul>
+
+    <!-- ========== 3 ========== -->
+    <h2 id="problem">3. Problem statement</h2>
+
+    <p>
+      Random walk made sense for the first hunger sandbox: prove starvation, sliders, and observability.
+      It is a weak base for everything that follows:
+    </p>
+    <ul>
+      <li><strong>Observability story is thin:</strong> survival is mostly luck of paths crossing food, not readable policy.</li>
+      <li><strong>Traits have nothing meaningful to modulate</strong> if movement ignores the world.</li>
+      <li><strong>User intent (session 2026-07-15):</strong> agents should path based on environment; always looking for food; later greed/hoarding and population analysis (high vs low greed under the same food regime).</li>
+    </ul>
+
+    <p class="callout">
+      <strong>Design thesis:</strong> The interesting story is not <em>whether</em> agents seek food — it is <em>how hard</em>, with how much noise, and (later) when they stop taking more (greed).
+      0.9.0 proves the foraging engine; Phase 1 makes personality first-class.
+    </p>
+
+    <!-- ========== 4 ========== -->
+    <h2 id="concepts">4. Core concepts</h2>
+
+    <table>
+      <thead>
+        <tr><th>Concept</th><th>Meaning in 0.9.0</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Seek</strong></td>
+          <td>Steering velocity component toward a chosen food target (usually nearest in range).</td>
+        </tr>
+        <tr>
+          <td><strong>Wander / noise</strong></td>
+          <td>Residual random acceleration (legacy walk), so paths are not perfect and exploration continues.</td>
+        </tr>
+        <tr>
+          <td><strong>Sense radius</strong></td>
+          <td>Max distance at which an agent can “see” food for seeking. Outside range → pure wander (or last-memory later).</td>
+        </tr>
+        <tr>
+          <td><strong>Seek blend</strong></td>
+          <td>How much of the velocity update is seek vs wander; scaled primarily by hunger in MVP.</td>
+        </tr>
+        <tr>
+          <td><strong>Greed (optional)</strong></td>
+          <td>Extra seek / pick-up appetite when not starving. <em>Not</em> full HoardingBias trait UI in MVP — see §8.</td>
+        </tr>
+        <tr>
+          <td><strong>Movement policy</strong></td>
+          <td>Run-level mode: at least <code>Seek</code> (default). Optional <code>Random</code> retained for A/B science.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Two drives (mental model for later traits)</h3>
+    <table>
+      <thead>
+        <tr><th>Drive</th><th>Role</th><th>In 0.9.0 MVP</th><th>In Phase 1+</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Hunger</strong></td>
+          <td>Urgency: life-or-death steering toward food</td>
+          <td>Primary scaler of seek blend</td>
+          <td>May be modulated by traits / thresholds</td>
+        </tr>
+        <tr>
+          <td><strong>Greed / HoardingBias</strong></td>
+          <td>Appetite for surplus when comfortable</td>
+          <td>Optional global or per-agent scalar only</td>
+          <td>Real trait + UI + distributions + analysis panels</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ========== 5 ========== -->
+    <h2 id="scope">5. Scope for 0.9.0</h2>
+
+    <h3>5.1 Must ship (MVP)</h3>
+    <ul>
+      <li>Default movement policy: <strong>hunger-weighted seek nearest food + residual noise</strong>.</li>
+      <li>Configurable: sense radius, seek strength, wander strength, max speed (reuse or rename existing cap).</li>
+      <li>Fallback when no food in sense radius: wander only (current-style noise).</li>
+      <li>Run-level toggle or preset-friendly switch: <code>Random</code> vs <code>Seek</code> (default Seek) for scientific A/B.</li>
+      <li>VERSION / UI badge / archive / MANIFEST / IMPLEMENTATION_LOG / FUTURE_FEATURES (remove open forage item when shipped).</li>
+      <li>Smoke criteria in §16 met under human browser testing.</li>
+    </ul>
+
+    <h3>5.2 Should ship if cheap</h3>
+    <ul>
+      <li>Inspector fields: target food distance, current seek blend, (if enabled) greed.</li>
+      <li>Optional short heading tick or 4–8 point trail on selected/pinned agent only (performance-safe).</li>
+      <li>One metrics row: e.g. mean distance-to-nearest-food among living agents (optional).</li>
+    </ul>
+
+    <h3>5.3 Nice-to-have / stretch (same PR only if human wants)</h3>
+    <ul>
+      <li>Per-agent random <code>greed ∈ [0,1]</code> without full trait system + color by greed.</li>
+      <li>Global “greed strength” slider under Advanced.</li>
+      <li>Survivor vs dead avg greed / avg food split (only if greed exists).</li>
+    </ul>
+
+    <h3>5.4 Explicitly deferred</h3>
+    <ul>
+      <li>Memory / last-good food patch return (bridge to ExplorationRate).</li>
+      <li>Food density gradient (soft field) instead of nearest point target.</li>
+      <li>Cohort lab mode (half high / half low greed spawn).</li>
+      <li>Auto-discovered “best presets” from grid search (Tier 2–3 in §11).</li>
+      <li>Slide drawers UI (Track A, separate).</li>
+    </ul>
+
+    <!-- ========== 6 ========== -->
+    <h2 id="algo">6. Movement algorithm (normative)</h2>
+
+    <p>Replace the locomotion block inside <code>Agent.update()</code> (or extract <code>steer(agent)</code> for clarity). Eating, death, and self-consume stay as separate steps unless noted.</p>
+
+    <h3>6.1 Recommended default: nearest-food seek + hunger blend</h3>
+    <pre>// Per agent, each tick (conceptual pseudocode)
+
+// 1) Find target
+target = null
+bestD2 = senseRadius * senseRadius
+for each food f with f.amount &gt; ε:
+  d2 = dist²(agent, f)
+  if d2 &lt; bestD2:
+    bestD2 = d2
+    target = f
+
+// 2) Desired seek direction (unit vector), or zero if no target
+if target:
+  desired = normalize(target.pos - agent.pos)
+else:
+  desired = (0, 0)
+
+// 3) Hunger-scaled blend in [0, 1]
+//    u = 0 when satiated, → 1 when starving
+u = clamp(agent.hunger / hungerRef, 0, 1)   // hungerRef default 100 (death threshold)
+// optional soft knee: u = smoothstep(hungerStart, hungerRef, agent.hunger)
+blend = u * seekStrength                     // seekStrength default ~0.7–1.0, clamp blend to [0,1]
+
+// 4) Optional greed (if enabled): raise floor of blend when not starving
+// blend = max(blend, greed * greedSeekFloor)
+
+// 5) Wander kick (legacy)
+wander = ((rand-0.5)*wanderAmp, (rand-0.5)*wanderAmp)
+
+// 6) Integrate velocity
+seekVel = desired * maxSpeed                 // or desired * seekAccel then integrate
+agent.vx += lerp(wander.x, seekVel.x - agent.vx, blend) * …  
+// SIMPLER recommended form:
+agent.vx = agent.vx * damping + wander.x + blend * desired.x * seekAccel
+agent.vy = agent.vy * damping + wander.y + blend * desired.y * seekAccel
+// then clamp speed to maxSpeed
+
+// 7) Position + wrap (unchanged)</pre>
+
+    <div class="panel">
+      <strong>Implementation note:</strong> Prefer a <em>simple</em> form that is easy to tune in-browser:
+      <pre style="margin-top:0.5rem">// Suggested concrete MVP (easy to port)
+const w = wanderAmp; // e.g. 0.5 (today’s jitter)
+let ax = (Math.random() - 0.5) * w;
+let ay = (Math.random() - 0.5) * w;
+
+const blend = Math.min(1, (this.hunger / 100) * seekStrength);
+const t = nearestFoodInRadius(this, senseRadius);
+if (t && blend &gt; 0) {
+  const dx = t.x - this.x, dy = t.y - this.y;
+  const len = Math.hypot(dx, dy) || 1;
+  ax += blend * seekAccel * (dx / len);
+  ay += blend * seekAccel * (dy / len);
+}
+this.vx += ax; this.vy += ay;
+// clamp speed to maxSpeed; then x+=vx; y+=vy; wrap</pre>
+      Exact constant names can match existing style (<code>let</code>s + sliders). Values in §7 are starting points for human tuning.
+    </div>
+
+    <h3>6.2 Policy: Random vs Seek</h3>
+    <table>
+      <thead>
+        <tr><th>Policy</th><th>Behavior</th><th>Use</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>random</code></td>
+          <td>Current 0.8.4 walk only (jitter + speed cap). Ignore food for steering.</td>
+          <td>Baseline A/B; regression; “luck” demos</td>
+        </tr>
+        <tr>
+          <td><code>seek</code> (default)</td>
+          <td>§6.1 algorithm</td>
+          <td>Normal play; Phase 1 readiness</td>
+        </tr>
+        <tr>
+          <td><code>gradient</code> (optional later)</td>
+          <td>Steer toward higher local food density in radius R, not a single pellet</td>
+          <td>Softer herds; deferred unless MVP feels too “laser guided”</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>6.3 Target selection rules</h3>
+    <ul>
+      <li><strong>Default:</strong> nearest food by Euclidean distance among pellets with <code>amount &gt; ε</code> (e.g. 0.2, same as eat eligibility).</li>
+      <li><strong>Ties:</strong> first in array order is fine (deterministic enough for this sim).</li>
+      <li><strong>Empty world / none in radius:</strong> wander only; do not retain a stale target across ticks unless memory feature is added later.</li>
+      <li><strong>Do not</strong> require line-of-sight or collision with other agents (agents already overlap freely).</li>
+    </ul>
+
+    <h3>6.4 Edge wrap interaction</h3>
+    <p>
+      World wraps. Nearest-food on a torus is more correct but more code.
+      <strong>MVP decision:</strong> use non-toroidal nearest food (screen-straight distance). Document that agents near edges may seek “the long way.”
+      Optional follow-up: toroidal minimum-image distance if wrap artifacts look silly in testing.
+    </p>
+
+    <!-- ========== 7 ========== -->
+    <h2 id="params">7. Parameters &amp; UI</h2>
+
+    <h3>7.1 New / adjusted parameters (suggested defaults)</h3>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Default</th><th>Range (start)</th><th>Role</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>movementPolicy</code></td><td><code>"seek"</code></td><td>random | seek</td><td>Run-level policy</td></tr>
+        <tr><td><code>senseRadius</code></td><td>180</td><td>40–400</td><td>Food visibility for seeking</td></tr>
+        <tr><td><code>seekStrength</code></td><td>1.0</td><td>0–2</td><td>Scales hunger→blend</td></tr>
+        <tr><td><code>seekAccel</code></td><td>0.35</td><td>0.05–1.0</td><td>Acceleration toward target</td></tr>
+        <tr><td><code>wanderAmp</code></td><td>0.5</td><td>0–1.5</td><td>Random kick (today’s 0.5)</td></tr>
+        <tr><td><code>maxSpeed</code></td><td>2.0</td><td>0.5–5</td><td>Existing speed cap, exposed if not already</td></tr>
+        <tr><td><code>greedEnabled</code></td><td>false (or true if human wants)</td><td>bool</td><td>Optional stretch</td></tr>
+        <tr><td><code>greedSeekFloor</code></td><td>0.25</td><td>0–1</td><td>Min blend contribution from greed</td></tr>
+      </tbody>
+    </table>
+
+    <h3>7.2 UI placement (Track A-friendly, no layout rewrite)</h3>
+    <ul>
+      <li><strong>Controls column</strong> under environment/hunger: section “Movement”.</li>
+      <li>Policy: two or three small buttons (Random / Seek), same pattern as speed buttons.</li>
+      <li>Sliders: sense radius, seek strength, wander (Advanced collapse OK for seekAccel if crowded).</li>
+      <li>Do <strong>not</strong> reintroduce old sidebar tabs; stay in Tall Command docks.</li>
+      <li>Version badge → <code>v0.9.0-forage</code>; phase label remains Phase 0 · Survive.</li>
+    </ul>
+
+    <h3>7.3 Interaction with existing presets</h3>
+    <ul>
+      <li>Lenient / Balanced / Punishing today set hunger &amp; food spawn — <strong>keep that</strong>.</li>
+      <li>When applying a preset, either (a) leave movement params unchanged, or (b) set documented movement defaults per preset later (“Greed lab” etc.). MVP: (a) is fine.</li>
+      <li>Reset / new run: re-roll agent positions; if per-agent greed exists, re-sample greed on new agents.</li>
+    </ul>
+
+    <!-- ========== 8 ========== -->
+    <h2 id="greed">8. Greed / heterogeneity (optional in 0.9)</h2>
+
+    <p>User desire (2026-07-15): always looking for food; hunger + hoarding/greed; compare high vs low greed population outcomes.</p>
+
+    <h3>8.1 Why not full HoardingBias in 0.9.0</h3>
+    <ul>
+      <li>If greed is the star of 0.9 with full trait UX, Phase 1 becomes a rename.</li>
+      <li>0.9 should <strong>prove the foraging engine</strong>; Phase 1 should introduce the trait product (distributions, inspector semantics, later inheritance).</li>
+    </ul>
+
+    <h3>8.2 Allowed compromises in 0.9</h3>
+    <table>
+      <thead>
+        <tr><th>Option</th><th>Description</th><th>Recommendation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>A. None</strong></td>
+          <td>Hunger-only blend; all agents identical policy</td>
+          <td>Cleanest MVP</td>
+        </tr>
+        <tr>
+          <td><strong>B. Global greed slider</strong></td>
+          <td>One run-level scalar adds seek floor when hunger low</td>
+          <td>Good middle ground</td>
+        </tr>
+        <tr>
+          <td><strong>C. Per-agent greed random</strong></td>
+          <td><code>greed = U[0,1]</code> at spawn; no trait UI; optional color; basic survivor stats</td>
+          <td>Best preview of “science” without Phase 1 ceremony</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="callout warn">
+      <strong>Human decision:</strong> pick A, B, or C before implementation. Default recommendation if undecided: <strong>A for first PR</strong>, then C in a fast follow if forage feel is good.
+    </p>
+
+    <h3>8.3 If C is chosen — behavioral effect</h3>
+    <ul>
+      <li>High hunger → seek dominated by hunger (greed less visible).</li>
+      <li>Low hunger + high greed → still steers toward food, keeps stacking inventory.</li>
+      <li>Low hunger + low greed → weaker seek, more wander, smaller piles.</li>
+      <li>Ground eat rule can stay shared; greed primarily affects <em>steering</em>, not a second physics.</li>
+      <li>Optional later: greed slightly increases willingness to move toward food even when inventory high (same blend floor).</li>
+    </ul>
+
+    <!-- ========== 9 ========== -->
+    <h2 id="eat">9. Eating &amp; interaction with existing rules</h2>
+
+    <table>
+      <thead>
+        <tr><th>System</th><th>0.9.0 stance</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Eat radius 20</td><td>Keep unless testing shows seekers overshoot; then slight bump is a labeled tuning change</td></tr>
+        <tr><td>groundEatRelief / selfConsume*</td><td>Do not retune in the same commit as movement unless human asks</td></tr>
+        <tr><td>Food spawn interval / NUM_FOOD</td><td>Unchanged defaults; may need human rebalance after seekers empty the map faster</td></tr>
+        <tr><td>Death hunger &gt; 100</td><td>Unchanged</td></tr>
+        <tr><td>Wrap edges</td><td>Unchanged; see §6.4</td></tr>
+      </tbody>
+    </table>
+
+    <div class="panel callout warn">
+      <strong>Expected side effect:</strong> seekers may monopolize food and change extinction curves.
+      That is desired scientifically — but Lenient/Balanced/Punishing may feel different.
+      Document observed feel in IMPLEMENTATION_LOG after testing; retune presets in a follow-up if needed.
+    </div>
+
+    <!-- ========== 10 ========== -->
+    <h2 id="observability">10. Observability &amp; analysis</h2>
+
+    <h3>10.1 Must work with existing chrome</h3>
+    <ul>
+      <li>Pin agent: hunger/food trends still update under all speeds (uiFrame gating already fixed in 0.8.4).</li>
+      <li>Inspector: show hunger, food, id; add seek-related debug fields if cheap.</li>
+      <li>History table / session overview: unchanged schema OK for MVP.</li>
+    </ul>
+
+    <h3>10.2 Analysis ideas (phase-appropriate)</h3>
+    <table>
+      <thead>
+        <tr><th>When</th><th>Analysis</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0.9 MVP</td>
+          <td>Visual: do pink (hungry) agents head toward cyan food?</td>
+          <td>Primary acceptance is visual + survival change vs Random policy</td>
+        </tr>
+        <tr>
+          <td>0.9 + greed C</td>
+          <td>Alive vs dead: avg greed, avg food carried</td>
+          <td>Answers “who outlasts?”</td>
+        </tr>
+        <tr>
+          <td>0.9 + greed C</td>
+          <td>Share of carried food in top vs bottom greed quintile</td>
+          <td>“Who monopolizes biomass?”</td>
+        </tr>
+        <tr>
+          <td>Phase 1+</td>
+          <td>Live greed histogram; mean greed over time</td>
+          <td>Selection without reproduction = who dies first</td>
+        </tr>
+        <tr>
+          <td>Lab later</td>
+          <td>Two-cohort spawn (50/50 high/low greed)</td>
+          <td>Cleaner A/B than mixed soup</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      <strong>Important:</strong> without reproduction, there is no multi-generation evolution — only
+      <em>differential survival</em> of a fixed cohort. That is still excellent Phase 0–1 science.
+    </p>
+
+    <!-- ========== 11 ========== -->
+    <h2 id="presets">11. Presets &amp; later “fine-tune” roadmap</h2>
+
+    <p>User interest: save parameter sets that achieved a goal; find best fine-tunes.</p>
+
+    <h3>Tier 1 — Goal presets (hand-authored, after 0.9 feels good)</h3>
+    <table>
+      <thead>
+        <tr><th>Preset goal</th><th>Rough intent</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Longest sole survivor</td><td>Harsh food, punish waste</td></tr>
+        <tr><td>Stable mid population</td><td>Balanced spawn + hunger + moderate seek</td></tr>
+        <tr><td>Boom–bust</td><td>Fast food + high hunger</td></tr>
+        <tr><td>Greed lab</td><td>Mixed greed, fixed environment (if greed enabled)</td></tr>
+        <tr><td>Random baseline</td><td>Policy=random for comparison</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">These extend Lenient / Balanced / Punishing; low cost; high teaching value. Not required inside the first 0.9.0 PR.</p>
+
+    <h3>Tier 2 — Export / import run config (later)</h3>
+    <ul>
+      <li>JSON blob of knobs + seed if we add seeding; copy from inspector or History.</li>
+      <li>Still human-driven “this worked for me,” not automated search.</li>
+    </ul>
+
+    <h3>Tier 3 — Auto search (much later, optional)</h3>
+    <ul>
+      <li>Grid or random search over parameters for a fitness (e.g. max sole survivor time).</li>
+      <li>Out of Phase 0 scope; do not block 0.9.0.</li>
+    </ul>
+
+    <!-- ========== 12 ========== -->
+    <h2 id="phasing">12. Phasing vs Phase 1 traits</h2>
+
+    <table>
+      <thead>
+        <tr><th>Order</th><th>Milestone</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><strong>0.8.x layout</strong> (done)</td><td>Observability chrome; Track A</td></tr>
+        <tr><td>2</td><td><strong>0.9.0-forage</strong> (this doc)</td><td>Behavior foundation; Track B</td></tr>
+        <tr><td>3</td><td><strong>1.0.0-traits</strong></td><td>Traits modulate seek/sense/noise/greed; distributions; analysis panels</td></tr>
+        <tr><td>4</td><td><strong>2.x Evolve</strong></td><td>Reproduction + inheritance; true multi-generation charts</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Knobs Phase 1 should be able to modulate (design for plug-in)</h3>
+    <ul>
+      <li><code>senseRadius</code> ← e.g. perception trait</li>
+      <li><code>seekStrength</code> / blend curve ← urgency / boldness</li>
+      <li><code>wanderAmp</code> ← ExplorationRate</li>
+      <li>greed / surplus appetite ← HoardingBias</li>
+    </ul>
+
+    <p>Keep agent fields and steering function pure enough that Phase 1 is “multiply by trait” rather than a rewrite.</p>
+
+    <!-- ========== 13 ========== -->
+    <h2 id="alternatives">13. Alternatives considered</h2>
+
+    <table>
+      <thead>
+        <tr><th>Option</th><th>Pros</th><th>Cons</th><th>Verdict</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Keep pure random only</td>
+          <td>Zero risk</td>
+          <td>Blocks trait meaning; weak narrative</td>
+          <td>Reject as default; keep as policy</td>
+        </tr>
+        <tr>
+          <td>Hunger-gated two modes (forage vs cruise hard switch)</td>
+          <td>Clear story</td>
+          <td>Discontinuous; more tuning edges</td>
+          <td>Optional; continuous blend preferred</td>
+        </tr>
+        <tr>
+          <td>Nearest food + noise (this design)</td>
+          <td>Simple, visible, trait-ready</td>
+          <td>Can look greedy/robotic if noise too low</td>
+          <td><strong>Preferred MVP</strong></td>
+        </tr>
+        <tr>
+          <td>Food density gradient</td>
+          <td>Softer herds</td>
+          <td>More code; harder to explain</td>
+          <td>Defer</td>
+        </tr>
+        <tr>
+          <td>Memory / return to last meal</td>
+          <td>Natural ExplorationRate hook</td>
+          <td>Extra state; edge cases</td>
+          <td>Defer post-MVP</td>
+        </tr>
+        <tr>
+          <td>A* / pathfinding</td>
+          <td>“Smart”</td>
+          <td>Overkill; grid needed</td>
+          <td>Reject for Phase 0</td>
+        </tr>
+        <tr>
+          <td>Full HoardingBias in 0.9</td>
+          <td>Matches user excitement</td>
+          <td>Steals Phase 1</td>
+          <td>Only light greed compromise</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ========== 14 ========== -->
+    <h2 id="risks">14. Risks &amp; tuning guardrails</h2>
+
+    <table>
+      <thead>
+        <tr><th>Risk</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>All agents laser-beam to same pellet; boring pile-up</td>
+          <td>Keep wanderAmp &gt; 0; cap blend; sense radius not infinite; optional small target jitter</td>
+        </tr>
+        <tr>
+          <td>Seekers starve map; mass extinction</td>
+          <td>Human retunes food spawn; Random policy control; don’t change death rules silently</td>
+        </tr>
+        <tr>
+          <td>10× speed unstable steering</td>
+          <td>Test at 5×/10×; prefer acceleration form over teleporting steps</td>
+        </tr>
+        <tr>
+          <td>Scope creep into traits / auto-tune</td>
+          <td>This doc’s non-goals; human gate on stretch items</td>
+        </tr>
+        <tr>
+          <td>Toroidal wrap weirdness</td>
+          <td>Accept in MVP; follow-up min-image distance</td>
+        </tr>
+        <tr>
+          <td>Performance O(agents × food) already true for eating</td>
+          <td>Nearest search same order; fine at current N (~100 agents, ~70 food)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ========== 15 ========== -->
+    <h2 id="impl">15. Implementation plan (PR-sized steps)</h2>
+
+    <p>Prefer <strong>one PR</strong> for MVP if small; split only if tuning drags.</p>
+
+    <ol>
+      <li>
+        <strong>Versioning ritual</strong> — archive current live as
+        <code>archive/index-0.8.4-tight-layout.html</code> if not already the frozen snapshot matching VERSION;
+        set <code>VERSION</code> + UI badge to <code>0.9.0-forage</code>.
+      </li>
+      <li>
+        <strong>Parameters</strong> — add <code>let</code>s + Controls UI (policy + sliders).
+      </li>
+      <li>
+        <strong>Steering</strong> — implement nearest-food seek; policy branch for random.
+      </li>
+      <li>
+        <strong>Inspector / optional viz</strong> — debug fields; optional pin trail.
+      </li>
+      <li>
+        <strong>Optional greed</strong> — only if human chose B or C.
+      </li>
+      <li>
+        <strong>Smoke</strong> — §16 checklist in browser (human).
+      </li>
+      <li>
+        <strong>Docs</strong> — IMPLEMENTATION_LOG section; FUTURE_FEATURES remove forage open item;
+        MANIFEST row for new archive; README live line if needed.
+      </li>
+    </ol>
+
+    <h3>Code touch map (expected)</h3>
+    <ul>
+      <li><code>Agent.update()</code> locomotion block</li>
+      <li>Top-level <code>let</code> params + slider init (mirror hunger sliders pattern)</li>
+      <li>Optional: <code>nearestFood(agent)</code> helper</li>
+      <li>Inspector HTML/JS for new fields</li>
+      <li>No new <code>.js</code> files</li>
+    </ul>
+
+    <!-- ========== 16 ========== -->
+    <h2 id="acceptance">16. Acceptance / smoke criteria</h2>
+
+    <ul class="check">
+      <li>Policy <strong>Seek</strong> (default): hungry agents visibly curve toward nearby food pellets.</li>
+      <li>Policy <strong>Random</strong>: behavior matches pre-0.9 locomotion qualitatively (jitter walk).</li>
+      <li>With food depleted in sense range, agents wander (no NaN, no stuck freeze).</li>
+      <li>Death, self-consume, ground eat, food respawn still function.</li>
+      <li>Pause / resume / speed 1×–10×; trends and pin graphs still update.</li>
+      <li>Reset / new run safe; no residual target bugs across runs.</li>
+      <li>UI version string matches <code>VERSION</code> file.</li>
+      <li>Archive snapshot + MANIFEST updated for the release.</li>
+      <li>Human judges sim “feel” acceptable under Balanced preset (Track B gate).</li>
+    </ul>
+
+    <!-- ========== 17 ========== -->
+    <h2 id="open">17. Open decisions for the human</h2>
+
+    <ol>
+      <li><strong>Greed in 0.9:</strong> A none / B global slider / C per-agent random? (Recommend A then optional C.)</li>
+      <li><strong>Default policy:</strong> Seek (recommended) vs keep Random as default for one release?</li>
+      <li><strong>Toroidal nearest food:</strong> MVP skip vs include?</li>
+      <li><strong>Visual trail:</strong> none / pin-only / all agents?</li>
+      <li><strong>Preset retune:</strong> same PR as forage or follow-up after living with seekers?</li>
+      <li><strong>Sense radius default:</strong> 180 as starting point OK?</li>
+    </ol>
+
+    <hr>
+
+    <h2>Appendix A — Session provenance</h2>
+    <ul>
+      <li><strong>Session:</strong> Grok chat <code>019f66dd-ed0e-7781-a014-3d60054937f3</code> (“Review Recent GitHub Repo and Next Steps”), esp. 2026-07-15 turns on layout + random movement + “always looking for food” / greed / analysis / fine-tune presets.</li>
+      <li><strong>Also referenced:</strong> recommended milestone order layout → forage → traits; alternatives list (gradient, memory, mode switch).</li>
+      <li><strong>Not a substitute for implementation log:</strong> when 0.9 ships, append <code>IMPLEMENTATION_LOG.md</code> with what was actually built vs this design.</li>
+    </ul>
+
+    <h2>Appendix B — Relationship to other docs</h2>
+    <ul>
+      <li><code>FUTURE_FEATURES.md</code> — open backlog item <code>0.9.0-forage</code> until shipped.</li>
+      <li><code>AGENTS.md</code> — Track B, versioning ritual, single-file discipline.</li>
+      <li><code>design-docs/0.8.*</code> — layout only; no movement change.</li>
+      <li>Archive freezes under <code>archive/index-*.html</code> for behavior comparison (Random era vs Seek era).</li>
+    </ul>
+
+    <h2>Appendix C — Minimal test matrix</h2>
+    <table>
+      <thead>
+        <tr><th>Case</th><th>Setup</th><th>Expected</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Seek + food rich</td>
+          <td>Balanced, policy seek</td>
+          <td>Agents converge on pellets; hunger often lower than pure random historically</td>
+        </tr>
+        <tr>
+          <td>Seek + food scarce</td>
+          <td>Punishing spawn</td>
+          <td>Clear competition; possible faster monopoly dynamics</td>
+        </tr>
+        <tr>
+          <td>Random policy</td>
+          <td>Same seed-ish feel as 0.8.4</td>
+          <td>No systematic beelines</td>
+        </tr>
+        <tr>
+          <td>No food on map</td>
+          <td>Manually empty or spawn 0</td>
+          <td>Wander only; eventual starvation; no crash</td>
+        </tr>
+        <tr>
+          <td>High speed</td>
+          <td>10×</td>
+          <td>Stable motion; charts alive</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <footer>
+      trait-evolution-sim · design-docs/0.9.0-forage-design.html · Track B · Phase 0 · Survive<br>
+      Status: design approved for discussion; implement only when human requests Track B work.
+    </footer>
+  </div>
+</body>
+</html>

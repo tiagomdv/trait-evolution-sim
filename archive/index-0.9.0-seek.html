@@ -33,81 +33,36 @@
                 --radius-lg: 0.65rem;
                 --radius-xl: 0.85rem;
             }
-            html, body {
-                height: 100%;
-                overflow: hidden;
-            }
             body {
                 background: var(--bg);
                 color: var(--text);
                 margin: 0;
+                min-height: 100vh;
             }
-            /* App shell fills viewport — no page scroll (0.9.1-ui-chrome) */
+            /* App shell fills viewport */
             .app-shell {
                 height: 100vh;
-                max-height: 100vh;
-                min-height: 0;
+                min-height: 520px;
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
                 padding: 0.75rem;
                 box-sizing: border-box;
-                overflow: hidden;
             }
             .app-header {
                 display: flex;
                 flex-wrap: wrap;
                 align-items: center;
-                gap: 0.75rem 1.25rem;
-                padding: 0.6rem 0.85rem;
+                gap: 0.55rem;
+                padding: 0.55rem 0.75rem;
                 background: var(--panel);
                 border: 1px solid var(--border);
                 border-radius: var(--radius-lg);
                 flex-shrink: 0;
             }
-            .app-header .header-meta {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: baseline;
-                gap: 0.35rem 0.65rem;
-                min-width: 0;
-                flex: 1 1 auto;
-            }
-            .app-header h1 {
-                font-size: 1.15rem;
-                font-weight: 650;
-                color: var(--text-strong);
-                margin: 0;
-            }
-            .app-header .phase-label {
-                font-size: 12px;
-                color: var(--muted);
-            }
-            .app-header .header-actions {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                gap: 0.75rem;
-                flex: 0 0 auto;
-                margin-left: max(2.5rem, 8vw); /* clear separation from title/phase/version */
-            }
-            .app-header .speed-block {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.5rem; /* room between "Speed" label and button tray */
-            }
-            .app-header .speed-label {
-                font-size: 10px;
-                letter-spacing: 0.06em;
-                text-transform: uppercase;
-                color: #64748b;
-                flex-shrink: 0;
-                user-select: none;
-            }
             .app-body {
                 flex: 1;
                 min-height: 0;
-                overflow: hidden;
                 display: grid;
                 /* A: tight equal sides */
                 grid-template-columns: 260px minmax(0, 1fr) 260px;
@@ -252,196 +207,22 @@
                 margin-bottom: 0.4rem;
                 font-weight: 600;
             }
-            /* Version: plain secondary metadata (not a competing chip) */
             .badge-version {
-                font-size: 11px;
-                font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-                font-weight: 500;
-                color: #64748b;
-                letter-spacing: 0.01em;
-                padding: 0;
-                border: none;
-                background: transparent;
-                border-radius: 0;
-                opacity: 0.9;
-            }
-            .badge-version::before {
-                content: "·";
-                margin-right: 0.45rem;
-                color: #475569;
-                font-weight: 400;
+                font-size: 10px;
+                padding: 1px 6px;
+                border-radius: 999px;
+                background: var(--badge-bg);
+                color: var(--badge-fg);
+                border: 1px solid var(--badge-border);
             }
             .speed-group {
                 display: inline-flex;
                 align-items: center;
-                gap: 0.25rem;
-                padding: 0.25rem 0.35rem;
-                margin-left: 0;
-                background: #0a1220;
-                border: 1px solid var(--border);
-                border-radius: var(--radius-md);
-            }
-            .policy-group {
-                display: flex;
-                width: 100%;
-                gap: 0.25rem;
-                margin-left: 0;
+                gap: 0.2rem;
                 padding: 0.2rem;
                 background: #0a1220;
                 border: 1px solid var(--border);
                 border-radius: var(--radius-md);
-            }
-            .policy-group .btn-speed {
-                flex: 1;
-                text-align: center;
-            }
-            .btn-preset {
-                flex: 1;
-                padding: 0.28rem 0.2rem;
-                font-size: 10px;
-                border-radius: var(--radius-sm);
-                background: #0f1c2e;
-                color: var(--muted);
-                border: 1px solid var(--border);
-                cursor: pointer;
-            }
-            .btn-preset.on {
-                background: #0c4a6e33;
-                color: var(--good);
-                border-color: var(--accent);
-                box-shadow: 0 0 0 1px var(--accent);
-                font-weight: 600;
-            }
-            .btn-rail {
-                flex: 1;
-                padding: 0.35rem 0.4rem;
-                font-size: 10px;
-                border-radius: var(--radius-sm);
-                background: #0a1220;
-                color: var(--muted);
-                border: 1px dashed var(--border);
-                cursor: pointer;
-                text-align: center;
-            }
-            .btn-rail:hover {
-                border-color: var(--accent);
-                color: var(--accent);
-            }
-            .btn-rail.solid {
-                border-style: solid;
-                color: #94a3b8;
-            }
-            .btn-rail.help {
-                border-style: solid;
-                color: var(--good);
-                border-color: #334155;
-            }
-            /* Modals (Advanced + Help) */
-            .modal-root {
-                position: fixed;
-                inset: 0;
-                z-index: 50;
-                display: none;
-                align-items: center;
-                justify-content: center;
-                padding: 1rem;
-            }
-            .modal-root.open {
-                display: flex;
-            }
-            .modal-dim {
-                position: absolute;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.55);
-            }
-            .modal-box {
-                position: relative;
-                z-index: 1;
-                width: min(400px, 100%);
-                max-height: min(70vh, 560px);
-                overflow: auto;
-                background: var(--panel);
-                border: 1px solid var(--accent);
-                border-radius: var(--radius-lg);
-                padding: 0.85rem 1rem;
-                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            }
-            .modal-box.help-wide {
-                width: min(540px, 100%);
-            }
-            .modal-head {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 0.5rem;
-                margin-bottom: 0.65rem;
-                position: sticky;
-                top: 0;
-                background: var(--panel);
-                padding-bottom: 0.35rem;
-                z-index: 1;
-            }
-            .modal-head h2 {
-                margin: 0;
-                font-size: 0.95rem;
-                font-weight: 650;
-                color: #e0f2fe;
-            }
-            .modal-close {
-                font-size: 14px;
-                line-height: 1;
-                padding: 0.15rem 0.4rem;
-                border-radius: var(--radius-sm);
-                border: 1px solid var(--border);
-                background: #0a1220;
-                color: var(--muted);
-                cursor: pointer;
-            }
-            .modal-close:hover {
-                border-color: var(--accent);
-                color: var(--accent);
-            }
-            .help-intro {
-                font-size: 12px;
-                color: #94a3b8;
-                margin: 0 0 0.75rem;
-                line-height: 1.5;
-            }
-            .help-sec {
-                font-size: 10px;
-                letter-spacing: 0.1em;
-                text-transform: uppercase;
-                color: var(--muted);
-                font-weight: 600;
-                margin: 1rem 0 0.4rem;
-                padding-bottom: 0.2rem;
-                border-bottom: 1px solid #1e293b;
-            }
-            .help-sec:first-of-type { margin-top: 0.25rem; }
-            .help-entry {
-                font-size: 12.5px;
-                color: #cbd5e1;
-                margin-bottom: 0.55rem;
-                line-height: 1.5;
-            }
-            .help-entry strong {
-                color: var(--good);
-                font-weight: 600;
-            }
-            .help-entry em {
-                color: #e2e8f0;
-                font-style: normal;
-                font-weight: 500;
-            }
-            .help-tip {
-                font-size: 11.5px;
-                color: #94a3b8;
-                background: #0a1220;
-                border: 1px solid #1e3a5f;
-                border-radius: var(--radius-md);
-                padding: 0.5rem 0.65rem;
-                margin: 0.35rem 0 0.65rem;
-                line-height: 1.45;
             }
             .btn-speed {
                 padding: 0.22rem 0.5rem;
@@ -611,26 +392,22 @@
             .scroll-thin { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
         </style>
     </head>
-    <body>
+    <body class="p-6">
 
         <div class="app-shell">
 
             <!-- HEADER -->
             <header class="app-header">
-                <div class="header-meta">
-                    <h1>Evol-Econ Sim</h1>
-                    <span class="phase-label">Phase 0 · Survive</span>
-                    <span class="badge-version" id="version-badge">v0.9.1-ui-chrome</span>
-                </div>
-                <div class="header-actions">
-                    <div class="speed-block">
-                        <span class="speed-label">Speed</span>
-                        <div class="speed-group">
-                            <button type="button" id="speed-1" class="btn-speed on" onclick="setSpeed(1)">1×</button>
-                            <button type="button" id="speed-2" class="btn-speed" onclick="setSpeed(2)">2×</button>
-                            <button type="button" id="speed-5" class="btn-speed" onclick="setSpeed(5)">5×</button>
-                            <button type="button" id="speed-10" class="btn-speed" onclick="setSpeed(10)">10×</button>
-                        </div>
+                <h1>Evol-Econ Sim</h1>
+                <span>Phase 0 · Survive</span>
+                <span class="badge-version">v0.9.0-seek</span>
+                <div class="ml-auto flex items-center gap-2">
+                    <div class="speed-group">
+                        <span class="text-[10px] text-slate-500">Speed</span>
+                        <button type="button" id="speed-1" class="btn-speed on" onclick="setSpeed(1)">1×</button>
+                        <button type="button" id="speed-2" class="btn-speed" onclick="setSpeed(2)">2×</button>
+                        <button type="button" id="speed-5" class="btn-speed" onclick="setSpeed(5)">5×</button>
+                        <button type="button" id="speed-10" class="btn-speed" onclick="setSpeed(10)">10×</button>
                     </div>
                     <button type="button" class="btn-action" onclick="toggleSim()">Pause</button>
                     <button type="button" class="btn-action primary" onclick="resetSim()">Reset</button>
@@ -646,7 +423,8 @@
                             <div class="section-title">Controls</div>
                             <button type="button" class="btn-hide-col" onclick="hideCol('left')" title="Hide left column">Hide ✕</button>
                         </div>
-                        <div class="section-title" style="margin-bottom:0.35rem">Run size</div>
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Hunger &amp; Environment</div>
+
                         <div class="mb-2">
                             <div class="flex justify-between text-xs mb-0.5">
                                 <span>Initial Agents</span>
@@ -655,29 +433,31 @@
                             <input type="range" id="slider-number-agents" min="1" max="100" step="1" value="100" class="w-full accent-sky-400">
                         </div>
 
-                        <div class="section-title" style="margin-top:0.55rem;margin-bottom:0.35rem">Environment</div>
                         <div class="mb-2">
                             <div class="flex justify-between text-xs mb-0.5">
                                 <span>Hunger Rate</span>
-                                <span id="val-hunger-rate" class="font-mono text-sky-300">0.065</span>
+                                <span id="val-hunger-rate" class="font-mono text-sky-300">0.055</span>
                             </div>
-                            <input type="range" id="slider-hunger-rate" min="0.01" max="0.15" step="0.001" value="0.065" class="w-full accent-sky-400">
+                            <input type="range" id="slider-hunger-rate" min="0.01" max="0.15" step="0.001" value="0.055" class="w-full accent-sky-400">
                         </div>
+
                         <div class="mb-2">
                             <div class="flex justify-between text-xs mb-0.5">
                                 <span>Food Spawn Interval</span>
-                                <span id="val-food-spawn" class="font-mono text-sky-300">10</span>
+                                <span id="val-food-spawn" class="font-mono text-sky-300">8</span>
                             </div>
-                            <input type="range" id="slider-food-spawn" min="1" max="50" step="1" value="10" class="w-full accent-sky-400">
+                            <input type="range" id="slider-food-spawn" min="1" max="50" step="1" value="8" class="w-full accent-sky-400">
                         </div>
 
-                        <!-- Movement: policy + basic knobs (0.9.1 chrome) -->
-                        <div class="section-title" style="margin-top:0.55rem;margin-bottom:0.35rem">Movement</div>
+                        <!-- 0.9.0-seek: movement policy + basic knobs -->
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1 mt-2">Movement</div>
                         <div class="mb-2">
-                            <div class="policy-group">
+                            <div class="text-[10px] text-slate-500 mb-1">Policy</div>
+                            <div class="speed-group flex flex-wrap gap-1">
                                 <button type="button" id="move-seek" class="btn-speed on" onclick="setMovementPolicy('seek')">Seek</button>
                                 <button type="button" id="move-random" class="btn-speed" onclick="setMovementPolicy('random')">Random</button>
                             </div>
+                            <div class="text-[10px] text-slate-500 mt-1">Seek = hunger-weighted food path · Random = 0.8 walk</div>
                         </div>
                         <div class="mb-2">
                             <div class="flex justify-between text-xs mb-0.5">
@@ -688,22 +468,54 @@
                         </div>
                         <div class="mb-2">
                             <div class="flex justify-between text-xs mb-0.5">
-                                <span title="How strongly hunger pulls agents toward food (Seek mode only)">Seek strength</span>
+                                <span>Seek strength</span>
                                 <span id="val-seek-strength" class="font-mono text-sky-300">1.00</span>
                             </div>
                             <input type="range" id="slider-seek-strength" min="0" max="2" step="0.05" value="1" class="w-full accent-sky-400">
                         </div>
 
-                        <div class="section-title" style="margin-top:0.55rem;margin-bottom:0.35rem">Presets</div>
-                        <div class="flex gap-1 mb-2">
-                            <button type="button" id="preset-lenient" class="btn-preset" onclick="applyPreset('lenient')">Lenient</button>
-                            <button type="button" id="preset-balanced" class="btn-preset on" onclick="applyPreset('balanced')">Balanced</button>
-                            <button type="button" id="preset-punishing" class="btn-preset" onclick="applyPreset('punishing')">Punishing</button>
-                        </div>
+                        <!-- BUTTON ADVANCED MODE -->
+                        <button onclick="toggleAdvanced()" class="text-[10px] text-slate-400 mb-1">Advanced ▼</button>
+                        <div id="advanced-hunger" class="hidden">
+                            <!-- Self-Consume Relief, Ground Eat Relief, Threshold, Amount -->
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Self-Consume Relief</span>
+                                    <span id="val-self-relief" class="font-mono text-sky-300">1.300</span>
+                                </div>
+                                <input type="range" id="slider-self-relief" min="0.5" max="3.0" step="0.05" value="1.3" class="w-full accent-sky-400">
+                            </div>
 
-                        <div class="flex gap-1 mb-3">
-                            <button type="button" class="btn-rail solid" onclick="openAdvancedModal()">Advanced…</button>
-                            <button type="button" class="btn-rail help" onclick="openHelpModal()">Help</button>
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Ground Eat Relief</span>
+                                    <span id="val-ground-relief" class="font-mono text-sky-300">1.900</span>
+                                </div>
+                                <input type="range" id="slider-ground-relief" min="0.5" max="3.0" step="0.05" value="1.9" class="w-full accent-sky-400">
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Self-Consume Threshold</span>
+                                    <span id="val-self-thresh" class="font-mono text-sky-300">10</span>
+                                </div>
+                                <input type="range" id="slider-self-thresh" min="5" max="30" step="1" value="10" class="w-full accent-sky-400">
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs mb-0.5">
+                                    <span>Self-Consume Amount</span>
+                                    <span id="val-self-amount" class="font-mono text-sky-300">0.700</span>
+                                </div>
+                                <input type="range" id="slider-self-amount" min="0.3" max="2.0" step="0.05" value="0.7" class="w-full accent-sky-400">
+                            </div>
+                        </div>
+                        <!-- Presets -->
+                        <div class="text-[10px] text-slate-400 mb-1">Presets</div>
+                        <div class="flex gap-1 text-[10px] mb-3">
+                            <button onclick="applyPreset('lenient')" class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Lenient</button>
+                            <button onclick="applyPreset('balanced')" class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Balanced</button>
+                            <button onclick="applyPreset('punishing')" class="flex-1 px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Punishing</button>
                         </div>
                         <!-- Live metrics (KPI tiles) -->
                         <div class="section-title" style="margin-top:0.5rem">Live metrics</div>
@@ -809,109 +621,7 @@
             </div>
 
         </div>
-
-        <!-- Advanced parameters modal -->
-        <div id="modal-advanced" class="modal-root" aria-hidden="true">
-            <div class="modal-dim" onclick="closeAllModals()"></div>
-            <div class="modal-box" role="dialog" aria-labelledby="adv-title">
-                <div class="modal-head">
-                    <h2 id="adv-title">Advanced parameters</h2>
-                    <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
-                </div>
-                <div class="mb-2">
-                    <div class="flex justify-between text-xs mb-0.5">
-                        <span>Self-Consume Relief</span>
-                        <span id="val-self-relief" class="font-mono text-sky-300">1.000</span>
-                    </div>
-                    <input type="range" id="slider-self-relief" min="0.5" max="3.0" step="0.05" value="1.0" class="w-full accent-sky-400">
-                </div>
-                <div class="mb-2">
-                    <div class="flex justify-between text-xs mb-0.5">
-                        <span>Ground Eat Relief</span>
-                        <span id="val-ground-relief" class="font-mono text-sky-300">1.700</span>
-                    </div>
-                    <input type="range" id="slider-ground-relief" min="0.5" max="3.0" step="0.05" value="1.7" class="w-full accent-sky-400">
-                </div>
-                <div class="mb-2">
-                    <div class="flex justify-between text-xs mb-0.5">
-                        <span>Self-Consume Threshold</span>
-                        <span id="val-self-thresh" class="font-mono text-sky-300">12</span>
-                    </div>
-                    <input type="range" id="slider-self-thresh" min="5" max="30" step="1" value="12" class="w-full accent-sky-400">
-                </div>
-                <div class="mb-1">
-                    <div class="flex justify-between text-xs mb-0.5">
-                        <span>Self-Consume Amount</span>
-                        <span id="val-self-amount" class="font-mono text-sky-300">0.750</span>
-                    </div>
-                    <input type="range" id="slider-self-amount" min="0.3" max="2.0" step="0.05" value="0.75" class="w-full accent-sky-400">
-                </div>
-                <p class="text-[10px] text-slate-500 mt-2 mb-0">Live updates · Escape or click outside to close</p>
-            </div>
-        </div>
-
-        <!-- Help / glossary modal -->
-        <div id="modal-help" class="modal-root" aria-hidden="true">
-            <div class="modal-dim" onclick="closeAllModals()"></div>
-            <div class="modal-box help-wide" role="dialog" aria-labelledby="help-title">
-                <div class="modal-head">
-                    <h2 id="help-title">Help · how the lab works</h2>
-                    <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
-                </div>
-
-                <p class="help-intro">
-                    Agents get hungrier over time. If hunger hits the limit, they die.
-                    They pick up food from the ground and can later eat what they carry.
-                    Your job is to change the world and watch who lasts.
-                </p>
-
-                <div class="help-sec">How agents move</div>
-                <div class="help-entry"><strong>Seek</strong> — The agent looks for nearby food and walks toward it. Hungrier agents try harder (see Seek strength). There is still a little random wobble so motion doesn’t look robotic.</div>
-                <div class="help-entry"><strong>Random</strong> — The agent just wanders. No aiming at food. Use this as a baseline: with the same hunger and food settings, Random should usually do worse than Seek.</div>
-                <div class="help-tip">Quick A/B: leave presets alone, run Seek for a bit, switch to Random, watch deaths climb. That’s the point of the toggle.</div>
-
-                <div class="help-sec">Main controls</div>
-                <div class="help-entry"><strong>Initial agents</strong> — How many start when you hit Reset. Changing this mid-run does nothing until the next Reset.</div>
-                <div class="help-entry"><strong>Hunger rate</strong> — How fast hunger climbs. Higher = harsher world; agents need food more often.</div>
-                <div class="help-entry"><strong>Food spawn interval</strong> — How long between new food drops. Higher number = food is rarer = harder.</div>
-                <div class="help-entry"><strong>Sense radius</strong> — How far a seeking agent can notice food. If food is farther than this, they can’t home in on it (they just wander until something comes into range).</div>
-                <div class="help-entry"><strong>Seek strength</strong> — Only matters in Seek mode. It controls how strongly <em>hunger</em> turns into “I need to go get that food.”
-                    Full and not hungry → mostly stroll.
-                    Very hungry → race toward the nearest pellet they can see.
-                    Turn this up and even medium hunger makes them commit hard.
-                    Turn it down (or to zero) and they barely seek even when starving.</div>
-                <div class="help-tip">Think of hunger as the need, and seek strength as how loud that need is when steering. The inspector’s “seek blend” is “how hard is this one agent seeking right now?”</div>
-
-                <div class="help-sec">Difficulty presets</div>
-                <div class="help-entry"><strong>Lenient</strong> — Soft world. Good for demos and checking that Seek looks right.</div>
-                <div class="help-entry"><strong>Balanced</strong> — Default lab. Real pressure, not instant extinction.</div>
-                <div class="help-entry"><strong>Punishing</strong> — Harsh stress test. Only careful Seek + luck keeps a remnant; Random dies fast.</div>
-                <div class="help-entry">Presets set hunger, food spawn, and the advanced eating knobs together. They do <em>not</em> switch Seek/Random for you. If you drag a linked slider, the active preset clears to custom.</div>
-
-                <div class="help-sec">Advanced eating (popup)</div>
-                <div class="help-entry"><strong>Ground eat relief</strong> — How much hunger drops when they eat food off the ground.</div>
-                <div class="help-entry"><strong>Self-consume threshold</strong> — Hunger must get this high before they start eating food they already carry.</div>
-                <div class="help-entry"><strong>Self-consume amount</strong> — How much carried food they nibble each step when self-eating.</div>
-                <div class="help-entry"><strong>Self-consume relief</strong> — How much hunger that nibble removes.</div>
-                <div class="help-tip">Ground food is the big rescue. Carried food is a backup snack once they’re already quite hungry.</div>
-
-                <div class="help-sec">Live numbers (left dock)</div>
-                <div class="help-entry"><strong>Alive / Deaths</strong> — Who’s still up · how many starved this run.</div>
-                <div class="help-entry"><strong>Food</strong> — Pellets currently on the map (not what’s in pockets).</div>
-                <div class="help-entry"><strong>Avg hunger</strong> — Average hunger of living agents. Rising = population is getting desperate.</div>
-                <div class="help-entry"><strong>Min / Max food</strong> — Poorest and richest living agent by <em>carried</em> food (inventory). Not min/max hunger.</div>
-                <div class="help-entry"><strong>Avg food / agent</strong> — Average carried food. Low average + high hunger = bad time coming.</div>
-
-                <div class="help-sec">Selected agent</div>
-                <div class="help-entry">Click someone on the canvas. You’ll see their id, hunger, carried food, movement mode, how hard they’re seeking right now, and distance to food if they can sense any. <strong>Pin to trends</strong> keeps their hunger/food charts on the right after you click away.</div>
-
-                <div class="help-sec">History (right column)</div>
-                <div class="help-entry"><strong>Pre</strong> — Which difficulty preset that finished run used (or custom).</div>
-                <div class="help-entry"><strong>Dur</strong> — How long the run lasted.</div>
-                <div class="help-entry"><strong>End</strong> — How many were still alive at the end.</div>
-                <div class="help-entry"><strong>Hung / Food</strong> — Average hunger and average carried food over that run. Useful when comparing Seek vs Random or preset ladders.</div>
-            </div>
-        </div>
+    </div>
 
         <script>
             const canvas = document.getElementById('canvas');
@@ -926,11 +636,11 @@
             const NUM_FOOD = 70;
 
             // Main behavior variables
-            let hungerRate = 0.065;             // hunger increase per tick (balanced 0.9.1)
-            let selfConsumeRelief = 1.0;       // hunger reduced when eating own carried food
-            let groundEatRelief = 1.7;          // hunger reduced when eating from ground food
-            let selfConsumeThreshold = 12;      // hunger level needed before eating carried food
-            let selfConsumeAmount = 0.75;       // amount of carried food eaten per tick
+            let hungerRate = 0.05;              // hunger increase per tick
+            let selfConsumeRelief = 1;         // hunger reduced when eating own carried food
+            let groundEatRelief = 5;            // hunger reduced when eating from ground food
+            let selfConsumeThreshold = 10;       // hunger level needed before eating carried food
+            let selfConsumeAmount = 0.7;        // amount of carried food eaten per tick
 
             // === 0.9.0-seek movement (I1 MVP) ===
             // 'seek' = hunger-weighted nearest-food + residual noise; 'random' = pre-0.9 walk
@@ -961,7 +671,7 @@
 
             // Live counters (reset every run)
             let starvationDeaths = 0;
-            let foodSpawnInterval = 10; // balanced 0.9.1
+            let foodSpawnInterval = 8;
             let uiFrame = 0;
 
             // Time-series for current run (sampled, capped)
@@ -1409,37 +1119,37 @@
                 const sRate = document.getElementById('slider-hunger-rate');
                 const vRate = document.getElementById('val-hunger-rate');
                 sRate.value = hungerRate;
-                sRate.oninput = () => { hungerRate = parseFloat(sRate.value); vRate.textContent = hungerRate.toFixed(3); markCustom(); };
+                sRate.oninput = () => { hungerRate = parseFloat(sRate.value); vRate.textContent = hungerRate.toFixed(3);currentPreset = 'custom'; };
 
                 // Self-Consume Relief
                 const sRel = document.getElementById('slider-self-relief');
                 const vRel = document.getElementById('val-self-relief');
                 sRel.value = selfConsumeRelief;
-                sRel.oninput = () => { selfConsumeRelief = parseFloat(sRel.value); vRel.textContent = selfConsumeRelief.toFixed(3); markCustom(); };
+                sRel.oninput = () => { selfConsumeRelief = parseFloat(sRel.value); vRel.textContent = selfConsumeRelief.toFixed(3);currentPreset = 'custom'; };
 
                 // Ground Eat Relief
                 const sGround = document.getElementById('slider-ground-relief');
                 const vGround = document.getElementById('val-ground-relief');
                 sGround.value = groundEatRelief;
-                sGround.oninput = () => { groundEatRelief = parseFloat(sGround.value); vGround.textContent = groundEatRelief.toFixed(3); markCustom(); };
+                sGround.oninput = () => { groundEatRelief = parseFloat(sGround.value); vGround.textContent = groundEatRelief.toFixed(3);currentPreset = 'custom'; };
 
                 // Self-Consume Threshold
                 const sThresh = document.getElementById('slider-self-thresh');
                 const vThresh = document.getElementById('val-self-thresh');
                 sThresh.value = selfConsumeThreshold;
-                sThresh.oninput = () => { selfConsumeThreshold = parseFloat(sThresh.value); vThresh.textContent = selfConsumeThreshold; markCustom(); };
+                sThresh.oninput = () => { selfConsumeThreshold = parseFloat(sThresh.value); vThresh.textContent = selfConsumeThreshold; currentPreset = 'custom';};
 
                 // Self-Consume Amount
                 const sAmt = document.getElementById('slider-self-amount');
                 const vAmt = document.getElementById('val-self-amount');
                 sAmt.value = selfConsumeAmount;
-                sAmt.oninput = () => { selfConsumeAmount = parseFloat(sAmt.value); vAmt.textContent = selfConsumeAmount.toFixed(3); markCustom(); };
+                sAmt.oninput = () => { selfConsumeAmount = parseFloat(sAmt.value); vAmt.textContent = selfConsumeAmount.toFixed(3); currentPreset = 'custom';};
 
                 // Food Spawn Interval Control
                 const sSpawn = document.getElementById('slider-food-spawn');
                 const vSpawn = document.getElementById('val-food-spawn');
                 sSpawn.value = foodSpawnInterval;
-                sSpawn.oninput = () => { foodSpawnInterval = parseInt(sSpawn.value); vSpawn.textContent = foodSpawnInterval; markCustom(); };
+                sSpawn.oninput = () => { foodSpawnInterval = parseInt(sSpawn.value); vSpawn.textContent = foodSpawnInterval;currentPreset = 'custom'; };
 
                 // Movement (0.9.0-seek)
                 const sSense = document.getElementById('slider-sense-radius');
@@ -1450,7 +1160,7 @@
                     sSense.oninput = () => {
                         senseRadius = parseFloat(sSense.value);
                         vSense.textContent = senseRadius;
-                        /* sense not in preset table — leave preset highlight */
+                        currentPreset = 'custom';
                     };
                 }
                 const sSeek = document.getElementById('slider-seek-strength');
@@ -1461,15 +1171,10 @@
                     sSeek.oninput = () => {
                         seekStrength = parseFloat(sSeek.value);
                         vSeek.textContent = seekStrength.toFixed(2);
+                        currentPreset = 'custom';
                     };
                 }
                 syncMovementPolicyButtons();
-                syncPresetButtons();
-            }
-
-            function markCustom() {
-                currentPreset = 'custom';
-                syncPresetButtons();
             }
 
             function setMovementPolicy(policy) {
@@ -1693,43 +1398,18 @@
 
             function applyPreset(type) {
                 currentPreset = type;
-                // 0.9.1 Seek-default ladder (warm-up · default lab · stress)
+                
                 if (type === 'lenient') {
-                    hungerRate = 0.04;
-                    selfConsumeRelief = 1.55;
-                    groundEatRelief = 2.6;
-                    selfConsumeThreshold = 8;
-                    selfConsumeAmount = 0.55;
-                    foodSpawnInterval = 6;
+                    hungerRate = 0.03; selfConsumeRelief = 1.5; groundEatRelief = 3.0;
+                    selfConsumeThreshold = 8; selfConsumeAmount = 0.5; foodSpawnInterval = 5;
                 } else if (type === 'balanced') {
-                    hungerRate = 0.065;
-                    selfConsumeRelief = 1.0;
-                    groundEatRelief = 1.7;
-                    selfConsumeThreshold = 12;
-                    selfConsumeAmount = 0.75;
-                    foodSpawnInterval = 10;
+                    hungerRate = 0.05; selfConsumeRelief = 1; groundEatRelief = 1.9;
+                    selfConsumeThreshold = 10; selfConsumeAmount = 0.7; foodSpawnInterval = 8;
                 } else if (type === 'punishing') {
-                    hungerRate = 0.105;
-                    selfConsumeRelief = 0.55;
-                    groundEatRelief = 0.95;
-                    selfConsumeThreshold = 18;
-                    selfConsumeAmount = 1.05;
-                    foodSpawnInterval = 16;
+                    hungerRate = 0.09; selfConsumeRelief = 0.6; groundEatRelief = 1.0;
+                    selfConsumeThreshold = 15; selfConsumeAmount = 1.0; foodSpawnInterval = 12;
                 }
                 syncSliders();
-                syncPresetButtons();
-            }
-
-            function syncPresetButtons() {
-                const map = {
-                    lenient: 'preset-lenient',
-                    balanced: 'preset-balanced',
-                    punishing: 'preset-punishing'
-                };
-                Object.keys(map).forEach(function (key) {
-                    const el = document.getElementById(map[key]);
-                    if (el) el.classList.toggle('on', currentPreset === key);
-                });
             }
 
             function syncTrendsPinClass() {
@@ -1868,44 +1548,11 @@
                 }
             }
 
-            function openAdvancedModal() {
-                closeHelpModalOnly();
-                const m = document.getElementById('modal-advanced');
-                if (!m) return;
-                m.classList.add('open');
-                m.setAttribute('aria-hidden', 'false');
+            function toggleAdvanced() {
+                const adv = document.getElementById('advanced-hunger');
+                if (!adv) return;
+                adv.classList.toggle('hidden');
             }
-
-            function openHelpModal() {
-                closeAdvancedModalOnly();
-                const m = document.getElementById('modal-help');
-                if (!m) return;
-                m.classList.add('open');
-                m.setAttribute('aria-hidden', 'false');
-            }
-
-            function closeAdvancedModalOnly() {
-                const m = document.getElementById('modal-advanced');
-                if (!m) return;
-                m.classList.remove('open');
-                m.setAttribute('aria-hidden', 'true');
-            }
-
-            function closeHelpModalOnly() {
-                const m = document.getElementById('modal-help');
-                if (!m) return;
-                m.classList.remove('open');
-                m.setAttribute('aria-hidden', 'true');
-            }
-
-            function closeAllModals() {
-                closeAdvancedModalOnly();
-                closeHelpModalOnly();
-            }
-
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') closeAllModals();
-            });
 
 
             function deselectAgent() {
@@ -2033,7 +1680,6 @@
             }
 
             initHungerSliders();
-            syncPresetButtons();
 
             // NEW for v1 Run History
             startNewRun();

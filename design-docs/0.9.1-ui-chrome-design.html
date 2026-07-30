@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.9.1-ui-chrome · design</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d1524;
+      --panel-2: #0a1220;
+      --border: #1e3a5f;
+      --text: #cbd5e1;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --good: #7dd3fc;
+      --warn: #fbbf24;
+      --bad: #fb7185;
+      --ok: #4ade80;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.55;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 4rem;
+    }
+
+    /* Header band */
+    .doc-hero {
+      background: linear-gradient(180deg, #0d1524 0%, #070b12 100%);
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      padding: 1.15rem 1.25rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .doc-hero h1 {
+      font-size: 1.55rem;
+      font-weight: 650;
+      color: #f1f5f9;
+      margin: 0.35rem 0 0.4rem;
+      letter-spacing: -0.02em;
+    }
+    .doc-hero .lede {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #94a3b8;
+      max-width: 52rem;
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.15rem;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #0c4a6e;
+      color: #bae6fd;
+      border: 1px solid #0ea5e9;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .tag.muted { background: #0a1220; color: #94a3b8; border-color: #334155; }
+    .baseline {
+      margin-top: 0.85rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+    .baseline .chip {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.45rem 0.65rem;
+      font-size: 0.8rem;
+    }
+    .baseline .chip strong {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 0.15rem;
+    }
+
+    /* Layout: sticky toc + main */
+    .doc-grid {
+      display: grid;
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+    @media (max-width: 820px) {
+      .doc-grid { grid-template-columns: 1fr; }
+      .toc { position: static !important; }
+    }
+    .toc {
+      position: sticky;
+      top: 0.75rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      padding: 0.75rem 0.85rem;
+    }
+    .toc .section-label { margin-bottom: 0.5rem; }
+    .toc ol {
+      margin: 0;
+      padding-left: 1.1rem;
+      font-size: 0.8rem;
+    }
+    .toc li { margin: 0.28rem 0; }
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .toc a:hover { text-decoration: underline; }
+    .toc .sub {
+      list-style: none;
+      padding-left: 0;
+      margin: 0.15rem 0 0.35rem;
+    }
+    .toc .sub a { color: #94a3b8; font-size: 0.76rem; }
+
+    .main { min-width: 0; }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    h2 {
+      font-size: 1.12rem;
+      font-weight: 650;
+      color: #e2e8f0;
+      margin: 0 0 0.65rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #bae6fd;
+      margin: 1.1rem 0 0.4rem;
+    }
+    h2 + h3 { margin-top: 0.65rem; }
+    p, li { font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.84rem; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      padding: 0.85rem 1rem;
+      margin: 0.65rem 0;
+    }
+    .section {
+      margin-bottom: 1.75rem;
+      scroll-margin-top: 0.75rem;
+    }
+    .callout {
+      border-left: 3px solid var(--accent);
+      padding: 0.55rem 0.75rem;
+      margin: 0.7rem 0;
+      background: #0a1220;
+      border-radius: 0 0.45rem 0.45rem 0;
+      font-size: 0.88rem;
+    }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.ok { border-left-color: var(--ok); }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    @media (max-width: 700px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      padding: 0.75rem 0.9rem;
+    }
+    .card h3 { margin-top: 0; }
+    .card ul { margin: 0.35rem 0 0; padding-left: 1.15rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      margin: 0.45rem 0 0.7rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.55rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--panel-2);
+      color: #94a3b8;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    code { color: var(--good); font-size: 0.86em; }
+    pre {
+      background: #05080e;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.75rem 0.9rem;
+      overflow-x: auto;
+      font-size: 0.78rem;
+      color: #a5f3fc;
+      line-height: 1.45;
+    }
+    .check { list-style: none; padding-left: 0; }
+    .check li {
+      padding: 0.25rem 0 0.25rem 1.35rem;
+      position: relative;
+    }
+    .check li::before {
+      content: "☐";
+      position: absolute;
+      left: 0;
+      color: var(--muted);
+    }
+    .locked {
+      display: inline-block;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: #052e16;
+      color: #bbf7d0;
+      border: 1px solid #22c55e;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .open {
+      display: inline-block;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: #422006;
+      color: #fde68a;
+      border: 1px solid #d97706;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+
+    /* ========== Wireframe mock ========== */
+    .mock {
+      background: #05080e;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      height: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 0.5rem;
+      margin: 0.75rem 0;
+      overflow: hidden;
+    }
+    .mock-h {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-shrink: 0;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.55rem;
+      font-size: 11px;
+    }
+    .mock-h .title { font-weight: 650; color: #f0f9ff; }
+    .mock-h .phase { color: var(--muted); font-size: 10px; }
+    .mock-h .badge {
+      font-size: 9px;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      background: #0a1220;
+      padding: 1px 6px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+    .mock-h .spacer { flex: 1; }
+    .mock-h .speed {
+      display: flex;
+      gap: 0.15rem;
+      margin-left: 0.85rem;
+      padding: 0.15rem;
+      background: #0a1220;
+      border-radius: 0.35rem;
+      border: 1px solid var(--border);
+    }
+    .mock-h .speed span {
+      padding: 0.15rem 0.35rem;
+      font-size: 10px;
+      color: var(--muted);
+    }
+    .mock-h .speed .on {
+      background: #0369a1;
+      color: #e0f2fe;
+      border-radius: 0.25rem;
+    }
+    .mock-h .act {
+      padding: 0.2rem 0.45rem;
+      border: 1px solid var(--border);
+      border-radius: 0.3rem;
+      font-size: 10px;
+      color: var(--muted);
+    }
+    .mock-h .act.primary {
+      border-color: var(--accent);
+      color: #e0f2fe;
+    }
+    .mock-b {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 240px 1fr 200px;
+      gap: 0.4rem;
+    }
+    .mock-col {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.45rem 0.5rem;
+      overflow: auto;
+      font-size: 10px;
+      color: var(--muted);
+    }
+    .mock-col.center {
+      background: #0a101c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      font-size: 11px;
+    }
+    .mock-sec {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #64748b;
+      font-weight: 600;
+      margin: 0.45rem 0 0.3rem;
+    }
+    .mock-sec:first-child { margin-top: 0; }
+    .mock-slider {
+      margin: 0.28rem 0;
+    }
+    .mock-slider .lbl {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: #94a3b8;
+      margin-bottom: 0.12rem;
+    }
+    .mock-slider .track {
+      height: 5px;
+      background: #0a1220;
+      border: 1px solid #1e293b;
+      border-radius: 999px;
+      position: relative;
+    }
+    .mock-slider .track::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--w, 45%);
+      background: #0369a1;
+      border-radius: 999px;
+      opacity: 0.85;
+    }
+    .mock-policy {
+      display: flex;
+      gap: 0.25rem;
+      margin: 0.25rem 0 0.35rem;
+    }
+    .mock-policy b {
+      flex: 1;
+      text-align: center;
+      padding: 0.32rem;
+      border-radius: 0.3rem;
+      border: 1px solid var(--border);
+      font-size: 10px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .mock-policy b.on {
+      background: #0369a1;
+      color: #e0f2fe;
+      border-color: var(--accent);
+    }
+    .mock-help {
+      font-size: 8px;
+      color: #475569;
+      margin: 0 0 0.3rem;
+      line-height: 1.3;
+    }
+    .mock-preset {
+      display: flex;
+      gap: 0.25rem;
+      margin: 0.25rem 0;
+    }
+    .mock-preset i {
+      flex: 1;
+      text-align: center;
+      padding: 0.28rem 0.15rem;
+      border-radius: 0.3rem;
+      border: 1px solid var(--border);
+      font-style: normal;
+      font-size: 9px;
+      color: #94a3b8;
+    }
+    .mock-preset i.on {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+      color: var(--good);
+      background: #0c4a6e33;
+      font-weight: 600;
+    }
+    .mock-adv {
+      margin-top: 0.4rem;
+      border: 1px dashed var(--border);
+      padding: 0.35rem;
+      border-radius: 0.35rem;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 10px;
+    }
+    .mock-dock {
+      margin-top: 0.5rem;
+      padding-top: 0.4rem;
+      border-top: 1px solid #1e293b;
+      font-size: 9px;
+      color: #64748b;
+    }
+    .mock-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 0.5rem 0 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .mock-legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 0.3rem;
+      vertical-align: -1px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+    }
+    .mock-legend .sliders::before { background: #0369a1; opacity: 0.7; }
+    .mock-legend .mode::before { background: #0369a1; }
+    .mock-legend .adv::before {
+      background: transparent;
+      border-style: dashed;
+    }
+
+    /* Modal mock */
+    .modal-bg {
+      position: relative;
+      margin: 0.75rem 0;
+      height: 210px;
+      background: #05080e;
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      overflow: hidden;
+    }
+    .modal-bg .dim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+    }
+    .modal-bg .box {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(360px, 90%);
+      background: var(--panel);
+      border: 1px solid var(--accent);
+      border-radius: 0.65rem;
+      padding: 0.75rem;
+      font-size: 11px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+    .modal-bg .row {
+      margin-top: 0.4rem;
+    }
+    .modal-bg .row .lbl {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #94a3b8;
+      margin-bottom: 0.15rem;
+    }
+    .modal-bg .bar {
+      height: 6px;
+      background: #0a1220;
+      border-radius: 4px;
+      border: 1px solid #1e293b;
+    }
+
+    /* Decisions */
+    .decision {
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      padding: 0.75rem 0.9rem;
+      margin: 0.55rem 0;
+      background: var(--panel);
+    }
+    .decision .q {
+      font-weight: 600;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+    }
+    .decision .a {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+    }
+    .decision .why {
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    ol.steps { padding-left: 1.25rem; }
+    ol.steps li { margin: 0.35rem 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- ========== HERO ========== -->
+    <header class="doc-hero">
+      <div class="meta-row">
+        <span class="tag">v0.9.1-ui-chrome</span>
+        <span class="tag warn">Track A · Layout / presentation</span>
+        <span class="tag">Phase 0 · Survive</span>
+        <span class="tag good">Design only · after 0.9.0-seek freeze</span>
+      </div>
+      <h1>0.9.1-ui-chrome — design</h1>
+      <p class="lede">
+        Controls and header polish for the Tall Command shell after the working
+        <code>0.9.0-seek</code> freeze. No seek algorithm / eat-rule rewrites —
+        chrome, preset retunes, and in-app parameter help.
+      </p>
+      <div class="baseline">
+        <div class="chip">
+          <strong>Baseline freeze</strong>
+          <code>archive/index-0.9.0-seek.html</code>
+        </div>
+        <div class="chip">
+          <strong>Live until ship</strong>
+          <code>VERSION</code> stays <code>0.9.0-seek</code>
+        </div>
+        <div class="chip">
+          <strong>Notes from</strong>
+          Human Seek testing · 2026-07-30
+        </div>
+        <div class="chip">
+          <strong>Ship as</strong>
+          <code>0.9.1-ui-chrome</code> + archive
+        </div>
+      </div>
+    </header>
+
+    <div class="doc-grid">
+
+      <!-- ========== TOC ========== -->
+      <nav class="toc" aria-label="Contents">
+        <div class="section-label">Contents</div>
+        <ol>
+          <li><a href="#goals">Goals &amp; non-goals</a></li>
+          <li><a href="#problems">Problems</a></li>
+          <li><a href="#principles">Principles</a></li>
+          <li><a href="#viewport">Viewport lock</a></li>
+          <li><a href="#header">Header</a></li>
+          <li><a href="#controls">Basic vs advanced</a>
+            <ul class="sub">
+              <li><a href="#policy">Movement + policy</a></li>
+              <li><a href="#presets">Presets + retune</a></li>
+              <li><a href="#modal">Advanced modal</a></li>
+              <li><a href="#help">Help / glossary</a></li>
+            </ul>
+          </li>
+          <li><a href="#wire">Wireframe target</a></li>
+          <li><a href="#decisions">Decisions</a></li>
+          <li><a href="#impl">Implementation</a></li>
+          <li><a href="#acceptance">Acceptance</a></li>
+          <li><a href="#appendix">Appendix</a></li>
+        </ol>
+      </nav>
+
+      <div class="main">
+
+        <!-- ========== 1 GOALS ========== -->
+        <section class="section" id="goals">
+          <h2>1. Goals &amp; non-goals</h2>
+          <div class="two-col">
+            <div class="card">
+              <h3>Goals</h3>
+              <ul>
+                <li><strong>No document scrollbar</strong> — app fills the viewport; only panels scroll inside.</li>
+                <li><strong>Clearer header hierarchy</strong> — title / phase / version vs Speed · Pause · Reset.</li>
+                <li><strong>Movement policy first-class</strong> — Seek | Random easy to find and toggle.</li>
+                <li><strong>Breathing room</strong> before the Speed group.</li>
+                <li><strong>Presets</strong> stay visible with a strong active state, and <strong>retune</strong> Lenient / Balanced / Punishing for a Seek-default world.</li>
+                <li><strong>Advanced out of the rail</strong> — modal so basic controls stay scannable.</li>
+                <li><strong>Calmer version badge</strong> — full codename, quiet styling.</li>
+                <li><strong>In-app Help / glossary</strong> — one popup that explains parameters, metrics, modes, and presets (not a separate docs site).</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Non-goals</h3>
+              <ul>
+                <li>No rewrite of the seek algorithm, eat rules, or food ceiling logic (Track B mechanics stay frozen).</li>
+                <li>No slide drawers (deferred).</li>
+                <li>No special agent / memory (later 0.9.x).</li>
+                <li>No redesign of Trends / History content structure.</li>
+                <li>No new source files — single <code>index.html</code>.</li>
+                <li>No per-control floating tooltips-only solution (glossary modal is the primary help surface; optional tiny “?” later).</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Track A (+ light feel)</strong> — chrome, preset numbers, and help copy may ship together in
+            <code>0.9.1-ui-chrome</code>. Seek pathing math stays as frozen in <code>0.9.0-seek</code>.
+            Versioning option B: archive freeze when accepted.
+          </div>
+        </section>
+
+        <!-- ========== 2 PROBLEMS ========== -->
+        <section class="section" id="problems">
+          <h2>2. Problems (current chrome)</h2>
+          <table>
+            <thead>
+              <tr><th style="width:28%">Issue</th><th>Likely cause on 0.9.0-seek shell</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Page scroll up/down</td>
+                <td>Content taller than viewport; missing hard <code>overflow: hidden</code> on html/body/shell; flex children without <code>min-height: 0</code>.</td>
+              </tr>
+              <tr>
+                <td>Seek / Random feel tacked on</td>
+                <td>Another button pair + two sliders mid-rail — not a clear “mode” block.</td>
+              </tr>
+              <tr>
+                <td>Speed cramped</td>
+                <td>One dense header row: title · phase · long badge · speed · pause · reset with small gaps.</td>
+              </tr>
+              <tr>
+                <td>Preset active state weak</td>
+                <td>Plain slate buttons; no persistent <code>.on</code> style like speed.</td>
+              </tr>
+              <tr>
+                <td>Advanced crowded</td>
+                <td>Four hunger advanced sliders inline; more knobs later would explode the rail.</td>
+              </tr>
+              <tr>
+                <td>Version badge “weird”</td>
+                <td>Long codename in a saturated pill next to phase — competes with primary actions.</td>
+              </tr>
+              <tr>
+                <td>Presets feel pre-Seek</td>
+                <td>Numbers written when Random walk was the only policy; with Seek default, “Balanced” may be too easy or oddly spaced.</td>
+              </tr>
+              <tr>
+                <td>Knobs unexplained</td>
+                <td>No in-app glossary — hunger, spawn, sense, KPIs, and advanced eat params are lab jargon without a single place to look them up.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ========== 3 PRINCIPLES ========== -->
+        <section class="section" id="principles">
+          <h2>3. Design principles</h2>
+          <ol>
+            <li><strong>Viewport is the product</strong> — normal desktop lab should not scroll the whole page.</li>
+            <li><strong>Primary vs secondary</strong> — Pause / Reset / Speed are primary; version is metadata; Advanced is secondary.</li>
+            <li><strong>Mode before fine-tune</strong> — Seek | Random is a run mode; sense + seek strength stay next to it; rare knobs go Advanced.</li>
+            <li><strong>Same visual language</strong> — reuse <code>.btn-speed</code> / <code>.on</code> for policy and presets.</li>
+            <li><strong>Don’t punish Seek labs</strong> — presets stay for extreme hunger / food A/B, retuned so the ladder still means something under Seek.</li>
+            <li><strong>Explain once, in place</strong> — one Help modal beats scattering long labels on every slider.</li>
+          </ol>
+        </section>
+
+        <!-- ========== 4 VIEWPORT ========== -->
+        <section class="section" id="viewport">
+          <h2>4. No page scroll (viewport lock)</h2>
+          <div class="two-col">
+            <div class="card">
+              <h3>Target CSS behavior</h3>
+              <ul>
+                <li><code>html, body</code>: <code>height: 100%</code>, <code>overflow: hidden</code></li>
+                <li><code>.app-shell</code>: <code>height: 100vh</code>, <code>overflow: hidden</code>, border-box</li>
+                <li>Header: <code>flex-shrink: 0</code>; prefer single row on wide screens</li>
+                <li><code>.app-body</code>: <code>flex: 1; min-height: 0; overflow: hidden</code></li>
+                <li>Only <code>.col-panel</code> / history / trends: <code>overflow: auto</code></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Scroll acceptance</h3>
+              <ul class="check">
+                <li>~1280×800 and 1440×900: no page vertical scrollbar</li>
+                <li>Long left controls: scroll only inside left panel</li>
+                <li>Long history: scroll only inside history list</li>
+                <li>Resize still calls <code>afterLayoutChange</code> / canvas fit</li>
+              </ul>
+            </div>
+          </div>
+          <p class="callout warn muted" style="margin-bottom:0">
+            If the header wraps on narrow widths, still keep shell at 100vh and body overflow hidden —
+            columns get shorter (<code>min-height: 0</code>), not a body scroll.
+          </p>
+        </section>
+
+        <!-- ========== 5 HEADER ========== -->
+        <section class="section" id="header">
+          <h2>5. Header: badge, speed spacing, actions</h2>
+          <pre>left cluster:   [Title]  [Phase 0 · Survive]  [v0.9.1-ui-chrome]
+                                                   ↑ quiet badge · full codename
+flex spacer
+right cluster:  [ ? Help ]  [···· Speed 1× 2× 5× 10× ····]   [Pause] [Reset]
+                    ↑ optional placement     ↑ extra margin / gap before group
+
+Alternate: Help lives as a quiet button under Presets / next to Advanced… on the left rail
+(see § Help). Prefer one entry point only — not both header and rail.</pre>
+
+          <h3>Version badge <span class="locked">Locked</span></h3>
+          <table>
+            <thead><tr><th>Property</th><th>Decision</th></tr></thead>
+            <tbody>
+              <tr><td>Text</td><td><strong>Full codename</strong> — e.g. <code>v0.9.1-ui-chrome</code> (matches <code>VERSION</code>)</td></tr>
+              <tr><td>Size</td><td>9–10px, tight padding (0 6px)</td></tr>
+              <tr><td>Color</td><td>Muted: slate border, <code>--muted</code> or soft sky text — not a high-glow “on” chip</td></tr>
+              <tr><td>Placement</td><td>Immediately after phase label (metadata group)</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Speed group spacing</h3>
+          <ul>
+            <li>Add <code>margin-left: 0.75–1rem</code> (or larger header gap) before <code>.speed-group</code>.</li>
+            <li>Keep the group as one visual unit (existing padded tray is fine).</li>
+            <li>Pause / Reset stay after speed with normal gap.</li>
+          </ul>
+        </section>
+
+        <!-- ========== 6 CONTROLS ========== -->
+        <section class="section" id="controls">
+          <h2>6. Left controls: basic vs advanced</h2>
+          <p class="muted" style="margin-top:0">
+            The left rail is the daily lab surface. <strong>Basic</strong> = always visible sliders and mode.
+            <strong>Advanced</strong> = rare hunger knobs in a modal.
+          </p>
+
+          <div class="two-col">
+            <div class="card">
+              <h3>Basic (always in left rail)</h3>
+              <table>
+                <thead><tr><th>Block</th><th>Contents (real controls)</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Run size</strong></td>
+                    <td>Slider: initial agents</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Environment</strong></td>
+                    <td>Sliders: hunger rate · food spawn interval</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Movement</strong></td>
+                    <td>Policy dual toggle Seek | Random<br>
+                        Sliders: sense radius · seek strength<br>
+                        Short helper line under policy</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Presets</strong></td>
+                    <td>Lenient · Balanced · Punishing (strong <code>.on</code>)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Advanced entry</strong></td>
+                    <td>Single button <code>Advanced…</code> → opens advanced modal</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Help entry</strong></td>
+                    <td>One <code>Help</code> / <code>?</code> control → glossary modal (see <a href="#help">§ Help</a>)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Metrics + inspector</strong></td>
+                    <td>Unchanged dock roles (explained in Help)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <h3>Advanced (modal only)</h3>
+              <ul>
+                <li>Self-consume relief / amount / threshold</li>
+                <li>Ground eat relief</li>
+                <li>Future (not this slice): seekAccel, wanderAmp, maxSpeed, memory knobs — reserve modal space only</li>
+              </ul>
+              <p class="callout ok" style="margin-bottom:0;margin-top:0.75rem">
+                <strong>Locked:</strong> sense radius + seek strength stay <em>basic</em> (used constantly in Seek testing).
+                Do not bury them in Advanced.
+              </p>
+              <p class="muted" style="margin-top:0.65rem;margin-bottom:0">
+                Remove the old inline Advanced accordion once the modal works — one pattern only.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 7 POLICY ========== -->
+        <section class="section" id="policy">
+          <h2>7. Seek / Random placement</h2>
+          <ul>
+            <li>Dedicated <strong>Movement</strong> block in the left rail — after Environment, before Presets.</li>
+            <li>Policy as <strong>full-width dual toggle</strong> (equal flex buttons), same <code>.on</code> language as speed.</li>
+            <li>One-line helper: “Seek = food path · Random = baseline walk” (shorten if needed).</li>
+            <li><strong>Sense radius</strong> and <strong>seek strength</strong> sliders immediately under the policy toggle (tight group).</li>
+          </ul>
+          <div class="callout warn">
+            <strong>Rejected for this slice:</strong> policy only in the header (too far from sense sliders; header already busy);
+            icon-only unlabeled toggles.
+          </div>
+        </section>
+
+        <!-- ========== 8 PRESETS ========== -->
+        <section class="section" id="presets">
+          <h2>8. Presets — keep, highlight, <em>and retune</em></h2>
+
+          <p>
+            Presets are the three buttons <strong>Lenient / Balanced / Punishing</strong>.
+            They set several knobs at once so you can jump to a known “difficulty” for Seek labs
+            without dragging every slider.
+          </p>
+
+          <h3>Decisions <span class="locked">Locked</span></h3>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:32%">Question</th>
+                <th>What it means</th>
+                <th style="width:28%">This slice</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Keep or hide the buttons?</strong></td>
+                <td>Do the three preset buttons stay on the left rail?</td>
+                <td><strong>Keep visible</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Active highlight?</strong></td>
+                <td>Can you see which preset is current (like speed 1× is lit)?</td>
+                <td><strong>Yes</strong> — <code>.on</code> style + sync</td>
+              </tr>
+              <tr>
+                <td><strong>Change the numbers?</strong></td>
+                <td>When you click a preset, should hunger / spawn / advanced eat values differ from today’s pre-Seek table?</td>
+                <td><strong>Yes — retune now</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout ok">
+            <strong>In short:</strong> keep the three buttons, light the active one, clear to “custom” when you drag a linked slider,
+            <strong>and</strong> rewrite the preset value table so the ladder fits a <strong>Seek-default</strong> world.
+          </div>
+
+          <h3>What a preset sets</h3>
+          <p class="muted" style="margin-top:0">
+            Same fields as today in <code>applyPreset()</code> — retune the <em>values</em>, not the field list (unless smoke shows a gap).
+          </p>
+          <ul>
+            <li>Hunger rate, food spawn interval</li>
+            <li>Advanced eat knobs: self-consume relief / amount / threshold, ground eat relief</li>
+            <li>Does <strong>not</strong> force movement policy (Seek stays default unless human toggles Random)</li>
+            <li>Does <strong>not</strong> have to touch sense radius / seek strength unless we add them to the table during implement (optional; default leave movement knobs alone so A/B policy stays clean)</li>
+          </ul>
+
+          <h3>Retune intent (Seek-default ladder)</h3>
+          <p>
+            Old numbers were written when agents mostly random-walked. With Seek, agents find food more often —
+            so “Balanced” can feel too soft, and the gap between tiers can feel wrong.
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Preset</th>
+                <th>Lab intent</th>
+                <th>Feel target (under default Seek)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Lenient</strong></td>
+                <td>Warm-up / demo / “is Seek working?”</td>
+                <td>Most agents survive a long run; deaths rare unless you force Random.</td>
+              </tr>
+              <tr>
+                <td><strong>Balanced</strong></td>
+                <td>Default interesting lab</td>
+                <td>Noticeable pressure; a large living majority early, clear attrition over a full run — not a wipe, not a petting zoo.</td>
+              </tr>
+              <tr>
+                <td><strong>Punishing</strong></td>
+                <td>Harsh stress test</td>
+                <td>Only skilled Seek + good sense/spawn luck keeps a remnant; Random dies fast. Still playable (not instant extinction at tick 10).</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Starting value sketch (implement + human smoke; not sacred)</h3>
+          <p class="muted">
+            Current freeze for reference: Lenient ≈ hunger 0.03 / spawn 5 · Balanced 0.05 / 8 · Punishing 0.09 / 12
+            (plus advanced eat fields). Spawn slider now goes 1–50; presets can use that range.
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Knob</th>
+                <th>Lenient (easier)</th>
+                <th>Balanced</th>
+                <th>Punishing (harder)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hunger rate</td>
+                <td>↓ slightly or hold soft</td>
+                <td>near current mid</td>
+                <td>↑ harsher than old 0.09 if Seek makes mid too easy</td>
+              </tr>
+              <tr>
+                <td>Food spawn interval</td>
+                <td>↓ (food more often)</td>
+                <td>mid</td>
+                <td>↑ (food rarer; still ≥1)</td>
+              </tr>
+              <tr>
+                <td>Ground / self-consume relief</td>
+                <td>more forgiving</td>
+                <td>mid</td>
+                <td>stingier relief / higher self-consume threshold</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout warn">
+            <strong>Process:</strong> pick concrete numbers in implement, smoke under Seek and Random,
+            then lock the table when the three intents above feel right. Document final numbers in
+            <code>IMPLEMENTATION_LOG</code> when shipping — design keeps intent, not a frozen spreadsheet.
+          </div>
+
+          <h3>UI behavior to wire</h3>
+          <ul>
+            <li>Applying a preset → that button gets <code>.on</code>; clear the others; sync all affected sliders + labels.</li>
+            <li>Any related slider moves → <code>currentPreset = 'custom'</code> and clear all preset <code>.on</code>.</li>
+            <li>Prefer scrolling the left panel over removing presets if the rail is tall.</li>
+          </ul>
+        </section>
+
+        <!-- ========== 9 MODAL ========== -->
+        <section class="section" id="modal">
+          <h2>9. Advanced as popup / modal</h2>
+          <div class="two-col">
+            <div class="card">
+              <h3>Behavior</h3>
+              <ul>
+                <li>Button <code>Advanced…</code> in basic controls.</li>
+                <li>Overlay: dim full shell or viewport; click outside, ✕, or Escape closes.</li>
+                <li>Modal max-width ~360–400px; scroll inside if many fields.</li>
+                <li>Sliders live-update the sim (no Apply button).</li>
+                <li>Do not auto-pause the sim.</li>
+                <li>Reuse the same modal shell pattern as Help (shared dim / close / Escape).</li>
+              </ul>
+              <p class="muted" style="margin-bottom:0">
+                Dim only vs blur is still open (see <a href="#decisions">Decisions</a>); default recommendation: dark dim.
+              </p>
+            </div>
+            <div>
+              <div class="modal-bg" aria-hidden="true">
+                <div class="dim"></div>
+                <div class="box">
+                  <div style="display:flex;justify-content:space-between;margin-bottom:0.45rem">
+                    <strong style="color:#e0f2fe">Advanced parameters</strong>
+                    <span style="color:var(--muted)">✕</span>
+                  </div>
+                  <div class="row">
+                    <div class="lbl"><span>Self-consume relief</span><span>…</span></div>
+                    <div class="bar"></div>
+                  </div>
+                  <div class="row">
+                    <div class="lbl"><span>Self-consume amount</span><span>…</span></div>
+                    <div class="bar"></div>
+                  </div>
+                  <div class="row">
+                    <div class="lbl"><span>Threshold</span><span>…</span></div>
+                    <div class="bar"></div>
+                  </div>
+                  <div class="row">
+                    <div class="lbl"><span>Ground eat relief</span><span>…</span></div>
+                    <div class="bar"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 10 HELP ========== -->
+        <section class="section" id="help">
+          <h2>10. Help / glossary — explain metrics &amp; parameters</h2>
+
+          <p>
+            Lab knobs and KPI labels are jargon. Instead of packing long text into the left rail,
+            ship a single <strong>Help</strong> surface: a scrollable popup glossary of parameters, modes, presets, and metrics.
+          </p>
+
+          <h3>Entry point <span class="locked">Recommended</span></h3>
+          <table>
+            <thead><tr><th>Option</th><th>Where</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>A · Left rail (preferred)</strong></td>
+                <td>Quiet text button <code>Help / glossary</code> next to or under <code>Advanced…</code></td>
+                <td>Keeps header clean; near the knobs people ask about.</td>
+              </tr>
+              <tr>
+                <td>B · Header</td>
+                <td>Small <code>?</code> or <code>Help</code> before Speed group</td>
+                <td>Fine if rail is crowded; use <em>only one</em> of A or B.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout">
+            <strong>Not this slice:</strong> individual hover tooltips on every slider as the main solution
+            (optional later). One glossary modal is enough for 0.9.1.
+          </div>
+
+          <h3>Modal behavior</h3>
+          <ul>
+            <li>Same chrome as Advanced: dim overlay, ✕, click-outside, Escape.</li>
+            <li>Wider than Advanced — about <strong>480–560px</strong> max-width; max-height ~70vh; <strong>scroll inside</strong>.</li>
+            <li>Does not pause the sim automatically.</li>
+            <li>Only one modal open at a time (opening Help closes Advanced and vice versa).</li>
+            <li>Static copy in <code>index.html</code> (no external fetch, no new files).</li>
+          </ul>
+
+          <h3>Content structure (sections inside the modal)</h3>
+          <table>
+            <thead>
+              <tr><th style="width:22%">Section</th><th>Entries (explain each)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Modes</strong></td>
+                <td>
+                  <strong>Seek</strong> — steer toward nearest food in sense radius; blend scales with hunger × seek strength.<br>
+                  <strong>Random</strong> — pre-0.9 wander baseline for A/B (“does Seek actually help?”).
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Basic parameters</strong></td>
+                <td>
+                  Initial agents · Hunger rate · Food spawn interval · Sense radius · Seek strength —
+                  one short plain-language line each (what it does + “higher means …”).
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Presets</strong></td>
+                <td>
+                  Lenient / Balanced / Punishing intents from §8 (warm-up · default lab · stress test).
+                  Note that presets set multiple knobs and do not change Seek|Random by themselves.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Advanced parameters</strong></td>
+                <td>
+                  Self-consume relief, amount, threshold · Ground eat relief —
+                  when agents eat carried food vs ground pellets and how hunger drops.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Live metrics (KPI dock)</strong></td>
+                <td>
+                  Living / dead counts, avg hunger, min/max <em>carried food</em> (not hunger min/max),
+                  tick / timing as shown — one line each: definition + how to read it in a lab.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Inspector fields</strong></td>
+                <td>
+                  Per-agent: hunger, carried food, policy-related fields (seek blend, dist→food), pin notes if present.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Run history (short)</strong></td>
+                <td>
+                  What “preset”, duration, survivors mean on a finished run row — enough to read History without guessing.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Copy style</h3>
+          <ul>
+            <li>Plain language first; code names in parentheses only if useful.</li>
+            <li>1–3 sentences per entry — not a design essay.</li>
+            <li>Prefer “Higher hunger rate → agents starve faster” over formula dumps (short formula OK on Advanced entries).</li>
+          </ul>
+
+          <h3>Wireframe (Help modal)</h3>
+          <div class="modal-bg" style="height:260px" aria-hidden="true">
+            <div class="dim"></div>
+            <div class="box" style="width:min(520px,92%);max-height:230px;overflow:auto">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;position:sticky;top:0;background:var(--panel);padding-bottom:0.25rem">
+                <strong style="color:#e0f2fe">Help · parameters &amp; metrics</strong>
+                <span style="color:var(--muted)">✕</span>
+              </div>
+              <div style="font-size:10px;color:#64748b;letter-spacing:.08em;text-transform:uppercase;margin:0.45rem 0 0.25rem">Modes</div>
+              <div style="font-size:10px;color:#cbd5e1;margin-bottom:0.35rem">
+                <strong style="color:#7dd3fc">Seek</strong> — path toward nearest food in sense radius…
+              </div>
+              <div style="font-size:10px;color:#cbd5e1;margin-bottom:0.35rem">
+                <strong style="color:#7dd3fc">Random</strong> — baseline wander for A/B…
+              </div>
+              <div style="font-size:10px;color:#64748b;letter-spacing:.08em;text-transform:uppercase;margin:0.55rem 0 0.25rem">Basic parameters</div>
+              <div style="font-size:10px;color:#cbd5e1;margin-bottom:0.25rem">
+                <strong style="color:#7dd3fc">Hunger rate</strong> — how fast hunger climbs each tick…
+              </div>
+              <div style="font-size:10px;color:#cbd5e1;margin-bottom:0.25rem">
+                <strong style="color:#7dd3fc">Sense radius</strong> — how far a seeker can “see” food…
+              </div>
+              <div style="font-size:10px;color:#64748b;letter-spacing:.08em;text-transform:uppercase;margin:0.55rem 0 0.25rem">Metrics</div>
+              <div style="font-size:10px;color:#cbd5e1">
+                <strong style="color:#7dd3fc">Avg hunger</strong> · <strong style="color:#7dd3fc">Min/Max food</strong> = carried inventory…
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 11 WIREFRAME ========== -->
+        <section class="section" id="wire">
+          <h2>11. Wireframe target</h2>
+          <p class="muted" style="margin-top:0">
+            Basic sliders are the horizontal tracks in the left column — not hidden in Advanced.
+            Movement = dual mode + its two fine-tune sliders. Help opens the glossary modal.
+          </p>
+
+          <div class="mock" aria-label="Target shell wireframe">
+            <div class="mock-h">
+              <span class="title">Evol-Econ Sim</span>
+              <span class="phase">Phase 0 · Survive</span>
+              <span class="badge">v0.9.1-ui-chrome</span>
+              <span class="spacer"></span>
+              <div class="speed">
+                <span class="on">1×</span><span>2×</span><span>5×</span><span>10×</span>
+              </div>
+              <span class="act" style="margin-left:0.35rem">Pause</span>
+              <span class="act primary">Reset</span>
+            </div>
+            <div class="mock-b">
+              <div class="mock-col">
+                <div class="mock-sec">Controls</div>
+                <div class="mock-slider">
+                  <div class="lbl"><span>Initial agents</span><span>40</span></div>
+                  <div class="track" style="--w:40%"></div>
+                </div>
+
+                <div class="mock-sec">Environment</div>
+                <div class="mock-slider">
+                  <div class="lbl"><span>Hunger rate</span><span>…</span></div>
+                  <div class="track" style="--w:55%"></div>
+                </div>
+                <div class="mock-slider">
+                  <div class="lbl"><span>Food spawn interval</span><span>…</span></div>
+                  <div class="track" style="--w:35%"></div>
+                </div>
+
+                <div class="mock-sec">Movement</div>
+                <div class="mock-policy"><b class="on">Seek</b><b>Random</b></div>
+                <div class="mock-help">Seek = food path · Random = baseline walk</div>
+                <div class="mock-slider">
+                  <div class="lbl"><span>Sense radius</span><span>…</span></div>
+                  <div class="track" style="--w:50%"></div>
+                </div>
+                <div class="mock-slider">
+                  <div class="lbl"><span>Seek strength</span><span>…</span></div>
+                  <div class="track" style="--w:60%"></div>
+                </div>
+
+                <div class="mock-sec">Presets</div>
+                <div class="mock-preset">
+                  <i>Lenient</i><i class="on">Balanced</i><i>Punishing</i>
+                </div>
+
+                <div style="display:flex;gap:0.3rem;margin-top:0.4rem">
+                  <div class="mock-adv" style="flex:1;margin-top:0">Advanced…</div>
+                  <div class="mock-adv" style="flex:1;margin-top:0;border-style:solid;color:#7dd3fc;border-color:#334155">Help</div>
+                </div>
+
+                <div class="mock-dock">KPI metrics · Inspector dock</div>
+              </div>
+              <div class="mock-col center">canvas<br><span style="font-size:9px;opacity:0.8">no page scroll · panels only</span></div>
+              <div class="mock-col">
+                <div class="mock-sec">Right column</div>
+                Trends tab<br><br>
+                History table
+              </div>
+            </div>
+          </div>
+
+          <div class="mock-legend">
+            <span class="sliders">Basic sliders (always on rail)</span>
+            <span class="mode">Policy / speed / preset active state</span>
+            <span class="adv">Advanced + Help open modals</span>
+          </div>
+
+          <div class="callout" style="margin-top:0.85rem">
+            <strong>Where are the basic sliders?</strong>
+            Left column:
+            <strong>Controls</strong> (agents) →
+            <strong>Environment</strong> (hunger rate, food spawn) →
+            <strong>Movement</strong> (Seek|Random + sense radius + seek strength) →
+            <strong>Presets</strong> →
+            <strong>Advanced…</strong> / <strong>Help</strong> (buttons only) →
+            metrics / inspector dock.
+            Advanced eat sliders live only in the Advanced modal (§9). Full explanations live in Help (§10).
+          </div>
+        </section>
+
+        <!-- ========== 12 DECISIONS ========== -->
+        <section class="section" id="decisions">
+          <h2>12. Decisions</h2>
+
+          <h3>Locked <span class="locked">Human 2026-07-30</span></h3>
+
+          <div class="decision">
+            <div class="q">Badge text</div>
+            <div class="a"><strong>Full codename</strong> — quiet styling, e.g. <code>v0.9.1-ui-chrome</code>.</div>
+          </div>
+
+          <div class="decision">
+            <div class="q">Sense radius + seek strength</div>
+            <div class="a"><strong>Keep basic</strong> — stay on the left rail under Movement. Not in Advanced.</div>
+          </div>
+
+          <div class="decision">
+            <div class="q">Presets — keep buttons?</div>
+            <div class="a"><strong>Keep visible</strong> on the rail for Seek labs.</div>
+          </div>
+
+          <div class="decision">
+            <div class="q">Presets — change Lenient / Balanced / Punishing numbers?</div>
+            <div class="a"><strong>Yes — retune in 0.9.1</strong> for a Seek-default ladder (warm-up · default lab · stress test). Ship highlight + value table together; finalize numbers after human smoke.</div>
+            <div class="why">
+              Earlier draft said “chrome-only first.” Human later asked to tune presets now. Intent lives in §8; concrete numbers lock at implement/smoke.
+            </div>
+          </div>
+
+          <div class="decision">
+            <div class="q">Help / glossary</div>
+            <div class="a"><strong>Yes — one modal</strong> explaining modes, parameters, presets, advanced knobs, KPI metrics, inspector, and history columns. Prefer entry on left rail next to Advanced.</div>
+          </div>
+
+          <h3>Still open <span class="open">Optional</span></h3>
+
+          <div class="decision">
+            <div class="q">Modal backdrop</div>
+            <div class="a">Dark dim only (recommended default) vs blur. Implementer may pick dim if human doesn’t specify.</div>
+          </div>
+
+          <div class="decision">
+            <div class="q">Help entry placement</div>
+            <div class="a">Left rail next to Advanced (preferred) vs header <code>?</code>. One entry only.</div>
+          </div>
+
+          <div class="decision">
+            <div class="q">Exact preset numbers</div>
+            <div class="a">Chosen during implement against §8 feel targets; human smoke may nudge once.</div>
+          </div>
+        </section>
+
+        <!-- ========== 13 IMPL ========== -->
+        <section class="section" id="impl">
+          <h2>13. Implementation steps</h2>
+          <ol class="steps">
+            <li><strong>CSS viewport lock</strong> — html/body overflow, shell overflow, flex <code>min-height: 0</code>.</li>
+            <li><strong>Header</strong> — quiet full-codename badge; extra space before speed group.</li>
+            <li><strong>Controls structure</strong> — Run size → Environment → Movement (policy + basic sliders) → Presets → Advanced + Help buttons.</li>
+            <li><strong>Presets</strong> — <code>syncPresetButtons()</code> + CSS <code>.btn-preset.on</code> + <strong>retune</strong> <code>applyPreset()</code> value table to §8 intents.</li>
+            <li><strong>Advanced modal</strong> — markup + open/close; move advanced hunger sliders in; remove old accordion.</li>
+            <li><strong>Help / glossary modal</strong> — shared modal shell; sectioned static copy for modes, params, metrics, etc.</li>
+            <li><strong>Smoke</strong> §14 (Seek ladder under each preset + Help open/close) → bump <code>VERSION</code> → archive + MANIFEST + LOG (include final preset table) → remove open item from <code>FUTURE_FEATURES</code>.</li>
+          </ol>
+          <p class="muted">Do not rewrite seek pathing / eat rules. Preset number changes and help copy are in scope.</p>
+        </section>
+
+        <!-- ========== 14 ACCEPTANCE ========== -->
+        <section class="section" id="acceptance">
+          <h2>14. Acceptance</h2>
+          <ul class="check">
+            <li>No page vertical scrollbar at 1280×800 / 1440×900 with default columns.</li>
+            <li>Left panel scrolls independently when content is long.</li>
+            <li>Basic sliders visible on rail: agents, hunger rate, food spawn, sense radius, seek strength.</li>
+            <li>Seek | Random obvious; active state clear; still changes movement live.</li>
+            <li>Speed group has visible separation from the title / phase / badge cluster.</li>
+            <li>Active preset clearly highlighted; dragging a preset-linked slider clears highlight to custom.</li>
+            <li>Presets retuned: Lenient / Balanced / Punishing feel distinct under default Seek (intents in §8).</li>
+            <li>Advanced modal opens / closes; advanced sliders still live-bind.</li>
+            <li>Help modal opens / closes; covers modes, basic + advanced params, presets, KPI metrics, inspector (and short history notes).</li>
+            <li>Only one of Advanced / Help open at a time; Escape closes.</li>
+            <li>Version badge quieter; full codename; matches <code>VERSION</code>.</li>
+            <li>Seek regression: short run still paths to food under Seek (no accidental policy break).</li>
+            <li>Hide left / right columns + canvas resize still work.</li>
+          </ul>
+        </section>
+
+        <!-- ========== APPENDIX ========== -->
+        <section class="section" id="appendix">
+          <h2>Appendix — Related work</h2>
+          <ul>
+            <li><code>0.9.0-seek</code> freeze — behavior baseline; do not regress Random A/B.</li>
+            <li><code>design-docs/0.9.0-forage-design.html</code> — movement design (Track B arc); this doc is chrome only.</li>
+            <li>Later: run parameter export logs (separate feature).</li>
+            <li>Later: <code>0.9.2-special</code>, <code>0.9.3-memory</code>.</li>
+          </ul>
+        </section>
+
+        <footer>
+          trait-evolution-sim · <code>design-docs/0.9.1-ui-chrome-design.html</code>
+          · Track A · after 0.9.0-seek freeze · decisions updated 2026-07-30
+        </footer>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

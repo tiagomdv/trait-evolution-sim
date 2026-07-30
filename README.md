@@ -30,11 +30,13 @@ Active ideas backlog (open only): `FUTURE_FEATURES.md`. Ship history: `IMPLEMENT
 
 **`VERSION` file** is the single source of truth. Update it on every release PR, and update the live-release line below at the same time.
 
-> **Live release:** `0.8.4-tight-layout` · Phase 0 · Survive
+> **Live release:** `0.9.1-ui-chrome` · Phase 0 · Survive
 
-**0.8.x layout dashboard (Track A)** ships Tall Command chrome (Arctic Ice), KPI metrics + inspector dock, history table (best top-right), pin-by-ID in dock, column hide with edge restore, and canvas resize when columns hide. Builds on 0.7.0 observability.
+**0.9.1-ui-chrome (Track A)** — viewport-locked Tall Command chrome, Movement Seek|Random dual toggle, quieter version label, Speed spacing, preset highlight + Seek-default retune, Advanced + plain-language Help modals. Seek pathing unchanged from `0.9.0-seek`.
 
-See `FUTURE_FEATURES.md` for 0.9 forage, slide-drawer polish, and Phase 1.
+**0.9.0-seek (Track B, I1)** — hunger-weighted nearest-food seeking + residual noise; sense radius + seek strength. Design: `design-docs/0.9.0-forage-design.html`.
+
+See `FUTURE_FEATURES.md` for remaining 0.9 slices (special agent, memory, thematic experiment presets), slide drawers, and Phase 1.
 
 ---
 
