@@ -64,37 +64,14 @@
                 flex: 1;
                 min-height: 0;
                 display: grid;
-                /* A: tight equal sides */
-                grid-template-columns: 260px minmax(0, 1fr) 260px;
-                gap: 0.4rem;
-            }
-            /* Remove side from layout entirely (0-width still overflowed over canvas) */
-            .app-body.hide-left {
-                grid-template-columns: minmax(0, 1fr) 260px;
-            }
-            .app-body.hide-right {
-                grid-template-columns: 260px minmax(0, 1fr);
-            }
-            .app-body.hide-left.hide-right {
-                grid-template-columns: minmax(0, 1fr);
-            }
-            .app-body.hide-left .col-left,
-            .app-body.hide-right .col-right {
-                display: none !important;
+                grid-template-columns: 220px minmax(0, 1fr) 300px;
+                gap: 0.5rem;
             }
             .col {
                 min-height: 0;
-                min-width: 0;
                 display: flex;
                 flex-direction: column;
-                gap: 0.4rem;
-            }
-            .col-center {
-                position: relative;
-                min-width: 0;
-                min-height: 0;
-                display: flex;
-                flex-direction: column;
+                gap: 0.5rem;
             }
             .col-panel {
                 background: var(--panel);
@@ -104,48 +81,6 @@
                 min-height: 0;
                 overflow: auto;
             }
-            .panel-head {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 0.35rem;
-                margin-bottom: 0.4rem;
-            }
-            .panel-head .section-title { margin-bottom: 0; }
-            .btn-hide-col {
-                font-size: 9px;
-                padding: 0.12rem 0.35rem;
-                border-radius: var(--radius-sm);
-                border: 1px solid var(--border);
-                background: #0a1220;
-                color: var(--muted);
-                cursor: pointer;
-                flex-shrink: 0;
-            }
-            .btn-hide-col:hover {
-                border-color: var(--accent);
-                color: var(--accent);
-            }
-            .show-tab {
-                display: none;
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                z-index: 6;
-                writing-mode: vertical-rl;
-                text-orientation: mixed;
-                font-size: 9px;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                padding: 0.55rem 0.22rem;
-                border: 1px solid var(--border);
-                background: var(--panel);
-                color: var(--accent);
-                border-radius: var(--radius-sm);
-                cursor: pointer;
-            }
-            .app-body.hide-left .show-tab-left { display: block; left: 0.15rem; }
-            .app-body.hide-right .show-tab-right { display: block; right: 0.15rem; }
             .canvas-host {
                 flex: 1;
                 min-height: 0;
@@ -153,51 +88,34 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: var(--canvas-bg);
+                background: var(--panel);
                 border: 1px solid var(--border);
                 border-radius: var(--radius-lg);
                 overflow: hidden;
-                padding: 0; /* flush — no padding around sim */
             }
             #canvas {
                 background: var(--canvas-bg);
-                border: none;
+                border: 1px solid var(--border);
                 image-rendering: crisp-edges;
-                display: block;
-                width: 100%;
-                height: 100%;
-                border-radius: 0;
+                max-width: 100%;
+                max-height: 100%;
+                border-radius: var(--radius-md);
             }
-            /* Right: history fills leftover; trends sized for charts */
-            .col-right {
-                min-height: 0;
-            }
+            /* Right column pin rules — history floor */
             #panel-trends {
                 flex: 0 1 auto;
-                max-height: 46%;
+                max-height: 48%;
                 overflow: auto;
             }
             #panel-trends.is-pinned {
-                max-height: 54%;
+                max-height: 55%;
             }
             #panel-history {
                 flex: 1 1 auto;
-                min-height: 0;
-                overflow: hidden;
+                min-height: max(200px, 42%);
+                overflow: auto;
                 display: flex;
                 flex-direction: column;
-            }
-            #panel-history #run-list {
-                flex: 1 1 auto;
-                min-height: 0;
-                overflow: auto;
-            }
-            /* Trend charts fill column width */
-            #panel-trends canvas {
-                display: block;
-                width: 100% !important;
-                height: 52px;
-                max-width: 100%;
             }
             .section-title {
                 font-size: 10px;
@@ -254,7 +172,7 @@
                 border-color: #7dd3fc;
             }
             .val-accent { color: var(--accent); font-family: ui-monospace, monospace; }
-            .chart-row { display: block; clear: both; margin-bottom: 0.35rem; width: 100%; }
+            .chart-row { display: block; clear: both; margin-bottom: 0.35rem; }
             .chart-label { display: block; font-size: 9px; margin-bottom: 2px; }
             .chart-label.pop { color: var(--chart-pop); }
             .chart-label.food { color: var(--chart-food); }
@@ -400,7 +318,7 @@
             <header class="app-header">
                 <h1>Evol-Econ Sim</h1>
                 <span>Phase 0 · Survive</span>
-                <span class="badge-version">v0.8.4-tight-layout</span>
+                <span class="badge-version">v0.8.2-history-table</span>
                 <div class="ml-auto flex items-center gap-2">
                     <div class="speed-group">
                         <span class="text-[10px] text-slate-500">Speed</span>
@@ -414,15 +332,11 @@
                 </div>
             </header>
 
-            <div class="app-body" id="app-body">
+            <div class="app-body">
 
                 <!-- LEFT: controls + metrics -->
-                <div class="col col-left">
+                <div class="col">
                     <div class="col-panel flex-1 scroll-thin" id="panel-controls">
-                        <div class="panel-head">
-                            <div class="section-title">Controls</div>
-                            <button type="button" class="btn-hide-col" onclick="hideCol('left')" title="Hide left column">Hide ✕</button>
-                        </div>
                         <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Hunger &amp; Environment</div>
 
                         <div class="mb-2">
@@ -527,23 +441,17 @@
                     </div>
                 </div>
 
-                <!-- CENTER: canvas (no padding; inspector in left column) -->
-                <div class="col col-center">
-                    <button type="button" class="show-tab show-tab-left" id="show-tab-left" onclick="showCol('left')" title="Show left column">Left</button>
-                    <div class="canvas-host" id="canvas-host">
-                        <canvas id="canvas" width="800" height="600"></canvas>
+                <!-- CENTER: canvas (selection outline drawn in JS; inspector lives in left column) -->
+                <div class="col">
+                    <div class="canvas-host">
+                        <canvas id="canvas" width="800" height="600" class="rounded"></canvas>
                     </div>
-                    <button type="button" class="show-tab show-tab-right" id="show-tab-right" onclick="showCol('right')" title="Show right column">Right</button>
                 </div>
 
-                <!-- RIGHT: trends then history (history flex-grows) -->
-                <div class="col col-right">
+                <!-- RIGHT: trends then history -->
+                <div class="col">
                     <div class="col-panel" id="panel-trends">
-                        <div class="panel-head">
-                            <div class="section-title">Trends</div>
-                            <button type="button" class="btn-hide-col" onclick="hideCol('right')" title="Hide right column">Hide ✕</button>
-                        </div>
-                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Current run</div>
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Trends (current run)</div>
 
                         <div class="chart-row">
                             <div class="chart-label pop">Population</div>
@@ -587,7 +495,7 @@
                             </div>
                         </div>
 
-                        <div id="run-list" class="overflow-auto pr-0.5 mb-2">
+                        <div id="run-list" class="overflow-auto pr-0.5 mb-2" style="max-height: min(280px, 40vh);">
                             <div style="font-size:10px;color:var(--muted);padding:0.25rem 0">No runs yet</div>
                         </div>
 
@@ -1009,7 +917,6 @@
             }
 
             function start() {
-                resizeSimCanvas();
                 init();
                 gameLoop();
             }
@@ -1202,50 +1109,29 @@
                 set('m-avgf', Number.isFinite(m.avgFood) ? m.avgFood.toFixed(1) : '—');
             }
 
-            function sizeTrendCanvas(canvasEl) {
-                if (!canvasEl) return;
-                const parent = canvasEl.parentElement || canvasEl;
-                const cssW = Math.max(80, Math.floor(parent.clientWidth || canvasEl.clientWidth || 240));
-                const cssH = 52;
-                // Match buffer to CSS width so the line fills the column (not a 240px stub)
-                if (canvasEl.width !== cssW) canvasEl.width = cssW;
-                if (canvasEl.height !== cssH) canvasEl.height = cssH;
-            }
-
             function drawTrendChart(canvasEl, data, color, runDurationTicks) {
-                if (!canvasEl || !data || data.length < 2) return;
-                sizeTrendCanvas(canvasEl);
+                if (!canvasEl || data.length < 2) return;
                 const ctx = canvasEl.getContext('2d');
-                if (!ctx) return;
+                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
                 const w = canvasEl.width, h = canvasEl.height;
-                ctx.clearRect(0, 0, w, h);
+                const min = Math.min(...data), max = Math.max(...data);
 
-                let min = Infinity, max = -Infinity;
-                for (let i = 0; i < data.length; i++) {
-                    const v = data[i];
-                    if (!Number.isFinite(v)) continue;
-                    if (v < min) min = v;
-                    if (v > max) max = v;
-                }
-                if (!Number.isFinite(min) || !Number.isFinite(max)) return;
-                const range = (max - min) || 1;
+                // Use actual run length for x-scaling so early data isn't visually lost
+                const totalTicks = runDurationTicks || (data.length * 30);
 
                 ctx.strokeStyle = color;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
-                let started = false;
                 for (let i = 0; i < data.length; i++) {
-                    const v = data[i];
-                    if (!Number.isFinite(v)) continue;
-                    const x = (i / (data.length - 1)) * (w - 1);
-                    const y = h - 2 - ((v - min) / range) * (h - 4);
-                    if (!started) { ctx.moveTo(x, y); started = true; }
-                    else ctx.lineTo(x, y);
+                    const x = (i / (data.length - 1)) * w;
+                    const y = h - ((data[i] - min) / (max - min || 1)) * (h - 3);
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
                 }
-                if (started) ctx.stroke();
+                ctx.stroke();
             }
 
             function renderTrends() {
+
                 const popC = document.getElementById('chart-pop');
                 const foodC = document.getElementById('chart-food');
                 const hungerC = document.getElementById('chart-hunger');
@@ -1303,80 +1189,6 @@
                 if (!panel) return;
                 if (pinnedAgent) panel.classList.add('is-pinned');
                 else panel.classList.remove('is-pinned');
-            }
-
-            // Column show/hide (toggles live on columns; edge tabs restore)
-            let showLeftCol = true;
-            let showRightCol = true;
-
-            /** Match sim canvas buffer to host size so the world grows when columns hide. */
-            function resizeSimCanvas() {
-                const host = document.getElementById('canvas-host');
-                if (!host || !canvas) return;
-                const w = Math.max(120, Math.floor(host.clientWidth));
-                const h = Math.max(120, Math.floor(host.clientHeight));
-                if (w < 2 || h < 2) return;
-                if (canvas.width === w && canvas.height === h) return;
-                canvas.width = w;
-                canvas.height = h;
-                // Keep agents inside the new bounds (world grew/shrank)
-                for (let i = 0; i < agents.length; i++) {
-                    const a = agents[i];
-                    if (a.x > w) a.x = a.x % w;
-                    if (a.y > h) a.y = a.y % h;
-                    if (a.x < 0) a.x = 0;
-                    if (a.y < 0) a.y = 0;
-                }
-                for (let i = 0; i < food.length; i++) {
-                    const f = food[i];
-                    if (f.x > w) f.x = f.x % w;
-                    if (f.y > h) f.y = f.y % h;
-                }
-            }
-
-            function afterLayoutChange() {
-                // Two frames: grid must finish after display:none / column change
-                requestAnimationFrame(function () {
-                    requestAnimationFrame(function () {
-                        resizeSimCanvas();
-                        try { renderTrends(); } catch (_) {}
-                    });
-                });
-            }
-
-            function applyColVisibility() {
-                const body = document.getElementById('app-body');
-                if (!body) return;
-                body.classList.toggle('hide-left', !showLeftCol);
-                body.classList.toggle('hide-right', !showRightCol);
-                try {
-                    localStorage.setItem('tes-cols-v2', JSON.stringify({ left: showLeftCol, right: showRightCol }));
-                } catch (_) {}
-                afterLayoutChange();
-            }
-
-            function hideCol(which) {
-                if (which === 'left') showLeftCol = false;
-                if (which === 'right') showRightCol = false;
-                applyColVisibility();
-            }
-
-            function showCol(which) {
-                if (which === 'left') showLeftCol = true;
-                if (which === 'right') showRightCol = true;
-                applyColVisibility();
-            }
-
-            function loadColVisibility() {
-                try {
-                    const raw = localStorage.getItem('tes-cols-v2');
-                    if (raw) {
-                        const o = JSON.parse(raw);
-                        if (typeof o.left === 'boolean') showLeftCol = o.left;
-                        if (typeof o.right === 'boolean') showRightCol = o.right;
-                    }
-                } catch (_) {}
-                applyColVisibility();
             }
 
             function syncSliders() {
@@ -1567,12 +1379,6 @@
             setSpeed(1);
             updateInspector(); // empty-state dock (pin disabled until select)
             updateMetricsTab();
-            loadColVisibility();
-            // Fit sim canvas + charts after layout; again on window resize
-            setTimeout(function () { afterLayoutChange(); }, 0);
-            window.addEventListener('resize', function () {
-                afterLayoutChange();
-            });
             
             start();
         </script>

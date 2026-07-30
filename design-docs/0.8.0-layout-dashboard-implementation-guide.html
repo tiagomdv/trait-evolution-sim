@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.8.0-layout-dashboard — Implementation Guide • trait-evolution-sim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #070b12; color: #cbd5e1; }
+    .prose h1, .prose h2, .prose h3 { color: #f0f9ff; }
+    .prose code, code {
+      background: #0f1c2e;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #7dd3fc;
+      font-size: 0.9em;
+    }
+    .code-block {
+      background: #0a1220;
+      border: 1px solid #1e3a5f;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.5;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .section { scroll-margin-top: 72px; }
+    .nav a { color: #38bdf8; }
+    .nav a:hover { text-decoration: underline; }
+    .phase {
+      background: #0d1524;
+      border-left: 4px solid #38bdf8;
+      border-radius: 0 0.75rem 0.75rem 0;
+    }
+    .warning {
+      background: #1c1008;
+      border-left: 4px solid #f59e0b;
+      border-radius: 0 0.75rem 0.75rem 0;
+    }
+    .ok {
+      background: #0a1f1a;
+      border-left: 4px solid #2dd4bf;
+      border-radius: 0 0.75rem 0.75rem 0;
+    }
+    .step-num {
+      font-size: 10px;
+      padding: 2px 8px;
+      background: #0c4a6e;
+      color: #bae6fd;
+      border: 1px solid #0ea5e9;
+      border-radius: 999px;
+    }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    th, td { border: 1px solid #1e3a5f; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #0d1524; color: #7dd3fc; }
+    .check li { margin-bottom: 0.4rem; }
+    .check input { accent-color: #38bdf8; margin-right: 0.4rem; }
+  </style>
+</head>
+<body class="p-6 max-w-[1080px] mx-auto">
+
+  <header class="mb-8 flex flex-wrap items-start justify-between gap-3">
+    <div>
+      <h1 class="text-3xl font-semibold text-sky-50">0.8.0-layout-dashboard</h1>
+      <p class="text-slate-400 mt-1">Implementation Guide — human implements in <code>index.html</code></p>
+    </div>
+    <div class="text-right text-sm">
+      <div class="text-sky-300 font-medium">Ready for human</div>
+      <div class="text-slate-500">Phase 0 · Survive · 2026-07-15</div>
+    </div>
+  </header>
+
+  <nav class="flex flex-wrap gap-3 mb-8 text-sm nav">
+    <a href="#agents">AGENTS</a>
+    <a href="#refs">References</a>
+    <a href="#scope">Scope</a>
+    <a href="#before">Before you start</a>
+    <a href="#steps">Steps</a>
+    <a href="#js">JS patches</a>
+    <a href="#checklist">Checklist</a>
+    <a href="#docs">Docs / PR</a>
+  </nav>
+
+  <div id="agents" class="warning p-4 mb-8 text-sm">
+    <strong class="text-amber-300">AGENTS.md — non-negotiable</strong><br>
+    • <strong>You</strong> edit and commit <code>index.html</code> (and release docs).<br>
+    • One focused feature: UI layout + Arctic Ice only — <strong>no</strong> foraging / traits.<br>
+    • Simulation stays a single <code>index.html</code>. Design files in <code>design-docs/</code> are already allowed.<br>
+    • AI may suggest code; you paste, test, and own the PR.
+  </div>
+
+  <div id="refs" class="section mb-8 panel bg-slate-900/50 border border-slate-700 rounded-xl p-5">
+    <h2 class="font-semibold text-sky-100 mb-2">Read these first</h2>
+    <table>
+      <thead><tr><th>File</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>design-docs/0.8.0-layout-dashboard-design.html</code></td>
+          <td><strong>Final design</strong> — Layout F + Arctic Ice tokens, pin rules, HTML map</td>
+        </tr>
+        <tr>
+          <td><code>design-docs/0.8.0-layout-F-tall-command.html</code></td>
+          <td>Interactive structure mock (pin floor fixed)</td>
+        </tr>
+        <tr>
+          <td><code>design-docs/0.8.0-style-options.html</code></td>
+          <td>Theme <strong>Arctic Ice</strong> (option 3) — live preview of chrome</td>
+        </tr>
+        <tr>
+          <td><code>design-docs/0.8.0-layout-options.html</code></td>
+          <td>Historical A–E options (context only)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="scope" class="section mb-10">
+    <h2 class="text-xl font-semibold text-sky-50 mb-3">Scope for this PR</h2>
+    <div class="ok p-4 text-sm mb-3">
+      <strong class="text-teal-300">In</strong>
+      <ul class="list-disc pl-5 mt-1 space-y-1">
+        <li>Layout F: header (title, phase, version, <strong>speed</strong>, Pause, Reset)</li>
+        <li>3 columns: left Controls+Metrics · center full-height canvas · right Trends→History</li>
+        <li>Remove desktop tabs</li>
+        <li>Arctic Ice visual system (palette, buttons, charts, food/agent colors)</li>
+        <li>Pin: show pinned charts in trends; <strong>do not crush history</strong> (max-height + floor)</li>
+        <li>Version label <code>0.8.0-layout-dashboard</code> + ritual docs</li>
+      </ul>
+    </div>
+    <div class="warning p-4 text-sm">
+      <strong class="text-amber-300">Out</strong>
+      <ul class="list-disc pl-5 mt-1 space-y-1">
+        <li>Foraging / seek food → 0.9.0</li>
+        <li>Traits / greed analysis → Phase 1</li>
+        <li>Other themes (Amber, Biolume, Terminal)</li>
+        <li>Mobile-first tabs (optional later)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="before" class="section mb-10">
+    <h2 class="text-xl font-semibold text-sky-50 mb-3">Before you start</h2>
+    <ol class="list-decimal pl-5 text-sm space-y-2 text-slate-300">
+      <li>Open <code>index.html</code> in the browser — confirm current 0.7.0 behavior still works.</li>
+      <li>Confirm <code>archive/index-0.7.0-run-compare.html</code> is a good freeze of pre-0.8 UI (it should match today’s live sim before you edit).</li>
+      <li>Work on a branch, e.g. <code>feat/0.8.0-layout-dashboard</code>.</li>
+      <li>Keep this guide + design doc open side by side.</li>
+    </ol>
+  </div>
+
+  <!-- ========== STEPS ========== -->
+  <div id="steps" class="section mb-10">
+    <h2 class="text-xl font-semibold text-sky-50 mb-4">Implementation steps</h2>
+
+    <!-- Step 0 -->
+    <div class="phase p-5 mb-5">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="step-num">STEP 0</span>
+        <h3 class="text-lg font-semibold text-white m-0">Versioning ritual (start of PR)</h3>
+      </div>
+      <ol class="list-decimal pl-5 text-sm space-y-1 text-slate-300">
+        <li>If live <code>index.html</code> still is 0.7.0 and archive is already correct, you do <strong>not</strong> need a new archive snapshot until you’re about to leave 0.8.0 for a later version. (0.7.0 is already archived.)</li>
+        <li>Set <code>VERSION</code> file to one line: <code>0.8.0-layout-dashboard</code></li>
+        <li>Update the version badge text in the HTML header to <code>v0.8.0-layout-dashboard</code> (when you build the new header in Step 1).</li>
+      </ol>
+      <div class="code-block mt-3">0.8.0-layout-dashboard</div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="phase p-5 mb-5">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="step-num">STEP 1</span>
+        <h3 class="text-lg font-semibold text-white m-0">CSS foundation — Arctic Ice tokens</h3>
+      </div>
+      <p class="text-sm text-slate-400 mb-2">Replace / expand the <code>&lt;style&gt;</code> block at the top of <code>index.html</code>.</p>
+      <div class="code-block">:root {
+  --bg: #070b12;
+  --panel: #0d1524;
+  --panel-raised: #132033;
+  --border: #1e3a5f;
+  --text: #cbd5e1;
+  --text-strong: #f0f9ff;
+  --muted: #64748b;
+  --accent: #38bdf8;
+  --accent-strong: #0284c7;
+  --good: #7dd3fc;
+  --warn: #67e8f9;
+  --bad: #fb7185;
+  --pin: #818cf8;
+  --pin-bg: #1e1b4b;
+  --pin-border: #4338ca;
+  --badge-bg: #0c4a6e;
+  --badge-fg: #bae6fd;
+  --badge-border: #0ea5e9;
+  --canvas-bg: #0a101c;
+  --chart-pop: #38bdf8;
+  --chart-food: #67e8f9;
+  --chart-hunger: #fb7185;
+  --radius-sm: 0.35rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.65rem;
+  --radius-xl: 0.85rem;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  min-height: 100vh;
+}
+/* App shell fills viewport */
+.app-shell {
+  height: 100vh;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  box-sizing: border-box;
+}
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+.app-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 300px;
+  gap: 0.5rem;
+}
+.col {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.col-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0.55rem;
+  min-height: 0;
+  overflow: auto;
+}
+.canvas-host {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+#canvas {
+  background: var(--canvas-bg);
+  border: 1px solid var(--border);
+  image-rendering: crisp-edges;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+}
+/* Right column pin rules — history floor */
+#panel-trends {
+  flex: 0 1 auto;
+  max-height: 48%;
+  overflow: auto;
+}
+#panel-trends.is-pinned {
+  max-height: 55%;
+}
+#panel-history {
+  flex: 1 1 auto;
+  min-height: max(200px, 42%);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+.section-title {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+.badge-version {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  border: 1px solid var(--badge-border);
+}
+.speed-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  background: #0a1220;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.btn-speed {
+  padding: 0.22rem 0.5rem;
+  font-size: 11px;
+  border-radius: var(--radius-sm);
+  background: #0f1c2e;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+.btn-speed.on {
+  background: #0369a1;
+  color: #e0f2fe;
+  border-color: var(--accent);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+  font-weight: 600;
+}
+.btn-action {
+  padding: 0.3rem 0.7rem;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, #1e3a5f, #0f1c2e);
+  color: #e0f2fe;
+  border: 1px solid var(--accent);
+  cursor: pointer;
+}
+.btn-action.primary {
+  background: #0284c7;
+  border-color: #7dd3fc;
+}
+.val-accent { color: var(--accent); font-family: ui-monospace, monospace; }
+.chart-row { display: block; clear: both; margin-bottom: 0.35rem; }
+.chart-label { display: block; font-size: 9px; margin-bottom: 2px; }
+.chart-label.pop { color: var(--chart-pop); }
+.chart-label.food { color: var(--chart-food); }
+.chart-label.hunger { color: var(--chart-hunger); }
+.chart-label.pin { color: var(--pin); }
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+.kpi {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.35rem;
+  background: #0a1220;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.4rem;
+  font-size: 11px;
+}
+/* use flex, NOT float:right on KPI values — avoids floating labels */
+input[type="range"] { accent-color: var(--accent); width: 100%; }
+.scroll-thin { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }</div>
+      <p class="text-xs text-slate-500 mt-2">You can keep Tailwind CDN for utility helpers on small elements; prefer variables for chrome so Arctic Ice stays consistent.</p>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="phase p-5 mb-5">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="step-num">STEP 2</span>
+        <h3 class="text-lg font-semibold text-white m-0">Rebuild HTML shell (Layout F)</h3>
+      </div>
+      <p class="text-sm text-slate-400 mb-2">
+        Remove: <code>max-w-5xl</code> page, tab bar, tab show/hide wrappers.
+        Structure body roughly like this (keep all existing element <strong>IDs</strong>):
+      </p>
+      <div class="code-block">&lt;body&gt;
+  &lt;div class="app-shell"&gt;
+
+    &lt;!-- HEADER --&gt;
+    &lt;header class="app-header"&gt;
+      &lt;h1&gt;Evol-Econ Sim&lt;/h1&gt;
+      &lt;span&gt;Phase 0 · Survive&lt;/span&gt;
+      &lt;span class="badge-version"&gt;v0.8.0-layout-dashboard&lt;/span&gt;
+      &lt;div class="ml-auto flex items-center gap-2"&gt;
+        &lt;div class="speed-group"&gt;
+          &lt;span class="text-[10px] text-slate-500"&gt;Speed&lt;/span&gt;
+          &lt;button type="button" id="speed-1" class="btn-speed on" onclick="setSpeed(1)"&gt;1×&lt;/button&gt;
+          &lt;button type="button" id="speed-2" class="btn-speed" onclick="setSpeed(2)"&gt;2×&lt;/button&gt;
+          &lt;button type="button" id="speed-5" class="btn-speed" onclick="setSpeed(5)"&gt;5×&lt;/button&gt;
+          &lt;button type="button" id="speed-10" class="btn-speed" onclick="setSpeed(10)"&gt;10×&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;button type="button" class="btn-action" onclick="toggleSim()"&gt;Pause&lt;/button&gt;
+        &lt;button type="button" class="btn-action primary" onclick="resetSim()"&gt;Reset&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;div class="app-body"&gt;
+
+      &lt;!-- LEFT: controls + metrics --&gt;
+      &lt;div class="col"&gt;
+        &lt;div class="col-panel flex-1 scroll-thin" id="panel-controls"&gt;
+          &lt;!-- move content from #tab-controls here (sliders, presets, advanced) --&gt;
+          &lt;!-- NO speed buttons here anymore --&gt;
+          &lt;div class="section-title"&gt;Metrics&lt;/div&gt;
+          &lt;div id="metrics-content"&gt;...&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- CENTER: canvas --&gt;
+      &lt;div class="col"&gt;
+        &lt;div class="canvas-host"&gt;
+          &lt;canvas id="canvas" width="800" height="600"&gt;&lt;/canvas&gt;
+          &lt;div id="inspector" class="hidden absolute ..."&gt;... keep existing inspector IDs ...&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- RIGHT: trends then history --&gt;
+      &lt;div class="col"&gt;
+        &lt;div class="col-panel" id="panel-trends"&gt;
+          &lt;!-- from #tab-trends: search, charts, pinned-section --&gt;
+          &lt;!-- wrap each chart:
+               &lt;div class="chart-row"&gt;
+                 &lt;div class="chart-label food"&gt;Total Food&lt;/div&gt;
+                 &lt;canvas id="chart-food" ...&gt;&lt;/canvas&gt;
+               &lt;/div&gt;
+          --&gt;
+        &lt;/div&gt;
+        &lt;div class="col-panel" id="panel-history"&gt;
+          &lt;!-- from #tab-history: session overview, best, run-list, clear --&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script&gt;... existing JS ...&lt;/script&gt;
+&lt;/body&gt;</div>
+      <table class="mt-3">
+        <thead><tr><th>Keep these IDs</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><code>canvas</code>, <code>inspector</code>, <code>inspector-content</code>, <code>inspector-pin-btn</code></td><td>sim + selection</td></tr>
+          <tr><td>All <code>slider-*</code> / <code>val-*</code></td><td>hunger / setup</td></tr>
+          <tr><td><code>advanced-hunger</code></td><td>toggleAdvanced</td></tr>
+          <tr><td><code>metrics-content</code></td><td>updateMetricsTab</td></tr>
+          <tr><td><code>chart-pop</code>, <code>chart-food</code>, <code>chart-hunger</code></td><td>trends</td></tr>
+          <tr><td><code>pinned-section</code>, <code>chart-pinned-hunger</code>, <code>chart-pinned-food</code>, <code>pinned-box-id</code>, <code>pinned-box-status</code></td><td>pin</td></tr>
+          <tr><td><code>agent-search</code></td><td>searchAndPinAgent</td></tr>
+          <tr><td><code>stat-runs</code>, <code>stat-ext</code>, <code>stat-best</code>, <code>best-longest</code>, <code>run-list</code></td><td>history</td></tr>
+          <tr><td><code>speed-1</code> … <code>speed-10</code></td><td>setSpeed</td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm text-amber-200/90 mt-2">You can delete <code>btn-controls</code> / <code>tab-controls</code> etc. after content is moved — but update JS that references them (Step 3).</p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="phase p-5 mb-5">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="step-num">STEP 3</span>
+        <h3 class="text-lg font-semibold text-white m-0">JS: always-on panels (kill tabs)</h3>
+      </div>
+      <p class="text-sm text-slate-300 mb-2">Do these carefully one function at a time; reload and test after each.</p>
+
+      <h4 class="text-sky-200 text-sm font-semibold mt-3">3a — <code>gameLoop</code></h4>
+      <p class="text-xs text-slate-400 mb-1">Always update metrics + trends (no tab gate):</p>
+      <div class="code-block">// before
+if (activeSidebarTab === 'metrics' && tick % 10 === 0) updateMetricsTab();
+if (activeSidebarTab === 'trends') renderTrends();
+
+// after
+if (tick % 10 === 0) updateMetricsTab();
+if (tick % 2 === 0) renderTrends();  // or every frame if cheap enough</div>
+
+      <h4 class="text-sky-200 text-sm font-semibold mt-3">3b — <code>renderTrends</code></h4>
+      <div class="code-block">// REMOVE this early return:
+// if (activeSidebarTab !== 'trends') return;
+
+// Arctic Ice chart colors:
+drawTrendChart(popC, trendPop, '#38bdf8', runDuration);      // was green
+drawTrendChart(foodC, trendFood, '#67e8f9', runDuration);    // was yellow
+drawTrendChart(hungerC, trendAvgHunger, '#fb7185', runDuration);
+// pinned:
+drawTrendChart(pHungerC, pinnedHunger, '#818cf8', runDuration);
+drawTrendChart(pFoodC, pinnedFood, '#818cf8', runDuration);</div>
+
+      <h4 class="text-sky-200 text-sm font-semibold mt-3">3c — Pin panel class (history floor)</h4>
+      <div class="code-block">function syncTrendsPinClass() {
+  const panel = document.getElementById('panel-trends');
+  if (!panel) return;
+  if (pinnedAgent) panel.classList.add('is-pinned');
+  else panel.classList.remove('is-pinned');
+}
+
+// Call syncTrendsPinClass() from:
+//   togglePin, unpinAgent, searchAndPinAgent, startNewRun (after clearing pin)</div>
+      <p class="text-xs text-slate-400 mt-1">Keep showing/hiding <code>#pinned-section</code> as today. Do <strong>not</strong> grow the three main chart heights when pinning.</p>
+
+      <h4 class="text-sky-200 text-sm font-semibold mt-3">3d — <code>setSpeed</code> Arctic styles</h4>
+      <div class="code-block">function setSpeed(n) {
+  simSpeed = n;
+  [1, 2, 5, 10].forEach(s => {
+    const btn = document.getElementById('speed-' + s);
+    if (!btn) return;
+    btn.classList.toggle('on', s === n);
+  });
+}</div>
+
+      <h4 class="text-sky-200 text-sm font-semibold mt-3">3e — Remove / gut <code>switchTab</code></h4>
+      <div class="code-block">// Delete switchTab function OR make it a no-op.
+// Remove call: switchTab('controls');
+// Remove any activeSidebarTab checks used only for tabs.
+// Optional: delete let activeSidebarTab = ... if unused.</div>
+      <p class="text-xs text-slate-400 mt-1">Also remove <code>if (activeSidebarTab === 'trends')</code> guards inside <code>togglePin</code>, <code>unpinAgent</code>, <code>searchAndPinAgent</code> — just call <code>renderTrends()</code> + <code>syncTrendsPinClass()</code>.</p>
+
+      <h4 class="text-sky-200 text-sm font-semibold mt-3">3f — Metrics HTML colors</h4>
+      <p class="text-xs text-slate-400 mb-1">In <code>updateMetricsTab</code>, swap emerald accents to sky/good:</p>
+      <div class="code-block">// e.g. text-emerald-300 → use style="color:var(--good)" or text-sky-300</div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="phase p-5 mb-5">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="step-num">STEP 4</span>
+        <h3 class="text-lg font-semibold text-white m-0">Canvas colors + click scaling</h3>
+      </div>
+      <h4 class="text-sky-200 text-sm font-semibold">4a — Draw colors (Arctic Ice)</h4>
+      <div class="code-block">// draw() clear / trail — cool dark
+ctx.fillStyle = 'rgba(10, 16, 28, 0.9)';
+
+// food on ground
+ctx.fillStyle = '#67e8f9';  // was #4ade80
+
+// Agent.draw()
+ctx.fillStyle = this.hunger > 75 ? '#fb7185' : '#64748b';
+// carried food pip
+ctx.fillStyle = '#67e8f9';  // was #fbbf24
+
+// selection outline — keep pink or use sky
+ctx.strokeStyle = '#38bdf8';
+// pinned outline
+ctx.strokeStyle = '#818cf8';</div>
+
+      <h4 class="text-sky-200 text-sm font-semibold mt-3">4b — Click coords if canvas is CSS-scaled</h4>
+      <div class="code-block">canvas.addEventListener('click', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const cx = (e.clientX - rect.left) * scaleX;
+  const cy = (e.clientY - rect.top) * scaleY;
+  // ... rest unchanged using cx, cy
+});</div>
+      <p class="text-xs text-slate-400 mt-1">Logical sim size can stay 800×600 for this PR; CSS max-width/max-height letterboxes it in the center column.</p>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="phase p-5 mb-5">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="step-num">STEP 5</span>
+        <h3 class="text-lg font-semibold text-white m-0">Polish left/right content</h3>
+      </div>
+      <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+        <li>Presets: active state with cyan border (optional class you toggle in <code>applyPreset</code>).</li>
+        <li>History cards: keep structure; optional bar colors → cyan / indigo / rose to match ice (or leave as-is if already readable).</li>
+        <li>Best longest: use <code>color: var(--good)</code> instead of emerald.</li>
+        <li>Inspector: border <code>var(--accent)</code>, pin button violet/indigo.</li>
+        <li>Ensure every chart is <code>.chart-row &gt; label + canvas</code> so “Total Food” never floats (no <code>float:right</code> on KPIs).</li>
+      </ul>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="phase p-5 mb-5">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="step-num">STEP 6</span>
+        <h3 class="text-lg font-semibold text-white m-0">Manual test (before docs PR)</h3>
+      </div>
+      <p class="text-sm text-slate-400">Use the checklist below. Fix bugs before updating README / log.</p>
+    </div>
+  </div>
+
+  <!-- JS quick ref -->
+  <div id="js" class="section mb-10">
+    <h2 class="text-xl font-semibold text-sky-50 mb-3">JS change summary</h2>
+    <table>
+      <thead><tr><th>Function / site</th><th>Change</th></tr></thead>
+      <tbody>
+        <tr><td><code>gameLoop</code></td><td>Always metrics + trends</td></tr>
+        <tr><td><code>renderTrends</code></td><td>Remove tab gate; ice colors</td></tr>
+        <tr><td><code>setSpeed</code></td><td>Toggle <code>.on</code> class</td></tr>
+        <tr><td><code>switchTab</code></td><td>Remove / no-op; remove boot call</td></tr>
+        <tr><td>pin helpers</td><td><code>syncTrendsPinClass()</code>; always <code>renderTrends()</code></td></tr>
+        <tr><td><code>draw</code> / <code>Agent.draw</code></td><td>Arctic food/agent colors</td></tr>
+        <tr><td>canvas click</td><td>Scale by rect vs buffer size</td></tr>
+        <tr><td>Sim logic (hunger, food, history record)</td><td><strong>Unchanged</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Checklist -->
+  <div id="checklist" class="section mb-10">
+    <h2 class="text-xl font-semibold text-sky-50 mb-3">Testing checklist</h2>
+    <ul class="check text-sm text-slate-300">
+      <li><label><input type="checkbox"> Header: version badge, speed, Pause, Reset</label></li>
+      <li><label><input type="checkbox"> No tab bar; all panels visible at once</label></li>
+      <li><label><input type="checkbox"> Canvas fills center column (no bottom graph dock)</label></li>
+      <li><label><input type="checkbox"> Speed 1/2/5/10 works; active = ice glow</label></li>
+      <li><label><input type="checkbox"> Sliders + presets + Advanced still live</label></li>
+      <li><label><input type="checkbox"> Metrics update while sim runs</label></li>
+      <li><label><input type="checkbox"> Trend labels sit above charts (no floating Total Food)</label></li>
+      <li><label><input type="checkbox"> Pin agent → pinned charts; history still readable</label></li>
+      <li><label><input type="checkbox"> Unpin / Remove restores trends panel</label></li>
+      <li><label><input type="checkbox"> Search by ID works</label></li>
+      <li><label><input type="checkbox"> History overview + cards + Clear</label></li>
+      <li><label><input type="checkbox"> Click agent selects (even if canvas CSS-scaled)</label></li>
+      <li><label><input type="checkbox"> Reset / extinction still records runs</label></li>
+      <li><label><input type="checkbox"> Look is Arctic Ice (not emerald-default chrome)</label></li>
+    </ul>
+  </div>
+
+  <!-- Docs / PR -->
+  <div id="docs" class="section mb-12">
+    <h2 class="text-xl font-semibold text-sky-50 mb-3">After it works — docs + PR</h2>
+    <ol class="list-decimal pl-5 text-sm text-slate-300 space-y-2">
+      <li><code>VERSION</code> = <code>0.8.0-layout-dashboard</code></li>
+      <li><code>README.md</code> — live release line → 0.8.0-layout-dashboard; short note about dashboard layout</li>
+      <li><code>FUTURE_FEATURES.md</code> — mark 0.8.0 shipped; keep 0.9.0 forage as next</li>
+      <li><code>IMPLEMENTATION_LOG.md</code> — append dated entry (layout F + Arctic Ice, no sim mechanic change)</li>
+      <li><code>archive/MANIFEST.md</code> — when you freeze post-0.8 for the next version, add a row; optional: snapshot <code>archive/index-0.8.0-layout-dashboard.html</code> at end of this PR if you want the new baseline archived immediately</li>
+      <li>PR description must state: <strong>manually applied by human, tested in the simulation, requested after verification</strong> (Standing PR Directive)</li>
+    </ol>
+    <div class="ok p-4 text-sm mt-4">
+      <strong class="text-teal-300">Suggested commit message</strong><br>
+      <code>feat: 0.8.0-layout-dashboard — Tall Command layout + Arctic Ice theme</code>
+    </div>
+  </div>
+
+  <footer class="text-center text-[11px] text-slate-600 border-t border-slate-800 pt-4 pb-8">
+    trait-evolution-sim · design-docs/0.8.0-layout-dashboard-implementation-guide.html ·
+    pair with 0.8.0-layout-dashboard-design.html
+  </footer>
+</body>
+</html>

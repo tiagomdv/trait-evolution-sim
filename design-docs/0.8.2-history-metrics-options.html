@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.8.2 History &amp; metrics options · trait-evolution-sim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d1524;
+      --border: #1e3a5f;
+      --text: #cbd5e1;
+      --strong: #f0f9ff;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --good: #7dd3fc;
+      --warn: #67e8f9;
+      --bad: #fb7185;
+      --pin: #818cf8;
+    }
+    body { background: var(--bg); color: var(--text); margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    .opt-btn {
+      text-align: left; border: 1px solid var(--border); background: var(--panel);
+      border-radius: 0.5rem; padding: 0.55rem 0.7rem; cursor: pointer; color: var(--text);
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .opt-btn:hover { border-color: var(--accent); }
+    .opt-btn.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56,189,248,.35);
+      background: #132033;
+    }
+    .panel {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 0.65rem;
+    }
+    .hidden { display: none !important; }
+    .card {
+      border-left: 3px solid var(--accent);
+      background: #0a1220;
+      border: 1px solid var(--border);
+      border-left-width: 3px;
+      border-radius: 0.35rem;
+      padding: 0.4rem 0.5rem;
+      font-size: 10px;
+      margin-bottom: 0.3rem;
+    }
+    .card.bal { border-left-color: #818cf8; }
+    .card.pun { border-left-color: var(--bad); }
+    .card.hi {
+      border-color: rgba(56,189,248,.45);
+      background: #0c1829;
+    }
+    .kpi {
+      display: flex; justify-content: space-between; align-items: baseline;
+      background: #0a1220; border: 1px solid var(--border); border-radius: 0.35rem;
+      padding: 0.3rem 0.4rem; font-size: 11px;
+    }
+    .kpi b { font-family: ui-monospace, monospace; font-weight: 600; color: var(--strong); }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      font-size: 10px; padding: 0.15rem 0.4rem; border-radius: 999px;
+      background: #0a1220; border: 1px solid var(--border); color: var(--muted);
+    }
+    .chip strong { color: var(--strong); font-family: ui-monospace, monospace; font-weight: 600; }
+    .chip.best { border-color: var(--accent); color: var(--good); }
+    .chip.best strong { color: var(--good); }
+    .section-label {
+      font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.4rem;
+    }
+    .mock-col {
+      width: 300px; max-width: 100%;
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 0.55rem;
+    }
+    .spark {
+      height: 36px; background: #020617; border: 1px solid var(--border);
+      border-radius: 0.25rem; margin-bottom: 0.35rem;
+    }
+    table.compare { width: 100%; border-collapse: collapse; font-size: 12px; }
+    table.compare th, table.compare td {
+      border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top;
+    }
+    table.compare th { background: #0a1220; color: var(--accent); }
+    .tag {
+      font-size: 10px; padding: 1px 6px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="mb-6">
+      <div class="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <h1 class="text-2xl font-semibold text-sky-50 m-0">0.8.2 · History &amp; metrics options</h1>
+          <p class="text-sm text-slate-400 mt-1 mb-0">
+            Explore cleaner history. Also: rename ugly “Avg H”, move pin-by-ID to left inspector.
+            Wireframes only — pick / mix, then implement on <code class="text-sky-300">index.html</code>.
+          </p>
+        </div>
+        <span class="tag">Arctic Ice · design explore</span>
+      </div>
+    </header>
+
+    <!-- Shared pain points -->
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label">Problems with current UI</div>
+      <ul class="list-disc pl-5 space-y-1 text-slate-300 m-0">
+        <li><strong class="text-sky-100">History clutter</strong> — Session Overview block + giant “Best longest” + fat run cards stack too hard in a narrow column.</li>
+        <li><strong class="text-sky-100">Best repeated twice</strong> — <code>stat-best</code> in overview <em>and</em> <code>best-longest</code> callout.</li>
+        <li><strong class="text-sky-100">Ugly session string</strong> — “Runs: / Ext: / Best:” feels like debug dump, not a lab summary.</li>
+        <li><strong class="text-sky-100">Avg H</strong> — cryptic; read as “average height” or random code. Prefer <strong>Avg hunger</strong> or icon+label <strong>Hunger</strong>.</li>
+        <li><strong class="text-sky-100">Pin by ID in Trends</strong> — belongs with selection/inspector on the <strong>left</strong>, not above charts.</li>
+      </ul>
+    </section>
+
+    <!-- Cross-cutting proposals (not just history) -->
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label">Cross-cutting (do with any history pick)</div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <div class="text-sky-200 font-medium mb-2">Live metrics rename</div>
+          <div class="grid grid-cols-2 gap-1.5 mb-2">
+            <div class="kpi"><span style="color:var(--muted)">Alive</span><b class="good" style="color:var(--good)">47</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Deaths</span><b style="color:var(--bad)">53</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Food</span><b style="color:var(--warn)">128</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Hunger</span><b>62</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Min hung.</span><b>12</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Max hung.</span><b>98</b></div>
+          </div>
+          <p class="text-xs text-slate-500 m-0">Drop “Avg H” → <strong>Hunger</strong> (avg implied) or full <strong>Avg hunger</strong>. Min/Max can stay abbreviated if space is tight.</p>
+        </div>
+        <div>
+          <div class="text-sky-200 font-medium mb-2">Pin by ID → left inspector dock</div>
+          <div class="panel p-2" style="background:#0a1220">
+            <div class="section-label" style="color:var(--accent)">Selected agent</div>
+            <div class="text-[11px] text-slate-400 mb-2">Click canvas · or jump by ID</div>
+            <div class="flex gap-1 mb-2">
+              <input readonly value="ID" class="text-[10px] w-14 bg-slate-950 border border-slate-700 rounded px-1 py-0.5 text-slate-400" />
+              <span class="text-[10px] px-2 py-0.5 rounded" style="background:#1e1b4b;color:var(--pin);border:1px solid #4338ca">Pin</span>
+            </div>
+            <div class="text-[10px] text-slate-500">#42 · Hunger 61 · Food 12</div>
+          </div>
+          <p class="text-xs text-slate-500 mt-2 mb-0">Trends panel becomes charts-only. Search uses same <code>agent-search</code> / <code>searchAndPinAgent</code> IDs — just move the markup.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Switcher -->
+    <div class="section-label mb-2">History designs (pick one or mix)</div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 mb-4" id="switcher">
+      <button type="button" class="opt-btn active" data-opt="A" onclick="show('A')">
+        <div class="text-[10px] text-sky-400/80">A · recommended</div>
+        <div class="text-sm font-medium text-white">Quiet log</div>
+        <div class="text-[10px] text-slate-500 mt-0.5">One best chip · thin cards</div>
+      </button>
+      <button type="button" class="opt-btn" data-opt="B" onclick="show('B')">
+        <div class="text-[10px] text-slate-500">B</div>
+        <div class="text-sm font-medium text-white">Chip strip</div>
+        <div class="text-[10px] text-slate-500 mt-0.5">Session as soft chips only</div>
+      </button>
+      <button type="button" class="opt-btn" data-opt="C" onclick="show('C')">
+        <div class="text-[10px] text-slate-500">C</div>
+        <div class="text-sm font-medium text-white">Best + list</div>
+        <div class="text-[10px] text-slate-500 mt-0.5">Single hero best · no overview box</div>
+      </button>
+      <button type="button" class="opt-btn" data-opt="D" onclick="show('D')">
+        <div class="text-[10px] text-slate-500">D</div>
+        <div class="text-sm font-medium text-white">Table rows</div>
+        <div class="text-[10px] text-slate-500 mt-0.5">Dense scan · least chrome</div>
+      </button>
+      <button type="button" class="opt-btn" data-opt="E" onclick="show('E')">
+        <div class="text-[10px] text-slate-500">E</div>
+        <div class="text-sm font-medium text-white">Minimal timeline</div>
+        <div class="text-[10px] text-slate-500 mt-0.5">One line per run · max air</div>
+      </button>
+    </div>
+
+    <!-- Today vs mock stage -->
+    <div class="grid lg:grid-cols-2 gap-4 mb-6">
+      <div>
+        <div class="section-label">Today (clutter baseline)</div>
+        <div class="mock-col">
+          <div class="section-label">Run History</div>
+          <div class="panel p-2 mb-2 text-[10px]" style="background:#0a1220">
+            <div class="text-slate-500 mb-1">Session Overview</div>
+            <div class="grid grid-cols-3 gap-1 text-sm">
+              <div>Runs: <b class="text-white">12</b></div>
+              <div>Ext: <b class="text-white">9/12</b></div>
+              <div>Best: <b style="color:var(--good)">142s</b></div>
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-500">Best longest survival</div>
+          <div class="text-xl font-semibold mb-2" style="color:var(--good)">142s</div>
+          <div class="card">
+            <div class="flex justify-between"><span class="text-slate-400">Run #12</span><span>87s · 100 pop</span></div>
+            <div class="border-t border-slate-700 my-0.5"></div>
+            <div class="text-slate-500">alive: 0 (avg 47) · avg hunger: 62 · avg food: 4</div>
+          </div>
+          <div class="card bal">
+            <div class="flex justify-between"><span class="text-slate-400">Run #11</span><span>54s · 100 pop</span></div>
+            <div class="border-t border-slate-700 my-0.5"></div>
+            <div class="text-slate-500">alive: 2 · avg hunger: 55 · avg food: 6</div>
+          </div>
+          <div class="text-[10px] text-slate-600 mt-1">← Best shown twice · heavy cards</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label">Preview · <span id="stage-name" class="text-sky-300">A — Quiet log</span></div>
+
+        <!-- A Quiet log -->
+        <div id="mock-A" class="mock-col">
+          <div class="flex justify-between items-center mb-2">
+            <div class="section-label mb-0">History</div>
+            <button type="button" class="text-[10px] px-1.5 py-0.5 rounded border border-slate-700 text-slate-500">Clear</button>
+          </div>
+          <div class="flex flex-wrap gap-1 mb-2">
+            <span class="chip">12 runs</span>
+            <span class="chip">9 extinct</span>
+            <span class="chip best">Best <strong>142s</strong> · #1</span>
+          </div>
+          <div class="card hi">
+            <div class="flex justify-between items-center">
+              <span><span class="text-slate-400">#12</span> bal · extinct</span>
+              <span class="font-mono text-sky-200">87s</span>
+            </div>
+            <div class="text-slate-500 mt-0.5">end 0 · peak ~47 · hunger 62</div>
+          </div>
+          <div class="card bal">
+            <div class="flex justify-between"><span><span class="text-slate-400">#11</span> bal</span><span class="font-mono">54s</span></div>
+            <div class="text-slate-500 mt-0.5">end 2 · peak ~40</div>
+          </div>
+          <div class="card pun">
+            <div class="flex justify-between"><span><span class="text-slate-400">#10</span> punish</span><span class="font-mono">31s</span></div>
+            <div class="text-slate-500 mt-0.5">end 0 · peak 100</div>
+          </div>
+          <p class="text-[10px] text-slate-600 mt-2 mb-0">One best · no second hero · one quiet meta line per card</p>
+        </div>
+
+        <!-- B Chip strip -->
+        <div id="mock-B" class="mock-col hidden">
+          <div class="section-label">History</div>
+          <div class="flex flex-wrap gap-1 mb-3">
+            <span class="chip"><strong>12</strong> runs</span>
+            <span class="chip"><strong>75%</strong> extinct</span>
+            <span class="chip">avg <strong>71s</strong></span>
+            <span class="chip best">★ <strong>142s</strong></span>
+          </div>
+          <div class="card">
+            <div class="flex justify-between font-mono text-[11px]">
+              <span class="text-slate-400">#12</span><span>87s</span><span class="text-indigo-300">bal</span><span class="text-rose-300">ext</span>
+            </div>
+          </div>
+          <div class="card bal">
+            <div class="flex justify-between font-mono text-[11px]">
+              <span class="text-slate-400">#11</span><span>54s</span><span class="text-indigo-300">bal</span><span class="text-slate-500">end2</span>
+            </div>
+          </div>
+          <div class="card pun">
+            <div class="flex justify-between font-mono text-[11px]">
+              <span class="text-slate-400">#10</span><span>31s</span><span class="text-rose-300">pun</span><span class="text-rose-300">ext</span>
+            </div>
+          </div>
+          <button type="button" class="text-[10px] mt-2 text-slate-500 underline">Clear session</button>
+          <p class="text-[10px] text-slate-600 mt-2 mb-0">Session = chips only. Cards are one dense line (expand on hover/click later).</p>
+        </div>
+
+        <!-- C Best + list -->
+        <div id="mock-C" class="mock-col hidden">
+          <div class="section-label">History</div>
+          <div class="mb-3 p-2 rounded-lg" style="background:linear-gradient(135deg,#0c1829,#0a1220);border:1px solid rgba(56,189,248,.35)">
+            <div class="text-[10px] text-slate-500">Session best</div>
+            <div class="flex items-end justify-between">
+              <div class="text-2xl font-semibold" style="color:var(--good)">142s</div>
+              <div class="text-[10px] text-slate-400 text-right">Run #1<br>lenient · 12 runs</div>
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-500 mb-1">Recent</div>
+          <div class="card"><div class="flex justify-between"><span>#12 bal</span><span class="font-mono">87s</span></div></div>
+          <div class="card bal"><div class="flex justify-between"><span>#11 bal</span><span class="font-mono">54s</span></div></div>
+          <div class="card pun"><div class="flex justify-between"><span>#10 pun</span><span class="font-mono">31s</span></div></div>
+          <p class="text-[10px] text-slate-600 mt-2 mb-0">Keep one “best” moment only — drop the overview grid entirely.</p>
+        </div>
+
+        <!-- D Table -->
+        <div id="mock-D" class="mock-col hidden">
+          <div class="flex justify-between mb-2">
+            <div class="section-label mb-0">History</div>
+            <span class="chip best">★ 142s</span>
+          </div>
+          <div class="text-[10px] text-slate-500 mb-1">12 runs · 9 extinct · avg 71s</div>
+          <table class="w-full text-[10px]">
+            <thead>
+              <tr class="text-slate-500 border-b border-slate-700">
+                <th class="text-left py-1 font-medium">#</th>
+                <th class="text-left py-1 font-medium">Preset</th>
+                <th class="text-right py-1 font-medium">Dur</th>
+                <th class="text-right py-1 font-medium">End</th>
+              </tr>
+            </thead>
+            <tbody class="font-mono">
+              <tr class="border-b border-slate-800"><td class="py-1 text-slate-400">12</td><td>bal</td><td class="text-right">87s</td><td class="text-right text-rose-300">0</td></tr>
+              <tr class="border-b border-slate-800"><td class="py-1 text-slate-400">11</td><td>bal</td><td class="text-right">54s</td><td class="text-right">2</td></tr>
+              <tr class="border-b border-slate-800"><td class="py-1 text-slate-400">10</td><td class="text-rose-300">pun</td><td class="text-right">31s</td><td class="text-right text-rose-300">0</td></tr>
+              <tr><td class="py-1 text-slate-400">9</td><td class="text-emerald-300/80">len</td><td class="text-right">102s</td><td class="text-right">14</td></tr>
+            </tbody>
+          </table>
+          <p class="text-[10px] text-slate-600 mt-2 mb-0">Most scannable. Least “card chrome.” Good if history is for tuning, not storytelling.</p>
+        </div>
+
+        <!-- E Minimal timeline -->
+        <div id="mock-E" class="mock-col hidden">
+          <div class="flex justify-between items-baseline mb-3">
+            <div class="section-label mb-0">History</div>
+            <div class="text-[11px]"><span class="text-slate-500">best</span> <span class="font-mono" style="color:var(--good)">142s</span></div>
+          </div>
+          <div class="space-y-2 text-[11px]">
+            <div class="flex gap-2 items-center">
+              <span class="w-1 h-8 rounded" style="background:var(--accent)"></span>
+              <div class="flex-1">
+                <div class="flex justify-between"><span class="text-slate-400">#12</span><span class="font-mono">87s</span></div>
+                <div class="text-[10px] text-slate-600">balanced · extinct</div>
+              </div>
+            </div>
+            <div class="flex gap-2 items-center">
+              <span class="w-1 h-8 rounded" style="background:#818cf8"></span>
+              <div class="flex-1">
+                <div class="flex justify-between"><span class="text-slate-400">#11</span><span class="font-mono">54s</span></div>
+                <div class="text-[10px] text-slate-600">balanced · 2 left</div>
+              </div>
+            </div>
+            <div class="flex gap-2 items-center">
+              <span class="w-1 h-8 rounded" style="background:var(--bad)"></span>
+              <div class="flex-1">
+                <div class="flex justify-between"><span class="text-slate-400">#10</span><span class="font-mono">31s</span></div>
+                <div class="text-[10px] text-slate-600">punishing · extinct</div>
+              </div>
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-600 mt-3">12 runs · clear</div>
+          <p class="text-[10px] text-slate-600 mt-2 mb-0">Maximum calm. Almost no boxes — only a color rail + two lines.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail cards -->
+    <section class="panel p-4 mb-5" id="detail">
+      <!-- filled by JS -->
+    </section>
+
+    <section class="panel p-4 mb-5 text-sm overflow-x-auto">
+      <div class="section-label">Compare</div>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>A Quiet</th>
+            <th>B Chips</th>
+            <th>C Best hero</th>
+            <th>D Table</th>
+            <th>E Timeline</th>
+          </tr>
+        </thead>
+        <tbody class="text-slate-400">
+          <tr>
+            <td class="text-slate-300">Clutter</td>
+            <td style="color:var(--good)">Low</td>
+            <td style="color:var(--good)">Lowest cards</td>
+            <td>Medium</td>
+            <td style="color:var(--good)">Low</td>
+            <td style="color:var(--good)">Lowest</td>
+          </tr>
+          <tr>
+            <td class="text-slate-300">Best shown once</td>
+            <td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td>
+          </tr>
+          <tr>
+            <td class="text-slate-300">Session stats</td>
+            <td>3 chips</td>
+            <td>4 chips</td>
+            <td>in hero only</td>
+            <td>one text line</td>
+            <td>footer line</td>
+          </tr>
+          <tr>
+            <td class="text-slate-300">Detail per run</td>
+            <td>Medium</td>
+            <td>Minimal</td>
+            <td>Minimal list</td>
+            <td>Structured</td>
+            <td>Minimal</td>
+          </tr>
+          <tr>
+            <td class="text-slate-300">Impl. effort</td>
+            <td>Small</td>
+            <td>Small</td>
+            <td>Small</td>
+            <td>Medium</td>
+            <td>Small</td>
+          </tr>
+          <tr>
+            <td class="text-slate-300">Fits Phase 0 lab</td>
+            <td style="color:var(--good)">Best balance</td>
+            <td>Great if power-user</td>
+            <td>Story / best-run focus</td>
+            <td>Tuning spreadsheet vibe</td>
+            <td>Zen / demo</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel p-4 text-sm">
+      <div class="section-label">Recommendation</div>
+      <p class="text-slate-300 m-0 leading-relaxed">
+        Ship <strong class="text-sky-100">A Quiet log</strong> as default:
+        remove the big “Best longest survival” block and the boxed “Session Overview” dump;
+        use a single chip row (<code>12 runs</code> · <code>9 extinct</code> · <code>Best 142s · #1</code>);
+        one compact card (or two lines) per run.
+        Pair with <strong class="text-sky-100">Hunger</strong> rename (not Avg H) and
+        <strong class="text-sky-100">pin-by-ID in the left inspector</strong>.
+        Steal B’s denser one-line cards later if the list gets long.
+      </p>
+      <p class="text-xs text-slate-500 mt-3 mb-0">
+        Suggested version after you pick: <code class="text-sky-300">0.8.2-history-cleanup</code>
+        · freeze current live as <code>archive/index-0.8.1-metrics-dock.html</code> first.
+      </p>
+    </section>
+
+    <footer class="text-center text-[10px] text-slate-600 mt-8">
+      design-docs/0.8.2-history-metrics-options.html · exploration only
+    </footer>
+  </div>
+
+  <script>
+    const DETAILS = {
+      A: {
+        title: 'A — Quiet log (recommended)',
+        body: 'Replace Session Overview box + giant best callout with 2–3 chips. Run cards keep a color rail and one secondary line (end pop / peak / hunger) — not a wall of averages. Best appears only in the chip.',
+        do: ['Delete #best-longest block OR merge into chip', 'Session chips from computeOverallStats()', 'Slim renderRunHistory() HTML', 'Clear as text button top-right'],
+        mix: 'Use B one-line cards if you want even less text.'
+      },
+      B: {
+        title: 'B — Chip strip + one-line cards',
+        body: 'Maximum anti-clutter. Session is only soft chips (runs, extinct %, avg dur, best). Each run is a single monospace row; details on demand later (click to expand) if needed.',
+        do: ['Chips only — no overview panel', 'Card = one flex row', 'Optional: click expands avg hunger/food'],
+        mix: 'Best chip styling works with A.'
+      },
+      C: {
+        title: 'C — Best hero + recent list',
+        body: 'If the emotional peak of the session is “best survival,” keep one elegant hero and a very thin recent list. No second best. No overview grid.',
+        do: ['One gradient best card with run # + preset', 'Recent list: # · preset · duration only', 'Runs count in hero corner'],
+        mix: 'If best feels too loud, go A.'
+      },
+      D: {
+        title: 'D — Table rows',
+        body: 'Treat history as a tiny results table. Fastest to scan when comparing many runs. Slightly more “tool” than “lab log.”',
+        do: ['thead # / preset / dur / end', 'Best as single chip above table', 'Session summary as one muted line'],
+        mix: 'Good if you later export CSV.'
+      },
+      E: {
+        title: 'E — Minimal timeline',
+        body: 'Almost no boxes. Color rail = preset. Two lines per run. Best as tiny header metric. Calmest right column; least info density.',
+        do: ['No card borders', 'Preset color bar only', 'Footer: N runs · Clear'],
+        mix: 'Pair with denser trends above.'
+      }
+    };
+
+    const NAMES = {
+      A: 'A — Quiet log',
+      B: 'B — Chip strip',
+      C: 'C — Best hero',
+      D: 'D — Table rows',
+      E: 'E — Minimal timeline'
+    };
+
+    function show(key) {
+      'ABCDE'.split('').forEach(k => {
+        document.getElementById('mock-' + k).classList.toggle('hidden', k !== key);
+      });
+      document.querySelectorAll('.opt-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.opt === key);
+      });
+      document.getElementById('stage-name').textContent = NAMES[key];
+      const d = DETAILS[key];
+      document.getElementById('detail').innerHTML = `
+        <h2 class="text-lg font-semibold text-white m-0 mb-2">${d.title}</h2>
+        <p class="text-sm text-slate-300 m-0 mb-3">${d.body}</p>
+        <div class="grid sm:grid-cols-2 gap-3 text-sm">
+          <div>
+            <div class="section-label">Implement</div>
+            <ul class="list-disc pl-4 text-slate-400 m-0 space-y-1">${d.do.map(x => `<li>${x}</li>`).join('')}</ul>
+          </div>
+          <div>
+            <div class="section-label">Mix tip</div>
+            <p class="text-slate-400 m-0 text-sm">${d.mix}</p>
+          </div>
+        </div>`;
+      try { localStorage.setItem('tes-0.8.2-history-opt', key); } catch (_) {}
+    }
+
+    try {
+      const k = localStorage.getItem('tes-0.8.2-history-opt');
+      show(k && DETAILS[k] ? k : 'A');
+    } catch (_) {
+      show('A');
+    }
+  </script>
+</body>
+</html>

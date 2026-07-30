@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.8.2 History table (D+) · design</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d1524;
+      --border: #1e3a5f;
+      --text: #cbd5e1;
+      --strong: #f0f9ff;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --good: #7dd3fc;
+      --warn: #67e8f9;
+      --bad: #fb7185;
+      --pin: #818cf8;
+    }
+    body { background: var(--bg); color: var(--text); margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    .panel {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 0.65rem;
+    }
+    .mock-col {
+      width: 300px; max-width: 100%;
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 0.55rem;
+    }
+    .section-label {
+      font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
+    }
+    .tag {
+      font-size: 10px; padding: 1px 6px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9;
+    }
+    table.hist {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+    }
+    table.hist th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 500;
+      padding: 0.25rem 0.2rem;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    table.hist th.r, table.hist td.r { text-align: right; }
+    table.hist td {
+      padding: 0.35rem 0.2rem;
+      border-bottom: 1px solid #0f172a;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--text);
+    }
+    table.hist tr:last-child td { border-bottom: none; }
+    table.hist tr.best-row td {
+      background: rgba(56, 189, 248, 0.06);
+    }
+    /* Preset = font color only (must beat table.hist td color) */
+    table.hist td.preset-len { color: #4ade80; }
+    table.hist td.preset-bal { color: #60a5fa; }
+    table.hist td.preset-pun { color: #f87171; }
+    table.hist td.preset-cust { color: #fbbf24; }
+    .best-pill {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1.15;
+    }
+    .best-pill .val {
+      font-size: 1.05rem;
+      font-weight: 600;
+      font-family: ui-monospace, monospace;
+      color: var(--good);
+    }
+    .best-pill .sub {
+      font-size: 9px;
+      color: var(--muted);
+    }
+    .kpi {
+      display: flex; justify-content: space-between; align-items: baseline;
+      background: #0a1220; border: 1px solid var(--border); border-radius: 0.35rem;
+      padding: 0.3rem 0.4rem; font-size: 11px;
+    }
+    .kpi b { font-family: ui-monospace, monospace; font-weight: 600; color: var(--strong); }
+    .dock {
+      margin-top: 0.5rem;
+      border: 1px solid var(--accent);
+      border-radius: 0.65rem;
+      padding: 0.5rem;
+      background: #0a1220;
+      box-shadow: 0 0 0 1px rgba(56,189,248,.15);
+    }
+    code { color: #7dd3fc; font-size: 0.9em; }
+    .check li { margin-bottom: 0.35rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="mb-6 flex flex-wrap items-start justify-between gap-2">
+      <div>
+        <h1 class="text-2xl font-semibold text-sky-50 m-0">0.8.2 History · Table D+</h1>
+        <p class="text-sm text-slate-400 mt-1 mb-0">
+          Chosen direction: <strong class="text-slate-200">table with more metric columns</strong>,
+          session summary = <strong class="text-slate-200">best run only</strong> (top-right).
+          Left inspector dock stays (confirmed good).
+        </p>
+      </div>
+      <span class="tag">design lock-in</span>
+    </header>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label mb-2">Locked decisions</div>
+      <ul class="list-disc pl-5 space-y-1 text-slate-300 m-0">
+        <li><strong class="text-sky-100">History = table (D+)</strong> — not cards, not dual best callouts.</li>
+        <li><strong class="text-sky-100">No Session Overview box</strong> — no “Runs / Ext / Best” dump.</li>
+        <li><strong class="text-sky-100">Best once</strong> — top-right of history panel only (duration + run # + preset).</li>
+        <li><strong class="text-sky-100">No status / endedBy column</strong> — extinction is implied when <code>End === 0</code> (shown in red).</li>
+        <li><strong class="text-sky-100">End = 0 → red number</strong> (alive survivors stay default/neutral).</li>
+        <li><strong class="text-sky-100">Preset</strong> — plain short text, color only (no badge/chip background). lenient green · balanced blue · punishing red · custom yellow.</li>
+        <li><strong class="text-sky-100">Columns</strong> — <code>#</code> · <code>Pre</code> · <code>Dur</code> · <code>End</code> · <code>Hung</code> · <code>Food</code>.</li>
+        <li><strong class="text-sky-100">Pin-by-ID</strong> lives in left inspector dock (already good).</li>
+        <li><strong class="text-sky-100">Live metrics</strong> — rename <code>Avg H</code> → <code>Hunger</code> (avg).</li>
+      </ul>
+    </section>
+
+    <div class="grid lg:grid-cols-2 gap-6 mb-6">
+      <!-- History mock -->
+      <div>
+        <div class="section-label mb-2">History panel mock (right column)</div>
+        <div class="mock-col">
+          <!-- Header row: title left, best right -->
+          <div class="flex justify-between items-start gap-2 mb-2">
+            <div class="section-label" style="margin:0">History</div>
+            <div class="best-pill" title="Best longest survival this session">
+              <div class="val">142s</div>
+              <div class="sub">best · run #1 · len</div>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="hist">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Pre</th>
+                  <th class="r">Dur</th>
+                  <th class="r">End</th>
+                  <th class="r">Hung</th>
+                  <th class="r">Food</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-slate-400">12</td>
+                  <td class="preset-bal">bal</td>
+                  <td class="r">87s</td>
+                  <td class="r" style="color:#f87171">0</td>
+                  <td class="r">62</td>
+                  <td class="r" style="color:#67e8f9">4.1</td>
+                </tr>
+                <tr>
+                  <td class="text-slate-400">11</td>
+                  <td class="preset-bal">bal</td>
+                  <td class="r">54s</td>
+                  <td class="r">2</td>
+                  <td class="r">55</td>
+                  <td class="r" style="color:#67e8f9">6.0</td>
+                </tr>
+                <tr>
+                  <td class="text-slate-400">10</td>
+                  <td class="preset-pun">pun</td>
+                  <td class="r">31s</td>
+                  <td class="r" style="color:#f87171">0</td>
+                  <td class="r">71</td>
+                  <td class="r" style="color:#67e8f9">2.2</td>
+                </tr>
+                <tr class="best-row">
+                  <td class="text-slate-400">1</td>
+                  <td class="preset-len">len</td>
+                  <td class="r" style="color:#7dd3fc">142s</td>
+                  <td class="r">14</td>
+                  <td class="r">48</td>
+                  <td class="r" style="color:#67e8f9">8.4</td>
+                </tr>
+                <tr>
+                  <td class="text-slate-400">8</td>
+                  <td class="preset-cust">cust</td>
+                  <td class="r">66s</td>
+                  <td class="r">1</td>
+                  <td class="r">58</td>
+                  <td class="r" style="color:#67e8f9">5.1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="flex justify-between items-center mt-2">
+            <button type="button" class="text-[10px] px-1.5 py-0.5 rounded border border-slate-700 text-slate-500">Clear</button>
+            <span class="text-[9px] text-slate-600">newest first · scroll if many</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Left column context -->
+      <div>
+        <div class="section-label mb-2">Left column (unchanged structure · labels polish)</div>
+        <div class="mock-col" style="width:220px">
+          <div class="section-label mb-1">Live metrics</div>
+          <div class="grid grid-cols-2 gap-1 mb-1">
+            <div class="kpi"><span style="color:var(--muted)">Alive</span><b style="color:var(--good)">47</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Deaths</span><b style="color:var(--bad)">53</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Food</span><b style="color:var(--warn)">128</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Hunger</span><b>62</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Min</span><b>12</b></div>
+            <div class="kpi"><span style="color:var(--muted)">Max</span><b>98</b></div>
+          </div>
+          <div class="text-[9px] text-slate-600 mb-2">Avg H → <strong class="text-slate-400">Hunger</strong> (mean)</div>
+
+          <div class="dock">
+            <div class="flex justify-between items-center mb-1">
+              <div class="section-label" style="color:var(--accent);margin:0">Selected agent</div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded" style="background:#1e1b4b;color:var(--pin);border:1px solid #4338ca">Pin</span>
+            </div>
+            <div class="flex gap-1 mb-2">
+              <input readonly value="42" class="text-[10px] w-12 bg-slate-950 border border-slate-700 rounded px-1 py-0.5 font-mono text-sky-200" />
+              <span class="text-[9px] text-slate-500 self-center">Jump + pin</span>
+            </div>
+            <div class="text-[10px] grid grid-cols-2 gap-x-2 gap-y-0.5 font-mono">
+              <span class="text-slate-500">ID</span><span class="text-right">#42</span>
+              <span class="text-slate-500">Hunger</span><span class="text-right">61.0</span>
+              <span class="text-slate-500">Food</span><span class="text-right" style="color:var(--warn)">12.0</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-slate-600 mt-2 mb-0">Agent search moves here from Trends (not shown in trends mock).</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label mb-2">Column spec</div>
+      <table class="hist" style="max-width:640px">
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Header</th>
+            <th>Source field</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Run number</td>
+            <td><code>#</code></td>
+            <td><code>r.run</code></td>
+            <td>Newest first (as today)</td>
+          </tr>
+          <tr>
+            <td>Preset</td>
+            <td><code>Pre</code></td>
+            <td><code>r.preset</code></td>
+            <td>Short text only (<code>len</code>/<code>bal</code>/<code>pun</code>/<code>cust</code>) · <strong>text color</strong>, no chip/badge background</td>
+          </tr>
+          <tr>
+            <td>Duration</td>
+            <td><code>Dur</code></td>
+            <td><code>r.durationSec</code></td>
+            <td>e.g. <code>87s</code> · best row optional highlight</td>
+          </tr>
+          <tr>
+            <td>Final population</td>
+            <td><code>End</code></td>
+            <td><code>r.finalPop</code></td>
+            <td><code>0</code> → <strong style="color:var(--bad)">red</strong> = extinction. No separate status / endedBy column.</td>
+          </tr>
+          <tr>
+            <td>Avg hunger</td>
+            <td><code>Hung</code></td>
+            <td><code>r.avgHunger</code></td>
+            <td>Already stored in run history from 0.7</td>
+          </tr>
+          <tr>
+            <td>Avg food</td>
+            <td><code>Food</code></td>
+            <td><code>r.avgFood</code></td>
+            <td>Already stored · warn/cyan tint optional</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="text-xs text-slate-500 mt-3 mb-0">
+        Optional later (not in first pass): Peak pop, initial agents — only if the column still fits (~300px).
+        Prefer horizontal scroll inside the history panel over wrapping headers.
+      </p>
+    </section>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label mb-2">Best summary (top-right only)</div>
+      <ul class="list-disc pl-5 space-y-1 text-slate-300 m-0">
+        <li>Remove <code>#best-longest</code> big block <em>and</em> overview “Best:” cell.</li>
+        <li>Single control, e.g. <code>#history-best</code>:</li>
+      </ul>
+      <pre class="text-xs mt-2 p-3 rounded-lg overflow-x-auto" style="background:#0a1220;border:1px solid var(--border);color:#94a3b8">// from bestLongestSec + runHistory scan
+Best 142s
+best · run #1 · len
+
+// empty session
+—
+no runs yet</pre>
+      <p class="text-xs text-slate-500 mt-2 mb-0">
+        Use existing <code>bestLongestSec</code> + find matching run for # and preset (same logic as today’s overview best).
+      </p>
+    </section>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label mb-2">JS touch points (when you implement)</div>
+      <ol class="list-decimal pl-5 space-y-1 text-slate-300 m-0">
+        <li><code>renderRunHistory()</code> — emit <code>&lt;table&gt;</code> rows instead of multi-line cards.</li>
+        <li><code>updateHistoryStats()</code> — only update best pill; drop unused avg/ext DOM if removed.</li>
+        <li>History HTML — header flex: title | best pill; table; Clear.</li>
+        <li>Metrics labels — <code>Avg H</code> → <code>Hunger</code> (and optional Min/Max short labels).</li>
+        <li>Move <code>#agent-search</code> + Pin button into inspector dock; remove from trends.</li>
+      </ol>
+    </section>
+
+    <section class="panel p-4 mb-5 text-sm">
+      <div class="section-label mb-2">Testing checklist</div>
+      <ul class="check list-none pl-0 m-0 text-slate-300">
+        <li>☐ Best appears once (top-right), not in table header dump</li>
+        <li>☐ Hung / Food columns show values after each recorded run</li>
+        <li>☐ Extinct: End shows <code>0</code> in red; no status/ended badge column</li>
+        <li>☐ Preset is plain colored text (no badge chips): green / blue / red / yellow</li>
+        <li>☐ Clear empties table + resets best to —</li>
+        <li>☐ Narrow column: table scrolls horizontally if needed, no layout blowout</li>
+        <li>☐ Pin by ID works from left dock; trends have no search row</li>
+        <li>☐ Live metrics say Hunger not Avg H</li>
+      </ul>
+    </section>
+
+    <section class="panel p-4 text-sm">
+      <div class="section-label mb-2">Versioning when you implement</div>
+      <p class="text-slate-300 m-0">
+        Freeze current live first if not already:
+        <code>archive/index-0.8.1-metrics-dock.html</code>,
+        then ship as <code>0.8.2-history-table</code> (or <code>0.8.2-history-cleanup</code>).
+        Live stays single <code>index.html</code>.
+      </p>
+    </section>
+
+    <footer class="text-center text-[10px] text-slate-600 mt-8">
+      design-docs/0.8.2-history-table-design.html · D+ lock-in for human implementation
+    </footer>
+  </div>
+</body>
+</html>

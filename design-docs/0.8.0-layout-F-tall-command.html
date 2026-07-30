@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.8.0 Layout F — Tall Command · trait-evolution-sim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0a0c10; color: #c5d1e0; }
+    .panel {
+      background: #11151f;
+      border: 1px solid #334155;
+      border-radius: 0.5rem;
+    }
+    .region-label {
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .section-title {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 0.35rem;
+    }
+    .kpi {
+      background: #0b1220;
+      border: 1px solid #1e293b;
+      border-radius: 0.375rem;
+      padding: 0.35rem 0.5rem;
+    }
+    .fake-canvas {
+      background:
+        radial-gradient(circle at 22% 28%, rgba(16, 185, 129, 0.08), transparent 42%),
+        radial-gradient(circle at 68% 62%, rgba(251, 191, 36, 0.07), transparent 38%),
+        #11151f;
+      border: 1px solid #1e2d3d;
+      border-radius: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .dot { position: absolute; border-radius: 9999px; }
+    .food {
+      position: absolute;
+      width: 5px; height: 5px;
+      border-radius: 9999px;
+      background: #fbbf24;
+    }
+    .spark {
+      height: 40px;
+      border-radius: 0.25rem;
+      background: #020617;
+      border: 1px solid #1e293b;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .spark svg { width: 100%; height: 100%; display: block; }
+    /* Pinned charts: modest bump only — do not grow main run charts */
+    .spark.pinned-chart { height: 52px; }
+    .slider-fake {
+      height: 4px;
+      background: #1e2937;
+      border-radius: 9999px;
+      position: relative;
+      margin-bottom: 0.45rem;
+    }
+    .slider-fake::after {
+      content: "";
+      position: absolute;
+      left: 55%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 9999px;
+      background: #34d399;
+    }
+    .run-card {
+      border-left: 3px solid #34d399;
+      background: #0b1220;
+      border-top: 1px solid #1e293b;
+      border-right: 1px solid #1e293b;
+      border-bottom: 1px solid #1e293b;
+      border-radius: 0.25rem;
+      padding: 0.35rem 0.45rem;
+      font-size: 10px;
+      margin-bottom: 0.3rem;
+    }
+    .run-card.bal { border-left-color: #60a5fa; }
+    .run-card.punish { border-left-color: #f87171; }
+    .speed-btn {
+      padding: 0.2rem 0.45rem;
+      border-radius: 0.25rem;
+      background: #1e2937;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+    .speed-btn.on {
+      background: #064e3b;
+      color: #a7f3d0;
+    }
+    .hdr-btn {
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.25rem;
+      background: #334155;
+      font-size: 11px;
+      color: #e2e8f0;
+    }
+    .inspector-chip {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 150px;
+      background: rgba(15, 23, 42, 0.94);
+      border: 1px solid #475569;
+      border-radius: 0.75rem;
+      padding: 0.45rem 0.55rem;
+      font-size: 10px;
+      backdrop-filter: blur(6px);
+    }
+    .scroll-thin {
+      scrollbar-width: thin;
+      scrollbar-color: #334155 transparent;
+    }
+    /* Main app shell fills viewport height */
+    .app-shell {
+      height: calc(100vh - 7.5rem);
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .app-body {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr) 300px;
+      gap: 0.5rem;
+    }
+    .col {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .col-panel {
+      background: #11151f;
+      border: 1px solid #334155;
+      border-radius: 0.5rem;
+      padding: 0.55rem;
+      min-height: 0;
+    }
+    /*
+      Right column pin rules (fixed squeeze):
+      - History always keeps a floor (~42% of column, min 200px).
+      - Trends may grow when pinned but only up to ~55%; overflow scrolls inside trends.
+      - Main run charts stay compact; only pinned charts are slightly taller.
+    */
+    #right-trends {
+      flex: 0 1 auto;
+      max-height: 48%;
+      overflow: auto;
+      transition: max-height 0.2s ease;
+    }
+    #right-trends.pinned-expanded {
+      flex: 1 1 auto;
+      max-height: 55%;
+    }
+    #right-history {
+      flex: 1 1 auto;
+      min-height: max(200px, 42%);
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    #right-history.pinned-shrunk {
+      /* still at least the floor — never collapse */
+      min-height: max(200px, 42%);
+      flex: 1 1 auto;
+    }
+    .pinned-block {
+      display: none;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #312e81;
+    }
+    #right-trends.pinned-expanded .pinned-block {
+      display: block;
+    }
+    .tag {
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 9999px;
+      background: #1e2937;
+      color: #94a3b8;
+      border: 1px solid #334155;
+    }
+    .tag-rec {
+      background: #064e3b;
+      color: #a7f3d0;
+      border-color: #059669;
+    }
+    .toggle-pin {
+      border: 1px solid #4c1d95;
+      background: #1e1b4b;
+      color: #c4b5fd;
+      font-size: 11px;
+      padding: 0.35rem 0.7rem;
+      border-radius: 0.375rem;
+    }
+    .toggle-pin.on {
+      background: #5b21b6;
+      color: #ede9fe;
+      border-color: #a78bfa;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <header class="border-b border-slate-800 bg-[#0a0c10]">
+    <div class="max-w-[1440px] mx-auto px-4 py-3 flex flex-wrap items-center gap-3">
+      <div>
+        <div class="text-lg font-semibold text-white tracking-tight">0.8.0 Layout F — Tall Command</div>
+        <div class="text-xs text-slate-500">Hybrid from B · full-height canvas · no bottom trends · pin expands right column</div>
+      </div>
+      <div class="ml-auto flex items-center gap-2 text-[10px]">
+        <span class="tag">exploration mock</span>
+        <span class="tag tag-rec">your mix</span>
+        <span class="tag">from B header + columns</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1440px] mx-auto px-4 py-4 space-y-4">
+
+    <!-- Design notes -->
+    <section class="panel p-3 text-sm text-slate-300">
+      <p class="leading-relaxed">
+        <strong class="text-white">What changed vs B:</strong>
+        keep the dense header (title · version · speed · pause · reset);
+        keep left controls + right analysis columns;
+        <span class="text-rose-300/90">remove bottom graph dock</span>;
+        canvas fills the full height between header and page bottom;
+        right column stacks <span class="text-emerald-300">Trends (top) → History (below)</span>;
+        when an agent is pinned, the trends block <span class="text-violet-300">grows flexibly</span> and history compresses.
+      </p>
+      <div class="mt-2 flex flex-wrap items-center gap-2">
+        <button type="button" id="btn-pin" class="toggle-pin" onclick="togglePin()">
+          Simulate: Pin agent #42
+        </button>
+        <span id="pin-hint" class="text-xs text-slate-500">Click to expand trends with pinned charts</span>
+      </div>
+    </section>
+
+    <!-- ========== APP MOCK ========== -->
+    <section class="panel p-2">
+      <div class="app-shell">
+
+        <!-- HEADER (from B, + speed) -->
+        <div class="panel px-3 py-2 flex flex-wrap items-center gap-3 text-xs shrink-0">
+          <span class="region-label">Header</span>
+          <span class="font-semibold text-white text-sm">Evol-Econ Sim</span>
+          <span class="text-slate-500">Phase 0 · Survive</span>
+          <span class="px-1.5 py-px bg-emerald-900 text-emerald-300 rounded text-[10px]">v0.8.0-layout-dashboard</span>
+
+          <div class="ml-auto flex flex-wrap items-center gap-2">
+            <!-- Speed in header -->
+            <div class="flex items-center gap-1" aria-label="Simulation speed">
+              <span class="text-[10px] text-slate-500 mr-0.5">Speed</span>
+              <span class="speed-btn on">1×</span>
+              <span class="speed-btn">2×</span>
+              <span class="speed-btn">5×</span>
+              <span class="speed-btn">10×</span>
+            </div>
+            <span class="w-px h-4 bg-slate-700"></span>
+            <button type="button" class="hdr-btn">Pause</button>
+            <button type="button" class="hdr-btn">Reset</button>
+          </div>
+        </div>
+
+        <!-- BODY: left | canvas | right — all stretch to bottom -->
+        <div class="app-body">
+
+          <!-- LEFT: Controls + live metrics (compact) -->
+          <div class="col">
+            <div class="col-panel flex-1 overflow-auto scroll-thin">
+              <div class="section-title">Controls</div>
+              <div class="space-y-1 text-[10px]">
+                <div class="flex justify-between"><span>Initial Agents</span><span class="text-emerald-300 font-mono">100</span></div>
+                <div class="slider-fake"></div>
+                <div class="flex justify-between"><span>Hunger Rate</span><span class="text-emerald-300 font-mono">0.055</span></div>
+                <div class="slider-fake"></div>
+                <div class="flex justify-between"><span>Food Spawn</span><span class="text-emerald-300 font-mono">8</span></div>
+                <div class="slider-fake"></div>
+
+                <div class="text-[10px] text-slate-500 mb-0.5">Presets</div>
+                <div class="flex flex-col gap-0.5 mb-2">
+                  <span class="text-center py-0.5 bg-slate-800 rounded">Lenient</span>
+                  <span class="text-center py-0.5 bg-emerald-900/50 text-emerald-300 rounded">Balanced</span>
+                  <span class="text-center py-0.5 bg-slate-800 rounded">Punishing</span>
+                </div>
+
+                <div class="text-slate-500 mb-1">Advanced ▼</div>
+                <div class="opacity-50 space-y-1 pointer-events-none">
+                  <div class="flex justify-between"><span>Self-Consume Relief</span><span class="font-mono">1.3</span></div>
+                  <div class="slider-fake"></div>
+                  <div class="flex justify-between"><span>Ground Eat Relief</span><span class="font-mono">1.9</span></div>
+                  <div class="slider-fake"></div>
+                </div>
+              </div>
+
+              <div class="border-t border-slate-800 mt-3 pt-2">
+                <div class="section-title">Metrics <span class="normal-case tracking-normal text-slate-600">(optional in left)</span></div>
+                <div class="grid grid-cols-2 gap-1 text-[10px]">
+                  <div class="kpi">Alive <span class="float-right font-mono text-emerald-300">47</span></div>
+                  <div class="kpi">Deaths <span class="float-right font-mono text-rose-300">53</span></div>
+                  <div class="kpi">Food <span class="float-right font-mono text-yellow-300">128</span></div>
+                  <div class="kpi">Avg H <span class="float-right font-mono text-rose-300">62</span></div>
+                </div>
+                <p class="text-[9px] text-slate-600 mt-1.5">Alt: move these KPIs into the header strip like original B.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CENTER: Canvas full remaining height -->
+          <div class="col min-h-0">
+            <div class="fake-canvas flex-1 w-full h-full" aria-label="Canvas full height">
+              <span class="absolute top-2 left-2 region-label text-slate-500">Canvas · stretches to bottom</span>
+              <span class="food" style="left:16%;top:20%"></span>
+              <span class="food" style="left:38%;top:48%"></span>
+              <span class="food" style="left:62%;top:28%"></span>
+              <span class="food" style="left:74%;top:66%"></span>
+              <span class="food" style="left:28%;top:72%"></span>
+              <span class="dot bg-slate-400" style="width:7px;height:7px;left:24%;top:36%"></span>
+              <span class="dot bg-rose-400" style="width:9px;height:9px;left:46%;top:42%"></span>
+              <span class="dot bg-slate-400" style="width:6px;height:6px;left:58%;top:58%"></span>
+              <span class="dot bg-slate-500" style="width:8px;height:8px;left:70%;top:32%"></span>
+              <span class="dot bg-slate-400" style="width:6px;height:6px;left:33%;top:62%"></span>
+              <div class="inspector-chip">
+                <div class="flex justify-between items-center">
+                  <div class="text-emerald-300 text-[9px] font-semibold tracking-wider">SELECTED · #42</div>
+                  <span class="text-[9px] text-violet-300">Pin</span>
+                </div>
+                <div class="text-slate-400 mt-0.5">Hunger 61 · Food 12 · age 84s</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Trends (top, expandable) → History (flex rest) -->
+          <div class="col" id="right-col">
+            <div class="col-panel" id="right-trends">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <div class="section-title mb-0">Trends <span class="normal-case tracking-normal text-slate-600">· current run</span></div>
+                <div class="flex items-center gap-1">
+                  <input type="text" readonly value="ID" class="text-[9px] w-10 bg-slate-900 border border-slate-700 rounded px-1 py-0.5 text-slate-500" />
+                  <span class="text-[9px] px-1.5 py-0.5 bg-slate-800 rounded text-slate-400">Pin</span>
+                </div>
+              </div>
+
+              <div class="space-y-1.5" id="main-trends">
+                <div>
+                  <div class="text-[9px] text-emerald-400 mb-0.5">Population</div>
+                  <div class="spark" id="spark-pop"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#34d399" stroke-width="1.5" points="0,8 15,10 30,12 45,20 60,28 75,30 100,34"/></svg></div>
+                </div>
+                <div>
+                  <div class="text-[9px] text-yellow-400 mb-0.5">Total Food</div>
+                  <div class="spark" id="spark-food"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fbbf24" stroke-width="1.5" points="0,30 20,22 40,25 60,15 80,18 100,12"/></svg></div>
+                </div>
+                <div>
+                  <div class="text-[9px] text-rose-400 mb-0.5">Avg Hunger</div>
+                  <div class="spark" id="spark-hunger"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#fb7185" stroke-width="1.5" points="0,32 25,28 50,20 75,14 100,10"/></svg></div>
+                </div>
+              </div>
+
+              <!-- Pinned section: only when expanded -->
+              <div class="pinned-block">
+                <div class="flex justify-between items-center mb-1">
+                  <div>
+                    <span class="text-[10px] uppercase tracking-widest text-violet-400">Pinned Agent Trends</span>
+                    <span class="font-mono text-[9px] text-violet-200 ml-1">#42</span>
+                    <span class="text-[9px] text-emerald-400 ml-1">(alive)</span>
+                  </div>
+                  <span class="text-[9px] px-1.5 py-0.5 bg-slate-800 rounded text-slate-400">Remove</span>
+                </div>
+                <div class="space-y-1.5">
+                  <div>
+                    <div class="text-[9px] text-violet-400 mb-0.5">Hunger</div>
+                    <div class="spark pinned-chart"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#a78bfa" stroke-width="1.6" points="0,34 20,30 40,22 55,18 70,12 85,10 100,8"/></svg></div>
+                  </div>
+                  <div>
+                    <div class="text-[9px] text-violet-400 mb-0.5">Food carried</div>
+                    <div class="spark pinned-chart"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline fill="none" stroke="#c4b5fd" stroke-width="1.6" points="0,28 15,26 30,20 50,16 70,14 100,10"/></svg></div>
+                  </div>
+                </div>
+                <p class="text-[9px] text-slate-600 mt-1.5">Pinned charts + scroll inside trends · history keeps min height</p>
+              </div>
+            </div>
+
+            <div class="col-panel" id="right-history">
+              <div class="section-title">History</div>
+              <div class="kpi mb-2 text-[10px] shrink-0">
+                <div class="text-slate-500 mb-0.5">Session Overview</div>
+                <div class="grid grid-cols-3 gap-1">
+                  <div>Runs <b class="text-white">12</b></div>
+                  <div>Ext <b class="text-white">9/12</b></div>
+                  <div>Best <b class="text-emerald-300">142s</b></div>
+                </div>
+              </div>
+              <div class="text-[10px] text-slate-500 mb-0.5 shrink-0">Best longest survival</div>
+              <div class="text-lg font-semibold text-emerald-400 mb-2 shrink-0">142s</div>
+              <div class="flex-1 overflow-auto scroll-thin min-h-0">
+                <div class="run-card">#12 · 87s · bal · alive 0 · peak 100</div>
+                <div class="run-card bal">#11 · 54s · bal · alive 2 · peak 88</div>
+                <div class="run-card punish">#10 · 31s · punish · alive 0</div>
+                <div class="run-card">#9 · 102s · lenient · alive 14</div>
+                <div class="run-card bal">#8 · 44s · bal · alive 0</div>
+                <div class="run-card">#7 · 66s · bal · alive 1</div>
+              </div>
+              <button type="button" class="mt-2 text-[10px] px-2 py-0.5 bg-slate-800 rounded text-slate-400 shrink-0 self-start">Clear Runs</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Spec for final design -->
+    <section class="panel p-4 space-y-3">
+      <h2 class="text-lg font-semibold text-white">Layout F — spec notes (for final 0.8.0 design)</h2>
+      <div class="grid md:grid-cols-2 gap-4 text-sm">
+        <div>
+          <div class="section-title">Structure</div>
+          <ul class="text-slate-400 text-xs space-y-1.5 list-disc pl-4">
+            <li><strong class="text-slate-200">Header row:</strong> title, phase, version badge, speed 1×/2×/5×/10×, Pause, Reset</li>
+            <li><strong class="text-slate-200">3 columns</strong> fill remaining viewport height (no bottom band)</li>
+            <li><strong class="text-slate-200">Left (~200–240px):</strong> Controls + optional compact metrics</li>
+            <li><strong class="text-slate-200">Center (flex):</strong> Canvas grows to full column height (aspect or letterbox TBD)</li>
+            <li><strong class="text-slate-200">Right (~280–320px):</strong> Trends on top, History below — both live in one column stack</li>
+          </ul>
+        </div>
+        <div>
+          <div class="section-title">Pin expand behavior</div>
+          <ul class="text-slate-400 text-xs space-y-1.5 list-disc pl-4">
+            <li><strong class="text-slate-200">Default:</strong> main 3 trend charts compact; history gets most of the right column</li>
+            <li><strong class="text-slate-200">Pinned:</strong> show Hunger + Food charts in trends; trends max ~55% and scrolls; main run charts stay compact</li>
+            <li><strong class="text-slate-200">History floor:</strong> min ~42% / 200px so pin never crushes the session log</li>
+            <li><strong class="text-slate-200">Unpin / Remove:</strong> hide pinned block; trends shrink to content</li>
+            <li>No bottom graph dock (unlike original B)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-3 text-xs">
+        <div class="kpi">
+          <div class="text-emerald-300/90 font-medium mb-1">Pros</div>
+          <ul class="text-slate-400 space-y-1 list-disc pl-4">
+            <li>Max canvas presence</li>
+            <li>B-style ops header you liked</li>
+            <li>Analysis stays on the side, not under the world</li>
+            <li>Pin gets room without leaving the column</li>
+          </ul>
+        </div>
+        <div class="kpi">
+          <div class="text-rose-300/90 font-medium mb-1">Tradeoffs</div>
+          <ul class="text-slate-400 space-y-1 list-disc pl-4">
+            <li>Trend charts are narrower than a full-width bottom dock</li>
+            <li>Need good min-heights so pin doesn’t crush history to zero</li>
+            <li>Canvas aspect ratio on ultrawide needs a rule (contain vs stretch)</li>
+          </ul>
+        </div>
+        <div class="kpi">
+          <div class="text-sky-300/90 font-medium mb-1">Open choices</div>
+          <ul class="text-slate-400 space-y-1 list-disc pl-4">
+            <li>Metrics: left column vs thin header KPI strip</li>
+            <li>Canvas: fixed 800×600 centered vs fluid fill</li>
+            <li>Column widths: fixed px vs % with minmax</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="text-[10px] text-slate-600">
+        Sibling of <code class="text-slate-400">0.8.0-layout-options.html</code> (A–E).
+        Next: fold F into final <code class="text-slate-400">0.8.0-layout-dashboard-design.html</code> once you confirm metrics placement + canvas sizing.
+      </p>
+    </section>
+
+    <footer class="text-center text-[10px] text-slate-600 pb-6">
+      trait-evolution-sim · design-docs/0.8.0-layout-F-tall-command.html · wireframe only
+    </footer>
+  </main>
+
+  <script>
+    let pinned = false;
+
+    function togglePin() {
+      pinned = !pinned;
+      const trends = document.getElementById('right-trends');
+      const history = document.getElementById('right-history');
+      const btn = document.getElementById('btn-pin');
+      const hint = document.getElementById('pin-hint');
+
+      trends.classList.toggle('pinned-expanded', pinned);
+      history.classList.toggle('pinned-shrunk', pinned);
+      btn.classList.toggle('on', pinned);
+      btn.textContent = pinned ? 'Simulate: Unpin agent #42' : 'Simulate: Pin agent #42';
+      hint.textContent = pinned
+        ? 'Pinned: extra charts in trends (scroll if needed) · history keeps floor height'
+        : 'Click to show pinned charts without crushing history';
+    }
+  </script>
+</body>
+</html>
