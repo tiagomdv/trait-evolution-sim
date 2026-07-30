@@ -22,7 +22,7 @@ This project is also a deliberate learning vehicle for:
 | **2** | **Evolve** | In-run reproduction, inheritance, generations |
 | **3** | **Economy** | Trade, storage, production, labor, … (one PR each) |
 
-Full task list and ideas backlog: `FUTURE_FEATURES.md`.
+Active ideas backlog (open only): `FUTURE_FEATURES.md`. Ship history: `IMPLEMENTATION_LOG.md`.
 
 ---
 

@@ -64,7 +64,7 @@ Use this when shipping the next version (e.g. layout 0.8.x work currently local)
 3. `archive/MANIFEST.md` has a row for any new archive file
 4. README live-release line updated if this ships a new version
 5. Short `IMPLEMENTATION_LOG.md` section at the bottom (add, don’t replace)
-6. `FUTURE_FEATURES.md` only if items completed or deferred
+6. `FUTURE_FEATURES.md` — **remove** shipped/dismissed items; **append** only still-open ideas (see Log philosophy)
 7. **No** requirement for a full design-docs package on Track A unless the human wanted one
 
 ### PR description template
@@ -155,13 +155,14 @@ Track A does **not** require these by default.
 2. **Track A:** AI may write `index.html`. **Track B:** human leads; AI assists.
 3. **Human owns ship:** verification + “open the PR” decision; no surprise pushes.
 4. **Phase scope** always.
-5. **Add, don’t replace** history in log/roadmap files.
+5. **Add, don’t replace** history in `IMPLEMENTATION_LOG.md`. `FUTURE_FEATURES.md` is a **backlog** (remove done items — see Log philosophy).
 
 ---
 
 ## Capturing Deferred Ideas
 
-Out of scope ideas → offer to append to `FUTURE_FEATURES.md` (living list, not only high-level phases).
+Out of scope *for now* but still wanted → append to `FUTURE_FEATURES.md` under Deferred / the right phase.  
+Dismissed forever (or for a long time) → one line in `IMPLEMENTATION_LOG.md` (why not); **do not** leave in FUTURE_FEATURES.
 
 ---
 
@@ -185,14 +186,24 @@ Prefer one mechanic per PR. Stay observable. Trait set finalized when Phase 1 be
 After the human approves a shipped change:
 
 - `VERSION` + README live-release line (if version ships)
-- `IMPLEMENTATION_LOG.md` — new dated section at the bottom
-- `FUTURE_FEATURES.md` — mark done / append deferred
+- `IMPLEMENTATION_LOG.md` — new dated section at the bottom (**append only**)
+- `FUTURE_FEATURES.md` — **delete** matching open items that shipped; leave only still-open work; append new ideas if any
 - `archive/MANIFEST.md` — when a new snapshot is added
 - Full design-docs only if used for that feature
 
-### Log philosophy
+### Log philosophy (docs resteer 2026-07-30 — backlog hygiene)
 
-`IMPLEMENTATION_LOG.md` and `FUTURE_FEATURES.md` are **living historical records**: never delete past sections; append; update references inline when names change.
+| File | Role | Edit rule |
+|------|------|-----------|
+| **`IMPLEMENTATION_LOG.md`** | History of what shipped / process changes / dismissals | **Append only.** Never delete past sections. |
+| **`FUTURE_FEATURES.md`** | **Active backlog** — next work + deferred-but-still-wanted | **Remove** items when shipped or dismissed. **Append** new open ideas. Do **not** keep “Completed in PR #N” clutter. |
+| **`archive/docs/*`** | Safety freezes before large doc rewrites | Add-only snapshots |
+
+**Before this resteer (mark-done / never-delete FUTURE_FEATURES):** the file mixed shipped history with open ideas and became hard to scan. Full pre-hygiene copy: `archive/docs/FUTURE_FEATURES-pre-backlog-hygiene-2026-07-30.md`.  
+
+**After:** FUTURE_FEATURES = forward only; IMPLEMENTATION_LOG = museum. Optional one-line “Last shipped” pointer at top of FUTURE_FEATURES is fine.
+
+**Lifecycle:** capture idea → FUTURE_FEATURES → ship or dismiss → IMPLEMENTATION_LOG entry → remove from FUTURE_FEATURES.
 
 ---
 
@@ -213,17 +224,19 @@ After the human approves a shipped change:
 - Full design-doc + section paste ritual for pure CSS/layout (obsolete default).
 - Pushing or opening PRs without human request.
 - Editing anything under `archive/` except adding new snapshots + MANIFEST rows.
-- Overwriting history in `IMPLEMENTATION_LOG.md` / `FUTURE_FEATURES.md`.
+- Overwriting or deleting history in **`IMPLEMENTATION_LOG.md`**.
+- Leaving **shipped or dismissed** items in **`FUTURE_FEATURES.md`** with completion markers (use the log, then delete from the backlog).
 
 ---
 
 ## Quick copy-paste for a new chat
 
 ```
-Read AGENTS.md fully (process resteer 2026-07-23).
+Read AGENTS.md fully (process resteer 2026-07-23 + backlog hygiene 2026-07-30).
 This session is Track A (layout) / Track B (mechanics): <pick one>.
 Goal: <one sentence>.
 Live VERSION is the source of truth; archive before risky edits; single index.html.
+FUTURE_FEATURES is active backlog only — remove items when shipped; history goes in IMPLEMENTATION_LOG.
 Do not push unless I ask. Open a PR only after I verify and request it.
 ```
 

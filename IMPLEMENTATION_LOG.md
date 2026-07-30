@@ -294,3 +294,80 @@ Match process cost to risk: layout stays reversible via archives; **sensitive** 
 ### How code was applied
 
 AI Track A direct edits to `index.html` under human direction and iterative browser testing; human is Project Manager and owns verification + shipping.
+
+---
+
+## 2026-07-30 — Docs resteer: FUTURE_FEATURES backlog hygiene
+
+**Version / Phase:** docs process · Phase 0 · Survive (`0.8.4-tight-layout` still live)  
+**Track:** A (documentation / process only — no sim code)
+
+### Why
+
+`FUTURE_FEATURES.md` had become a **second history log**: every shipped idea stayed with “Completed in PR #…” markers, plus long superseded phase narratives. That cluttered the file and made “what’s next?” hard to see. History already lives in `IMPLEMENTATION_LOG.md`, archives, git, and VERSION.
+
+### Before → after
+
+| | **Before** | **After** |
+|--|------------|-----------|
+| **FUTURE_FEATURES.md** | Living historical record; mark done, never delete | **Active backlog only**; remove when shipped or dismissed |
+| **IMPLEMENTATION_LOG.md** | Append-only ship log | Unchanged role — **sole museum** of shipped work + process notes |
+| **Safety freeze** | — | `archive/docs/FUTURE_FEATURES-pre-backlog-hygiene-2026-07-30.md` (full pre-hygiene text) |
+
+Also documented in `AGENTS.md` (Log philosophy + anti-patterns + PR checklist). Related earlier freezes: vision resteer `archive/docs/FUTURE_FEATURES-pre-resteer-2026-07-02.md` (2026-07-02).
+
+### Audit of prior FUTURE_FEATURES open / mixed points
+
+Every bullet from the pre-hygiene file was classified. Shipped items are **removed** from the backlog (already covered by log / PRs / archives). Open or deferred-wanted items remain in the new FUTURE_FEATURES. Dismissals recorded here so they are not re-added lightly.
+
+#### Shipped (removed from FUTURE_FEATURES — history already in log / PRs)
+
+| Item | Where it landed |
+|------|-----------------|
+| Hunger sliders / foundation polish | `0.1.0-foundation` · PR #7 |
+| Run history minimal v1 | `0.2.0-run-history` · PR #8 |
+| Observability suite (metrics, inspector, speed, trends, starvation counter, food respawn while alive) | `0.3.0-observability` · PR #13 |
+| Archive infra + vision resteer docs | `0.4.0-docs-resteer` |
+| Phase rail + version badge in UI | bundled in `0.7.0-run-compare` · PR #15 (0.5.0-phase-rail) |
+| Presets, initial agent count, simplified controls | bundled in PR #15 (0.6.0-run-setup) |
+| Full-run trends, richer history cards, agent IDs, pin + search by ID | `0.7.0-run-compare` · PR #15 |
+| Layout dashboard arc (Tall Command, metrics dock, history table, column hide, canvas resize) | `0.8.0`–`0.8.4-tight-layout` · PR #17 |
+| Old phase naming “Phase 1 = Trade” etc. | Superseded by Survive → Differ → Evolve → Economy (2026-07-02); not re-listed as open |
+
+#### Still open / deferred-wanted (kept in FUTURE_FEATURES)
+
+| Item | Status in new backlog |
+|------|------------------------|
+| `0.9.0-forage` (seek food / env-aware movement) | Phase 0 next · Track B |
+| Slide left/right column drawers | Deferred UI · Track A later |
+| Phase 1 traits + candidates (incl. hunger modulation once traits exist) | Phase 1 sketch |
+| Phase 2 reproduction / inheritance / generational charts | Phase 2 sketch |
+| Survivor Seed Lab Mode | Deferred after core Evolve |
+| Trait-distribution live viz | Deferred with Evolve |
+| Phase 3 economy sub-milestones (trade → …) | Phase 3 sketch |
+| Multi-run overlay trend graphs | Observability open (lower priority) |
+| Exportable / persistent run archives | Observability open |
+| Light in-file code organization (comments/sections only) | Open, low priority |
+
+#### Dismissed / out of scope for now (not in FUTURE_FEATURES backlog)
+
+| Item | Why |
+|------|-----|
+| Government, policy layers | Explicitly deprioritized; not on path for Phase 0–2 |
+| Multiple goods all at once | Breaks radical simplicity and observability-first path |
+| Complex production chains without incremental observability | Same |
+| Heavy financial systems early | Same — revisit only if Economy sub-milestones earn them later |
+
+If any dismissed item is reconsidered, re-add it to FUTURE_FEATURES as a **new** open bullet with a short “why now,” and note the change in a new log section.
+
+### Files touched this resteer
+
+- `FUTURE_FEATURES.md` — rewritten lean backlog  
+- `AGENTS.md` — Log philosophy, checklist, anti-patterns, new-chat blurb  
+- `archive/docs/FUTURE_FEATURES-pre-backlog-hygiene-2026-07-30.md` — freeze  
+- `archive/MANIFEST.md` — docs snapshot row  
+- `IMPLEMENTATION_LOG.md` — this section  
+
+### How applied
+
+Docs-only Track A under human direction; no `index.html` / VERSION change required for this process resteer.
