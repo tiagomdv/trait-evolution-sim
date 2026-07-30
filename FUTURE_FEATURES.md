@@ -12,6 +12,25 @@ When something **ships** or is **dismissed**, document it in `IMPLEMENTATION_LOG
 **Before this resteer:** full prior content frozen at `archive/docs/FUTURE_FEATURES-pre-backlog-hygiene-2026-07-30.md`  
 **Earlier vision resteer snapshot:** `archive/docs/FUTURE_FEATURES-pre-resteer-2026-07-02.md`
 
+### Strategy: thick Phase 0 before Phase 1 · Differ (human 2026-07-30)
+
+**Intent:** Prefer shipping the open **Survive** pile (forage finish + lab tooling + play/story docs) **before** opening Phase 1 · Differ, rather than a minimal “special + memory then traits” cut.
+
+**Why:** Phase 1 will add traits, new knobs, and more inspector/metrics surface. Building **Play + Lab + export + Help/Playbook** first means Differ plugs into a stable “watch one world / measure many worlds / explain knobs” desk — less redesign thrash mid-traits.
+
+**Not a law:** Human can still jump to Differ earlier. This is the **default preference**, not a hard gate list.
+
+**Suggested order (thick path)**
+
+1. **Forage finish** — `0.9.2-special` → `0.9.3-memory` (behavior story complete enough to play)  
+2. **Single-run science** — run parameter export logs (+ seed control if needed); metrics schema Lab will reuse  
+3. **Lab mode v1** — headless N runs (50/100/200), lock/vary knobs, results table, a few graphs, CSV/JSON export — **cap scope** (no full stats suite / multi-canvas)  
+4. **Story layer** — thematic experiment presets + `PLAYBOOK.md` v0 (can draft Playbook anytime in parallel)  
+5. **Optional polish** — slide drawers; density gradient / greed only if still wanted (else defer or fold into Phase 1 flavor)  
+6. **Close Phase 0** — freeze “Survive lab complete,” then Phase 1 · Differ design  
+
+**Trap to avoid:** Lab scope creep delaying Differ forever. “Before Phase 1” means a **usable Lab v1**, not every graph ever.
+
 ---
 
 ## Version scheme (reference)
@@ -28,8 +47,9 @@ Design artifacts in `design-docs/` use the same nomenclature (e.g. `0.9.0-forage
 |------|-------|--------|
 | `0.9.2-special` (planned) | **B** | One marked special agent for easy pin/compare. |
 | `0.9.3-memory` (planned) | **B** | Last-food memory / good vs bad TTL. |
-| Run parameter export logs | **A/B** | Export run knobs + end metrics (JSON/text) so human can paste into another session for analysis. Not required for next chrome slice. |
-| Close Phase 0 | — | After 0.9 slices feel done, move to Phase 1 · Differ — or more polish if needed. |
+| Run parameter export logs | **A/B** | Export run knobs + end metrics (JSON/text) so human can paste into another session for analysis. Building block for batch / Monte Carlo lab. |
+| **Lab mode** — headless batch / Monte Carlo (wanted) | **A/B** | In-app **Lab** (no canvas): N=50/100/200+ runs; lock knobs / vary others; results table + graphs + export. See deferred section. Not default next after 0.9.1. |
+| Close Phase 0 | — | After thick Phase 0 path feels done (see strategy above), move to Phase 1 · Differ — human can still cut early. |
 
 **Forage design (whole arc):** `design-docs/0.9.0-forage-design.html`  
 **Frozen builds:** `archive/index-0.9.0-seek.html` (seek mechanics) · `archive/index-0.9.1-ui-chrome.html` (chrome + Help)  
@@ -63,7 +83,100 @@ Beyond Lenient / Balanced / Punishing difficulty numbers, add **thematic presets
 - **Chaotic feast / famine** — extreme spawn vs hunger pairing for dramatic boom-bust.  
 - Other named “lab stories” as they emerge in testing.
 
-**Notes:** May share UI with current presets or sit as a second row (“Experiments”). Should not replace simple difficulty ladder. Optionally tag History rows with scenario name. Capture when chrome + Seek feel solid.
+**Notes:** May share UI with current presets or sit as a second row (“Experiments”). Should not replace simple difficulty ladder. Optionally tag History rows with scenario name. Capture when chrome + Seek feel solid. Pairs with the **Playbook** doc idea below (presets = one-click chapters).
+
+#### Playbook / lab experiments doc (“how to have fun with the sim”)
+
+**Status:** brainstormed · not written yet · docs only (no sim change required to start)
+
+**Idea:** A living project doc of **testing experiments, playing experiments, and fun things to see** — recipes, not feature specs. Working title **`PLAYBOOK.md`** (alternatives: `HOW_TO_PLAY.md`, `LAB_EXPERIMENTS.md`). Prefer **repo root** when created (human-facing), not buried only in design-docs.
+
+**What it is**
+
+- Short **setup → do → watch for → why it’s cool** recipes for the *current* live build  
+- Classic A/Bs (Seek vs Random, sense radius, seek strength, preset ladder)  
+- Story vignettes (survival of the few, petting zoo, desert, feast, random-walk tragedy)  
+- Inspector / History games (pin a survivor, compare History rows)  
+- Optional feel-tuning micro-labs and “open questions to try”  
+- Links to future features (thematic presets, special agent, memory, export logs) without duplicating the whole roadmap  
+
+**What it is not**
+
+- Not a replacement for in-app **Help** (knob definitions stay in the modal)  
+- Not a second `FUTURE_FEATURES` (build backlog stays there)  
+- Not required for every ship; append when a new mechanic makes a new fun recipe  
+
+**Tone / process (open)**
+
+- Fun-first playbook vs lab-notebook voice (or both: “Play” + “Lab” sections)  
+- Living file you can scribble into after a good session  
+- Later: thematic presets and export logs can formalize recipes into one-click or pasteable experiments  
+
+**When to write v0:** Anytime after `0.9.1-ui-chrome` — even a short first page of Seek-era recipes is enough. No need to wait for 0.9.2.
+
+#### Lab mode — headless batch / Monte Carlo (no canvas)
+
+**Status:** brainstormed · **human product lock (2026-07-30)** · not designed/implemented  
+**Track:** A/B (UI + runner + charts mostly A; pure tick loop / seed hooks may touch B lightly)
+
+**Product picture (locked intent)**
+
+- **No visual world while batching** — no canvas, no watching agents. Pure experiment desk.  
+- Run **N trials** in one go (e.g. **50 / 100 / 200** or custom).  
+- User **locks** some parameters (held fixed across the batch) and **varies** others (levels, ranges, or A/B sets — e.g. Seek vs Random, preset ladder, hunger sweep).  
+- Engine runs trials **headless** (tick loop only; skip all draw). Sequential is fine; light parallel workers optional for speed later.  
+- After (or as) runs complete: **results table** + **cool graphs** (distributions, group compares, simple sweep plots) + **export** CSV/JSON.  
+- Interactive **Play** mode (today’s canvas sim) stays separate; Lab is a mode/panel you enter for campaigns of trials.
+
+**Questions this unlocks**
+
+- Seek vs Random: distribution of survivors / time-to-extinction over N seeds  
+- Do Lenient / Balanced / Punishing rank under Seek after 50–100–200 trials?  
+- Where does survival “fall off a cliff” if we vary one unlocked knob?  
+- High-variance (luck) vs stable configs  
+- Data-backed preset retunes and Playbook claims  
+
+**Lock / vary (config UX sketch)**
+
+- Each knob: **Lock** (single value) vs **Vary** (list of levels, min/max/step, or categorical e.g. policy).  
+- Batch = Cartesian product of vary-dimensions × N seeds (or N per cell) — need caps so 200 × huge grids don’t freeze the tab (warn / max cells).  
+- Optional: named experiment (“Seek vs Random @ Balanced”) saved for re-run.  
+
+**What a single trial record might include**
+
+- Locked + vary cell snapshot, seed  
+- Outcomes: duration, final pop, time-to-50%-dead (optional), avg hunger / avg carried food, deaths, peaks  
+- Grouping keys for graphs: policy, preset, sweep value  
+
+**Graphs (v1 → later)**
+
+- v1: histogram / box-ish summary of final pop or duration; bar compare means (Seek vs Random); progress while running  
+- Later: survival curves, 1D sweep line + error band, light 2D heatmap, overlay groups  
+
+**Build arc (suggested)**
+
+1. Shared **metrics schema** (+ export logs from Play if useful).  
+2. **Headless run-one(config, seed) → result** (no canvas path).  
+3. **Lab UI**: N, lock/vary matrix, Start / Cancel, progress.  
+4. **Results table + export**.  
+5. **Graphs** (group compare + one distribution).  
+6. Richer sweeps / more chart types; parallel workers only if needed.  
+
+**What it is not**
+
+- Watching multi-world canvases (explicitly out of scope for this Lab)  
+- Replacing Play mode / Playbook hands-on fun  
+- Full stats package day one (mean/median/p10–p90 + a few graphs first)  
+- Offline-only product (in-app Lab is the goal; CLI only if scale demands)  
+
+**Relations**
+
+- **Play mode** = canvas, single run, feel  
+- **Export logs** = optional bridge / same row shape as one Lab trial  
+- **Playbook** = recipes Lab can automate (“run this 100×”)  
+- **Thematic presets** = one-click lock/vary templates  
+
+**When to pick up:** Design when human prioritizes lab tooling; default mechanic queue still `0.9.2-special` unless reordered. Version codename TBD (e.g. `0.x.y-lab-batch` when scoped).
 
 ---
 
