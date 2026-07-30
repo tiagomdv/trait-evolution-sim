@@ -371,3 +371,126 @@ If any dismissed item is reconsidered, re-add it to FUTURE_FEATURES as a **new**
 ### How applied
 
 Docs-only Track A under human direction; no `index.html` / VERSION change required for this process resteer.
+
+---
+
+## 2026-07-30 — Design artifact: `0.9.0-forage`
+
+**Version / Phase:** design only · Phase 0 · Survive (live sim still `0.8.4-tight-layout`)  
+**Track:** B (mechanics design) — **not implemented**
+
+### What
+
+Added canonical design doc:
+
+- `design-docs/0.9.0-forage-design.html`
+
+Captures session brainstorm (2026-07-15 movement + always-seek + greed/analysis + presets roadmap), grounds it in current `Agent` random walk + eat rules, and specifies MVP algorithm, parameters, non-goals, Track B gates, acceptance criteria, and open human decisions (greed A/B/C, etc.).
+
+### Docs cross-links
+
+- `FUTURE_FEATURES.md` — open `0.9.0-forage` row points at the design file  
+- Implementation still requires human request + browser feel tuning (Track B)
+
+### Not in this step
+
+- No `index.html` / VERSION / archive behavior change
+
+---
+
+## 2026-07-30 — `0.9.0-seek` (I1 Track B — forage arc)
+
+**Version / Phase:** `0.9.0-seek` · Phase 0 · Survive  
+**Track:** **B — Mechanics** (movement only; hunger rates / eat relief unchanged)  
+**Versioning:** option **B** — each 0.9 slice gets its own codename + archive.
+
+### What shipped
+
+- **Default policy `seek`:** nearest food within `senseRadius`, blend = `clamp((hunger/100) * seekStrength)`, accel toward target + residual `wanderAmp` noise; speed capped at `maxSpeed`.
+- **Policy `random`:** same wander-only path as pre-0.9 (A/B baseline).
+- **Controls (basic):** Seek | Random buttons; sense radius; seek strength.
+- **Inspector:** policy, seek blend, dist → food.
+- Constants `seekAccel` / `wanderAmp` / `maxSpeed` exist for later Advanced UI (I3).
+
+### Not in this slice
+
+- Special agent, memory, density gradient, greed, Advanced popup.
+
+### Archives / docs
+
+- `archive/index-0.9.0-seek.html` + MANIFEST row  
+- `VERSION` + UI badge `v0.9.0-seek`  
+- README live line; FUTURE_FEATURES next-slice table  
+- Design still: `design-docs/0.9.0-forage-design.html`
+
+### How applied
+
+AI Track B implementation under human-directed I1 plan; human owns browser feel / keep-or-tweak.
+
+### Human feel-test (2026-07-30) — freeze confirmed
+
+- Tuned **max hunger rate** + **min food spawn** + sense/seek until ~½ agents survived long runs under **Seek**.  
+- Toggled **Random** → population died quickly — strong A/B proof that seek works and is fun.  
+- **Decision:** freeze this build as the official `0.9.0-seek` snapshot (re-copy live → `archive/index-0.9.0-seek.html`).
+
+### Folded into the same freeze (other session feel-tunes)
+
+Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then versioned here):
+
+| Change | Detail |
+|--------|--------|
+| Food spawn interval slider | 1–50 (was 2–30); preset values still 5 / 8 / 12 |
+| Spawn batch | 3 pellets per interval fire |
+| Ground food ceiling | `NUM_FOOD * 10` (~700) |
+| Agent draw fatness | `3 + sqrt(food) * 0.5` (consistent on main/outline paths) |
+| KPI labels | Avg hunger; Min/Max **carried food** (not hunger min/max) |
+
+### Next (human)
+
+- Track A **`0.9.1-ui-chrome`** — no scroll page, policy/speed/badge/presets (retune + highlight)/Advanced + Help glossary (see FUTURE_FEATURES checklist).  
+- Later: special agent, memory, optional run-parameter export logs for cross-session analysis.
+
+---
+
+## 2026-07-30 — Design artifact: `0.9.1-ui-chrome`
+
+**Version / Phase:** design only · live sim remains `0.9.0-seek`  
+**Track:** A (layout / presentation)
+
+### What
+
+- Added / revised `design-docs/0.9.1-ui-chrome-design.html` — viewport lock, header/badge/speed spacing, Seek/Random placement, basic sliders in wireframe, Advanced modal, Help/glossary modal, preset highlight + **retune for Seek-default**, acceptance, locked decisions.
+- Cross-link / checklist updates in `FUTURE_FEATURES.md`.
+
+### Not implemented
+
+- No live CSS/DOM changes in this step.
+
+## 2026-07-30 — `0.9.1-ui-chrome` (Track A freeze)
+
+**Version / Phase:** `0.9.1-ui-chrome` · Phase 0 · Survive  
+**Track:** A (layout / presentation + light preset retune + Help copy)
+
+### What shipped
+
+- Viewport lock: no page scroll; panels scroll internally.
+- Header: title / phase / quiet mono version; Speed label outside tray + breathing room; Pause / Reset.
+- Left rail: Run size → Environment → Movement (full-width Seek|Random + sense/seek) → Presets (`.on`) → Advanced… | Help → KPIs + inspector.
+- Advanced modal (self-consume + ground eat knobs, live sliders).
+- Help modal: plain-language lab guide (modes, controls, seek strength as hunger-driven pull, presets, metrics, history).
+- Preset highlight + custom clear; Seek-default retune (Lenient / Balanced / Punishing numbers).
+- Seek pathing / eat rules: unchanged from `0.9.0-seek` freeze.
+
+### Process
+
+- `VERSION` + badge → `0.9.1-ui-chrome`
+- `archive/index-0.9.1-ui-chrome.html` + MANIFEST row
+- Removed open 0.9.1 checklist from `FUTURE_FEATURES.md`
+- README live-release line updated
+- Human: “freeze it” after enjoying Seek feel
+
+### Next
+
+- Track B **`0.9.2-special`** — one marked special agent for pin/compare (planned)
+- Later: `0.9.3-memory`, run-parameter export logs, thematic experiment presets, slide drawers
+

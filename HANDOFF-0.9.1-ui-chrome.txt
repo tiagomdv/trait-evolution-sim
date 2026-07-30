@@ -1,0 +1,146 @@
+trait-evolution-sim — handoff for NEW session
+==============================================
+Date: 2026-07-30
+Purpose: Continue from frozen 0.9.0-seek → implement Track A 0.9.1-ui-chrome
+
+------------------------------------------------------------------------------
+1) OPENING PROMPT (paste into new chat)
+------------------------------------------------------------------------------
+
+Read AGENTS.md fully (Track A/B + backlog hygiene 2026-07-30).
+Repo: /home/tiagomdv0/trait-evolution-sim  (GitHub: tiagomdv/trait-evolution-sim)
+
+Track A — layout/chrome only.
+Goal: implement 0.9.1-ui-chrome per design-docs/0.9.1-ui-chrome-design.html
+Baseline freeze (do not regress Seek): archive/index-0.9.0-seek.html
+Live VERSION is 0.9.0-seek until chrome ships; then bump to 0.9.1-ui-chrome + archive.
+
+Versioning option B: each slice gets its own codename + archive/index-<version>.html + MANIFEST row.
+FUTURE_FEATURES is active backlog only — remove items when shipped; history goes in IMPLEMENTATION_LOG.
+Single live index.html. Do not push or open PR unless I ask.
+Do not change seek/hunger/eat mechanics unless I explicitly request Track B.
+
+------------------------------------------------------------------------------
+2) WHERE THINGS ARE
+------------------------------------------------------------------------------
+
+Repo path:     /home/tiagomdv0/trait-evolution-sim
+GitHub:        https://github.com/tiagomdv/trait-evolution-sim
+Live app:      index.html
+VERSION file:  0.9.0-seek
+
+Process:       AGENTS.md
+Backlog:       FUTURE_FEATURES.md
+History:       IMPLEMENTATION_LOG.md
+Archives:      archive/ + archive/MANIFEST.md
+
+Design docs:
+  design-docs/0.9.0-forage-design.html     (movement / Track B full arc)
+  design-docs/0.9.1-ui-chrome-design.html  (NEXT — implement this)
+
+Frozen runnable sim (Seek working, human A/B tested):
+  archive/index-0.9.0-seek.html
+
+Old layout freeze (pre-seek restore if needed):
+  archive/index-0.8.4-tight-layout.html
+
+------------------------------------------------------------------------------
+3) WHAT IS ALREADY DONE
+------------------------------------------------------------------------------
+
+0.8.x layout dashboard (Track A) — Tall Command, Arctic Ice, docks, hide columns, etc.
+0.9.0-seek (Track B I1) — SHIPPED + FROZEN after human test:
+  - Default policy SEEK: nearest food in senseRadius, blend = (hunger/100)*seekStrength,
+    residual wander noise, maxSpeed cap
+  - Policy RANDOM: pre-0.9 random walk for A/B
+  - Controls: Seek|Random, sense radius, seek strength
+  - Inspector: policy, seek blend, dist→food
+  - NO greed, NO memory, NO density, NO special agent yet
+
+Human test: max hunger + min food spawn + tuned sense/seek → ~half agents survive long;
+  toggle Random → die fast. Confirmed fun and correct. FREEZE this.
+
+Feel-tunes folded into 0.9.0-seek freeze (other session 019fb43e…):
+  - Food spawn slider 1–50 (presets still ~5/8/12)
+  - Spawn batch 3 pellets per interval
+  - Food ceiling NUM_FOOD * 10
+  - Agent fatness: 3 + sqrt(food) * 0.5
+  - KPIs: Avg hunger; Min food / Max food = carried food (not hunger min/max)
+
+Docs process: FUTURE_FEATURES = backlog only (delete when shipped);
+  IMPLEMENTATION_LOG = append-only history.
+
+Long prior chat (context only, do not require):
+  Session 019f66dd-ed0e-7781-a014-3d60054937f3 (huge, since ~2026-07-15)
+  Other feel-test session: 019fb43e-793a-7df0-9242-2a9b355e5ab3
+
+------------------------------------------------------------------------------
+4) NEXT WORK: 0.9.1-ui-chrome (Track A)
+------------------------------------------------------------------------------
+
+Read fully: design-docs/0.9.1-ui-chrome-design.html
+
+Must do:
+  [ ] Kill PAGE vertical scroll (html/body overflow hidden; shell 100vh; only panels scroll)
+  [ ] Seek/Random better placement (full-width dual toggle, Movement block, keep sense+seek under it)
+  [ ] More space before Speed button group in header
+  [ ] Clearer active highlight on presets (sync with currentPreset; .on style like speed)
+  [ ] Advanced hunger → MODAL/popup (not inline accordion); basic rail stays clean
+  [ ] Rethink basic vs advanced (see design doc tables)
+  [ ] Version badge quieter/smaller/calmer in header
+  [ ] Presets: KEEP visible (useful for Seek labs); retune values optional later; hide only if still crowded
+
+Must NOT do in 0.9.1:
+  - Change seek algorithm / hunger math / eat rules
+  - Special agent, memory, density, greed
+  - Slide drawers
+  - New .js/.css files
+
+After implement + human smoke:
+  VERSION + badge → 0.9.1-ui-chrome
+  cp index.html archive/index-0.9.1-ui-chrome.html
+  MANIFEST row + IMPLEMENTATION_LOG section
+  Remove 0.9.1 row from FUTURE_FEATURES (backlog hygiene)
+
+------------------------------------------------------------------------------
+5) LATER SLICES (option B versioning)
+------------------------------------------------------------------------------
+
+  0.9.2-special   Track B — one marked special agent
+  0.9.3-memory    Track B — last-food memory, good vs bad TTL
+  Run parameter export logs — export knobs + end metrics for paste/analysis (other session OK)
+  Density gradient / greed — later (greed leans Phase 1)
+  Slide drawers — deferred Track A polish
+
+------------------------------------------------------------------------------
+6) VERSIONING + BACKUPS (option B)
+------------------------------------------------------------------------------
+
+  VERSION file + UI badge = live identity
+  archive/index-<version>.html = runnable backup (never edit freezes)
+  MANIFEST.md = index of freezes
+  Freeze when slice feels good or before risky work
+  Each 0.9 slice = its own codename (0.9.0-seek, 0.9.1-ui-chrome, …)
+
+------------------------------------------------------------------------------
+7) QUICK SMOKE AFTER 0.9.1
+------------------------------------------------------------------------------
+
+  - No page scrollbar at ~1280x800 / 1440x900
+  - Left panel scrolls alone if needed
+  - Seek still paths to food; Random still dies/drifts as before
+  - Preset active state clear; Advanced modal open/close + live sliders
+  - Hide columns + canvas resize still work
+  - Badge matches VERSION
+
+------------------------------------------------------------------------------
+8) GIT / PR (only if human asks)
+------------------------------------------------------------------------------
+
+  gh may be logged in as tiagomdv
+  Do not push unless asked
+  Main may already have older PRs merged; open new branch for 0.9.x when shipping
+
+------------------------------------------------------------------------------
+END HANDOFF
+------------------------------------------------------------------------------
