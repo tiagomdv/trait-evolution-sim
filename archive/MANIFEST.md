@@ -31,6 +31,7 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `docs/README-pre-resteer-2026-07-02.md` | 2026-07-02 | Pre vision resteer |
 | `docs/FUTURE_FEATURES-pre-resteer-2026-07-02.md` | 2026-07-02 | Pre vision resteer |
 | `docs/IMPLEMENTATION_LOG-pre-resteer-2026-07-02.md` | 2026-07-02 | Dev log through PR #13 |
+| `docs/FUTURE_FEATURES-pre-backlog-hygiene-2026-07-30.md` | 2026-07-30 | Pre backlog-hygiene resteer (mark-done → delete-on-ship) |
 
 ---
 
@@ -38,4 +39,4 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 
 **Thematic arc:** Survive → Differ → Evolve → Economy  
 **Version scheme:** `N.x` where major N = phase number  
-Trade lives inside Phase 3 · Economy. Live docs updated; history preserved here and in active `FUTURE_FEATURES.md` / `IMPLEMENTATION_LOG.md`.
+Trade lives inside Phase 3 · Economy. Live docs updated; history preserved in `IMPLEMENTATION_LOG.md` and `archive/docs/`; `FUTURE_FEATURES.md` is active backlog only (see 2026-07-30 hygiene).
