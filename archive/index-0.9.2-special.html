@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>trait-evolution-sim</title>
+        <title>Trait Evolution Sim</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <style>
             :root {
@@ -76,27 +76,15 @@
             .app-header .brand {
                 display: flex;
                 flex-direction: column;
-                gap: 0.12rem;
+                gap: 0.08rem;
                 min-width: 0;
             }
-            .app-header .project-line {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: baseline;
-                gap: 0.35rem 0.4rem;
-                line-height: 1.2;
-            }
-            .app-header .project-label {
-                font-size: 11px;
-                color: #64748b;
-                font-weight: 500;
-            }
-            .app-header .project-name {
-                font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-                font-size: 1.05rem;
+            .app-header h1 {
+                font-size: 1.15rem;
                 font-weight: 650;
                 color: var(--text-strong);
-                letter-spacing: -0.02em;
+                margin: 0;
+                line-height: 1.15;
             }
             .app-header .app-tagline {
                 font-size: 10px;
@@ -104,81 +92,9 @@
                 line-height: 1.25;
                 max-width: 32rem;
             }
-            /* P3 phase path — top chrome of canvas-module (connected, not in the agent field) */
-            .phase-path {
-                flex-shrink: 0;
-                background: linear-gradient(180deg, #0d1524 0%, #0a101c 100%);
-                border: none;
-                border-bottom: 1px solid var(--border);
-                border-radius: 0;
-                padding: 0.4rem 0.65rem 0.42rem;
-                margin: 0;
-            }
-            .phase-path-track {
-                display: flex;
-                align-items: center;
-                gap: 0;
-                width: 100%;
-            }
-            .phase-path-node {
-                width: 9px;
-                height: 9px;
-                border-radius: 999px;
-                border: 1px solid #475569;
-                background: #0a1220;
-                flex-shrink: 0;
-                transition: box-shadow 0.15s, border-color 0.15s, background 0.15s;
-            }
-            .phase-path-node.done {
-                background: #0369a1;
-                border-color: #0ea5e9;
-            }
-            .phase-path-node.current {
-                width: 11px;
-                height: 11px;
-                background: #38bdf8;
-                border-color: #7dd3fc;
-                box-shadow: 0 0 10px rgba(56, 189, 248, 0.55);
-            }
-            .phase-path-node.future {
-                opacity: 0.5;
-            }
-            .phase-path-seg {
-                flex: 1;
-                height: 3px;
-                background: #1e293b;
-                min-width: 8px;
-                position: relative;
-                overflow: hidden;
-                border-radius: 2px;
-            }
-            .phase-path-seg.on {
-                background: #0ea5e9;
-            }
-            .phase-path-seg .fill {
-                position: absolute;
-                left: 0;
-                top: 0;
-                bottom: 0;
-                width: 0%;
-                background: linear-gradient(90deg, #0ea5e9, #38bdf8);
-                border-radius: 2px;
-            }
-            .phase-path-labels {
-                display: flex;
-                justify-content: space-between;
-                margin-top: 0.22rem;
-                font-size: 8px;
-                letter-spacing: 0.05em;
-                text-transform: uppercase;
-                color: #475569;
-            }
-            .phase-path-labels .on {
-                color: #7dd3fc;
-                font-weight: 650;
-            }
-            .phase-path-labels .next {
-                color: #94a3b8;
+            .app-header .phase-label {
+                font-size: 12px;
+                color: var(--muted);
             }
             .app-header .header-actions {
                 display: flex;
@@ -258,20 +174,6 @@
                 min-height: 0;
                 display: flex;
                 flex-direction: column;
-                gap: 0;
-            }
-            /* Canvas module: phase path + world share one frame (path is chrome, not the field) */
-            .canvas-module {
-                flex: 1;
-                min-height: 0;
-                min-width: 0;
-                display: flex;
-                flex-direction: column;
-                border: 1px solid var(--border);
-                border-radius: var(--radius-lg);
-                overflow: hidden;
-                background: var(--canvas-bg);
-                box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.35) inset;
             }
             .col-panel {
                 background: var(--panel);
@@ -331,10 +233,10 @@
                 align-items: center;
                 justify-content: center;
                 background: var(--canvas-bg);
-                border: none; /* outer frame is .canvas-module */
-                border-radius: 0;
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
                 overflow: hidden;
-                padding: 0; /* flush agent field */
+                padding: 0; /* flush — no padding around sim */
             }
             #canvas {
                 background: var(--canvas-bg);
@@ -754,21 +656,19 @@
 
         <div class="app-shell">
 
-            <!-- HEADER: brand A (title · lab tagline · quiet version) + run controls -->
+            <!-- HEADER -->
             <header class="app-header">
                 <div class="header-meta">
                     <div class="brand">
-                        <div class="project-line">
-                            <span class="project-label">Project name:</span>
-                            <span class="project-name" id="project-name">trait-evolution-sim</span>
-                        </div>
-                        <div class="app-tagline" id="app-tagline">Agent evolution lab</div>
+                        <h1>Trait Evolution Sim</h1>
+                        <!-- Phase taglines: swap with phase; full arc is Survive → Differ → Evolve → Economy -->
+                        <div class="app-tagline" id="app-tagline">Agent evolution lab · Phase 0 Survive — hunger, food, who lasts</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v0.9.3-vision</span>
+                    <span class="phase-label" id="phase-label">Phase 0 · Survive</span>
+                    <span class="badge-version" id="version-badge">v0.9.2-special</span>
                 </div>
                 <div class="header-actions">
                     <button type="button" class="btn-header special" onclick="openSpecialModal()" title="Special agent overrides">Special…</button>
-                    <button type="button" class="btn-header" onclick="openVisionModal()" title="Project vision and roadmap">Vision…</button>
                     <button type="button" class="btn-header" onclick="openHelpModal()" title="How the lab works">Help</button>
                     <div class="speed-block">
                         <span class="speed-label">Speed</span>
@@ -884,22 +784,11 @@
                     </div>
                 </div>
 
-                <!-- CENTER: one canvas module = phase chrome + agent field (connected, field stays pure) -->
+                <!-- CENTER: canvas (no padding; inspector in left column) -->
                 <div class="col col-center">
                     <button type="button" class="show-tab show-tab-left" id="show-tab-left" onclick="showCol('left')" title="Show left column">Left</button>
-                    <div class="canvas-module" id="canvas-module">
-                        <div class="phase-path" id="phase-path" aria-label="Project phase path">
-                            <div class="phase-path-track" id="phase-path-track"></div>
-                            <div class="phase-path-labels" id="phase-path-labels">
-                                <span data-phase="0">Survive</span>
-                                <span data-phase="1">Differ</span>
-                                <span data-phase="2">Evolve</span>
-                                <span data-phase="3">Economy</span>
-                            </div>
-                        </div>
-                        <div class="canvas-host" id="canvas-host">
-                            <canvas id="canvas" width="800" height="600"></canvas>
-                        </div>
+                    <div class="canvas-host" id="canvas-host">
+                        <canvas id="canvas" width="800" height="600"></canvas>
                     </div>
                     <button type="button" class="show-tab show-tab-right" id="show-tab-right" onclick="showCol('right')" title="Show right column">Right</button>
                 </div>
@@ -1145,51 +1034,6 @@
             </div>
         </div>
 
-        <!-- Vision modal (0.9.3-vision) -->
-        <div id="modal-vision" class="modal-root" aria-hidden="true">
-            <div class="modal-dim" onclick="closeAllModals()"></div>
-            <div class="modal-box help-wide" role="dialog" aria-labelledby="vision-title">
-                <div class="modal-head">
-                    <h2 id="vision-title">Vision · trait-evolution-sim</h2>
-                    <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
-                </div>
-                <p class="help-intro">
-                    An <strong>agent evolution lab</strong>: spatial agents in a 2D world.
-                    Watch what helps them last — then, over phases, what helps them thrive.
-                </p>
-
-                <div class="help-sec">What this is</div>
-                <div class="help-entry">
-                    Project id <code style="color:#7dd3fc">trait-evolution-sim</code> —
-                    a single-file, observable simulation. Today you run Play mode: hunger, food, seek,
-                    special agents with different rules, trends, history.
-                </div>
-
-                <div class="help-sec">Where we are · Survive</div>
-                <div class="help-entry">
-                    <strong>Phase 0 · Survive</strong> (path on the world frame).
-                    Core loop: get hungrier, find food, starve or persist. Seek vs Random, presets, special overrides.
-                    We are <em>near</em> Differ in the roadmap sense (forage almost complete; memory next) — not in Phase 1 yet.
-                </div>
-
-                <div class="help-sec">Where we’re going</div>
-                <div class="help-entry"><strong>Differ</strong> — traits; agents become heterogeneous by design.</div>
-                <div class="help-entry"><strong>Evolve</strong> — generations, inheritance, mutation; tune who thrives across runs.</div>
-                <div class="help-entry"><strong>Economy</strong> — trade, storage, production, labor… a micro-economy on the same substrate.</div>
-                <div class="help-tip">
-                    The dream: use this lab to <strong>develop strong survival (and later economic) setups by tuning</strong> —
-                    including multi-run experiments (Lab mode) and, in Evolve, generation-level selection.
-                    That is not all built yet; this modal is the honest map.
-                </div>
-
-                <div class="help-sec">How to play today</div>
-                <div class="help-entry">Use <strong>Help</strong> for knobs and metrics. Use <strong>Special…</strong> for one agent with different rules. Path on the canvas frame shows Survive → Differ → Evolve → Economy.</div>
-                <div class="help-entry">Longer recipes and fun experiments will live in a Playbook / story presets as we grow Phase 0.</div>
-
-                <p class="text-[10px] text-slate-500 mt-3 mb-0">Escape or click outside to close</p>
-            </div>
-        </div>
-
         <!-- Help / glossary modal -->
         <div id="modal-help" class="modal-root" aria-hidden="true">
             <div class="modal-dim" onclick="closeAllModals()"></div>
@@ -1203,7 +1047,6 @@
                     Agents get hungrier over time. If hunger hits the limit, they die.
                     They pick up food from the ground and can later eat what they carry.
                     Your job is to change the world and watch who lasts.
-                    For the long arc of the project, open <strong>Vision…</strong> in the header.
                 </p>
 
                 <div class="help-sec">How agents move</div>
@@ -1265,62 +1108,22 @@
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
 
-            // Product brand: Option A — title + lab tagline + quiet version (no phase chip).
-            // P3 path sits above the canvas (center column only).
-            const PHASE_NAMES = { 0: 'Survive', 1: 'Differ', 2: 'Evolve', 3: 'Economy' };
-            // Short lab line only (N4 header); phase story lives in Vision modal + path
+            // Product brand: agent evolution lab. Tagline tracks thematic phase (Survive → Differ → Evolve → Economy).
+            // Later: generation-tuning / “breed the best survivors” fits Phase 2 Evolve + Lab mode — not Phase 0 chrome.
             const PHASE_TAGLINES = {
-                0: 'Agent evolution lab',
-                1: 'Agent evolution lab',
-                2: 'Agent evolution lab',
-                3: 'Agent evolution lab'
+                0: 'Agent evolution lab · Phase 0 Survive — hunger, food, who lasts',
+                1: 'Agent evolution lab · Phase 1 Differ — traits change who lasts',
+                2: 'Agent evolution lab · Phase 2 Evolve — generations, inheritance, tune who thrives',
+                3: 'Agent evolution lab · Phase 3 Economy — trade, production, thrive together'
             };
-            // Integer phase index for "current" node. Still Survive (0) until Differ opens.
             const CURRENT_PHASE = 0;
-            // 0–1 progress within the current phase toward the next (near Differ ≈ high).
-            // Thick Phase 0 is far along (special shipped; memory next) → near Phase 1.
-            const PHASE_WITHIN = 0.82;
-
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
-                if (tag && PHASE_TAGLINES[CURRENT_PHASE] != null) {
-                    tag.textContent = PHASE_TAGLINES[CURRENT_PHASE];
-                }
-
-                // P3 track: node · seg · node · seg · … (partial fill on active segment)
-                const track = document.getElementById('phase-path-track');
-                if (track) {
-                    const within = Math.max(0, Math.min(1, PHASE_WITHIN));
-                    let html = '';
-                    for (let i = 0; i < 4; i++) {
-                        let cls = 'phase-path-node';
-                        if (i < CURRENT_PHASE) cls += ' done';
-                        else if (i === CURRENT_PHASE) cls += ' current';
-                        else cls += ' future';
-                        html += '<div class="' + cls + '" title="Phase ' + i + ' · ' + (PHASE_NAMES[i] || '') + '"></div>';
-                        if (i < 3) {
-                            if (i < CURRENT_PHASE) {
-                                html += '<div class="phase-path-seg on"></div>';
-                            } else if (i === CURRENT_PHASE) {
-                                const pct = Math.round(within * 100);
-                                html += '<div class="phase-path-seg" title="' + pct + '% toward next phase"><div class="fill" style="width:' + pct + '%"></div></div>';
-                            } else {
-                                html += '<div class="phase-path-seg"></div>';
-                            }
-                        }
-                    }
-                    track.innerHTML = html;
-                }
-
-                const labels = document.getElementById('phase-path-labels');
-                if (labels) {
-                    const spans = labels.querySelectorAll('[data-phase]');
-                    for (let s = 0; s < spans.length; s++) {
-                        const p = parseInt(spans[s].getAttribute('data-phase'), 10);
-                        spans[s].classList.toggle('on', p === CURRENT_PHASE);
-                        // Soft-highlight next phase when near the end of current
-                        spans[s].classList.toggle('next', p === CURRENT_PHASE + 1 && PHASE_WITHIN >= 0.6);
-                    }
+                const phaseEl = document.getElementById('phase-label');
+                if (tag && PHASE_TAGLINES[CURRENT_PHASE] != null) tag.textContent = PHASE_TAGLINES[CURRENT_PHASE];
+                if (phaseEl) {
+                    const names = { 0: 'Survive', 1: 'Differ', 2: 'Evolve', 3: 'Economy' };
+                    phaseEl.textContent = 'Phase ' + CURRENT_PHASE + ' · ' + (names[CURRENT_PHASE] || '');
                 }
             }
 
@@ -1575,7 +1378,6 @@
                 closeAdvancedModalOnly();
                 closeHelpModalOnly();
                 closeHistoryModalOnly();
-                closeVisionModalOnly();
                 syncSpecialModalUI();
                 const m = document.getElementById('modal-special');
                 if (!m) return;
@@ -2271,7 +2073,6 @@
                 closeAdvancedModalOnly();
                 closeHelpModalOnly();
                 closeSpecialModalOnly();
-                closeVisionModalOnly();
                 renderRunHistory();
                 const m = document.getElementById('modal-history');
                 if (!m) return;
@@ -2608,7 +2409,6 @@
                 closeHelpModalOnly();
                 closeSpecialModalOnly();
                 closeHistoryModalOnly();
-                closeVisionModalOnly();
                 const m = document.getElementById('modal-advanced');
                 if (!m) return;
                 m.classList.add('open');
@@ -2619,19 +2419,7 @@
                 closeAdvancedModalOnly();
                 closeSpecialModalOnly();
                 closeHistoryModalOnly();
-                closeVisionModalOnly();
                 const m = document.getElementById('modal-help');
-                if (!m) return;
-                m.classList.add('open');
-                m.setAttribute('aria-hidden', 'false');
-            }
-
-            function openVisionModal() {
-                closeAdvancedModalOnly();
-                closeHelpModalOnly();
-                closeSpecialModalOnly();
-                closeHistoryModalOnly();
-                const m = document.getElementById('modal-vision');
                 if (!m) return;
                 m.classList.add('open');
                 m.setAttribute('aria-hidden', 'false');
@@ -2651,17 +2439,9 @@
                 m.setAttribute('aria-hidden', 'true');
             }
 
-            function closeVisionModalOnly() {
-                const m = document.getElementById('modal-vision');
-                if (!m) return;
-                m.classList.remove('open');
-                m.setAttribute('aria-hidden', 'true');
-            }
-
             function closeAllModals() {
                 closeAdvancedModalOnly();
                 closeHelpModalOnly();
-                closeVisionModalOnly();
                 closeSpecialModalOnly();
                 closeHistoryModalOnly();
             }

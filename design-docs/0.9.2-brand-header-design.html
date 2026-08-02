@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand · phase path · design options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12; --panel: #0d1524; --panel-2: #0a1220; --border: #1e3a5f;
+      --text: #cbd5e1; --muted: #64748b; --accent: #38bdf8; --good: #7dd3fc;
+      --warn: #fbbf24; --ok: #4ade80; --pin: #818cf8; --bad: #fb7185;
+      --p0: #38bdf8; --p1: #a78bfa; --p2: #34d399; --p3: #fbbf24;
+    }
+    * { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+    .hero {
+      background: linear-gradient(180deg, #0d1524, #070b12);
+      border: 1px solid var(--border); border-radius: 0.85rem;
+      padding: 1.15rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    h1 { font-size: 1.45rem; font-weight: 650; color: #f1f5f9; margin: 0.3rem 0 0.4rem; }
+    .lede { margin: 0; font-size: 0.9rem; color: #94a3b8; max-width: 50rem; }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9; margin: 0 0.2rem 0.2rem 0;
+    }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    h2 {
+      font-size: 1.12rem; font-weight: 650; color: #e2e8f0; margin: 1.85rem 0 0.55rem;
+      padding-bottom: 0.3rem; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.95rem; color: #bae6fd; margin: 1.15rem 0 0.4rem; }
+    p, li { font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.84rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 0.5rem 0; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top; }
+    th { background: var(--panel-2); color: #94a3b8; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+    code { color: var(--good); font-size: 0.86em; }
+    .callout {
+      border-left: 3px solid var(--accent); background: #0a1220; padding: 0.55rem 0.75rem;
+      border-radius: 0 0.45rem 0.45rem 0; margin: 0.7rem 0; font-size: 0.88rem;
+    }
+    .callout.ok { border-left-color: var(--ok); }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.good { border-left-color: var(--ok); }
+    .mock {
+      background: #05080e; border: 1px solid var(--border); border-radius: 0.75rem;
+      padding: 0.55rem; margin: 0.55rem 0 1.1rem; overflow: hidden;
+    }
+    .mock-label {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.4rem; font-weight: 600;
+    }
+    .shell {
+      background: #070b12; border: 1px solid #132033; border-radius: 0.5rem;
+      min-height: 200px; display: flex; flex-direction: column; gap: 0.35rem; padding: 0.4rem;
+    }
+    .hdr {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.65rem;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 0.45rem;
+      padding: 0.4rem 0.55rem; flex-shrink: 0;
+    }
+    .hdr .acts {
+      margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
+    }
+    .brand-a h1 {
+      font-size: 14px; font-weight: 650; color: #f0f9ff; margin: 0; line-height: 1.15;
+    }
+    .brand-a .tagline {
+      font-size: 10px; color: #64748b; margin-top: 2px; line-height: 1.25;
+    }
+    .ver {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 9px; color: #64748b; letter-spacing: 0.01em;
+    }
+    .ver.quiet { opacity: 0.9; }
+    .ver.quiet::before { content: "· "; color: #475569; }
+    .btn {
+      font-size: 10px; padding: 0.2rem 0.45rem; border-radius: 0.3rem;
+      border: 1px solid var(--border); color: #94a3b8; background: #0a1220;
+    }
+    .btn.sp { color: #fde68a; border-color: #a16207; }
+    .btn.pri { color: #e0f2fe; border-color: var(--accent); }
+    .speed {
+      display: flex; gap: 0.12rem; padding: 0.12rem; background: #0a1220;
+      border: 1px solid var(--border); border-radius: 0.3rem;
+    }
+    .speed i { font-style: normal; font-size: 10px; padding: 0.12rem 0.28rem; color: var(--muted); }
+    .speed i.on { background: #0369a1; color: #e0f2fe; border-radius: 0.2rem; }
+    .body3 {
+      flex: 1; min-height: 120px; display: grid;
+      grid-template-columns: 100px 1fr 90px; gap: 0.35rem;
+    }
+    .colp {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 0.4rem;
+      font-size: 9px; color: var(--muted); padding: 0.35rem;
+    }
+    .canvas {
+      background: #0a101c; border: 1px solid var(--border); border-radius: 0.4rem;
+      position: relative; min-height: 120px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .canvas .dots {
+      position: absolute; inset: 0; opacity: 0.55;
+      background:
+        radial-gradient(circle at 30% 40%, #64748b 3px, transparent 4px),
+        radial-gradient(circle at 55% 60%, #fb7185 3px, transparent 4px),
+        radial-gradient(circle at 70% 35%, #64748b 2.5px, transparent 3.5px),
+        radial-gradient(circle at 40% 70%, #67e8f9 2px, transparent 3px);
+    }
+    .canvas .hint { position: relative; z-index: 1; font-size: 10px; color: #475569; }
+
+    /* Phase path components */
+    .path {
+      display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center;
+      gap: 0;
+    }
+    .step {
+      display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+      min-width: 4.5rem; padding: 0.35rem 0.5rem; position: relative;
+      opacity: 0.38; filter: grayscale(0.35);
+    }
+    .step.done { opacity: 0.7; filter: none; }
+    .step.current {
+      opacity: 1; filter: none;
+    }
+    .step .ico {
+      width: 28px; height: 28px; border-radius: 999px; display: flex;
+      align-items: center; justify-content: center; font-size: 13px;
+      border: 1.5px solid var(--border); background: #0a1220;
+    }
+    .step.current .ico {
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25), 0 0 16px rgba(56, 189, 248, 0.2);
+      border-color: var(--p0); background: #0c4a6e44;
+    }
+    .step[data-p="1"].current .ico { border-color: var(--p1); box-shadow: 0 0 0 2px rgba(167,139,250,0.25); background: #2e106544; }
+    .step[data-p="2"].current .ico { border-color: var(--p2); box-shadow: 0 0 0 2px rgba(52,211,153,0.25); background: #064e3b44; }
+    .step[data-p="3"].current .ico { border-color: var(--p3); box-shadow: 0 0 0 2px rgba(251,191,36,0.25); background: #42200644; }
+    .step .name {
+      font-size: 9px; font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase; color: #94a3b8;
+    }
+    .step.current .name { color: #e0f2fe; }
+    .step .sub { font-size: 8px; color: #475569; max-width: 5.5rem; text-align: center; line-height: 1.2; }
+    .step.current .sub { color: #94a3b8; }
+    .conn {
+      width: 18px; align-self: center; height: 2px; background: #1e3a5f; margin: 0 -2px;
+      flex-shrink: 0; margin-bottom: 1.1rem;
+    }
+    .conn.on { background: linear-gradient(90deg, #0ea5e9, #334155); }
+
+    .path-bar {
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      padding: 0.35rem 0.5rem; background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.45rem;
+    }
+    .path-bar .node {
+      display: flex; align-items: center; gap: 0.3rem;
+      padding: 0.25rem 0.45rem; border-radius: 999px;
+      font-size: 9px; color: #475569; border: 1px solid transparent;
+    }
+    .path-bar .node .ico {
+      width: 18px; height: 18px; border-radius: 999px; display: flex; align-items: center;
+      justify-content: center; font-size: 10px; background: #0a1220; border: 1px solid #334155;
+    }
+    .path-bar .node.current {
+      color: #e0f2fe; border-color: #0ea5e9; background: #0c4a6e33; font-weight: 600;
+    }
+    .path-bar .node.current .ico { border-color: #38bdf8; }
+    .path-bar .node.future { opacity: 0.45; }
+    .path-bar .dash { width: 12px; height: 1px; background: #334155; flex-shrink: 0; }
+
+    .overlay-badge {
+      position: absolute; top: 0.4rem; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; gap: 0.25rem; align-items: center;
+      padding: 0.25rem 0.45rem; background: rgba(7,11,18,0.82);
+      border: 1px solid #1e3a5f; border-radius: 999px; backdrop-filter: blur(4px);
+      font-size: 9px; color: #94a3b8;
+    }
+    .overlay-badge .cur {
+      color: #7dd3fc; font-weight: 650; letter-spacing: 0.04em;
+    }
+    .overlay-badge .dot {
+      width: 6px; height: 6px; border-radius: 999px; background: #38bdf8;
+      box-shadow: 0 0 8px #38bdf8;
+    }
+
+    .pros { font-size: 0.84rem; color: #94a3b8; margin: 0.25rem 0 0; }
+    .pros strong { color: #cbd5e1; }
+    footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+    .toc { font-size: 0.85rem; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 720px) { .two { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 0.65rem;
+      padding: 0.75rem 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <span class="tag">Brand + phase path</span>
+      <span class="tag warn">Track A · presentation</span>
+      <span class="tag good">Human prefers brand Option A</span>
+      <h1>Header brand + multi-phase path redesigns</h1>
+      <p class="lede">
+        Locked preference for the <strong>product label</strong>: simple stacked brand (title, tagline, quiet version).
+        Separately: how to show the four thematic phases with icons, clear “you are here,” and possible placements
+        (above bar · below bar · on canvas).
+      </p>
+    </header>
+
+    <p class="toc muted">
+      <a href="#brand-a">1. Brand (A)</a> ·
+      <a href="#project-name">1b. Project name in header</a> ·
+      <a href="#phases">2. Phase path</a> ·
+      <a href="#place">3. Placements</a> ·
+      <a href="#rec">4. Recommendation</a> ·
+      <a href="#impl">5. Implement later</a>
+    </p>
+
+    <!-- ========== BRAND A ========== -->
+    <h2 id="brand-a">1. Product brand — Option A (preferred · keep simple)</h2>
+    <div class="callout good">
+      <strong>Human pick:</strong> simple stack — <em>Trait Evolution Sim</em> · tagline under it · version as quiet mono metadata (that slate/muted look).
+      Don’t bury the name in a busy phase widget.
+    </div>
+
+    <div class="mock">
+      <div class="mock-label">Locked brand stack (live-ish)</div>
+      <div class="hdr">
+        <div class="brand-a">
+          <h1>Trait Evolution Sim</h1>
+          <div class="tagline">Agent evolution lab · Phase 0 Survive — hunger, food, who lasts</div>
+        </div>
+        <span class="ver quiet">v0.9.2-special</span>
+        <div class="acts">
+          <span class="btn sp">Special…</span>
+          <span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span>
+          <span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Element</th><th>Treatment</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Title</strong></td>
+          <td>Strong, short — <code>Trait Evolution Sim</code></td>
+        </tr>
+        <tr>
+          <td><strong>Tagline</strong></td>
+          <td>Muted 10px under title. Phase 0: <em>Agent evolution lab · Phase 0 Survive — hunger, food, who lasts</em>. Swap string when phase changes.</td>
+        </tr>
+        <tr>
+          <td><strong>Version</strong></td>
+          <td>Quiet mono, muted slate, optional middle-dot · not a loud sky pill (matches 0.9.1 quiet badge direction)</td>
+        </tr>
+        <tr>
+          <td><strong>Phase path</strong></td>
+          <td><em>Separate component</em> (below) — not crammed into the title line if it fights Option A calm</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Tagline bank (phase-aware)</h3>
+    <table>
+      <thead><tr><th>Phase</th><th>Tagline</th></tr></thead>
+      <tbody>
+        <tr><td>0 Survive</td><td>Agent evolution lab · Phase 0 Survive — hunger, food, who lasts</td></tr>
+        <tr><td>1 Differ</td><td>Agent evolution lab · Phase 1 Differ — traits change who lasts</td></tr>
+        <tr><td>2 Evolve</td><td>Agent evolution lab · Phase 2 Evolve — generations; tune who thrives</td></tr>
+        <tr><td>3 Economy</td><td>Agent evolution lab · Phase 3 Economy — trade, production, thrive together</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">
+      Optional shorter taglines if phase path UI already says “Survive”: e.g. only
+      <em>Agent evolution lab — hunger, food, who lasts</em> under the title.
+    </p>
+
+    <!-- ========== PROJECT NAME VARIANTS ========== -->
+    <h2 id="project-name">1b. Header as project identity — <code>trait-evolution-sim</code></h2>
+    <p>
+      Human idea for the next brand pass: treat the left header as the <strong>project name</strong>
+      (repo id), with a short lab line under it — not a long Survive sentence (path + Vision modal carry that).
+      Version stays quiet. Phase path stays on the <strong>canvas module</strong> (connected chrome, not the agent field).
+    </p>
+    <div class="callout">
+      <strong>Vision modal (optional same slice):</strong> holds arc Survive→Differ→Evolve→Economy and
+      “tune best survivors later” — so the header can stay short.
+    </div>
+
+    <table>
+      <thead><tr><th>Style</th><th>Title line</th><th>Second line</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>N1 · Repo as title</strong></td>
+          <td><code>trait-evolution-sim</code> (mono, strong)</td>
+          <td>Agent evolution lab</td>
+          <td>Matches GitHub; “dev lab” feel</td>
+        </tr>
+        <tr>
+          <td><strong>N2 · Labeled project</strong></td>
+          <td>small <code>PROJECT</code> / Project name</td>
+          <td><code>trait-evolution-sim</code> then lab line</td>
+          <td>Very explicit; slightly docs-y</td>
+        </tr>
+        <tr>
+          <td><strong>N3 · Human + repo</strong></td>
+          <td>Trait Evolution Sim</td>
+          <td><code>trait-evolution-sim</code> · Agent evolution lab</td>
+          <td>Friendly + machine name</td>
+        </tr>
+        <tr>
+          <td><strong>N4 · Literal prefix</strong></td>
+          <td>Project name: trait-evolution-sim</td>
+          <td>Agent evolution lab</td>
+          <td>Clear but long in a dense bar</td>
+        </tr>
+        <tr>
+          <td><strong>N5 · Agentic flavor</strong></td>
+          <td><code>trait-evolution-sim</code></td>
+          <td>Agentic evolution lab</td>
+          <td>Same as N1; “agentic” = acting agents (seek…)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>N1 · Repo as title (recommended default)</h3>
+    <div class="mock">
+      <div class="mock-label">N1 · trait-evolution-sim + Agent evolution lab</div>
+      <div class="hdr">
+        <div>
+          <div style="font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:650;color:#f0f9ff;font-size:13px;letter-spacing:-0.02em">trait-evolution-sim</div>
+          <div style="font-size:10px;color:#64748b;margin-top:3px">Agent evolution lab</div>
+        </div>
+        <span class="ver quiet">v0.9.3-vision</span>
+        <div class="acts">
+          <span class="btn sp">Special…</span>
+          <span class="btn">Vision…</span>
+          <span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span>
+          <span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> short, repo-true, room for Vision. <strong>Cons:</strong> less “pretty product name.”</p>
+
+    <h3>N2 · Explicit “Project” label</h3>
+    <div class="mock">
+      <div class="mock-label">N2 · PROJECT label above repo id</div>
+      <div class="hdr">
+        <div>
+          <div style="font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#475569;font-weight:600">Project name</div>
+          <div style="font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:650;color:#f0f9ff;font-size:13px;margin-top:2px">trait-evolution-sim</div>
+          <div style="font-size:10px;color:#64748b;margin-top:3px">Agent evolution lab</div>
+        </div>
+        <span class="ver quiet">v0.9.3-vision</span>
+        <div class="acts">
+          <span class="btn sp">Special…</span>
+          <span class="btn">Vision…</span>
+          <span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span>
+          <span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> matches “Project name: …” intent clearly. <strong>Cons:</strong> one extra line of chrome height.</p>
+
+    <h3>N3 · Human title + repo under</h3>
+    <div class="mock">
+      <div class="mock-label">N3 · Trait Evolution Sim + repo · lab</div>
+      <div class="hdr">
+        <div>
+          <div style="font-weight:650;color:#f0f9ff;font-size:14px">Trait Evolution Sim</div>
+          <div style="font-size:10px;color:#64748b;margin-top:3px">
+            <span style="font-family:ui-monospace,Menlo,Consolas,monospace;color:#94a3b8">trait-evolution-sim</span>
+            <span style="color:#334155"> · </span>
+            <span>Agent evolution lab</span>
+          </div>
+        </div>
+        <span class="ver quiet">v0.9.3-vision</span>
+        <div class="acts">
+          <span class="btn sp">Special…</span>
+          <span class="btn">Vision…</span>
+          <span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span>
+          <span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> readable + linked to repo. <strong>Cons:</strong> busier second line.</p>
+
+    <h3>N4 · Literal “Project name:” on one line</h3>
+    <div class="mock">
+      <div class="mock-label">N4 · Project name: trait-evolution-sim</div>
+      <div class="hdr">
+        <div>
+          <div style="font-size:12px;color:#e2e8f0">
+            <span style="color:#64748b">Project name:</span>
+            <span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:650;color:#f0f9ff"> trait-evolution-sim</span>
+          </div>
+          <div style="font-size:10px;color:#64748b;margin-top:3px">Agent evolution lab</div>
+        </div>
+        <span class="ver quiet">v0.9.3-vision</span>
+        <div class="acts">
+          <span class="btn sp">Special…</span>
+          <span class="btn">Vision…</span>
+          <span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span>
+          <span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> exactly the verbal sketch. <strong>Cons:</strong> widest; wraps first on small widths.</p>
+
+    <h3>N5 · Agentic lab subtitle</h3>
+    <div class="mock">
+      <div class="mock-label">N5 · same as N1, “Agentic evolution lab”</div>
+      <div class="hdr">
+        <div>
+          <div style="font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:650;color:#f0f9ff;font-size:13px">trait-evolution-sim</div>
+          <div style="font-size:10px;color:#64748b;margin-top:3px">Agentic evolution lab</div>
+        </div>
+        <span class="ver quiet">v0.9.3-vision</span>
+        <div class="acts">
+          <span class="btn sp">Special…</span>
+          <span class="btn">Vision…</span>
+          <span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span>
+          <span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> “agents act.” <strong>Cons:</strong> buzzword overlap with AI “agentic.” Prefer N1 wording unless you like the sound.</p>
+
+    <h3>With canvas-module phase path (how it sits together)</h3>
+    <div class="mock">
+      <div class="mock-label">Full frame sketch · N1 header + path on canvas module</div>
+      <div class="shell" style="min-height:220px">
+        <div class="hdr">
+          <div>
+            <div style="font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:650;color:#f0f9ff;font-size:13px">trait-evolution-sim</div>
+            <div style="font-size:10px;color:#64748b;margin-top:3px">Agent evolution lab</div>
+          </div>
+          <span class="ver quiet">v0.9.3-vision</span>
+          <div class="acts">
+            <span class="btn sp">Special…</span>
+            <span class="btn">Vision…</span>
+            <span class="btn">Help</span>
+            <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+            <span class="btn">Pause</span>
+            <span class="btn pri">Reset</span>
+          </div>
+        </div>
+        <div class="body3">
+          <div class="colp">controls</div>
+          <div style="display:flex;flex-direction:column;min-height:130px;border:1px solid var(--border);border-radius:0.45rem;overflow:hidden;background:#0a101c">
+            <div style="padding:0.35rem 0.5rem;background:linear-gradient(180deg,#0d1524,#0a101c);border-bottom:1px solid #1e3a5f">
+              <div style="display:flex;align-items:center;gap:0;width:100%">
+                <div style="width:10px;height:10px;border-radius:999px;background:#38bdf8;box-shadow:0 0 8px #38bdf8"></div>
+                <div style="flex:1;height:3px;background:linear-gradient(90deg,#0ea5e9 75%,#1e293b 75%)"></div>
+                <div style="width:8px;height:8px;border-radius:999px;border:1px solid #475569"></div>
+                <div style="flex:1;height:3px;background:#1e293b"></div>
+                <div style="width:8px;height:8px;border-radius:999px;border:1px solid #334155"></div>
+                <div style="flex:1;height:3px;background:#1e293b"></div>
+                <div style="width:8px;height:8px;border-radius:999px;border:1px solid #334155"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:0.2rem;font-size:7px;letter-spacing:0.05em;text-transform:uppercase;color:#475569">
+                <span style="color:#7dd3fc;font-weight:650">Survive</span><span style="color:#94a3b8">Differ</span><span>Evolve</span><span>Economy</span>
+              </div>
+            </div>
+            <div class="canvas" style="border:none;border-radius:0;flex:1;min-height:80px">
+              <div class="dots"></div>
+              <span class="hint">agent field only</span>
+            </div>
+          </div>
+          <div class="colp">trends</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout ok">
+      <strong>Suggested lock for 0.9.3-vision header:</strong> <strong>N1</strong>
+      (<code>trait-evolution-sim</code> + Agent evolution lab + quiet version + optional Vision… button).
+      Use <strong>N2</strong> if you want the words “Project name” visible.
+      Long Survive sentence and “You are here” stay out of the header (path + Vision modal).
+    </div>
+
+    <!-- ========== PHASE PATH ========== -->
+    <h2 id="phases">2. Phase path — separate cool component</h2>
+    <p>
+      Goal: four phases feel <strong>different</strong>, with icons, and the <strong>current</strong> one is obvious.
+      Future phases stay muted (not “unlocked fake content”).
+    </p>
+
+    <table>
+      <thead><tr><th>Phase</th><th>Name</th><th>Icon idea</th><th>Accent</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>Survive</td><td>❤ / flame / leaf — life under pressure</td><td>Sky <code>#38bdf8</code></td></tr>
+        <tr><td>1</td><td>Differ</td><td>✧ / split nodes — diversity</td><td>Violet <code>#a78bfa</code></td></tr>
+        <tr><td>2</td><td>Evolve</td><td>↻ / DNA / tree — generations</td><td>Emerald <code>#34d399</code></td></tr>
+        <tr><td>3</td><td>Economy</td><td>⚖ / coins / exchange</td><td>Amber <code>#fbbf24</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Path style P1 — Icon stepper (rich)</h3>
+    <div class="mock">
+      <div class="mock-label">P1 · icon stepper · current = Survive</div>
+      <div class="path">
+        <div class="step current" data-p="0">
+          <div class="ico">❤</div>
+          <div class="name">Survive</div>
+          <div class="sub">hunger · food</div>
+        </div>
+        <div class="conn on"></div>
+        <div class="step" data-p="1">
+          <div class="ico">✧</div>
+          <div class="name">Differ</div>
+          <div class="sub">traits</div>
+        </div>
+        <div class="conn"></div>
+        <div class="step" data-p="2">
+          <div class="ico">↻</div>
+          <div class="name">Evolve</div>
+          <div class="sub">generations</div>
+        </div>
+        <div class="conn"></div>
+        <div class="step" data-p="3">
+          <div class="ico">⚖</div>
+          <div class="name">Economy</div>
+          <div class="sub">trade · more</div>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> clearest “journey.” <strong>Cons:</strong> needs vertical space (~48–56px).</p>
+
+    <h3>Path style P2 — Compact pill rail</h3>
+    <div class="mock">
+      <div class="mock-label">P2 · compact pills</div>
+      <div class="path-bar">
+        <div class="node current"><span class="ico">❤</span> Survive</div>
+        <div class="dash"></div>
+        <div class="node future"><span class="ico">✧</span> Differ</div>
+        <div class="dash"></div>
+        <div class="node future"><span class="ico">↻</span> Evolve</div>
+        <div class="dash"></div>
+        <div class="node future"><span class="ico">⚖</span> Economy</div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> thin, header-friendly. <strong>Cons:</strong> less “epic,” small icons.</p>
+
+    <h3>Path style P3 — Progress line + current node only large</h3>
+    <div class="mock">
+      <div class="mock-label">P3 · line progress (0 of 3 complete · on first node)</div>
+      <div style="padding:0.5rem 0.75rem;background:var(--panel);border:1px solid var(--border);border-radius:0.45rem">
+        <div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.45rem">
+          <span style="font-size:10px;color:#7dd3fc;font-weight:600">YOU ARE HERE</span>
+          <span style="font-size:10px;color:#e0f2fe">Phase 0 · Survive</span>
+          <span style="font-size:9px;color:#64748b;margin-left:auto">Agent evolution lab</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0">
+          <div style="width:12px;height:12px;border-radius:999px;background:#38bdf8;box-shadow:0 0 10px #38bdf8"></div>
+          <div style="flex:1;height:3px;background:linear-gradient(90deg,#0ea5e9 8%,#1e293b 8%)"></div>
+          <div style="width:8px;height:8px;border-radius:999px;border:1px solid #475569;background:#0a1220"></div>
+          <div style="flex:1;height:3px;background:#1e293b"></div>
+          <div style="width:8px;height:8px;border-radius:999px;border:1px solid #334155;background:#0a1220"></div>
+          <div style="flex:1;height:3px;background:#1e293b"></div>
+          <div style="width:8px;height:8px;border-radius:999px;border:1px solid #334155;background:#0a1220"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:0.3rem;font-size:8px;color:#475569;letter-spacing:0.04em;text-transform:uppercase">
+          <span style="color:#7dd3fc">Survive</span><span>Differ</span><span>Evolve</span><span>Economy</span>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> game-like progress. <strong>Cons:</strong> future phases less “character.”</p>
+
+    <!-- ========== PLACEMENTS ========== -->
+    <h2 id="place">3. Where the phase path lives</h2>
+
+    <h3>Placement X — Below top bar, above body (recommended with A + path)</h3>
+    <p class="muted">Full width under header; brand stays Option A in the bar; path is a dedicated strip.</p>
+    <div class="mock">
+      <div class="mock-label">X · below header strip</div>
+      <div class="shell">
+        <div class="hdr">
+          <div class="brand-a">
+            <h1>Trait Evolution Sim</h1>
+            <div class="tagline">Agent evolution lab · Phase 0 Survive — hunger, food, who lasts</div>
+          </div>
+          <span class="ver quiet">v0.9.2-special</span>
+          <div class="acts">
+            <span class="btn sp">Special…</span><span class="btn">Help</span>
+            <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+            <span class="btn">Pause</span><span class="btn pri">Reset</span>
+          </div>
+        </div>
+        <div class="path-bar">
+          <div class="node current"><span class="ico">❤</span> Survive</div>
+          <div class="dash"></div>
+          <div class="node future"><span class="ico">✧</span> Differ</div>
+          <div class="dash"></div>
+          <div class="node future"><span class="ico">↻</span> Evolve</div>
+          <div class="dash"></div>
+          <div class="node future"><span class="ico">⚖</span> Economy</div>
+        </div>
+        <div class="body3">
+          <div class="colp">controls</div>
+          <div class="canvas"><div class="dots"></div><span class="hint">canvas</span></div>
+          <div class="colp">trends</div>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> clear, doesn’t fight title, easy to hide later if needed. <strong>Cons:</strong> ~36px less for canvas.</p>
+
+    <h3>Placement Y — Centered above the top bar</h3>
+    <p class="muted">App “crown”: phase path first, then control header. More product-landing, less pure IDE.</p>
+    <div class="mock">
+      <div class="mock-label">Y · path above header (centered)</div>
+      <div class="shell">
+        <div class="path" style="padding:0.25rem 0 0.15rem">
+          <div class="step current" data-p="0"><div class="ico">❤</div><div class="name">Survive</div></div>
+          <div class="conn on"></div>
+          <div class="step" data-p="1"><div class="ico">✧</div><div class="name">Differ</div></div>
+          <div class="conn"></div>
+          <div class="step" data-p="2"><div class="ico">↻</div><div class="name">Evolve</div></div>
+          <div class="conn"></div>
+          <div class="step" data-p="3"><div class="ico">⚖</div><div class="name">Economy</div></div>
+        </div>
+        <div class="hdr">
+          <div class="brand-a">
+            <h1>Trait Evolution Sim</h1>
+            <div class="tagline">Agent evolution lab — hunger, food, who lasts</div>
+          </div>
+          <span class="ver quiet">v0.9.2-special</span>
+          <div class="acts">
+            <span class="btn sp">Special…</span><span class="btn">Help</span>
+            <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+            <span class="btn">Pause</span><span class="btn pri">Reset</span>
+          </div>
+        </div>
+        <div class="body3">
+          <div class="colp">…</div>
+          <div class="canvas"><div class="dots"></div><span class="hint">canvas</span></div>
+          <div class="colp">…</div>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> cinematic, phase is the hero. <strong>Cons:</strong> tallest chrome; less “dense lab.”</p>
+
+    <h3>Placement Z — Inside canvas (overlay)</h3>
+    <p class="muted">Floating pill or mini path over the sim (top-center). Max workspace for columns.</p>
+    <div class="mock">
+      <div class="mock-label">Z · canvas overlay</div>
+      <div class="shell">
+        <div class="hdr">
+          <div class="brand-a">
+            <h1>Trait Evolution Sim</h1>
+            <div class="tagline">Agent evolution lab · Phase 0 Survive — hunger, food, who lasts</div>
+          </div>
+          <span class="ver quiet">v0.9.2-special</span>
+          <div class="acts">
+            <span class="btn sp">Special…</span><span class="btn">Help</span>
+            <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+            <span class="btn">Pause</span><span class="btn pri">Reset</span>
+          </div>
+        </div>
+        <div class="body3">
+          <div class="colp">controls</div>
+          <div class="canvas">
+            <div class="dots"></div>
+            <div class="overlay-badge">
+              <span class="dot"></span>
+              <span class="cur">SURVIVE</span>
+              <span style="color:#334155">|</span>
+              <span>Differ</span>
+              <span>Evolve</span>
+              <span>Economy</span>
+            </div>
+            <span class="hint">world</span>
+          </div>
+          <div class="colp">trends</div>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> zero permanent chrome height. <strong>Cons:</strong> can clash with agents/food; hide-on-hover needed; less “app structure.”</p>
+
+    <h3>Placement W — In header row (right of brand, left of actions)</h3>
+    <div class="mock">
+      <div class="mock-label">W · path in header middle</div>
+      <div class="hdr">
+        <div class="brand-a">
+          <h1>Trait Evolution Sim</h1>
+          <div class="tagline">Agent evolution lab — who lasts</div>
+        </div>
+        <div class="path-bar" style="flex:1;justify-content:center;min-width:200px">
+          <div class="node current"><span class="ico">❤</span> Survive</div>
+          <div class="dash"></div>
+          <div class="node future"><span class="ico">✧</span></div>
+          <div class="dash"></div>
+          <div class="node future"><span class="ico">↻</span></div>
+          <div class="dash"></div>
+          <div class="node future"><span class="ico">⚖</span></div>
+        </div>
+        <div class="acts" style="margin-left:0">
+          <span class="btn sp">Special…</span><span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span><span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+    <p class="pros"><strong>Pros:</strong> one band. <strong>Cons:</strong> crowded on narrow widths; fights Option A calm if icons get large.</p>
+
+    <!-- ========== REC ========== -->
+    <h2 id="rec">4. Recommendation</h2>
+    <div class="two">
+      <div class="card">
+        <h3 style="margin-top:0">Header brand (next)</h3>
+        <p style="margin:0;font-size:0.88rem">
+          Prefer <strong>N1</strong>: mono <code>trait-evolution-sim</code> ·
+          <em>Agent evolution lab</em> · quiet version.<br>
+          Optional <strong>N2</strong> if “Project name” label is required.
+          Optional <strong>Vision…</strong> next to Help.
+        </p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Phase path (live direction)</h3>
+        <p style="margin:0;font-size:0.88rem">
+          <strong>P3</strong> on <strong>canvas-module</strong> top chrome
+          (connected to world, not in agent field).<br>
+          No “You are here” / no lab text on the path — only dots + Survive…Economy.
+        </p>
+      </div>
+    </div>
+    <div class="callout ok">
+      <strong>Combo for 0.9.3-vision:</strong> N1 header + Vision modal + P3 path on canvas module.
+      Long arc prose lives in Vision, not under the title.
+    </div>
+    <div class="callout warn">
+      <strong>Don’t:</strong> make Differ/Evolve/Economy look clickable-unlocked if content isn’t there —
+      use <code>future</code> styling + optional tooltip “coming later.”
+    </div>
+
+    <h2 id="impl">5. Implement later (when you pick)</h2>
+    <ol>
+      <li>Keep <code>PHASE_TAGLINES</code> / <code>CURRENT_PHASE</code> (already in sim).</li>
+      <li>Add <code>.phase-path</code> markup; drive <code>.current</code> from <code>CURRENT_PHASE</code>.</li>
+      <li>Icons: emoji first, or tiny SVG later for crispness.</li>
+      <li>Optional: hide path behind a toggle if canvas height is precious.</li>
+      <li>Version: quiet mono only (human preference).</li>
+    </ol>
+
+    <h2>6. Related backlog</h2>
+    <ul>
+      <li><code>0.9.4-vision</code> — Help arc + Playbook + honest “generation lab later”</li>
+      <li>This file: brand A locked; phase path = separate design decision</li>
+    </ul>
+
+    <footer>
+      trait-evolution-sim · design-docs/0.9.2-brand-header-design.html · revised with phase-path placements
+    </footer>
+  </div>
+</body>
+</html>

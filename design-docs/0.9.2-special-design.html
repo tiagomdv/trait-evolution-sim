@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.9.2-special · design</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12; --panel: #0d1524; --panel-2: #0a1220; --border: #1e3a5f;
+      --text: #cbd5e1; --muted: #64748b; --accent: #38bdf8; --good: #7dd3fc;
+      --warn: #fbbf24; --special: #fbbf24; --pin: #818cf8; --ok: #4ade80; --bad: #fb7185;
+    }
+    * { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+    .doc-hero {
+      background: linear-gradient(180deg, #0d1524 0%, #070b12 100%);
+      border: 1px solid var(--border); border-radius: 0.85rem;
+      padding: 1.15rem 1.25rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    .doc-hero h1 { font-size: 1.55rem; font-weight: 650; color: #f1f5f9; margin: 0.35rem 0 0.4rem; letter-spacing: -0.02em; }
+    .doc-hero .lede { margin: 0; font-size: 0.9rem; color: #94a3b8; max-width: 54rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.15rem; }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .tag.b { background: #1e1b4b; color: #c4b5fd; border-color: #7c3aed; }
+    .baseline {
+      margin-top: 0.85rem; display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;
+    }
+    .baseline .chip {
+      background: var(--panel-2); border: 1px solid var(--border);
+      border-radius: 0.5rem; padding: 0.45rem 0.65rem; font-size: 0.8rem;
+    }
+    .baseline .chip strong {
+      display: block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.15rem;
+    }
+    .doc-grid { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+    @media (max-width: 820px) { .doc-grid { grid-template-columns: 1fr; } .toc { position: static !important; } }
+    .toc {
+      position: sticky; top: 0.75rem; background: var(--panel);
+      border: 1px solid var(--border); border-radius: 0.65rem; padding: 0.75rem 0.85rem;
+    }
+    .toc .section-label {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.5rem;
+    }
+    .toc ol { margin: 0; padding-left: 1.1rem; font-size: 0.8rem; }
+    .toc li { margin: 0.28rem 0; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .main { min-width: 0; }
+    h2 {
+      font-size: 1.12rem; font-weight: 650; color: #e2e8f0; margin: 0 0 0.65rem;
+      padding-bottom: 0.35rem; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.95rem; font-weight: 600; color: #bae6fd; margin: 1.1rem 0 0.4rem; }
+    h2 + h3 { margin-top: 0.65rem; }
+    p, li { font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.84rem; }
+    .section { margin-bottom: 1.75rem; scroll-margin-top: 0.75rem; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 0.75rem 0.9rem;
+    }
+    .card h3 { margin-top: 0; }
+    .card ul { margin: 0.35rem 0 0; padding-left: 1.15rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 0.45rem 0 0.7rem; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top; }
+    th { background: var(--panel-2); color: #94a3b8; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+    code { color: var(--good); font-size: 0.86em; }
+    pre {
+      background: #05080e; border: 1px solid var(--border); border-radius: 0.5rem;
+      padding: 0.75rem 0.9rem; overflow-x: auto; font-size: 0.78rem; color: #a5f3fc; line-height: 1.45;
+    }
+    .callout {
+      border-left: 3px solid var(--accent); padding: 0.55rem 0.75rem; margin: 0.7rem 0;
+      background: #0a1220; border-radius: 0 0.45rem 0.45rem 0; font-size: 0.88rem;
+    }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.ok { border-left-color: var(--ok); }
+    .callout.special { border-left-color: var(--special); }
+    .callout.bad { border-left-color: var(--bad); }
+    .check { list-style: none; padding-left: 0; }
+    .check li { padding: 0.25rem 0 0.25rem 1.35rem; position: relative; }
+    .check li::before { content: "☐"; position: absolute; left: 0; color: var(--muted); }
+    .locked {
+      display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 999px;
+      background: #052e16; color: #bbf7d0; border: 1px solid #22c55e; margin-left: 0.35rem; vertical-align: middle;
+    }
+    .rec {
+      display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9; margin-left: 0.35rem; vertical-align: middle;
+    }
+    .rev {
+      display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 999px;
+      background: #422006; color: #fde68a; border: 1px solid #d97706; margin-left: 0.35rem; vertical-align: middle;
+    }
+    .steps { padding-left: 1.25rem; }
+    .steps li { margin: 0.4rem 0; }
+    .modal-bg {
+      position: relative; margin: 0.75rem 0; height: 280px; background: #05080e;
+      border: 1px solid var(--border); border-radius: 0.65rem; overflow: hidden;
+    }
+    .modal-bg .dim { position: absolute; inset: 0; background: rgba(0,0,0,0.55); }
+    .modal-bg .box {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: min(400px, 92%); max-height: 250px; overflow: auto;
+      background: var(--panel); border: 1px solid var(--special);
+      border-radius: 0.65rem; padding: 0.75rem; font-size: 11px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .bar { height: 6px; background: #0a1220; border-radius: 4px; border: 1px solid #1e293b; margin: 0.2rem 0 0.45rem; }
+    footer {
+      margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border);
+      font-size: 0.8rem; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="doc-hero">
+      <div class="meta-row">
+        <span class="tag">v0.9.2-special</span>
+        <span class="tag b">Track B · Heterogeneous agent</span>
+        <span class="tag">Phase 0 · Survive</span>
+        <span class="tag good">Design · revised after pin feedback</span>
+        <span class="tag warn">Not “just a pin”</span>
+      </div>
+      <h1>0.9.2-special — design</h1>
+      <p class="lede">
+        One <strong>special agent</strong> per run that can run on a <strong>different parameter set</strong>
+        than the crowd — edited in a dedicated <strong>Special… modal</strong> (same chrome pattern as Advanced / Help).
+        Marking is secondary; the point is a live A/B body inside one world.
+      </p>
+      <div class="baseline">
+        <div class="chip">
+          <strong>Baseline</strong>
+          <code>0.9.1-ui-chrome</code> freeze
+        </div>
+        <div class="chip">
+          <strong>Pin stays</strong>
+          Follow / trends — not replaced
+        </div>
+        <div class="chip">
+          <strong>Ship as</strong>
+          <code>0.9.2-special</code> + archive
+        </div>
+        <div class="chip">
+          <strong>Next after</strong>
+          memory · export · Lab (thick Phase 0)
+        </div>
+      </div>
+    </header>
+
+    <div class="doc-grid">
+      <nav class="toc" aria-label="Contents">
+        <div class="section-label">Contents</div>
+        <ol>
+          <li><a href="#opinion">Opinion (agree)</a></li>
+          <li><a href="#goals">Goals &amp; non-goals</a></li>
+          <li><a href="#vs-pin">Special vs pin</a></li>
+          <li><a href="#concept">Concept</a></li>
+          <li><a href="#params">Parameter model</a></li>
+          <li><a href="#modal">Special config modal</a></li>
+          <li><a href="#visual">Visual + focus</a></li>
+          <li><a href="#lifecycle">Lifecycle</a></li>
+          <li><a href="#impl">Implementation approach</a></li>
+          <li><a href="#steps">Build steps</a></li>
+          <li><a href="#acceptance">Acceptance</a></li>
+          <li><a href="#open">Open decisions</a></li>
+          <li><a href="#later">Later</a></li>
+        </ol>
+      </nav>
+
+      <div class="main">
+
+        <!-- OPINION -->
+        <section class="section" id="opinion">
+          <h2>1. Opinion — you’re right</h2>
+          <div class="callout ok">
+            <strong>Pin already solves “follow one agent.”</strong>
+            A special that is only a gold ring + auto-pin would be redundant chrome.
+            The interesting 0.9.2 is: <em>one agent with its own knobs</em>, so you can watch
+            “greedy seeker vs crowd,” “slow wanderer in a Seek world,” “glass-cannon hunger,” etc. in a single run.
+          </div>
+          <div class="two-col">
+            <div class="card">
+              <h3>Why different params is the right slice</h3>
+              <ul>
+                <li><strong>Real experiment value</strong> — same map, same food, different body rules.</li>
+                <li><strong>Bridge to Phase 1</strong> — one heterogeneous agent before full trait distributions.</li>
+                <li><strong>Modal fits the product</strong> — Advanced is world/eat; Special is <em>this one agent</em>; keeps the left rail clean.</li>
+                <li><strong>Pin still useful</strong> — pin the special (or anyone) for trends; roles stay clear.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>What to be careful about</h3>
+              <ul>
+                <li><strong>Don’t rebuild Phase 1</strong> — not N random trait draws; just one override profile.</li>
+                <li><strong>World vs agent knobs</strong> — food spawn, agent count stay global; special doesn’t get a private food rain.</li>
+                <li><strong>Live vs apply</strong> — mid-run slider changes should apply to the living special immediately (same as Advanced feel).</li>
+                <li><strong>Fair labeling</strong> — inspector must show special is using overrides so results aren’t misread.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="callout special">
+            <strong>Recommendation:</strong> redesign 0.9.2 as <em>parameterized special + modal</em>.
+            Keep a clear visual mark so you can find them — but mark is the <em>label</em>, not the feature.
+          </p>
+        </section>
+
+        <!-- GOALS -->
+        <section class="section" id="goals">
+          <h2>2. Goals &amp; non-goals</h2>
+          <div class="two-col">
+            <div class="card">
+              <h3>Goals</h3>
+              <ul>
+                <li>Exactly <strong>one special agent</strong> per run (when pop ≥ 1).</li>
+                <li>Special runs on a <strong>special param profile</strong> (overrides) while the crowd uses global run knobs.</li>
+                <li><strong>Special… modal</strong> to edit that profile (lock/sync + per-knob values).</li>
+                <li>Obvious on canvas + inspector shows overrides in use.</li>
+                <li>Optional Focus/pin helpers (convenience only — pin system unchanged).</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Non-goals</h3>
+              <ul>
+                <li>Not a replacement for pin / select / pin-by-ID.</li>
+                <li>Not multi-special or full trait spawn distributions (Phase 1).</li>
+                <li>Not private world rules (spawn interval, food ceiling, map size stay global).</li>
+                <li>Not memory (0.9.3) — but special can get memory first later for demos.</li>
+                <li>Not Lab batch (later); this is one interactive world.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- VS PIN -->
+        <section class="section" id="vs-pin">
+          <h2>3. Special vs pin (roles)</h2>
+          <table>
+            <thead>
+              <tr><th></th><th>Pin / select (existing)</th><th>Special (0.9.2)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Question</strong></td>
+                <td>“Who am I watching?”</td>
+                <td>“Who plays by different rules?”</td>
+              </tr>
+              <tr>
+                <td><strong>How many</strong></td>
+                <td>Any agent you choose</td>
+                <td>Exactly one designated special</td>
+              </tr>
+              <tr>
+                <td><strong>Params</strong></td>
+                <td>Same as crowd</td>
+                <td>Own profile (modal)</td>
+              </tr>
+              <tr>
+                <td><strong>Trends</strong></td>
+                <td>Pin charts</td>
+                <td>Usually pin the special — optional auto on Reset</td>
+              </tr>
+              <tr>
+                <td><strong>UI color</strong></td>
+                <td>Sky select · violet pin</td>
+                <td>Amber identity ring (always, if alive)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- CONCEPT -->
+        <section class="section" id="concept">
+          <h2>4. Concept</h2>
+          <pre>Global run config  →  used by all non-special agents
+Special profile    →  used only by the special agent (per-knob or “match world”)
+
+agent.update() resolves each needed scalar via:
+  value = agent.isSpecial ? specialProfile.X : global.X
+  (or: agent.params.X copied at spawn / when profile changes)</pre>
+          <p>
+            <strong>Match world</strong> mode (recommended default for each knob or as a master toggle):
+            special mirrors global until you unlock overrides — so Reset doesn’t surprise you with a mutant
+            until you open the modal on purpose.
+          </p>
+          <div class="callout warn">
+            First draft of this doc treated special as “hero cam only.” That version is
+            <strong>superseded</strong>. Visual-only special is explicitly out of scope.
+          </div>
+        </section>
+
+        <!-- PARAMS -->
+        <section class="section" id="params">
+          <h2>5. Parameter model</h2>
+          <h3>5.1 Global only (never special-private)</h3>
+          <ul>
+            <li>Initial agent count, food spawn interval / batch / ceiling</li>
+            <li>Canvas / layout, sim speed, pause</li>
+            <li>World presets that set global hunger/spawn (special profile may stay independent — see §5.4)</li>
+          </ul>
+
+          <h3>5.2 Special-overridable (v1 set) <span class="rec">Recommend</span></h3>
+          <p class="muted">Start with movement + personal metabolism — highest demo value for Seek labs.</p>
+          <table>
+            <thead>
+              <tr><th>Param</th><th>Crowd source today</th><th>Why special override is fun</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Movement policy</strong></td>
+                <td>Global Seek | Random</td>
+                <td>Seek special in a Random world (or reverse) — strongest A/B</td>
+              </tr>
+              <tr>
+                <td><strong>Sense radius</strong></td>
+                <td>Global slider</td>
+                <td>Eagle-eyed vs blind seeker</td>
+              </tr>
+              <tr>
+                <td><strong>Seek strength</strong></td>
+                <td>Global slider</td>
+                <td>Committed vs lazy seeker</td>
+              </tr>
+              <tr>
+                <td><strong>Hunger rate</strong></td>
+                <td>Global</td>
+                <td>Faster/slower personal metabolism</td>
+              </tr>
+              <tr>
+                <td><strong>Self-consume / ground eat</strong> (relief, amount, threshold)</td>
+                <td>Advanced modal globals</td>
+                <td>Different “stomach” than the crowd</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>5.3 Optional v1 / easy add</h3>
+          <table>
+            <thead><tr><th>Param</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>seekAccel</code>, <code>wanderAmp</code>, <code>maxSpeed</code></td><td>Already exist as globals in code; expose in Special modal only first (or both later).</td></tr>
+              <tr><td>Starting carried food</td><td>Spawn bias for special only on Reset — nice, not required.</td></tr>
+            </tbody>
+          </table>
+
+          <h3>5.4 Presets interaction</h3>
+          <ul>
+            <li>World presets (Lenient / Balanced / Punishing) update <strong>globals</strong> only.</li>
+            <li>Special profile: either (A) unchanged when world preset fires, or (B) “Reset special to match world” button in modal.</li>
+            <li><span class="rec">Recommend A + explicit Match-all button</span> so experiments aren’t wiped by accident.</li>
+          </ul>
+
+          <h3>5.5 Resolution rule in code</h3>
+<pre>function p(agent, key) {
+  if (agent.isSpecial &amp;&amp; specialOverrides[key] != null &amp;&amp; specialOverrides[key].useCustom)
+    return specialOverrides[key].value;
+  return globals[key];
+}
+// In update():
+this.hunger += p(this, 'hungerRate');
+const policy = p(this, 'movementPolicy');
+// ...
+</pre>
+          <p class="muted">
+            Alternative: copy resolved params onto <code>agent</code> when special profile changes or on spawn.
+            Live modal edits must refresh the living special the same tick or next tick.
+          </p>
+        </section>
+
+        <!-- MODAL -->
+        <section class="section" id="modal">
+          <h2>6. Special config modal</h2>
+          <p>
+            Reuse the existing modal shell (dim, Escape, click-outside, one modal at a time).
+            Entry: rail button <code>Special…</code> next to Advanced / Help (or under inspector).
+          </p>
+
+          <div class="modal-bg" aria-hidden="true">
+            <div class="dim"></div>
+            <div class="box">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem">
+                <strong style="color:#fde68a">Special agent</strong>
+                <span style="color:var(--muted)">✕</span>
+              </div>
+              <div style="font-size:10px;color:#94a3b8;margin-bottom:0.5rem">
+                #42 · alive · overrides: policy, sense
+              </div>
+              <div style="display:flex;gap:0.35rem;margin-bottom:0.55rem">
+                <span style="flex:1;text-align:center;border:1px solid #334155;border-radius:4px;padding:0.25rem;font-size:10px">Match all → world</span>
+                <span style="flex:1;text-align:center;border:1px solid #334155;border-radius:4px;padding:0.25rem;font-size:10px">Focus / pin</span>
+              </div>
+              <div style="font-size:10px;color:#64748b;letter-spacing:.08em;text-transform:uppercase">Movement</div>
+              <div style="font-size:10px;color:#cbd5e1;display:flex;justify-content:space-between"><span>☐ custom Policy</span><span>Seek | Random</span></div>
+              <div class="bar"></div>
+              <div style="font-size:10px;color:#cbd5e1;display:flex;justify-content:space-between"><span>☑ Sense radius</span><span>260</span></div>
+              <div class="bar"></div>
+              <div style="font-size:10px;color:#64748b;letter-spacing:.08em;text-transform:uppercase;margin-top:0.35rem">Metabolism</div>
+              <div style="font-size:10px;color:#cbd5e1">☑ Hunger rate · self/ground eat…</div>
+              <div class="bar"></div>
+            </div>
+          </div>
+
+          <h3>Modal contents</h3>
+          <table>
+            <thead><tr><th>Block</th><th>Behavior</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Header</strong></td>
+                <td>Title “Special agent” · id · alive/dead · count of active overrides</td>
+              </tr>
+              <tr>
+                <td><strong>Per-knob row</strong></td>
+                <td>
+                  Checkbox or toggle <strong>Custom</strong> · if off, shows “= world” and ignores slider ·
+                  if on, slider/value applies to special only
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Match all → world</strong></td>
+                <td>Clears all custom flags (special behaves like crowd until you re-override)</td>
+              </tr>
+              <tr>
+                <td><strong>Focus / pin</strong></td>
+                <td>Convenience only — select + pin special (does not change params)</td>
+              </tr>
+              <tr>
+                <td><strong>Reroll body</strong></td>
+                <td>Optional: pick another living agent as special; <em>profile stays</em> (rules move to new body)</td>
+              </tr>
+              <tr>
+                <td><strong>Live update</strong></td>
+                <td>No Apply button — same as Advanced</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Defaults <span class="rec">Recommend</span></h3>
+          <ul>
+            <li>On first ship: all knobs <strong>match world</strong> (custom off) — opening modal is safe.</li>
+            <li>Optional demo preset inside modal later: “Seek loner in Random world” one-click — not required for v1.</li>
+          </ul>
+        </section>
+
+        <!-- VISUAL -->
+        <section class="section" id="visual">
+          <h2>7. Visual + focus (secondary)</h2>
+          <ul>
+            <li><strong>Amber ring</strong> on special while alive (identity — still hunger-colored body fill).</li>
+            <li>Select / pin rings keep existing meaning; when pinned special, trends are theirs.</li>
+            <li><strong>Auto pin on Reset</strong> — optional; recommend <strong>yes</strong> so you immediately see special trends when testing overrides.</li>
+            <li>Do not pretend visual-only is the feature.</li>
+          </ul>
+        </section>
+
+        <!-- LIFECYCLE -->
+        <section class="section" id="lifecycle">
+          <h2>8. Lifecycle</h2>
+          <ol class="steps">
+            <li><strong>Reset / startNewRun:</strong> spawn crowd → pick one special → apply profile resolution → optional auto pin/select.</li>
+            <li><strong>Modal edits:</strong> update <code>specialOverrides</code>; living special uses new values next physics step.</li>
+            <li><strong>Special death:</strong> profile retained for next Reset or Reroll; pin shows dead; no silent auto-promote.</li>
+            <li><strong>Reroll body:</strong> clear flag on old; set on new living agent; same overrides.</li>
+            <li><strong>World preset:</strong> globals change; special customs persist unless Match-all.</li>
+          </ol>
+        </section>
+
+        <!-- IMPL -->
+        <section class="section" id="impl">
+          <h2>9. Implementation approach</h2>
+          <p>
+            Core work is a <strong>param resolution layer</strong> + <strong>modal</strong>, not a second simulation.
+            Refactor just enough of <code>Agent.update()</code> that hunger/move/eat read through a helper instead of bare globals.
+          </p>
+
+          <h3>9.1 Principles</h3>
+          <ol class="steps">
+            <li><strong>One resolution function</strong> — never scatter <code>if (isSpecial)</code> for every formula; one <code>p(agent, key)</code> (or agent-local copy refreshed from profile).</li>
+            <li><strong>Crowd path stays default</strong> — if not special, identical to 0.9.1 behavior.</li>
+            <li><strong>Modal is the editor</strong> — left rail only gets entry button + maybe compact “3 overrides active”.</li>
+            <li><strong>Smoke the experiment, not the ring</strong> — proof is: Random world + Seek special still homes while crowd dies.</li>
+            <li><strong>Pin is optional glue</strong> — implement focus helpers after params work.</li>
+          </ol>
+
+          <h3>9.2 Suggested build order</h3>
+          <ol class="steps">
+            <li>
+              <strong>Param map + resolver</strong><br>
+              Define <code>specialOverrides</code> structure; <code>p(agent, key)</code> falls back to globals.
+            </li>
+            <li>
+              <strong>Wire Agent.update()</strong><br>
+              Replace direct <code>hungerRate</code>, <code>movementPolicy</code>, <code>senseRadius</code>, <code>seekStrength</code>,
+              eat knobs (and optional accel/wander/maxSpeed) with <code>p(...)</code>.
+              Regression: all custom off → bitwise same feel as 0.9.1.
+            </li>
+            <li>
+              <strong>Pick special on Reset</strong> + amber draw + inspector SPECIAL line.
+            </li>
+            <li>
+              <strong>Special… modal</strong> — custom toggles + sliders; Match-all; live bind; shared modal manager with Advanced/Help.
+            </li>
+            <li>
+              <strong>Focus / pin / reroll body</strong> convenience controls.
+            </li>
+            <li>
+              <strong>Help copy</strong> — special vs pin; how overrides work.
+            </li>
+            <li>
+              <strong>Human smoke</strong> → freeze <code>0.9.2-special</code>.
+            </li>
+          </ol>
+
+          <h3>9.3 Code touch map</h3>
+          <table>
+            <thead><tr><th>Area</th><th>Work</th></tr></thead>
+            <tbody>
+              <tr><td>Globals / new state</td><td><code>specialOverrides</code>, <code>specialAgent</code>, helpers</td></tr>
+              <tr><td><code>Agent.update</code> / nearest food</td><td>Use per-agent sense radius &amp; policy via resolver</td></tr>
+              <tr><td>Spawn / Reset</td><td>Pick special; don’t clone wrong params</td></tr>
+              <tr><td>HTML</td><td><code>Special…</code> button + modal markup</td></tr>
+              <tr><td>Modal JS</td><td>Open/close, bind, Match-all, focus</td></tr>
+              <tr><td><code>draw</code> / inspector</td><td>Amber ring; show active overrides list</td></tr>
+              <tr><td>Help</td><td>Roles + example experiment</td></tr>
+            </tbody>
+          </table>
+
+          <h3>9.4 Killer smoke tests (the real acceptance)</h3>
+          <ul class="check">
+            <li>All overrides off → special indistinguishable in behavior from crowd (only mark differs)</li>
+            <li>World = Random; special custom Policy = Seek → special paths to food, crowd wanders</li>
+            <li>World = Seek; special custom high hunger rate → special dies faster than peers (same food luck aside)</li>
+            <li>World sense 80; special sense 300 → special notices food others ignore</li>
+            <li>Match all → world clears customs; special behaves like crowd again</li>
+            <li>Advanced world eat knobs still affect crowd; special custom stomach independent when enabled</li>
+            <li>Pin still works on special and on non-special</li>
+          </ul>
+
+          <h3>9.5 Risks</h3>
+          <table>
+            <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Missed global in update() → special/crowd bug</td>
+                <td>Single resolver; grep for bare <code>hungerRate</code> / <code>senseRadius</code> in Agent methods</td>
+              </tr>
+              <tr>
+                <td>Modal bloat = Advanced clone</td>
+                <td>Strict v1 param list; “match world” keeps default simple</td>
+              </tr>
+              <tr>
+                <td>User confuses special with pin</td>
+                <td>Help + inspector wording: “different rules” vs “watching”</td>
+              </tr>
+              <tr>
+                <td>Phase 1 double work</td>
+                <td>Keep profile shape boring (flat keys) so traits can later replace/expand overrides</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- STEPS -->
+        <section class="section" id="steps">
+          <h2>10. Build steps (session)</h2>
+          <ol class="steps">
+            <li>Confirm open decisions §12 with human if needed.</li>
+            <li>Implement resolver + update() wiring (behavior-neutral when customs off).</li>
+            <li>Special spawn + amber mark.</li>
+            <li>Special modal + Match-all + live overrides.</li>
+            <li>Focus/pin/reroll + Help.</li>
+            <li>Killer smokes §9.4 → freeze ritual.</li>
+          </ol>
+        </section>
+
+        <!-- ACCEPTANCE -->
+        <section class="section" id="acceptance">
+          <h2>11. Acceptance</h2>
+          <ul class="check">
+            <li>Special is not merely a second pin — params can differ and change outcomes</li>
+            <li>Special… modal edits overrides; Match-all restores world parity</li>
+            <li>Crowd still driven only by global controls / Advanced</li>
+            <li>Pin/select unchanged in role; can pin special or others</li>
+            <li>At least one dramatic A/B works (Seek special in Random world)</li>
+            <li>Help explains special vs pin</li>
+            <li>VERSION <code>0.9.2-special</code> when frozen; no Lab/memory scope creep</li>
+          </ul>
+        </section>
+
+        <!-- OPEN -->
+        <section class="section" id="open">
+          <h2>12. Open decisions</h2>
+          <table>
+            <thead><tr><th>Decision</th><th>Recommendation</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Default all customs off (match world)?</td>
+                <td><strong>Yes</strong></td>
+              </tr>
+              <tr>
+                <td>v1 override set</td>
+                <td><strong>Policy, sense, seek strength, hunger rate, advanced eat quartet</strong>; accel/wander/maxSpeed if cheap</td>
+              </tr>
+              <tr>
+                <td>Auto pin special on Reset?</td>
+                <td><strong>Yes</strong> for labs</td>
+              </tr>
+              <tr>
+                <td>World preset resets special customs?</td>
+                <td><strong>No</strong> — only Match-all / explicit</td>
+              </tr>
+              <tr>
+                <td>Reroll body in v1?</td>
+                <td><strong>Yes</strong> if cheap</td>
+              </tr>
+              <tr>
+                <td>Starting food bias for special?</td>
+                <td><strong>No v1</strong> unless you want it</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- LATER -->
+        <section class="section" id="later">
+          <h2>13. Later</h2>
+          <ul>
+            <li><code>0.9.3-memory</code> on special first for demos</li>
+            <li>One-click special experiment presets (“Seek loner”, “Fragile metabolism”)</li>
+            <li>Lab mode: treatments = special profile cells</li>
+            <li>Phase 1: generalize special profile → trait vector for many agents</li>
+          </ul>
+        </section>
+
+        <footer>
+          trait-evolution-sim · <code>design-docs/0.9.2-special-design.html</code>
+          · revised: parameterized special + modal · pin is separate
+        </footer>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -23,6 +23,8 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-0.8.4-tight-layout.html` | 0.8.4-tight-layout | 0 · Survive | (this PR) | — | 260/1fr/260, in-column hide, edge tabs, canvas resize, flush host |
 | `index-0.9.0-seek.html` | 0.9.0-seek | 0 · Survive | (local I1 freeze) | — | Seek MVP + feel-tunes (spawn 1–50, ceiling ×10, batch 3, fatter agents, min/max carried food KPIs); human A/B Seek vs Random OK |
 | `index-0.9.1-ui-chrome.html` | 0.9.1-ui-chrome | 0 · Survive | (local freeze) | — | Viewport lock, Movement dual toggle, quiet badge, speed spacing, preset highlight + Seek retune, Advanced + Help modals; seek mechanics unchanged from 0.9.0-seek |
+| `index-0.9.2-special.html` | 0.9.2-special | 0 · Survive | (local freeze) | — | Special agent with param override modal; history last-3 + full popup; compact history for trends; header Special/Help; Movement top; Trait Evolution Sim + phase tagline; env groups initial agents |
+| `index-0.9.3-vision.html` | 0.9.3-vision | 0 · Survive | (local freeze) | — | N4 header (Project name: trait-evolution-sim · Agent evolution lab); Vision… modal; phase P3 on canvas-module; path near Differ; no Phase chip in brand |
 
 ---
 
