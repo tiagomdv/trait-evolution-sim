@@ -5,7 +5,7 @@
 When something **ships** or is **dismissed**, document it in `IMPLEMENTATION_LOG.md` (and archives/VERSION as needed), then **remove it from this file**. Do not keep “Completed in PR #N” markers here — that history lives in the log.
 
 **Current phase:** 0 · Survive  
-**Last shipped (pointer only):** `0.9.2-special` · see `VERSION` + `IMPLEMENTATION_LOG.md`  
+**Last shipped (pointer only):** `0.9.3-vision` · see `VERSION` + `IMPLEMENTATION_LOG.md`  
 **Thematic arc:** Survive → Differ → Evolve → Economy
 
 **How this file is maintained:** see `AGENTS.md` (docs resteer 2026-07-30 — backlog hygiene).  
@@ -22,7 +22,7 @@ When something **ships** or is **dismissed**, document it in `IMPLEMENTATION_LOG
 
 **Suggested order (thick path)**
 
-1. **Forage finish** — `0.9.2-special` → `0.9.3-memory` (behavior story complete enough to play)  
+1. **Forage finish** — `0.9.2-special` → `0.9.4-memory` (behavior story complete enough to play)  
 2. **Single-run science** — run parameter export logs (+ seed control if needed); metrics schema Lab will reuse  
 3. **Lab mode v1** — headless N runs (50/100/200), lock/vary knobs, results table, a few graphs, CSV/JSON export — **cap scope** (no full stats suite / multi-canvas)  
 4. **Story layer** — thematic experiment presets + `PLAYBOOK.md` v0 (can draft Playbook anytime in parallel)  
@@ -45,9 +45,7 @@ Design artifacts in `design-docs/` use the same nomenclature (e.g. `0.9.0-forage
 
 | Item | Track | Notes |
 |------|-------|--------|
-| `0.9.3-memory` (next Track B) | **B** | Last-food memory / good vs bad TTL. |
-| Brand header polish (optional Track A) | **A** | Improve title / phase / tagline layout. Options A–D in `design-docs/0.9.2-brand-header-design.html` (recommend Option B phase bar). |
-| `0.9.4-vision` (planned — vision reworking) | **A/docs** (+ light A/B tools) | Explicit **agent evolution lab** vision milestone: Help “where this is going,” Playbook v0, phase taglines locked, optional export stub; **not** fake generations. Best-generation-by-tuning = Phase 2 + Lab. See deferred section. |
+| `0.9.4-memory` (next Track B) | **B** | Last-food memory / good vs bad TTL. (was 0.9.3; renumbered after vision ship) |
 | Run parameter export logs | **A/B** | Export run knobs + end metrics (JSON/text). Building block for Lab + vision tuning stories. |
 | **Lab mode** — headless batch / Monte Carlo (wanted) | **A/B** | In-app Lab (no canvas): N runs, lock/vary, table + graphs + export. See deferred section. |
 | Close Phase 0 | — | After thick Phase 0 path feels done (see strategy above), move to Phase 1 · Differ — human can still cut early. |
@@ -56,7 +54,7 @@ Design artifacts in `design-docs/` use the same nomenclature (e.g. `0.9.0-forage
 **Frozen builds:** `archive/index-0.9.0-seek.html` · `archive/index-0.9.1-ui-chrome.html` · `archive/index-0.9.2-special.html`  
 **Deferred within 0.9 arc (not yet versioned):** food density gradient; greed/hoarding (Phase 1 flavor unless pulled forward).
 
-**Shipped:** `archive/index-0.9.1-ui-chrome.html` · `archive/index-0.9.2-special.html`  
+**Shipped:** `archive/index-0.9.1-ui-chrome.html` · `archive/index-0.9.2-special.html` · `archive/index-0.9.3-vision.html`  
 **Brand design:** `design-docs/0.9.2-brand-header-design.html` (header / phase / tagline options)  
 **Special design:** `design-docs/0.9.2-special-design.html`
 
@@ -116,9 +114,9 @@ Beyond Lenient / Balanced / Punishing difficulty numbers, add **thematic presets
 
 **When to write v0:** Anytime after `0.9.1-ui-chrome` — even a short first page of Seek-era recipes is enough. No need to wait for 0.9.2.
 
-#### Vision reworking (`0.9.4-vision` — agent evolution lab)
+#### Vision reworking (`0.9.3-vision` — shipped framing)
 
-**Status:** planned idea (human 2026-07-30) · not designed as full PR yet  
+**Status:** **shipped** as `0.9.3-vision` (N4 header + Vision modal + path on canvas). Further Playbook / export / Lab still open below.  
 **Track:** mostly **A / docs**; may include light export hooks
 
 **Intent:** Make the long product story legible and actionable *without* shipping fake Phase 2 generations.

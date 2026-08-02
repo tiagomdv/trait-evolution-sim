@@ -521,4 +521,26 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 - Optional brand Option B; `0.9.4-vision` (Playbook / Help arc / export)
 - Lab mode, thematic presets (thick Phase 0)
 
+## 2026-07-30 — `0.9.3-vision` (product framing + brand path)
+
+**Version / Phase:** `0.9.3-vision` · Phase 0 · Survive  
+**Track:** A (presentation / vision)
+
+### What shipped
+
+- Header **N4:** `Project name: trait-evolution-sim` + subtitle **Agent evolution lab** + quiet version.
+- **Vision…** modal: what this is, Survive now, Differ/Evolve/Economy later, dream of tuning best survivors (honest not built).
+- Phase **P3** path as top chrome of **canvas-module** (connected to world, not agent field); no “You are here” / lab text on path; ~82% toward Differ.
+- Memory renumbered to **0.9.4-memory** in backlog.
+
+### Process
+
+- VERSION + archive `index-0.9.3-vision.html` + MANIFEST + README + FUTURE + LOG
+- Builds on uncommitted post-0.9.2 path work after PR merge of special
+
+### Next
+
+- `0.9.4-memory` (Track B)
+- Story presets / Playbook / export / Lab (thick Phase 0)
+
 

@@ -30,7 +30,9 @@ Active ideas backlog (open only): `FUTURE_FEATURES.md`. Ship history: `IMPLEMENT
 
 **`VERSION` file** is the single source of truth. Update it on every release PR, and update the live-release line below at the same time.
 
-> **Live release:** `0.9.2-special` · Phase 0 · Survive
+> **Live release:** `0.9.3-vision` · Phase 0 · Survive
+
+**0.9.3-vision (Track A / product framing)** — header N4 (`Project name: trait-evolution-sim` · Agent evolution lab); **Vision…** modal (arc Survive→Economy, honest “not generations yet”); phase P3 path as canvas-module chrome; near-Differ progress. Design: `design-docs/0.9.2-brand-header-design.html`.
 
 **0.9.2-special (Track B + chrome)** — one **special** agent with its own param profile (Special… popup: custom vs world for policy/sense/seek/hunger/eat); amber mark; pin remains for watching. Also: history last-3 + full history popup; trends get vertical room; Special/Help in header; Movement atop left rail; brand **Trait Evolution Sim** + phase-aware Survive tagline. Designs: `design-docs/0.9.2-special-design.html`, `design-docs/0.9.2-brand-header-design.html`.
 
