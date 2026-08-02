@@ -494,3 +494,31 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 - Track B **`0.9.2-special`** — one marked special agent for pin/compare (planned)
 - Later: `0.9.3-memory`, run-parameter export logs, thematic experiment presets, slide drawers
 
+## 2026-07-30 — `0.9.2-special` (Track B + chrome freeze)
+
+**Version / Phase:** `0.9.2-special` · Phase 0 · Survive  
+**Track:** B (special param profile) + A (chrome around it)
+
+### What shipped
+
+- **Special agent:** one per run; amber ring; `p(agent, key)` resolver for overrides.
+- **Special… popup:** per-knob custom vs world (policy, sense, seek strength, accel, wander, max speed, hunger, eat knobs); Match all → world; Focus/pin + Reroll body.
+- **Not just pin:** pin = watch; special = different rules.
+- **History:** dock shows latest **3** runs; **All history…** full session popup; history panel compact so **trends** get height.
+- **Chrome:** Special + Help in header; Movement block at top of left rail; Initial agents under Environment; title **Trait Evolution Sim**; phase tagline *Agent evolution lab · Phase 0 Survive — hunger, food, who lasts* (`PHASE_TAGLINES` for later phases).
+- Designs: `design-docs/0.9.2-special-design.html`, `design-docs/0.9.2-brand-header-design.html` (header options A–D; recommend B later).
+
+### Process
+
+- `VERSION` + badge → `0.9.2-special`
+- `archive/index-0.9.2-special.html` + MANIFEST
+- FUTURE_FEATURES: special removed from next; **0.9.4-vision** vision reworking logged; next mechanic `0.9.3-memory`
+- Human: freeze + push after feel OK
+
+### Next
+
+- `0.9.3-memory`
+- Optional brand Option B; `0.9.4-vision` (Playbook / Help arc / export)
+- Lab mode, thematic presets (thick Phase 0)
+
+

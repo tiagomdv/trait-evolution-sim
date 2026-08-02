@@ -5,7 +5,7 @@
 When something **ships** or is **dismissed**, document it in `IMPLEMENTATION_LOG.md` (and archives/VERSION as needed), then **remove it from this file**. Do not keep “Completed in PR #N” markers here — that history lives in the log.
 
 **Current phase:** 0 · Survive  
-**Last shipped (pointer only):** `0.9.1-ui-chrome` · see `VERSION` + `IMPLEMENTATION_LOG.md`  
+**Last shipped (pointer only):** `0.9.2-special` · see `VERSION` + `IMPLEMENTATION_LOG.md`  
 **Thematic arc:** Survive → Differ → Evolve → Economy
 
 **How this file is maintained:** see `AGENTS.md` (docs resteer 2026-07-30 — backlog hygiene).  
@@ -45,18 +45,20 @@ Design artifacts in `design-docs/` use the same nomenclature (e.g. `0.9.0-forage
 
 | Item | Track | Notes |
 |------|-------|--------|
-| `0.9.2-special` (planned) | **B** | One marked special agent for easy pin/compare. |
-| `0.9.3-memory` (planned) | **B** | Last-food memory / good vs bad TTL. |
-| Run parameter export logs | **A/B** | Export run knobs + end metrics (JSON/text) so human can paste into another session for analysis. Building block for batch / Monte Carlo lab. |
-| **Lab mode** — headless batch / Monte Carlo (wanted) | **A/B** | In-app **Lab** (no canvas): N=50/100/200+ runs; lock knobs / vary others; results table + graphs + export. See deferred section. Not default next after 0.9.1. |
+| `0.9.3-memory` (next Track B) | **B** | Last-food memory / good vs bad TTL. |
+| Brand header polish (optional Track A) | **A** | Improve title / phase / tagline layout. Options A–D in `design-docs/0.9.2-brand-header-design.html` (recommend Option B phase bar). |
+| `0.9.4-vision` (planned — vision reworking) | **A/docs** (+ light A/B tools) | Explicit **agent evolution lab** vision milestone: Help “where this is going,” Playbook v0, phase taglines locked, optional export stub; **not** fake generations. Best-generation-by-tuning = Phase 2 + Lab. See deferred section. |
+| Run parameter export logs | **A/B** | Export run knobs + end metrics (JSON/text). Building block for Lab + vision tuning stories. |
+| **Lab mode** — headless batch / Monte Carlo (wanted) | **A/B** | In-app Lab (no canvas): N runs, lock/vary, table + graphs + export. See deferred section. |
 | Close Phase 0 | — | After thick Phase 0 path feels done (see strategy above), move to Phase 1 · Differ — human can still cut early. |
 
 **Forage design (whole arc):** `design-docs/0.9.0-forage-design.html`  
-**Frozen builds:** `archive/index-0.9.0-seek.html` (seek mechanics) · `archive/index-0.9.1-ui-chrome.html` (chrome + Help)  
+**Frozen builds:** `archive/index-0.9.0-seek.html` · `archive/index-0.9.1-ui-chrome.html` · `archive/index-0.9.2-special.html`  
 **Deferred within 0.9 arc (not yet versioned):** food density gradient; greed/hoarding (Phase 1 flavor unless pulled forward).
 
-**Shipped chrome freeze:** `archive/index-0.9.1-ui-chrome.html` (was 0.9.1 checklist — history in IMPLEMENTATION_LOG).
-
+**Shipped:** `archive/index-0.9.1-ui-chrome.html` · `archive/index-0.9.2-special.html`  
+**Brand design:** `design-docs/0.9.2-brand-header-design.html` (header / phase / tagline options)  
+**Special design:** `design-docs/0.9.2-special-design.html`
 
 ### Deferred UI (still wanted)
 
@@ -113,6 +115,35 @@ Beyond Lenient / Balanced / Punishing difficulty numbers, add **thematic presets
 - Later: thematic presets and export logs can formalize recipes into one-click or pasteable experiments  
 
 **When to write v0:** Anytime after `0.9.1-ui-chrome` — even a short first page of Seek-era recipes is enough. No need to wait for 0.9.2.
+
+#### Vision reworking (`0.9.4-vision` — agent evolution lab)
+
+**Status:** planned idea (human 2026-07-30) · not designed as full PR yet  
+**Track:** mostly **A / docs**; may include light export hooks
+
+**Intent:** Make the long product story legible and actionable *without* shipping fake Phase 2 generations.
+
+**Product story**
+
+- Identity: **agent evolution lab** (spatial agents; tune who lasts).  
+- Arc: Survive → Differ → Evolve → Economy (phase-aware taglines; header polish per brand design doc).  
+- Later dream: lab workflow to **develop the best survival generation by tuning** — real only when **reproduction / generations** (Phase 2) + multi-run **Lab mode** exist.
+
+**In scope for a vision milestone (suggested)**
+
+- Help section: “Where this is going” (honest: Phase 0 = survival only).  
+- `PLAYBOOK.md` v0: survival tuning recipes (Seek A/B, special overrides, presets).  
+- Confirm phase tagline bank + optional implement brand **Option B**.  
+- Optional: single-run **export** (knobs + end metrics) so tuning can leave the browser.  
+- README north-star aligned with in-app wording.
+
+**Out of scope for that milestone**
+
+- In-run inheritance / mutation / generational UI as if Phase 2 were done.  
+- Full Lab Monte Carlo (separate larger slice).  
+- Economy / trade.
+
+**Relations:** Playbook · export · Lab mode · brand-header design · thick Phase 0 strategy.
 
 #### Lab mode — headless batch / Monte Carlo (no canvas)
 

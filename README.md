@@ -30,13 +30,14 @@ Active ideas backlog (open only): `FUTURE_FEATURES.md`. Ship history: `IMPLEMENT
 
 **`VERSION` file** is the single source of truth. Update it on every release PR, and update the live-release line below at the same time.
 
-> **Live release:** `0.9.1-ui-chrome` · Phase 0 · Survive
+> **Live release:** `0.9.2-special` · Phase 0 · Survive
 
-**0.9.1-ui-chrome (Track A)** — viewport-locked Tall Command chrome, Movement Seek|Random dual toggle, quieter version label, Speed spacing, preset highlight + Seek-default retune, Advanced + plain-language Help modals. Seek pathing unchanged from `0.9.0-seek`.
+**0.9.2-special (Track B + chrome)** — one **special** agent with its own param profile (Special… popup: custom vs world for policy/sense/seek/hunger/eat); amber mark; pin remains for watching. Also: history last-3 + full history popup; trends get vertical room; Special/Help in header; Movement atop left rail; brand **Trait Evolution Sim** + phase-aware Survive tagline. Designs: `design-docs/0.9.2-special-design.html`, `design-docs/0.9.2-brand-header-design.html`.
 
-**0.9.0-seek (Track B, I1)** — hunger-weighted nearest-food seeking + residual noise; sense radius + seek strength. Design: `design-docs/0.9.0-forage-design.html`.
+**0.9.1-ui-chrome (Track A)** — viewport lock, Advanced + Help popups, preset retune.  
+**0.9.0-seek (Track B)** — hunger-weighted seek. Design: `design-docs/0.9.0-forage-design.html`.
 
-See `FUTURE_FEATURES.md` for remaining 0.9 slices (special agent, memory, thematic experiment presets), slide drawers, and Phase 1.
+See `FUTURE_FEATURES.md` for memory, vision reworking (`0.9.4-vision`), Lab mode, export, and Phase 1.
 
 ---
 

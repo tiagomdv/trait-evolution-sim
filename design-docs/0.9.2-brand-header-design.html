@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand · header · phase taglines · design</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12; --panel: #0d1524; --panel-2: #0a1220; --border: #1e3a5f;
+      --text: #cbd5e1; --muted: #64748b; --accent: #38bdf8; --good: #7dd3fc;
+      --warn: #fbbf24; --ok: #4ade80;
+    }
+    * { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+    .hero {
+      background: linear-gradient(180deg, #0d1524, #070b12);
+      border: 1px solid var(--border); border-radius: 0.85rem;
+      padding: 1.15rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    h1 { font-size: 1.45rem; font-weight: 650; color: #f1f5f9; margin: 0.3rem 0 0.4rem; }
+    .lede { margin: 0; font-size: 0.9rem; color: #94a3b8; max-width: 48rem; }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9; margin: 0 0.2rem 0.2rem 0;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    h2 {
+      font-size: 1.1rem; font-weight: 650; color: #e2e8f0; margin: 1.75rem 0 0.55rem;
+      padding-bottom: 0.3rem; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.95rem; color: #bae6fd; margin: 1rem 0 0.4rem; }
+    p, li { font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.84rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 0.5rem 0; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top; }
+    th { background: var(--panel-2); color: #94a3b8; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+    code { color: var(--good); font-size: 0.86em; }
+    .callout {
+      border-left: 3px solid var(--accent); background: #0a1220; padding: 0.55rem 0.75rem;
+      border-radius: 0 0.45rem 0.45rem 0; margin: 0.7rem 0; font-size: 0.88rem;
+    }
+    .callout.ok { border-left-color: var(--ok); }
+    .callout.warn { border-left-color: var(--warn); }
+    .mock-wrap {
+      background: #05080e; border: 1px solid var(--border); border-radius: 0.65rem;
+      padding: 0.55rem; margin: 0.65rem 0 1rem;
+    }
+    .mock-label {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.4rem; font-weight: 600;
+    }
+    /* Shared mock chrome */
+    .hdr {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 0.5rem;
+      padding: 0.45rem 0.6rem;
+    }
+    .hdr .acts {
+      margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem;
+    }
+    .pill {
+      font-size: 10px; padding: 0.15rem 0.45rem; border-radius: 999px;
+      border: 1px solid var(--border); color: var(--muted);
+    }
+    .pill.phase { color: #7dd3fc; border-color: #0ea5e9; background: #0c4a6e33; }
+    .pill.ver { font-family: ui-monospace, monospace; font-size: 9px; }
+    .btn {
+      font-size: 10px; padding: 0.2rem 0.45rem; border-radius: 0.3rem;
+      border: 1px solid var(--border); color: #94a3b8; background: #0a1220;
+    }
+    .btn.sp { color: #fde68a; border-color: #a16207; }
+    .btn.pri { color: #e0f2fe; border-color: var(--accent); }
+    .speed { display: flex; gap: 0.15rem; padding: 0.12rem; background: #0a1220; border: 1px solid var(--border); border-radius: 0.3rem; }
+    .speed i { font-style: normal; font-size: 10px; padding: 0.12rem 0.3rem; color: var(--muted); }
+    .speed i.on { background: #0369a1; color: #e0f2fe; border-radius: 0.2rem; }
+    footer { margin-top: 2rem; font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <span class="tag">Brand / header</span>
+      <span class="tag warn">Track A · presentation</span>
+      <span class="tag">After 0.9.2-special</span>
+      <span class="tag good">Design only · pick an option later</span>
+      <h1>Project label, phase, and taglines</h1>
+      <p class="lede">
+        How <strong>Trait Evolution Sim</strong> presents itself in the header: product name,
+        short phase-aware tagline, and Phase 0 · Survive (then Differ / Evolve / Economy).
+        Goal: read as an <em>agent evolution lab</em> without claiming economy or generations are live.
+      </p>
+    </header>
+
+    <h2>1. Product framing</h2>
+    <table>
+      <thead><tr><th>Layer</th><th>Role</th><th>Example (Phase 0)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Title</strong></td>
+          <td>Stable product name (repo: <code>trait-evolution-sim</code>)</td>
+          <td>Trait Evolution Sim</td>
+        </tr>
+        <tr>
+          <td><strong>Tagline</strong></td>
+          <td>Phase-specific one-liner under title</td>
+          <td>Agent evolution lab · Phase 0 Survive — hunger, food, who lasts</td>
+        </tr>
+        <tr>
+          <td><strong>Phase chip</strong></td>
+          <td>Where we are in the arc</td>
+          <td>Phase 0 · Survive</td>
+        </tr>
+        <tr>
+          <td><strong>Version</strong></td>
+          <td>Ship identity (quiet)</td>
+          <td>v0.9.2-special</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout ok">
+      <strong>Vision (later slice, not header-only):</strong> “Lab to develop the best survival generation by tuning”
+      needs generations + Lab tools — track as <code>0.9.x-vision</code> / Playbook / export / Lab, not as fake Phase 2 chrome.
+    </div>
+
+    <h2>2. Phase tagline set (copy bank)</h2>
+    <table>
+      <thead><tr><th>Phase</th><th>Name</th><th>Tagline (recommended)</th><th>Shorter alt</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td>Survive</td>
+          <td>Agent evolution lab · Phase 0 Survive — hunger, food, who lasts</td>
+          <td>Agent evolution lab · survive first</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Differ</td>
+          <td>Agent evolution lab · Phase 1 Differ — traits change who lasts</td>
+          <td>Agent evolution lab · traits decide survivors</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Evolve</td>
+          <td>Agent evolution lab · Phase 2 Evolve — generations; tune who thrives</td>
+          <td>Agent evolution lab · breed better runs</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Economy</td>
+          <td>Agent evolution lab · Phase 3 Economy — trade, production, thrive together</td>
+          <td>Agent evolution lab · micro-economy</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="muted">
+      Full arc (optional secondary line later): Survive → Differ → Evolve → Economy.
+      Prefer <strong>not</strong> showing the full arc as the only Phase 0 tagline — it underplays “we’re still in survival.”
+    </p>
+
+    <h2>3. Visual options (header layout)</h2>
+    <p class="muted">Same actions strip on the right for all options: Special · Help · Speed · Pause · Reset.</p>
+
+    <!-- A: CURRENT -->
+    <h3>Option A — Stacked brand (current / baseline)</h3>
+    <p class="muted">Title over tagline; phase + version as sibling chips. Simple, already in live sim.</p>
+    <div class="mock-wrap">
+      <div class="mock-label">A · stacked</div>
+      <div class="hdr">
+        <div>
+          <div style="font-weight:650;color:#f0f9ff;font-size:14px">Trait Evolution Sim</div>
+          <div style="font-size:10px;color:#64748b;margin-top:2px">Agent evolution lab · Phase 0 Survive — hunger, food, who lasts</div>
+        </div>
+        <span class="pill phase">Phase 0 · Survive</span>
+        <span class="pill ver">v0.9.2-special</span>
+        <div class="acts">
+          <span class="btn sp">Special…</span><span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span><span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+    <p><strong>Pros:</strong> clear hierarchy, tagline has room. <strong>Cons:</strong> phase appears twice (chip + words in tagline).</p>
+
+    <!-- B: PHASE BAR -->
+    <h3>Option B — Phase bar under brand (recommended polish)</h3>
+    <p class="muted">Title + quiet version on one row; full-width soft bar: phase name + tagline only (no duplicate “Phase 0” in tagline).</p>
+    <div class="mock-wrap">
+      <div class="mock-label">B · phase bar</div>
+      <div class="hdr" style="flex-direction:column;align-items:stretch;gap:0.4rem">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem">
+          <div style="font-weight:650;color:#f0f9ff;font-size:14px">Trait Evolution Sim</div>
+          <span class="pill ver">v0.9.2-special</span>
+          <div class="acts" style="margin-left:auto">
+            <span class="btn sp">Special…</span><span class="btn">Help</span>
+            <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+            <span class="btn">Pause</span><span class="btn pri">Reset</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;padding:0.3rem 0.45rem;background:#0a1220;border:1px solid #1e3a5f;border-radius:0.4rem">
+          <span style="font-size:10px;font-weight:600;color:#7dd3fc;letter-spacing:0.06em;text-transform:uppercase">Phase 0 · Survive</span>
+          <span style="color:#334155">|</span>
+          <span style="font-size:10px;color:#94a3b8">Agent evolution lab — hunger, food, who lasts</span>
+        </div>
+      </div>
+    </div>
+    <p><strong>Pros:</strong> phase is one badge; tagline is short; scales when phase changes (swap bar color later). <strong>Cons:</strong> header slightly taller.</p>
+
+    <!-- C: INLINE -->
+    <h3>Option C — Single dense row</h3>
+    <p class="muted">Everything baseline-aligned; tagline truncated with title attribute for full text.</p>
+    <div class="mock-wrap">
+      <div class="mock-label">C · dense row</div>
+      <div class="hdr">
+        <span style="font-weight:650;color:#f0f9ff;font-size:13px">Trait Evolution Sim</span>
+        <span style="font-size:10px;color:#64748b">· agent evolution lab</span>
+        <span class="pill phase">0 · Survive</span>
+        <span class="pill ver">0.9.2</span>
+        <div class="acts">
+          <span class="btn sp">Special…</span><span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span><span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+    <p><strong>Pros:</strong> max canvas height. <strong>Cons:</strong> weak vision readout; easy to ignore.</p>
+
+    <!-- D: TWO LINE LEFT -->
+    <h3>Option D — Title + arc micro-rail</h3>
+    <p class="muted">Tiny Survive · Differ · Evolve · Economy with Survive lit; tagline under title only.</p>
+    <div class="mock-wrap">
+      <div class="mock-label">D · arc micro-rail</div>
+      <div class="hdr">
+        <div>
+          <div style="font-weight:650;color:#f0f9ff;font-size:14px">Trait Evolution Sim</div>
+          <div style="font-size:10px;color:#64748b;margin-top:2px">Agent evolution lab — hunger, food, who lasts</div>
+          <div style="display:flex;gap:0.35rem;margin-top:0.3rem;font-size:9px;letter-spacing:0.04em">
+            <span style="color:#7dd3fc;font-weight:600">Survive</span>
+            <span style="color:#334155">→</span>
+            <span style="color:#475569">Differ</span>
+            <span style="color:#334155">→</span>
+            <span style="color:#475569">Evolve</span>
+            <span style="color:#334155">→</span>
+            <span style="color:#475569">Economy</span>
+          </div>
+        </div>
+        <span class="pill ver">v0.9.2-special</span>
+        <div class="acts">
+          <span class="btn sp">Special…</span><span class="btn">Help</span>
+          <span class="speed"><i class="on">1×</i><i>2×</i><i>5×</i><i>10×</i></span>
+          <span class="btn">Pause</span><span class="btn pri">Reset</span>
+        </div>
+      </div>
+    </div>
+    <p><strong>Pros:</strong> shows the whole journey; exciting for vision. <strong>Cons:</strong> busier; “Economy” can look “unlocked” if styling isn’t careful (mute future phases hard).</p>
+
+    <h2>4. Recommendation</h2>
+    <div class="callout ok">
+      <strong>For freeze now:</strong> keep <strong>Option A</strong> (already shipping) with the Phase 0 Survive tagline —
+      good enough, don’t block 0.9.2 on brand polish.<br><br>
+      <strong>Next brand polish (small Track A):</strong> implement <strong>Option B</strong> —
+      phase bar + shorter tagline without repeating “Phase 0,” optional soft phase color.
+      Option D only if you want the arc visible every session.
+    </div>
+
+    <h2>5. Implementation notes (when polishing)</h2>
+    <ul>
+      <li>Keep <code>PHASE_TAGLINES</code> + <code>CURRENT_PHASE</code> (already in <code>index.html</code>); Option B shortens strings (drop repeated “Phase N Name —”).</li>
+      <li>Phase chip and tagline must not contradict.</li>
+      <li>Version stays quiet mono metadata.</li>
+      <li>Don’t put full vision essay in the header — one line max; rest in Help / Playbook / vision slice.</li>
+    </ul>
+
+    <h2>6. Related: vision reworking (backlog)</h2>
+    <p>
+      Separate from pure CSS header work: a milestone (e.g. <code>0.9.4-vision</code>) for Playbook,
+      Help “where this is going,” export, and later Lab so “tune the best survivors” becomes real.
+      See <code>FUTURE_FEATURES.md</code>.
+    </p>
+
+    <footer>
+      trait-evolution-sim · design-docs/0.9.2-brand-header-design.html · Track A suggestions
+    </footer>
+  </div>
+</body>
+</html>
