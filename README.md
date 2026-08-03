@@ -4,7 +4,7 @@ A **spatial agent-based evolutionary simulation** that starts as a survival sand
 
 **North star:** Watch what helps agents survive become what helps them thrive as the world gets richer — hunger first, then behavioral differences, then generations, then economic interaction.
 
-**Right now:** Phase 0 · Survive. Passive agents, hunger, food, starvation. Observability shipped (`0.3.0-observability`). Traits, reproduction, and trade are not implemented yet.
+**Right now:** Phase 0 · Survive. Agents with hunger, food, and seek-food movement. Observability, run history, layout, seek policy, special agent, and vision framing are shipped. Traits, reproduction, and trade are not implemented yet.
 
 This project is also a deliberate learning vehicle for:
 - Understanding emergent evolutionary dynamics in simple (then richer) economic systems
@@ -39,7 +39,7 @@ Active ideas backlog (open only): `FUTURE_FEATURES.md`. Ship history: `IMPLEMENT
 **0.9.1-ui-chrome (Track A)** — viewport lock, Advanced + Help popups, preset retune.  
 **0.9.0-seek (Track B)** — hunger-weighted seek. Design: `design-docs/0.9.0-forage-design.html`.
 
-See `FUTURE_FEATURES.md` for memory, vision reworking (`0.9.4-vision`), Lab mode, export, and Phase 1.
+See `FUTURE_FEATURES.md` for memory (`0.9.4-memory`), Lab mode, export, Playbook, and Phase 1.
 
 ---
 
