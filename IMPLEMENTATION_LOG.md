@@ -494,7 +494,7 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 - Track B **`0.9.2-special`** — one marked special agent for pin/compare (planned)
 - Later: `0.9.3-memory`, run-parameter export logs, thematic experiment presets, slide drawers
 
-## 2026-07-30 — `0.9.2-special` (Track B + chrome freeze)
+## 2026-08-02 — `0.9.2-special` (Track B + chrome freeze)
 
 **Version / Phase:** `0.9.2-special` · Phase 0 · Survive  
 **Track:** B (special param profile) + A (chrome around it)
@@ -521,7 +521,7 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 - Optional brand Option B; `0.9.4-vision` (Playbook / Help arc / export)
 - Lab mode, thematic presets (thick Phase 0)
 
-## 2026-07-30 — `0.9.3-vision` (product framing + brand path)
+## 2026-08-02 — `0.9.3-vision` (product framing + brand path)
 
 **Version / Phase:** `0.9.3-vision` · Phase 0 · Survive  
 **Track:** A (presentation / vision)
@@ -543,4 +543,23 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 - `0.9.4-memory` (Track B)
 - Story presets / Playbook / export / Lab (thick Phase 0)
 
+---
 
+## 2026-08-03 — Docs accuracy fix (README + FUTURE_FEATURES + log dates)
+
+**Version / Phase:** docs only · Phase 0 · Survive (`0.9.3-vision` still live)  
+**Track:** A (documentation)
+
+### What changed
+
+- **README.md**: Replaced outdated “Passive agents…” description with accurate current state (seek, special, vision shipped).
+- **FUTURE_FEATURES.md**: Removed stale “default mechanic queue still `0.9.2-special`” sentence; now points at current next (`0.9.4-memory`).
+- **IMPLEMENTATION_LOG.md**: Corrected section dates for `0.9.2-special` and `0.9.3-vision` from 2026-07-30 → **2026-08-02** (actual commit dates). Appended this entry.
+
+### Why
+
+Review of project docs against live code and Git history found these three factual inaccuracies. No sim behaviour or VERSION change.
+
+### How applied
+
+AI Track A under human request to open the PR after the review.
