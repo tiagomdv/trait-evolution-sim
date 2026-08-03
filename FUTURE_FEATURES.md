@@ -205,7 +205,7 @@ Beyond Lenient / Balanced / Punishing difficulty numbers, add **thematic presets
 - **Playbook** = recipes Lab can automate (“run this 100×”)  
 - **Thematic presets** = one-click lock/vary templates  
 
-**When to pick up:** Design when human prioritizes lab tooling; default mechanic queue still `0.9.2-special` unless reordered. Version codename TBD (e.g. `0.x.y-lab-batch` when scoped).
+**When to pick up:** Design when human prioritizes lab tooling. Current next mechanic is `0.9.4-memory`. Version codename TBD (e.g. `0.x.y-lab-batch` when scoped).
 
 ---
 
