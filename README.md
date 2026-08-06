@@ -4,7 +4,7 @@ A **spatial agent-based evolutionary simulation** that starts as a survival sand
 
 **North star:** Watch what helps agents survive become what helps them thrive as the world gets richer — hunger first, then behavioral differences, then generations, then economic interaction.
 
-**Right now:** Phase 0 · Survive. Agents with hunger, food, and seek-food movement. Observability, run history, layout, seek policy, special agent, and vision framing are shipped. Traits, reproduction, and trade are not implemented yet.
+**Right now:** Phase 0 · Survive. Agents with hunger, food, and seek-food movement. Observability, run history, layout, seek policy, special agent, vision framing, run-log export, and **Lab** (headless multi-setup batches) are shipped. Traits, reproduction, and trade are not implemented yet.
 
 This project is also a deliberate learning vehicle for:
 - Understanding emergent evolutionary dynamics in simple (then richer) economic systems
@@ -30,29 +30,27 @@ Active ideas backlog (open only): `FUTURE_FEATURES.md`. Ship history: `IMPLEMENT
 
 **`VERSION` file** is the single source of truth. Update it on every release PR, and update the live-release line below at the same time.
 
-> **Live release:** `0.9.4-run-logs` · Phase 0 · Survive
+> **Live release:** `0.9.5-lab` · Phase 0 · Survive
 
-**0.9.4-run-logs** — **Run logs…** modal + export/copy JSON envelope; world Movement also exposes seek accel / wander / max speed (parity with Special); expanded Help. Design: `design-docs/0.9.4-export-run-logs-design.html`.
+**0.9.5-lab** — **World | Lab** mode switch; Lab headless batches (1–5 crowd setups, Parameters, progress, result cards, Export/Copy last batch). Default Lab ladder: Random × Lenient / Balanced / Punishing. Shared difficulty packs tuned for an **alive-first** ladder under Random (short Max-time for pop ranking; All-dead + 600s safety for wipe stories). No special in Lab. Design: `design-docs/0.9.5-lab-design.html`.
 
-**0.9.3-vision (Track A / product framing)** — header N4; Vision… modal; phase path on canvas-module.  
-**0.9.2-special** — parameterized special agent + lab chrome.  
+**0.9.4-run-logs** — **Run logs…** modal + export/copy JSON; seek accel / wander / max speed on world rail.  
+**0.9.3-vision** — header N4; Vision…; phase path on canvas-module.  
+**0.9.2-special** — parameterized special agent.  
 **0.9.1-ui-chrome** — viewport lock, Advanced + Help, preset retune.  
 **0.9.0-seek** — hunger-weighted seek.
 
-See `FUTURE_FEATURES.md` for Lab mode, Playbook, optional memory (parked), and Phase 1.
+See `FUTURE_FEATURES.md` for Playbook, optional graphs/history polish, memory (parked), and Phase 1.
 
 ---
 
 ## Run logs → analysis loop
 
-After **`0.9.4-run-logs`**, a useful workflow opened up:
+**World mode** (canvas): tune live, use Special…, then **Run logs…** → Export/Copy for single-run stories.
 
-1. Tune the world / special agent in **Play**  
-2. Finish several runs (Reset or extinction)  
-3. Open **Run logs…** → **Copy all** or **Export all**  
-4. Paste the pretty JSON into an assistant (e.g. Grok) for cross-run comparison  
+**Lab mode** (headless): **Parameters…** → edit setups / batch → **Start batch** → **Export** / **Copy all**. Default: three Random setups on the difficulty packs. Prefer **short Max-time (75–90s)** when ranking remnant size; use **All dead** (600s safety) when ranking collapse. Watch out: long runs can make `avgFood` look huge from a tiny fat remnant; mean duration can look “mid” when half the seeds wipe early and half ride the wall.
 
-That loop is where **cool dynamics and experiment ideas** start to form — not only “did anyone survive?”, but stories like “Random world + super-Seek special → near wipe with one fat remnant,” spawn sweeps, and fairer A/Bs to try next. Those recipes belong in a future **`PLAYBOOK.md`**; the logs are the evidence trail.
+Paste Lab or World JSON into an assistant for analysis. Recipe write-ups belong in a future **`PLAYBOOK.md`**.
 
 ---
 

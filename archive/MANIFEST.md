@@ -26,6 +26,7 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-0.9.2-special.html` | 0.9.2-special | 0 · Survive | (local freeze) | — | Special agent with param override modal; history last-3 + full popup; compact history for trends; header Special/Help; Movement top; Trait Evolution Sim + phase tagline; env groups initial agents |
 | `index-0.9.3-vision.html` | 0.9.3-vision | 0 · Survive | (local freeze) | — | N4 header (Project name: trait-evolution-sim · Agent evolution lab); Vision… modal; phase P3 on canvas-module; path near Differ; no Phase chip in brand |
 | `index-0.9.4-run-logs.html` | 0.9.4-run-logs | 0 · Survive | (local) | — | Run logs modal + export; world seek accel/wander/maxSpeed; expanded Help (refreshed snapshot) |
+| `index-0.9.5-lab.html` | 0.9.5-lab | 0 · Survive | (local) | — | World\|Lab mode; 1–5 setup headless batches; Lab Parameters; result cards; Export/Copy last batch; no special in Lab |
 
 ---
 
