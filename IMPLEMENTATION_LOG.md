@@ -152,12 +152,6 @@ This completes the UI/UX Polish + Advanced Observability section and creates the
 - Phase 2 core: in-run reproduction; Survivor Seed Lab Mode deferred
 - Traits not listed in README until Phase 1 scoping
 
-### Next (Phase 0 code PRs)
-
-1. `0.5.0-phase-rail` — thematic arc + version/phase in sim UI
-2. `0.6.0-run-setup` — initial agents, presets, simplified controls
-3. `0.7.0-run-compare` — full-run trends, richer history, agent pin
-
 ---
 
 ## 2026 — Design artifact nomenclature standardized (0.4.1+)
@@ -283,7 +277,7 @@ Match process cost to risk: layout stays reversible via archives; **sensitive** 
 ### Docs
 
 - Process resteer already in `AGENTS.md` / README Development approach / this log (2026-07-23 process section)
-- `FUTURE_FEATURES.md` — 0.8.x marked shipped; deferred **slide left/right column drawers**; next mechanics note `0.9.0-forage`
+- `FUTURE_FEATURES.md` — 0.8.x marked shipped; deferred slide drawers noted there
 
 ### Explicitly not in this PR (Track B / later)
 
