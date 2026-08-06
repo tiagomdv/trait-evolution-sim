@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.9.5-lab · design</title>
+  <style>
+    :root {
+      --bg: #070b12; --panel: #0d1524; --panel-2: #0a1220; --border: #1e3a5f;
+      --text: #cbd5e1; --muted: #64748b; --accent: #38bdf8; --good: #7dd3fc;
+      --warn: #fbbf24; --ok: #4ade80; --bad: #fb7185; --pin: #818cf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--text); margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+    .doc-hero {
+      background: linear-gradient(180deg, #0d1524 0%, #070b12 100%);
+      border: 1px solid var(--border); border-radius: 0.85rem;
+      padding: 1.15rem 1.25rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    .doc-hero h1 {
+      font-size: 1.55rem; font-weight: 650; color: #f1f5f9;
+      margin: 0.35rem 0 0.4rem; letter-spacing: -0.02em;
+    }
+    .doc-hero .lede { margin: 0; font-size: 0.9rem; color: #94a3b8; max-width: 56rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.15rem; }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .tag.b { background: #1e1b4b; color: #c4b5fd; border-color: #7c3aed; }
+    .tag.muted { background: #1e293b; color: #94a3b8; border-color: #334155; }
+
+    .doc-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+    @media (max-width: 860px) {
+      .doc-grid { grid-template-columns: 1fr; }
+      .toc { position: static !important; }
+    }
+    .toc {
+      position: sticky; top: 0.75rem; background: var(--panel);
+      border: 1px solid var(--border); border-radius: 0.65rem; padding: 0.75rem 0.85rem;
+    }
+    .toc .section-label {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.5rem;
+    }
+    .toc ol { margin: 0; padding-left: 1.1rem; font-size: 0.8rem; }
+    .toc li { margin: 0.28rem 0; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    .main { min-width: 0; }
+    h2 {
+      font-size: 1.12rem; font-weight: 650; color: #e2e8f0; margin: 0 0 0.65rem;
+      padding-bottom: 0.35rem; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.95rem; font-weight: 600; color: #bae6fd; margin: 1.1rem 0 0.4rem; }
+    h2 + h3 { margin-top: 0.65rem; }
+    p, li { font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.84rem; }
+    .section { margin-bottom: 1.85rem; scroll-margin-top: 0.75rem; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 0.75rem 0.9rem; margin: 0.55rem 0;
+    }
+    .card h3 { margin-top: 0; }
+    table.doc { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 0.45rem 0 0.7rem; }
+    table.doc th, table.doc td {
+      border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top;
+    }
+    table.doc th {
+      background: var(--panel-2); color: #94a3b8; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--good); font-size: 0.86em; }
+    .callout {
+      border-left: 3px solid var(--accent); background: var(--panel-2);
+      padding: 0.65rem 0.85rem; border-radius: 0 0.5rem 0.5rem 0; margin: 0.6rem 0;
+      font-size: 0.88rem;
+    }
+    .callout.good { border-left-color: var(--ok); }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.bad { border-left-color: var(--bad); }
+    ul.tight { margin: 0.35rem 0; padding-left: 1.2rem; }
+    ul.tight li { margin: 0.2rem 0; }
+
+    .mock-stage {
+      background: #04070d; border: 1px solid var(--border);
+      border-radius: 0.75rem; padding: 0.75rem; margin: 0.55rem 0 0.85rem;
+    }
+    .mock-stage-label {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.45rem; font-weight: 600;
+    }
+    .mock-app {
+      background: #0b1220; border: 1px solid #2a4a72; border-radius: 0.55rem;
+      overflow: hidden; font-size: 11px;
+    }
+    .mock-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding: 0.45rem 0.65rem; border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #101a2c 0%, #0b1220 100%);
+    }
+    .mock-header .brand { color: #e2e8f0; font-weight: 650; font-size: 12px; }
+    .mock-header .ver { color: var(--muted); font-family: ui-monospace, monospace; font-size: 10px; }
+    .mode-toggle {
+      display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.15rem 0 0.45rem;
+    }
+    .mode-toggle span {
+      padding: 0.28rem 0.55rem; font-size: 10px; color: #94a3b8;
+      background: #0a1220; border: 1px solid var(--border); border-radius: 0.35rem;
+      cursor: default;
+    }
+    .mode-toggle span.on {
+      background: #0c4a6e; color: #e0f2fe; font-weight: 600;
+      border-color: #0ea5e9;
+    }
+    .mode-toggle span.on.special-on {
+      background: #422006; color: #fde68a; border-color: #d97706;
+    }
+    
+    .mock-body { display: grid; min-height: 280px; }
+    .mock-body.split-config {
+      grid-template-columns: 240px 1fr;
+    }
+    .mock-body.split-top {
+      grid-template-rows: auto 1fr;
+    }
+    .mock-side {
+      border-right: 1px solid var(--border); padding: 0.55rem 0.6rem;
+      background: #070d16;
+    }
+    .mock-main { padding: 0.55rem 0.65rem; min-width: 0; }
+    .mock-topbar {
+      padding: 0.5rem 0.65rem; border-bottom: 1px solid var(--border);
+      background: #070d16; display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
+    }
+    .pill {
+      font-size: 10px; padding: 0.2rem 0.45rem; border-radius: 0.3rem;
+      border: 1px solid var(--border); background: #0f1c30; color: #bae6fd;
+    }
+    .pill.special-on { border-color: #d97706; color: #fde68a; background: #422006; }
+    .pill.ok { border-color: #22c55e; color: #bbf7d0; background: #052e16; }
+    .pill.dim { color: var(--muted); }
+    .fake-btn {
+      font-size: 10px; padding: 0.25rem 0.5rem; border-radius: 0.3rem;
+      border: 1px solid #0ea5e9; background: #0c4a6e; color: #e0f2fe;
+    }
+    .fake-btn.ghost { border-color: #334155; background: #0a1220; color: #94a3b8; }
+    .fake-btn.bad { border-color: #ef4444; background: #450a0a; color: #fecaca; }
+    .sec-h {
+      font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin: 0.45rem 0 0.3rem;
+    }
+    .kv-row {
+      display: flex; justify-content: space-between; gap: 0.35rem;
+      padding: 0.2rem 0; border-bottom: 1px solid #152238; font-size: 10px;
+    }
+    .kv-row:last-child { border-bottom: none; }
+    .kv-row .k { color: var(--muted); }
+    .kv-row .v { color: var(--good); font-family: ui-monospace, monospace; }
+    .mini-table {
+      width: 100%; border-collapse: collapse; font-size: 10px;
+      font-family: ui-monospace, monospace;
+    }
+    .mini-table th, .mini-table td {
+      padding: 0.25rem 0.35rem; border-bottom: 1px solid #152238; text-align: right;
+    }
+    .mini-table th { color: var(--muted); font-weight: 600; text-align: right; }
+    .mini-table td:first-child, .mini-table th:first-child { text-align: left; }
+    .chart-fake {
+      height: 72px; border: 1px dashed #1e3a5f; border-radius: 0.35rem;
+      display: flex; align-items: flex-end; gap: 6px; padding: 0.4rem 0.5rem;
+      background: #04070d; margin-top: 0.4rem;
+    }
+    .chart-fake i {
+      display: block; width: 18px; background: #0ea5e9; border-radius: 2px 2px 0 0;
+      opacity: 0.85;
+    }
+    .opt-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0 0.75rem; }
+    .opt-tab {
+      font-size: 12px; padding: 0.4rem 0.7rem; border-radius: 0.45rem;
+      border: 1px solid var(--border); background: var(--panel-2); color: #94a3b8;
+      cursor: pointer;
+    }
+    .opt-tab:hover { border-color: #2a4a72; color: #cbd5e1; }
+    .opt-tab.active {
+      border-color: #0ea5e9; background: #0c4a6e; color: #e0f2fe; font-weight: 600;
+    }
+    .opt-panel { display: none; }
+    .opt-panel.active { display: block; }
+    .compare-3 {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; margin: 0.6rem 0;
+    }
+    @media (max-width: 900px) { .compare-3 { grid-template-columns: 1fr; } }
+    .compare-card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.55rem; padding: 0.65rem 0.7rem; font-size: 0.82rem;
+    }
+    .compare-card h4 { margin: 0 0 0.35rem; font-size: 0.88rem; color: #e2e8f0; }
+    .badge {
+      display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 999px;
+      margin-bottom: 0.35rem;
+    }
+    .badge-rec { background: #052e16; color: #bbf7d0; border: 1px solid #22c55e; }
+    .badge-alt { background: #1e1b4b; color: #c4b5fd; border: 1px solid #7c3aed; }
+    .badge-no { background: #450a0a; color: #fecaca; border: 1px solid #ef4444; }
+    .diagram {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px; line-height: 1.45; color: #94a3b8;
+      background: #04070d; border: 1px solid var(--border); border-radius: 0.45rem;
+      padding: 0.65rem 0.75rem; overflow-x: auto; white-space: pre; margin: 0.5rem 0;
+    }
+    .diagram .hl { color: var(--accent); }
+    .diagram .ok { color: var(--ok); }
+    .checklist { list-style: none; padding: 0; margin: 0.4rem 0; }
+    .checklist li {
+      padding: 0.35rem 0.5rem; margin: 0.25rem 0;
+      background: var(--panel-2); border: 1px solid var(--border);
+      border-radius: 0.4rem; font-size: 0.85rem;
+    }
+    .checklist li::before { content: "☐ "; color: var(--muted); }
+    .fake-slider-row { margin: 0.28rem 0 0.4rem; }
+    .fake-slider-row .lab {
+      display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 0.15rem;
+    }
+    .fake-slider-row .lab span:last-child {
+      font-family: ui-monospace, monospace; color: var(--good);
+    }
+    .fake-slider-track {
+      height: 6px; border-radius: 99px; background: #152238; position: relative;
+    }
+    .fake-slider-track::after {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+      width: var(--w, 40%); background: #0ea5e9; border-radius: 99px;
+    }
+    .fake-slider-track .thumb {
+      position: absolute; top: 50%; width: 11px; height: 11px; margin-top: -5px;
+      left: calc(var(--w, 40%) - 5px); border-radius: 50%;
+      background: #e0f2fe; border: 2px solid #0ea5e9; z-index: 1;
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.25rem; margin: 0.2rem 0 0.45rem; }
+    .switch-demo { margin: 0.6rem 0 0.9rem; }
+    .switch-demo .demo-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      margin-bottom: 0.45rem; flex-wrap: wrap;
+    }
+    .switch-demo .hint { font-size: 11px; color: var(--muted); }
+    .view-world, .view-lab { display: none; }
+    .switch-demo[data-mode="world"] .view-world { display: block; }
+    .switch-demo[data-mode="lab"] .view-lab { display: block; }
+    .mini-canvas {
+      height: 88px; border-radius: 0.4rem; border: 1px solid #1e3a5f;
+      background: radial-gradient(ellipse at 30% 40%, #0c4a6e 0%, #070d16 55%, #04070d 100%);
+      position: relative; overflow: hidden;
+    }
+    .dot {
+      position: absolute; width: 6px; height: 6px; border-radius: 50%;
+      background: #64748b;
+    }
+    .dot.a { background: #38bdf8; }
+    .dot.b { background: #c4b5fd; }
+    .dot.special {
+      background: #fbbf24; width: 8px; height: 8px;
+      box-shadow: 0 0 0 2px rgba(251,191,36,0.35);
+    }
+    .rail-mini {
+      font-size: 9px; color: var(--muted); padding: 0.35rem;
+      background: #070d16; border: 1px solid #152238; border-radius: 0.3rem;
+    }
+
+    .mode-dock {
+      display: flex; justify-content: center; padding: 0.35rem 0 0.15rem;
+    }
+    .mode-dock-inner {
+      display: inline-flex; align-items: center; gap: 0.15rem;
+      padding: 0.28rem;
+      background: linear-gradient(180deg, #121c2e 0%, #0a1220 100%);
+      border: 1px solid #2a4a72;
+      border-radius: 999px;
+      box-shadow: 0 0 0 1px rgba(14,165,233,0.12), 0 8px 24px rgba(0,0,0,0.35);
+    }
+    .mode-dock-inner span {
+      padding: 0.35rem 1.1rem; font-size: 11px; border-radius: 999px;
+      color: #94a3b8; border: 1px solid transparent; cursor: pointer;
+      letter-spacing: 0.04em; font-weight: 600;
+    }
+    .mode-dock-inner span.on {
+      background: linear-gradient(180deg, #0ea5e9 0%, #0369a1 100%);
+      color: #f0f9ff; border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(14,165,233,0.35);
+    }
+    .mode-dock.alt-seg .mode-dock-inner {
+      border-radius: 0.55rem; gap: 0; padding: 0; overflow: hidden;
+    }
+    .mode-dock.alt-seg .mode-dock-inner span {
+      border-radius: 0; padding: 0.45rem 1.25rem; border: none;
+      border-right: 1px solid #1e3a5f;
+    }
+    .mode-dock.alt-seg .mode-dock-inner span:last-child { border-right: none; }
+    .mode-dock.alt-underline {
+      background: transparent; box-shadow: none; border: none;
+      border-bottom: 1px solid #1e3a5f; border-radius: 0; padding: 0 0 0.15rem;
+      gap: 1.25rem;
+    }
+    .mode-dock.alt-underline span {
+      background: transparent; border: none; border-radius: 0;
+      padding: 0.35rem 0.15rem 0.5rem; color: #64748b;
+      box-shadow: none;
+    }
+    .mode-dock.alt-underline span.on {
+      background: transparent; color: #e0f2fe;
+      box-shadow: inset 0 -2px 0 #38bdf8;
+      border: none;
+    }
+    .result-cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.45rem 0;
+    }
+    .result-card {
+      background: #070d16; border: 1px solid #1e3a5f; border-radius: 0.5rem;
+      padding: 0.5rem 0.55rem;
+    }
+    .result-card h4 {
+      margin: 0 0 0.35rem; font-size: 11px; color: #e2e8f0; font-weight: 650;
+    }
+    .result-card .big {
+      font-family: ui-monospace, monospace; font-size: 15px; color: #7dd3fc;
+      font-weight: 650;
+    }
+    .result-card .stat {
+      display: flex; justify-content: space-between; font-size: 10px;
+      padding: 0.15rem 0; border-bottom: 1px solid #152238;
+    }
+    .result-card .stat:last-child { border-bottom: none; }
+    .result-card .stat .k { color: #64748b; }
+    .result-card .stat .v { color: #cbd5e1; font-family: ui-monospace, monospace; }
+    .result-card.side-a { border-color: #0ea5e9; }
+    .result-card.side-b { border-color: #8b5cf6; }
+    .result-card .tag-a { color: #38bdf8; }
+    .result-card .tag-b { color: #c4b5fd; }
+    .post-batch-actions {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.45rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="doc-hero">
+      <div class="meta-row">
+        <span class="tag">Design · not implemented</span>
+        <span class="tag b">Track A + light B (headless + seed)</span>
+        <span class="tag good">Proposed: 0.9.5-lab</span>
+        <span class="tag warn">Phase 0 · Survive</span>
+      </div>
+      <h1>Lab mode · headless batch experiments</h1>
+      <p class="lede">
+        <strong>World | Lab</strong> in current app chrome. Lab compares <strong>1–5 crowd setups</strong> only
+        (add/remove in Parameters; agents split evenly). <strong>No special agent in Lab</strong> —
+        special stays a World-mode tool to watch one special agent vs the live crowd.
+        Left = value summaries; Parameters modal = full knobs; after batch = setup cards + Export/Copy (last batch only).
+        No graphs v1. Includes <strong>implementation guide for a new session</strong>.
+      </p>
+    </header>
+
+    <div class="doc-grid">
+      <nav class="toc" aria-label="Contents">
+        <div class="section-label">Contents</div>
+        <ol>
+          <li><a href="#shell">Shell &amp; World|Lab</a></li>
+          <li><a href="#mode-names">Naming</a></li>
+          <li><a href="#mode-switch">Switch + demo</a></li>
+          <li><a href="#roles">World vs Lab roles</a></li>
+          <li><a href="#setups">Setups 1–5</a></li>
+          <li><a href="#layout-a">Left column</a></li>
+          <li><a href="#params-modal">Parameters modal</a></li>
+          <li><a href="#world-dual">World multi-group + special</a></li>
+          <li><a href="#ends">Stop rules</a></li>
+          <li><a href="#post-batch">After batch</a></li>
+          <li><a href="#layouts">Mocks (2 / 4 / 5)</a></li>
+          <li><a href="#impl-plan">New-session implementation guide</a></li>
+          <li><a href="#scope">Scope</a></li>
+        </ol>
+      </nav>
+
+      <div class="main">
+
+        <section class="section" id="shell">
+          <h2>1. Shell decision (locked for this design)</h2>
+          <div class="callout good">
+            <strong>Not a modal. Not <code>lab.html</code>.</strong>
+            Lab is a <strong>full in-app mode</strong> inside the same <code>index.html</code>:
+            header stays; body swaps <strong>World</strong> (canvas + rails) for <strong>Lab</strong> (experiment desk).
+            Toggle <strong>World | Lab</strong> in the header (see naming §1b).
+          </div>
+          <table class="doc">
+            <thead><tr><th>Option</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr><td>Help-sized modal</td><td>Rejected — too small for batch + table + graphs</td></tr>
+              <tr><td>Giant modal over World</td><td>Rejected — wrong mental model; canvas peeks through</td></tr>
+              <tr><td>Separate <code>lab.html</code></td><td>Rejected — breaks single entrypoint for now</td></tr>
+              <tr><td><strong>Full-shell mode switch</strong></td><td><strong>Locked</strong></td></tr>
+            </tbody>
+          </table>
+          <div class="diagram"><span class="hl">World mode</span>    header [World|Lab]  · canvas · left/right rails
+<span class="ok">Lab mode</span>      header [World|Lab]  · experiment desk (no canvas draw)
+Both share: VERSION badge, engine code, trial JSON shape from 0.9.4-run-logs</div>
+        </section>
+
+        <section class="section" id="mode-names">
+          <h2>1b. Naming — “Play” is weak</h2>
+          <p><strong>Play</strong> sounds like a toy / pause-button twin. Lab is the experiment desk; the canvas mode is the <em>living world</em>.</p>
+          <table class="doc">
+            <thead><tr><th>Label</th><th>Pros</th><th>Cons</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>World | Lab</strong> <span class="badge badge-rec">Recommended</span></td>
+                <td>Clear spatial sim; matches Survive sandbox; pairs well with Lab</td>
+                <td>Slightly abstract</td>
+              </tr>
+              <tr>
+                <td><strong>Live | Lab</strong></td>
+                <td>Emphasizes real-time canvas; short</td>
+                <td>“Live” can mean streaming elsewhere</td>
+              </tr>
+              <tr>
+                <td><strong>Sim | Lab</strong></td>
+                <td>Technical, accurate</td>
+                <td>Dry; Lab is also a sim</td>
+              </tr>
+              <tr>
+                <td><strong>Watch | Lab</strong></td>
+                <td>Observability vibe</td>
+                <td>Passive; you also tune knobs</td>
+              </tr>
+              <tr>
+                <td>Play | Lab</td>
+                <td>Familiar from games</td>
+                <td>Under-sells science product; easy to confuse with Pause</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout good">
+            <strong>Design default:</strong> header toggle <strong>World | Lab</strong>.
+            Copy elsewhere: “World mode” = canvas + rails; “Lab mode” = headless batch desk.
+            Human can still pick Live if preferred before implement.
+          </div>
+        </section>
+
+                
+                <section class="section" id="mode-chrome">
+          <h2>1b·ui. World | Lab control — match current layout</h2>
+          <div class="callout warn">
+            Do <strong>not</strong> use a foreign floating “pill dock” that fights the Arctic Ice header.
+            Reuse the same control language as <strong>Seek | Random</strong> / speed buttons already in the app
+            (<code>btn-speed</code> / <code>.on</code> active state).
+          </div>
+          <table class="doc">
+            <thead><tr><th>Placement</th><th>Look</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Header center</strong> (recommended)</td>
+                <td>Two <code>btn-speed</code>-like buttons in a quiet group: World | Lab</td>
+                <td>Centered between brand and actions; no neon capsule</td>
+              </tr>
+              <tr>
+                <td>Header actions row</td>
+                <td>Left of Pause / speed</td>
+                <td>Less ideal — competes with run controls</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="mock-stage">
+            <div class="mock-stage-label">Matches existing chrome (not a new design language)</div>
+            <div class="mock-header">
+              <div class="brand">Project name: trait-evolution-sim</div>
+              <div class="mode-toggle">
+                <span class="on">World</span>
+                <span>Lab</span>
+              </div>
+              <div style="display:flex;gap:0.3rem;align-items:center">
+                <span class="fake-btn ghost">Special…</span>
+                <span class="fake-btn ghost">Help</span>
+                <span class="ver">v0.9.5-lab</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+<section class="section" id="mode-switch">
+          <h2>1c. How the World ↔ Lab switch works</h2>
+          <h3>UI</h3>
+          <ul class="tight">
+            <li>Header: <strong>World</strong> | <strong>Lab</strong> (pill chrome like Seek|Random).</li>
+            <li>Full body swap — not a modal over the canvas, not another URL.</li>
+            <li>Brand + version stay in the header.</li>
+          </ul>
+
+          <h3>Interactive preview — click World / Lab</h3>
+          <div class="switch-demo mock-stage" id="switch-demo" data-mode="world">
+            <div class="mock-stage-label">Dynamic mock · same shell, body swaps</div>
+            <div class="demo-bar">
+              <div class="mode-toggle" id="switch-toggle" role="group" aria-label="Mode">
+                <span data-mode="world" class="on" style="cursor:pointer">World</span>
+                <span data-mode="lab" style="cursor:pointer">Lab</span>
+              </div>
+              <span class="hint" id="switch-hint">World: live canvas · multi-group + Special…</span>
+            </div>
+            <div class="mock-app">
+              <div class="mock-header">
+                <div>
+                  <div class="brand">trait-evolution-sim · Agent evolution lab</div>
+                  <div class="ver">v0.9.5-lab</div>
+                </div>
+                <div class="mode-toggle">
+                  <span class="on" id="hdr-world">World</span>
+                  <span id="hdr-lab">Lab</span>
+                </div>
+              </div>
+              <div class="view-world">
+                <div class="mock-body split-config">
+                  <aside class="mock-side">
+                    <div class="rail-mini">World left rail<br>presets · movement · env<br>Special… · Pause / Reset</div>
+                    <div class="sec-h">On canvas now</div>
+                    <div class="kv-row"><span class="k">Group 1</span><span class="v">50 · Setup 1</span></div>
+                    <div class="kv-row"><span class="k">Group 2</span><span class="v">50 · Setup 2</span></div>
+                    <div class="kv-row"><span class="k">Special</span><span class="v">World only (Special…)</span></div>
+                  </aside>
+                  <div class="mock-main">
+                    <div class="mini-canvas" id="mini-canvas"></div>
+                    <p class="muted" style="font-size:9px;margin:0.35rem 0 0">Groups colored by setup · special agent marked when on (+1 body).</p>
+                  </div>
+                </div>
+              </div>
+              <div class="view-lab">
+                <div class="mock-body split-config">
+                  <aside class="mock-side">
+                    <div class="kv-row"><span class="k">Setups</span><span class="v">2 (max 5)</span></div>
+                    <div class="kv-row"><span class="k">Runs / setup</span><span class="v">50</span></div>
+                    <div class="kv-row"><span class="k">Agents / world</span><span class="v">100 → 50 each</span></div>
+                    <div class="kv-row"><span class="k">Total runs</span><span class="v">100</span></div>
+                    <div class="kv-row"><span class="k">Setup 1</span><span class="v">seek · bal</span></div>
+                    <div class="kv-row"><span class="k">Setup 2</span><span class="v">random · bal</span></div>
+                    <div class="kv-row"><span class="k">Special</span><span class="v">not in Lab</span></div>
+                    <span class="fake-btn ghost" style="margin-top:0.4rem;display:inline-block">Parameters…</span>
+                  </aside>
+                  <div class="mock-main">
+                    <div style="padding:0.4rem 0.5rem;background:#04070d;border:1px solid #1e3a5f;border-radius:0.35rem;margin-bottom:0.45rem">
+                      <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:0.3rem">
+                        <span style="color:#e2e8f0">Headless…</span>
+                        <span style="color:#7dd3fc;font-family:ui-monospace,monospace">12 / 100 · Setup A</span>
+                      </div>
+                      <div style="height:10px;background:#152238;border-radius:99px;overflow:hidden">
+                        <div style="width:12%;height:100%;background:linear-gradient(90deg,#0ea5e9,#7dd3fc)"></div>
+                      </div>
+                    </div>
+                    <p class="muted" style="font-size:10px;margin:0">No canvas. Crowd setups only — special is World Special…</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>World → Lab</h3>
+          <ol>
+            <li>Pause World ticks.</li>
+            <li>Hide <code>#view-world</code> (canvas + world rails).</li>
+            <li>Show <code>#view-lab</code> (summary left + results right).</li>
+            <li>Keep Lab setups + batch meta session state.</li>
+            <li>If batch running: confirm leave+cancel or stay.</li>
+          </ol>
+          <h3>Lab → World</h3>
+          <ol>
+            <li>Same confirm if batch running.</li>
+            <li>Hide Lab; show canvas + world rails.</li>
+            <li>Re-enter <strong>paused</strong> until user hits Resume.</li>
+            <li>World multi-group can share setup definitions with Lab; Special… stays World-local.</li>
+          </ol>
+          <table class="doc">
+            <thead><tr><th>State</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>Live agents, canvas, trends, pin</td><td>World</td></tr>
+              <tr><td>Lab setups + batch results</td><td>Lab session</td></tr>
+              <tr><td>World special agent overrides</td><td>World only</td></tr>
+              <tr><td>Engine (tick / seek / hunger)</td><td>Shared (draw vs headless)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        
+
+                <section class="section" id="goal">
+          <h2>2. Goal</h2>
+          <p><strong>World</strong> = live canvas (optional multi-group + special agent). <strong>Lab</strong> = headless multi-setup batch (crowd only).</p>
+          <ul class="tight">
+            <li>1–5 crowd setups; agents split <code>agents / setups</code></li>
+            <li>Lab: R runs × setups; stop when; result cards; Export / Copy last batch only</li>
+            <li>No special in Lab; no graphs v1</li>
+            <li>Parameters modal = setups only (+ batch meta); full knobs per setup</li>
+          </ul>
+        </section>
+
+
+        <section class="section" id="setups">
+          <h2>3. Setups (1–5) — not “A vs B only”</h2>
+          <div class="callout good">
+            In <strong>Parameters…</strong> you maintain a list of crowd setups (min 1, max 5).
+            Add / remove setups (cannot remove the last one). Each setup has the full world knob set.
+            Example: 2 setups → classic compare. 5 setups → five different packs in one batch.
+          </div>
+          <table class="doc">
+            <thead><tr><th>Setting</th><th>Where</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Setups</strong></td><td>Parameters modal</td><td>1–5 named packs (Setup 1…Setup 5)</td></tr>
+              <tr><td><strong>Agents per world</strong></td><td>Parameters</td><td>Total agents in each simulated world (e.g. 100)</td></tr>
+              <tr><td><strong>Group size</strong></td><td>Derived</td><td><code>agents / setups</code> (e.g. 100/2=50, 100/5=20)</td></tr>
+              <tr><td><strong>Runs per setup</strong></td><td>Parameters</td><td>How many headless worlds Lab runs for each setup (e.g. 50)</td></tr>
+              <tr><td><strong>Total Lab runs</strong></td><td>Derived</td><td><code>runs_per_setup × number_of_setups</code></td></tr>
+            </tbody>
+          </table>
+          <div class="diagram">Example
+  agents = 100 · setups = 2 · runs/setup = 50
+  · World view: 50 agents use Setup 1 knobs, 50 use Setup 2 knobs
+  · Lab: 50 full worlds of Setup 1 + 50 full worlds of Setup 2 = 100 headless runs
+
+  agents = 100 · setups = 5 · runs/setup = 20
+  · World: 20 agents per setup
+  · Lab: 20×5 = 100 headless runs</div>
+          <p class="muted">No hard-coded “Seek vs Random” mode — that is just two setups that differ on policy.</p>
+        </section>
+
+                        <section class="section" id="roles">
+          <h2>2b. World vs Lab — who does what</h2>
+          <table class="doc">
+            <thead><tr><th></th><th>World</th><th>Lab</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Job</strong></td>
+                <td>Watch one live sim; feel, pin, special agent demos</td>
+                <td>Measure many headless runs of crowd setups</td>
+              </tr>
+              <tr>
+                <td><strong>Setups 1–5</strong></td>
+                <td>Optional: multi-group spawn (agents split by setup) for visual A/B/…</td>
+                <td>Core: N runs per setup, result cards, export</td>
+              </tr>
+              <tr>
+                <td><strong>Special agent</strong></td>
+                <td><strong>Yes</strong> — existing Special… popup; one marked agent vs crowd (default or multi-group)</td>
+                <td><strong>No</strong> — not in Lab batch, not in Lab Parameters, not in Lab results</td>
+              </tr>
+              <tr>
+                <td><strong>Why split</strong></td>
+                <td>Special is a “pet / probe” for live observation</td>
+                <td>Lab is clean multi-config science; special would muddy group stats</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout good">
+            <strong>Human lock:</strong> remove special entirely from Lab UI and Lab runner.
+            To study special vs a config, use <strong>World</strong> mode (special on + crowd knobs / multi-group).
+          </div>
+        </section>
+
+
+        <section class="section" id="layout-a">
+          <h2>5. Left column — values + buttons (always Parameters…)</h2>
+          <ul class="tight">
+            <li>No sliders on the left — summary <strong>values</strong> + <strong>Parameters…</strong> / Start.</li>
+            <li>Each setup summary (same as earlier design-doc style): difficulty, policy, sense · str · accel, hunger · spawn.</li>
+            <li>Special summary: enabled + sense · str (when on).</li>
+            <li>Result cards: same config summary + outcomes (alive/dead, avgs, special stats if on).</li>
+            <li>Full Advanced eat knobs live only in the Parameters modal.</li>
+            <li><strong>Stop when</strong> = value from Parameters (not left buttons).</li>
+          </ul>
+        </section>
+
+                <section class="section" id="params-modal">
+          <h2>6. Parameters modal (Lab) — setups only</h2>
+          <p>Opens from left <strong>Parameters…</strong>. Tabs = <strong>Setup 1 … Setup k</strong> (dynamic, 1–5) plus a small <strong>Batch</strong> area (or first tab section).</p>
+          <ul class="tight">
+            <li>Each setup: difficulty + full crowd knobs (movement, env, eat) — same set as World rails + Advanced</li>
+            <li><strong>+ Add setup</strong> / remove (min 1, max 5)</li>
+            <li><strong>Batch:</strong> agents per world, runs per setup, stop when</li>
+            <li><strong>No Special tab in Lab Parameters</strong> — special is World-only</li>
+            <li>Done → left summaries refresh</li>
+          </ul>
+        </section>
+
+
+                <section class="section" id="world-dual">
+          <h2>7. World multi-group + special (World only)</h2>
+          <p>Optional: spawn agents split evenly across the same 1–5 setups used by Lab (visual compare).</p>
+          <p><strong>Special agent</strong> remains the existing World <strong>Special…</strong> popup — one marked agent vs the live crowd (default single group or multi-group). That is how you “test special against a config,” not via Lab batch.</p>
+        </section>
+
+
+        <section class="section" id="ends">
+          <h2>8. Stop rules (Lab batch)</h2>
+          <p>Set in Parameters → Batch; shown as a <strong>value</strong> on the left (not buttons).</p>
+          <table class="doc">
+            <thead><tr><th>Stop when</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><strong>All dead</strong></td><td>Population 0 (extinction)</td></tr>
+              <tr><td><strong>Max time</strong> (recommended safety)</td><td>Hard cap in sim-seconds/ticks so a run cannot hang</td></tr>
+            </tbody>
+          </table>
+          <p class="muted">Special-dies / only-special-left stop rules are World/special concerns — out of Lab once special is removed from Lab.</p>
+        </section>
+
+
+        
+
+        <section class="section" id="progress">
+          <h2>9. Progress bar</h2>
+          <ul class="tight">
+            <li>Determinate bar: completed / total (e.g. 34 / 100)</li>
+            <li>Label current side: <code>Setup A</code> or <code>Setup B</code></li>
+            <li>Sticky top of right pane · Cancel · optional shimmer while a trial is long</li>
+          </ul>
+        </section>
+
+        <section class="section" id="layouts">
+          <h2>10. Mocks</h2>
+
+                                                                      <h3>Lab · 2 setups</h3>
+          <div class="mock-stage">
+            <div class="mock-stage-label">Crowd setups only · no special in Lab</div>
+            <div class="mock-app">
+              <div class="mock-header">
+                <div class="brand">trait-evolution-sim</div>
+                <div class="mode-toggle"><span>World</span><span class="on">Lab</span></div>
+                <div class="ver">v0.9.5-lab</div>
+              </div>
+              <div class="mock-body split-config">
+                <aside class="mock-side" style="max-height:380px;overflow:auto">
+                  <div class="sec-h">Batch</div>
+                  <div class="kv-row"><span class="k">Setups</span><span class="v">2</span></div>
+                  <div class="kv-row"><span class="k">Runs per setup</span><span class="v">50</span></div>
+                  <div class="kv-row"><span class="k">Agents / world</span><span class="v">100</span></div>
+                  <div class="kv-row"><span class="k">Agents / group</span><span class="v">50</span></div>
+                  <div class="kv-row"><span class="k">Total runs</span><span class="v">100</span></div>
+                  <div class="kv-row"><span class="k">Stop when</span><span class="v">All dead</span></div>
+                  <div class="sec-h">Setup 1</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">seek</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                  <div class="sec-h">Setup 2</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">random</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                  <div style="margin-top:0.55rem;display:flex;flex-direction:column;gap:0.3rem">
+                    <span class="fake-btn ghost" style="text-align:center">Parameters…</span>
+                    <span class="fake-btn" style="text-align:center">Start batch</span>
+                  </div>
+                </aside>
+                <div class="mock-main" style="max-height:380px;overflow:auto">
+                  <div style="margin-bottom:0.4rem;padding:0.4rem 0.5rem;background:#052e16;border:1px solid #22c55e;border-radius:0.35rem">
+                    <div style="display:flex;justify-content:space-between;font-size:10px">
+                      <span style="color:#bbf7d0">Last batch complete</span>
+                      <span style="color:#86efac;font-family:ui-monospace,monospace">100 / 100</span>
+                    </div>
+                  </div>
+                  <div class="sec-h" style="margin-top:0">Results by setup</div>
+                  <div class="result-cards ">
+                    <div class="result-card side-a">
+                      <h4 class="tag-a">Setup 1 · seek</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">seek</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">50</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">9.2</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">90.8</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">92s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">31.4</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">12.1</span></div>
+                    </div>
+                    <div class="result-card side-b">
+                      <h4 class="tag-b">Setup 2 · random</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">random</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">50</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">0.4</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">99.6</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">41s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">48.2</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">2.1</span></div>
+                    </div>
+                  </div>
+                  <div class="post-batch-actions" style="margin-top:0.4rem">
+                    <span class="fake-btn">Export</span>
+                    <span class="fake-btn ghost">Copy all</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Lab · 4 setups</h3>
+          <div class="mock-stage">
+            <div class="mock-stage-label">Crowd setups only · no special in Lab</div>
+            <div class="mock-app">
+              <div class="mock-header">
+                <div class="brand">trait-evolution-sim</div>
+                <div class="mode-toggle"><span>World</span><span class="on">Lab</span></div>
+                <div class="ver">v0.9.5-lab</div>
+              </div>
+              <div class="mock-body split-config">
+                <aside class="mock-side" style="max-height:380px;overflow:auto">
+                  <div class="sec-h">Batch</div>
+                  <div class="kv-row"><span class="k">Setups</span><span class="v">4</span></div>
+                  <div class="kv-row"><span class="k">Runs per setup</span><span class="v">25</span></div>
+                  <div class="kv-row"><span class="k">Agents / world</span><span class="v">100</span></div>
+                  <div class="kv-row"><span class="k">Agents / group</span><span class="v">25</span></div>
+                  <div class="kv-row"><span class="k">Total runs</span><span class="v">100</span></div>
+                  <div class="kv-row"><span class="k">Stop when</span><span class="v">All dead</span></div>
+                  <div class="sec-h">Setup 1</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">seek</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                  <div class="sec-h">Setup 2</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">random</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                  <div class="sec-h">Setup 3</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">punishing</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">seek</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">120 · 1 · 0.35</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.09 · 16</span></div>
+                  <div class="sec-h">Setup 4</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">lenient</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">seek</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 1.0</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.04 · 6</span></div>
+                  <div style="margin-top:0.55rem;display:flex;flex-direction:column;gap:0.3rem">
+                    <span class="fake-btn ghost" style="text-align:center">Parameters…</span>
+                    <span class="fake-btn" style="text-align:center">Start batch</span>
+                  </div>
+                </aside>
+                <div class="mock-main" style="max-height:380px;overflow:auto">
+                  <div style="margin-bottom:0.4rem;padding:0.4rem 0.5rem;background:#052e16;border:1px solid #22c55e;border-radius:0.35rem">
+                    <div style="display:flex;justify-content:space-between;font-size:10px">
+                      <span style="color:#bbf7d0">Last batch complete</span>
+                      <span style="color:#86efac;font-family:ui-monospace,monospace">100 / 100</span>
+                    </div>
+                  </div>
+                  <div class="sec-h" style="margin-top:0">Results by setup</div>
+                  <div class="result-cards cols-4">
+                    <div class="result-card side-a">
+                      <h4 class="tag-a">Setup 1</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">seek</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">25</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">8.1</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">16.9</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">88s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">30</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">11</span></div>
+                    </div>
+                    <div class="result-card side-b">
+                      <h4 class="tag-b">Setup 2</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">random</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">25</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">0.2</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">24.8</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">39s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">49</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">2</span></div>
+                    </div>
+                    <div class="result-card ">
+                      <h4 class="">Setup 3</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">punishing</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">seek</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">120 · 1 · 0.35</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.09 · 16</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">25</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">3.0</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">22.0</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">55s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">40</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">5</span></div>
+                    </div>
+                    <div class="result-card ">
+                      <h4 class="">Setup 4</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">lenient</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">seek</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 1.0</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.04 · 6</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">25</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">12.4</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">12.6</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">110s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">22</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">18</span></div>
+                    </div>
+                  </div>
+                  <div class="post-batch-actions" style="margin-top:0.4rem">
+                    <span class="fake-btn">Export</span>
+                    <span class="fake-btn ghost">Copy all</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Lab · 5 setups</h3>
+          <div class="mock-stage">
+            <div class="mock-stage-label">Crowd setups only · no special in Lab</div>
+            <div class="mock-app">
+              <div class="mock-header">
+                <div class="brand">trait-evolution-sim</div>
+                <div class="mode-toggle"><span>World</span><span class="on">Lab</span></div>
+                <div class="ver">v0.9.5-lab</div>
+              </div>
+              <div class="mock-body split-config">
+                <aside class="mock-side" style="max-height:380px;overflow:auto">
+                  <div class="sec-h">Batch</div>
+                  <div class="kv-row"><span class="k">Setups</span><span class="v">5</span></div>
+                  <div class="kv-row"><span class="k">Runs per setup</span><span class="v">20</span></div>
+                  <div class="kv-row"><span class="k">Agents / world</span><span class="v">100</span></div>
+                  <div class="kv-row"><span class="k">Agents / group</span><span class="v">20</span></div>
+                  <div class="kv-row"><span class="k">Total runs</span><span class="v">100</span></div>
+                  <div class="kv-row"><span class="k">Stop when</span><span class="v">All dead</span></div>
+                  <div class="sec-h">Setup 1</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">seek</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                  <div class="sec-h">Setup 2</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">random</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                  <div class="sec-h">Setup 3</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">punishing</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">seek</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">120 · 1 · 0.35</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.09 · 16</span></div>
+                  <div class="sec-h">Setup 4</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">lenient</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">seek</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 1.0</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.04 · 6</span></div>
+                  <div class="sec-h">Setup 5</div>
+                  <div class="kv-row"><span class="k">Difficulty</span><span class="v">custom</span></div>
+                  <div class="kv-row"><span class="k">Policy</span><span class="v">seek</span></div>
+                  <div class="kv-row"><span class="k">Sense · str · accel</span><span class="v">200 · 1.5 · 0.5</span></div>
+                  <div class="kv-row"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                  <div style="margin-top:0.55rem;display:flex;flex-direction:column;gap:0.3rem">
+                    <span class="fake-btn ghost" style="text-align:center">Parameters…</span>
+                    <span class="fake-btn" style="text-align:center">Start batch</span>
+                  </div>
+                </aside>
+                <div class="mock-main" style="max-height:380px;overflow:auto">
+                  <div style="margin-bottom:0.4rem;padding:0.4rem 0.5rem;background:#052e16;border:1px solid #22c55e;border-radius:0.35rem">
+                    <div style="display:flex;justify-content:space-between;font-size:10px">
+                      <span style="color:#bbf7d0">Last batch complete</span>
+                      <span style="color:#86efac;font-family:ui-monospace,monospace">100 / 100</span>
+                    </div>
+                  </div>
+                  <div class="sec-h" style="margin-top:0">Results by setup</div>
+                  <div class="result-cards cols-5">
+                    <div class="result-card side-a">
+                      <h4 class="tag-a">Setup 1</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">seek</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">20</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">7</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">13</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">80s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">30</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">10</span></div>
+                    </div>
+                    <div class="result-card side-b">
+                      <h4 class="tag-b">Setup 2</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">balanced</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">random</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 0.35</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">20</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">0</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">20</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">35s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">49</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">2</span></div>
+                    </div>
+                    <div class="result-card ">
+                      <h4 class="">Setup 3</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">punishing</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">seek</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">120 · 1 · 0.35</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.09 · 16</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">20</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">2</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">18</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">48s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">40</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">5</span></div>
+                    </div>
+                    <div class="result-card ">
+                      <h4 class="">Setup 4</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">lenient</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">seek</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">180 · 1 · 1.0</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.04 · 6</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">20</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">11</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">9</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">120s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">22</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">18</span></div>
+                    </div>
+                    <div class="result-card ">
+                      <h4 class="">Setup 5</h4>
+                      <div class="sec-h" style="margin:0.2rem 0">Config</div>
+                      <div class="stat"><span class="k">Difficulty</span><span class="v">custom</span></div>
+                      <div class="stat"><span class="k">Policy</span><span class="v">seek</span></div>
+                      <div class="stat"><span class="k">Sense · str · accel</span><span class="v">200 · 1.5 · 0.5</span></div>
+                      <div class="stat"><span class="k">Hunger · spawn</span><span class="v">0.065 · 10</span></div>
+                      <div class="sec-h" style="margin:0.2rem 0">Outcomes</div>
+                      <div class="stat"><span class="k">Runs</span><span class="v">20</span></div>
+                      <div class="stat"><span class="k">Alive (avg end)</span><span class="v">5</span></div>
+                      <div class="stat"><span class="k">Dead (avg end)</span><span class="v">15</span></div>
+                      <div class="stat"><span class="k">Mean duration</span><span class="v">70s</span></div>
+                      <div class="stat"><span class="k">Avg hunger</span><span class="v">35</span></div>
+                      <div class="stat"><span class="k">Avg food</span><span class="v">8</span></div>
+                    </div>
+                  </div>
+                  <div class="post-batch-actions" style="margin-top:0.4rem">
+                    <span class="fake-btn">Export</span>
+                    <span class="fake-btn ghost">Copy all</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+<p class="muted">Summary fields: difficulty, policy, sense·str·accel, hunger·spawn. No special in Lab UI.</p>
+
+          <h3>Parameters modal — setups + batch only</h3>
+          <div class="mock-stage">
+            <div class="mock-stage-label">Mock · Lab Parameters (no Special tab)</div>
+            <div class="mock-app" style="max-width:540px;margin:0 auto">
+              <div class="mock-header">
+                <div class="brand">Parameters</div>
+                <div class="mode-toggle">
+                  <span class="on">Setup 1</span>
+                  <span>Setup 2</span>
+                  <span>+ Add</span>
+                  <span>Batch</span>
+                </div>
+                <span class="fake-btn ghost">Done</span>
+              </div>
+              <div class="mock-main" style="max-height:300px;overflow:auto">
+                <p class="muted" style="font-size:10px;margin:0 0 0.45rem">Setup 1 active — full crowd knobs. Special lives in World mode only.</p>
+                <div class="sec-h" style="margin-top:0">Difficulty</div>
+                <div class="mode-toggle">
+                  <span>Lenient</span>
+                  <span class="on">Balanced</span>
+                  <span>Punishing</span>
+                </div>
+                <div class="sec-h">Movement</div>
+                <div class="mode-toggle">
+                  <span class="on">Seek</span>
+                  <span>Random</span>
+                </div>
+                <div class="fake-slider-row">
+                  <div class="lab"><span>Sense radius</span><span>180</span></div>
+                  <div class="fake-slider-track" style="--w:42%"><span class="thumb"></span></div>
+                </div>
+                <div class="fake-slider-row">
+                  <div class="lab"><span>Seek strength</span><span>1.00</span></div>
+                  <div class="fake-slider-track" style="--w:50%"><span class="thumb"></span></div>
+                </div>
+                <div class="fake-slider-row">
+                  <div class="lab"><span>Seek accel · wander · max speed…</span><span>…</span></div>
+                  <div class="fake-slider-track" style="--w:40%"><span class="thumb"></span></div>
+                </div>
+                <div class="sec-h">Environment &amp; eating</div>
+                <div class="fake-slider-row">
+                  <div class="lab"><span>Agents · hunger · spawn · eat knobs…</span><span>…</span></div>
+                  <div class="fake-slider-track" style="--w:50%"><span class="thumb"></span></div>
+                </div>
+                <p class="muted" style="font-size:9px;margin-top:0.5rem">Batch tab: agents/world, runs/setup, stop when. Max 5 setups.</p>
+              </div>
+            </div>
+          </div>
+          <p class="muted">No Special tab in Lab Parameters. Use World → Special… for the marked agent.</p>
+
+        </section>
+
+                                        <section class="section" id="post-batch">
+          <h2>9. After the batch</h2>
+          <div class="callout good">
+            <strong>Last batch only.</strong> No history.
+            Per-setup result cards: alive/dead (avg end), mean duration, avg hunger, avg food.
+            Actions: <strong>Export</strong> · <strong>Copy all</strong> only (Start stays on the left).
+            No graphs. No special rows.
+          </div>
+        </section>
+
+
+
+<section class="section" id="data">
+          <h2>11. Trial record &amp; export</h2>
+          <p>Reuse spirit of <code>0.9.4-run-logs</code> envelope:</p>
+          <div class="diagram">{
+  "version": "0.9.5-lab",
+  "exportedAt": "…",
+  "mode": "lab",
+  "experiment": {
+    "mode": "A-vs-B",
+    "runsPerSide": 50,
+    "agentsPerWorld": 100,
+    "setupA": { "knobs": {…}, "special": {…} },
+    "setupB": { "knobs": {…}, "special": null },
+    "endRule": "extinction",
+    "specialEnabled": false,
+    "baseKnobs": { … },
+    "vary": { "movementPolicy": ["seek", "random"] }
+  },
+  "runs": [
+    {
+      "run": 1,
+      "seed": 101,
+      "cell": { "movementPolicy": "seek" },
+      "knobs": { … },
+      "special": null,
+      "outcomes": {
+        "durationSec": 88,
+        "deaths": 91,
+        "finalPop": 9,
+        "endedBy": "extinction",
+        "specialLifeSec": null,
+        "specialAliveAtEnd": null
+      }
+    }
+  ]
+}</div>
+          <p class="muted">Per-trial fields should stay close to Play run logs so Grok analysis and future Playbook stay consistent.</p>
+        </section>
+
+                                <section class="section" id="impl-plan">
+          <h2>New-session implementation guide</h2>
+          <div class="callout good">
+            <strong>For the next chat / implementer:</strong> read this whole design HTML first, then
+            <code>AGENTS.md</code>, live <code>VERSION</code> / <code>index.html</code>.
+            Do <strong>not</strong> bump VERSION until the human asks. Lab = crowd multi-setup only; special stays World.
+          </div>
+
+          <h3>Product locks (do not re-litigate)</h3>
+          <ul class="tight">
+            <li>Mode names: <strong>World | Lab</strong> (not Play)</li>
+            <li>Shell: full body swap in one <code>index.html</code></li>
+            <li>Header control: match existing Seek|Random button style, prefer center of header</li>
+            <li>Lab setups: 1–5, add/remove; agents split evenly; R runs per setup</li>
+            <li><strong>No special agent in Lab</strong> (UI, runner, export, stop rules)</li>
+            <li>Special remains World <strong>Special…</strong> for live probing</li>
+            <li>Left Lab column: value summaries only + Parameters… + Start</li>
+            <li>Stop when: set in Parameters, displayed as value on left</li>
+            <li>After batch: result cards + Export + Copy all; last batch only; no graphs; no history</li>
+          </ul>
+
+          <h3>Phase 0 — UI shell (check with human before mechanics)</h3>
+          <ol>
+            <li>World | Lab toggle; show/hide <code>#view-world</code> / <code>#view-lab</code>; pause World on Lab enter</li>
+            <li>Lab left layout (batch summary + setup summaries as in mocks)</li>
+            <li>Parameters modal: Setup 1…k tabs, add/remove, Batch fields; no Special tab</li>
+            <li>Fake “batch complete” cards for 2/4/5 setups (static data) so human can judge density</li>
+            <li>Export/Copy buttons present (can no-op until Phase 3)</li>
+          </ol>
+          <p class="muted"><strong>Gate:</strong> human says UI OK before Phase 1.</p>
+
+          <h3>Phase 1 — Parameter model</h3>
+          <ol>
+            <li><code>labSetups[]</code> full knob objects; batch meta {agents, runsPerSetup, stopWhen}</li>
+            <li>Bind modal ↔ model; re-render left as values only</li>
+            <li><code>agentsPerGroup = floor(agents / setups.length)</code></li>
+          </ol>
+
+          <h3>Phase 2 — Headless engine</h3>
+          <ol>
+            <li>Seeded RNG + <code>runOneHeadless(setupKnobs, seed, stopWhen) → metrics</code></li>
+            <li>No special path in Lab runner</li>
+            <li>Max-ticks safety always</li>
+          </ol>
+
+          <h3>Phase 3 — Batch + export</h3>
+          <ol>
+            <li>For each setup × R: progress bar, cancel</li>
+            <li>Aggregate metrics → cards (alive/dead, duration, avgs)</li>
+            <li>Last-batch store; Export download + Copy all JSON; overwrite on new Start</li>
+          </ol>
+
+          <h3>Phase 4 — World multi-group (optional same version)</h3>
+          <ol>
+            <li>Optional: spawn groups from same setups for visual compare</li>
+            <li>Keep World Special… independent of Lab</li>
+          </ol>
+
+          <h3>Files / process</h3>
+          <ul class="tight">
+            <li>Single <code>index.html</code>; Track A UI, light B for headless + seed</li>
+            <li>Design ref: this file <code>design-docs/0.9.5-lab-design.html</code></li>
+            <li>When shipping: one IMPLEMENTATION_LOG entry (past only); FUTURE_FEATURES remove Lab open item</li>
+            <li>VERSION <code>0.9.5-lab</code> only when human authorizes bump</li>
+          </ul>
+        </section>
+
+        <section class="section" id="build">
+          <h2>Build slices (short)</h2>
+          <p>See <a href="#impl-plan">New-session implementation guide</a> for the ordered phases and gates.</p>
+        </section>
+        <section class="section" id="scope">
+          <h2>Scope</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.65rem">
+            <div class="card">
+              <h3 style="color:var(--ok)">Lab in</h3>
+              <ul class="tight">
+                <li>1–5 crowd setups · even split · R runs each</li>
+                <li>Parameters (no special) · stop when value</li>
+                <li>Result cards · Export / Copy last batch</li>
+                <li>World|Lab switch</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3 style="color:var(--bad)">Out of Lab</h3>
+              <ul class="tight">
+                <li>Special agent (use World Special…)</li>
+                <li>Graphs · batch history</li>
+                <li>Special stop rules in Lab</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="section" id="decide">
+          <h2>Locked intent</h2>
+          <div class="callout good">
+            Lab = multi-setup crowd science only (no special). Special = World probe only.
+            UI first (Phase 0 gate), then model, headless, batch, optional World multi-group.
+            Codename <code>0.9.5-lab</code> when human authorizes VERSION bump.
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+<script>
+    (function () {
+      var tabs = document.querySelectorAll('.opt-tab');
+      var panels = document.querySelectorAll('.opt-panel');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var id = tab.getAttribute('data-opt');
+          tabs.forEach(function (t) {
+            t.classList.toggle('active', t === tab);
+          });
+          panels.forEach(function (p) {
+            p.classList.toggle('active', p.getAttribute('data-panel') === id);
+          });
+        });
+      });
+
+      // World | Lab interactive demo
+      var demo = document.getElementById('switch-demo');
+      var toggle = document.getElementById('switch-toggle');
+      var hint = document.getElementById('switch-hint');
+      var hdrW = document.getElementById('hdr-world');
+      var hdrL = document.getElementById('hdr-lab');
+      var canvas = document.getElementById('mini-canvas');
+      if (demo && toggle) {
+        function setMode(mode) {
+          demo.setAttribute('data-mode', mode);
+          toggle.querySelectorAll('span').forEach(function (s) {
+            s.classList.toggle('on', s.getAttribute('data-mode') === mode);
+          });
+          if (hdrW && hdrL) {
+            hdrW.classList.toggle('on', mode === 'world');
+            hdrL.classList.toggle('on', mode === 'lab');
+          }
+          if (hint) {
+            hint.textContent = mode === 'world'
+              ? 'World: live canvas · multi-group setups + Special… popup'
+              : 'Lab: headless · R runs × setups · no special · progress';
+          }
+        }
+        toggle.querySelectorAll('span').forEach(function (s) {
+          s.addEventListener('click', function () {
+            setMode(s.getAttribute('data-mode'));
+          });
+        });
+        setMode('world');
+      }
+      // Scatter dots on mini canvas
+      if (canvas) {
+        var i, el, x, y;
+        for (i = 0; i < 18; i++) {
+          el = document.createElement('span');
+          el.className = 'dot a';
+          el.style.left = (8 + Math.random() * 40) + '%';
+          el.style.top = (15 + Math.random() * 70) + '%';
+          canvas.appendChild(el);
+        }
+        for (i = 0; i < 18; i++) {
+          el = document.createElement('span');
+          el.className = 'dot b';
+          el.style.left = (52 + Math.random() * 40) + '%';
+          el.style.top = (15 + Math.random() * 70) + '%';
+          canvas.appendChild(el);
+        }
+        el = document.createElement('span');
+        el.className = 'dot special';
+        el.style.left = '48%';
+        el.style.top = '42%';
+        canvas.appendChild(el);
+      }
+    })();
+  </script>
+</body>
+</html>

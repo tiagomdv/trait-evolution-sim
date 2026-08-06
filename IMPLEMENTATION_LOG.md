@@ -577,3 +577,41 @@ No `VERSION` / `index.html` change.
 ### Notes (as shipped)
 
 - Knobs snapshot is end-of-run values; Export last is newest run (not necessarily selected row); Clear history does not reset run numbers.
+
+---
+
+## 2026-08-06 — `0.9.5-lab`
+
+**Version / Phase:** `0.9.5-lab` · Phase 0 · Survive  
+**Track:** A (World|Lab shell, Parameters, cards, Help/Vision) + light B (seeded headless, shared preset packs)  
+**Design:** `design-docs/0.9.5-lab-design.html`  
+**Pull Request:** [#24](https://github.com/tiagomdv/trait-evolution-sim/pull/24)
+
+### What shipped
+
+- Header **World | Lab** toggle; full body swap in one `index.html`; Special blocked in Lab.
+- **Lab desk:** setup cards, sticky Parameters… / Start / Cancel, progress, result cards, Export/Copy last batch.
+- **1–5 crowd setups**; batch meta = agents **per setup**, runs per setup, stop prefer, max duration.
+- **All dead** locks max duration to **600 sim-s**; **Max time** editable (default ~90s remembered); chunked headless + mid-trial Cancel.
+- Seeded headless runner (mulberry32); JSON `{ version, mode: "lab", experiment, runs, aggregates }`.
+- **Shared `getPresetEnv`** World↔Lab (full eat knobs). Alive-first Random ladder freeze after human Lab tuning:  
+  L `0.052/8/…` · B `0.062/9/1.12/1.85/11/0.7` · P `0.095/14/…`  
+  Default Lab setups: **3× Random · Lenient / Balanced / Punishing**.
+- Lab UX: Random dims seek-only sliders; slider → Custom; Seek↔Random does not force Custom.
+- Help + Vision + README / FUTURE_FEATURES Lab notes for World|Lab and metric reading.
+- Archive `index-0.9.5-lab.html` + MANIFEST; `VERSION` + badge.
+
+### Lab evidence (human, as frozen)
+
+- Balanced Random Max-time **75s**: ~**16.7** alive, ~74 hunger, ~0 avgFood.  
+- Same pack **295s**: ~**12.5** alive, calmer inventories.  
+- Harder packs ≈ Punishing on alive (bimodal wipe vs 1–2 tycoons); rank ladders by alive on a short fixed clock.
+
+### Not in this version (deferred)
+
+- Graphs, batch history, Cartesian lock/vary grids, World multi-group, Playbook file.
+
+### Process
+
+- AI Track A + light B under human request; human verified Lab batches and requested PR after freeze.
+- One IMPLEMENTATION_LOG section per version (standing rule).

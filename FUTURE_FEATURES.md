@@ -5,7 +5,7 @@
 When something **ships** or is **dismissed**, document it in `IMPLEMENTATION_LOG.md` (and archives/VERSION as needed), then **remove it from this file**. Do not keep “Completed in PR #N” markers here — that history lives in the log.
 
 **Current phase:** 0 · Survive  
-**Last shipped (pointer only):** `0.9.4-run-logs` · see `VERSION` + `IMPLEMENTATION_LOG.md`  
+**Last shipped (pointer only):** `0.9.5-lab` · see `VERSION` + `IMPLEMENTATION_LOG.md`  
 **Thematic arc:** Survive → Differ → Evolve → Economy
 
 **How this file is maintained:** see `AGENTS.md` (docs resteer 2026-07-30 — backlog hygiene).  
@@ -22,10 +22,10 @@ When something **ships** or is **dismissed**, document it in `IMPLEMENTATION_LOG
 
 **Suggested order (thick path)**
 
-1. ~~**Single-run science** — run parameter export logs~~ **shipped / closed** as `0.9.4-run-logs` (incl. world seek-knob parity + Help polish; no extra version bump)  
-2. **Lab mode v1** — headless N runs (50/100/200), lock/vary knobs, results table, a few graphs, CSV/JSON export — **cap scope**; reuse run-log envelope/row shape  
+1. ~~**Single-run science** — run parameter export logs~~ **shipped** as `0.9.4-run-logs`  
+2. ~~**Lab mode v1** — headless multi-setup batches~~ **shipped** as `0.9.5-lab` (1–5 setups, cards, JSON export; **no graphs v1**; special stays World-only)  
 3. **Story layer (later version)** — thematic experiment presets + `PLAYBOOK.md` v0 — harvest notes in **Lab notes** below; do **not** create Playbook until that milestone  
-4. **Optional polish** — slide drawers; density gradient / greed only if still wanted  
+4. **Optional Lab polish** — graphs, batch history, lock/vary Cartesian grids, World multi-group spawn from Lab setups  
 5. **Close Phase 0** — freeze “Survive lab complete,” then Phase 1 · Differ design  
 
 **Maybe later (not queued):** last-food **memory** — only if feel or Phase 1 traits (e.g. ExplorationRate) make it earn its place. See deferred mechanics below.
@@ -46,17 +46,19 @@ Design artifacts in `design-docs/` use the same nomenclature (e.g. `0.9.0-forage
 
 | Item | Track | Notes |
 |------|-------|--------|
-| **Lab mode** — headless batch / Monte Carlo (wanted) | **A/B** | In-app Lab (no canvas): N runs, lock/vary, table + graphs + export. Reuse `0.9.4-run-logs` trial shape. Strong default next product slice. |
+| Lab polish — graphs / batch history / lock-vary grids | **A** | Optional. Core Lab shipped in `0.9.5-lab` (cards + JSON only). |
+| World multi-group from Lab setups | **B** | Optional design Phase 4 — visual A/B on canvas; Special stays World-only. |
 | Thematic experiment presets | **A/B** | Named story scenarios. See deferred UI + **Lab notes** for candidates. |
-| `PLAYBOOK.md` v0 | docs | **Later version** — not now. Harvest material lives in **Lab notes (from run logs)** below. |
+| `PLAYBOOK.md` v0 | docs | **Later version** — not now. Harvest material lives in **Lab notes** below. |
 | Close Phase 0 | — | After thick Phase 0 path feels done, move to Phase 1 · Differ — human can still cut early. |
 
 **Forage design (whole arc):** `design-docs/0.9.0-forage-design.html`  
 **Run logs design:** `design-docs/0.9.4-export-run-logs-design.html`  
-**Frozen builds:** `archive/index-0.9.0-seek.html` · … · `archive/index-0.9.4-run-logs.html`  
+**Lab design:** `design-docs/0.9.5-lab-design.html`  
+**Frozen builds:** `archive/index-0.9.0-seek.html` · … · `archive/index-0.9.5-lab.html`  
 **Deferred mechanics (not queued):** last-food **memory** (good/bad TTL) — human 2026-08-06: skip for now; revisit only if it makes sense later; food density gradient; greed/hoarding (Phase 1 flavor unless pulled forward).
 
-**Shipped:** seek · ui-chrome · special · vision · **run-logs**  
+**Shipped:** seek · ui-chrome · special · vision · run-logs · **lab**  
 **Brand design:** `design-docs/0.9.2-brand-header-design.html`  
 **Special design:** `design-docs/0.9.2-special-design.html`
 
@@ -117,44 +119,45 @@ Beyond Lenient / Balanced / Punishing difficulty numbers, add **thematic presets
 **Process / method lessons**
 
 - Export JSON is enough for multi-run comparison; UI table + detail for eyeballing.  
-- Prefer **same stop rule** when comparing packages (Reset at similar remnant size, or full extinction) — mixed Reset timing confounds “alive at end.”  
+- Prefer **same stop rule + same max duration** when comparing packages.  
 - Special upgrades are **relative to the world**: Random crowd ≠ all-Seek crowd.  
-- Knob roles (for analysis language): **sense** = can I see food; **seek strength** = how hard hunger commits to chase; **seek accel** = how hard velocity is shoved toward target; **wander** = random noise; **max speed** = speed cap.  
-- Accepted export quirks (do not block Playbook): knobs = end-of-run snapshot; Export last ≠ selected row; Clear does not reset run numbers.
+- Knob roles: **sense** = see food; **seek strength** = hunger→pull; **seek accel** = shove to target; **wander** = noise (all policies); **max speed** = cap.  
+- Lab: seeded headless trials; envelope `{ version, mode: "lab", experiment, runs, aggregates }`.  
+- World export quirks: knobs = end-of-run snapshot; Export last ≠ selected row; Clear does not reset run numbers.
 
-**Findings · session 2026-08-06 (balanced / special ladders)**
+**Findings · session 2026-08-06 (World special ladders)**
 
-*1. Pet special in a random desert*  
-World **Random** + scarce-ish spawn; special **Seek** + high sense/strength (even “god” package).  
-→ Near wipe of the crowd; special almost always in remnant, often very fat inventory. Best “Seek vs chance” demo with one marked body.
+*1. Pet special in a random desert* — Random world + Seek special → crowd wipe, special often fat remnant.  
+*2. Special ladder in all-Seek* — Accel was the clearest single lever; sense-only weak; high wander often hurt.  
+*3. Quiet seeker* — Wander 0 beat high wander in a snappy Seek field.
 
-*2. Special ladder in an all-Seek field*  
-World **Seek + balanced**. Special steps: match world → sense 400 → +str 2 → +accel → ±wander.  
-→ Mild upgrades often die ~40s while ~8–12 others form a remnant. **Sense alone** (400) did not buy a seat. **Higher seek accel** was the clearest single lever for joining the remnant. **High wander (1.5)** often hurt or underperformed zero-wander.
+**Findings · session 2026-08-06 (Lab + difficulty packs · freeze)**
 
-*3. Quiet seeker in a snappy Seek field*  
-World Seek balanced with **world accel raised (e.g. 0.8)**; special fixed sense 400 + str 2; sweep special **wander 0 / 0.5 / 1.5**.  
-→ **Wander 0** best survive-to-reset rate and richer finalFood when alive; wander 0.5 weaker; wander 1.5 mixed but usually thinner wins. Exploration noise is costly when everyone already seeks.
+*4. Alive-first ladder under Random (shipped packs)*  
+Shared `getPresetEnv` for World + Lab. Under **Random · Max-time ~75s · N=30 · 50 agents**, Balanced lands ~**17 alive** (hungry, empty inventory); under **~295s**, ~**12–13 alive** calmer. Hard gauntlet packs (higher hunger/sparser food) collapse to **~0–1 alive** with bimodal wipe-vs-tycoon — mean duration can look mid while avgAlive stays ~0.  
+**Product read:** Lenient = large crowd; Balanced = mid remnant after early cull; Punishing = fast wipe. Rank difficulty by **alive/dead on a fixed short clock**; treat long-run **avgFood** as tycoon-biased.  
+**Default Lab setups:** 3× Random · Lenient / Balanced / Punishing.
 
-**Recipe / Lab candidates to formalize later**
+*5. Stop rules*  
+All dead + 600s locked safety prevents hangs. Max time (editable) for pop ranking. Chunked headless so Cancel works mid-trial.
 
-- Seek vs Random whole-world A/B (no special), same preset, N seeds.  
+**Recipe / Lab candidates to formalize later (Playbook)**
+
+- Default Random L/B/P ladder at 75s and at 295s (alive scale).  
+- Same ladder under Seek (expect larger remnants).  
+- Seek vs Random whole-world A/B, same preset, N seeds.  
 - Special vs world Random (pet special).  
-- Accel sweep (world or special), fixed other knobs.  
-- Wander sweep on a strong special in Seek field.  
-- Sense-only vs strength-only vs accel-only (isolate levers).  
-- Optional: special accel 1.0 vs match world when world already high-accel + wander 0.  
-- Lab should reuse run-log envelope `{ version, exportedAt, runs }` and special block.
+- Accel / wander sweeps (World Special…).  
 
 **Open questions (still interesting)**
 
-- Fixed-duration or pop≤K stop for cleaner special-survival rates.  
-- Dead special `finalFood`/`finalHunger` at death (only lifeSec today) for “died empty vs contested.”  
-- Seeded RNG for reproducible Lab cells.
+- Lab aggregate **median duration + extinction %** on cards (bimodality visible without export).  
+- Dead special `finalFood`/`finalHunger` at death.  
+- Slider range polish (hunger/spawn playable band) — optional UX.
 
 #### Vision reworking (`0.9.3-vision` — shipped framing)
 
-**Status:** **shipped** as `0.9.3-vision` (N4 header + Vision modal + path on canvas). Export shipped in `0.9.4-run-logs`. Playbook deferred; Lab still open.  
+**Status:** **shipped** as `0.9.3-vision` (N4 header + Vision modal + path on canvas). Export shipped in `0.9.4-run-logs`. Lab desk shipped in `0.9.5-lab`. Playbook deferred.  
 **Track:** mostly **A / docs**; may include light export hooks
 
 **Intent:** Make the long product story legible and actionable *without* shipping fake Phase 2 generations.
@@ -181,69 +184,19 @@ World Seek balanced with **world accel raised (e.g. 0.8)**; special fixed sense 
 
 **Relations:** Playbook · export · Lab mode · brand-header design · thick Phase 0 strategy.
 
-#### Lab mode — headless batch / Monte Carlo (no canvas)
+#### Lab polish (after `0.9.5-lab` core)
 
-**Status:** brainstormed · **human product lock (2026-07-30)** · not designed/implemented  
-**Track:** A/B (UI + runner + charts mostly A; pure tick loop / seed hooks may touch B lightly)
+**Status:** optional follow-ups · core Lab shipped as `0.9.5-lab`  
+**Track:** mostly A
 
-**Product picture (locked intent)**
+Still open if wanted later:
 
-- **No visual world while batching** — no canvas, no watching agents. Pure experiment desk.  
-- Run **N trials** in one go (e.g. **50 / 100 / 200** or custom).  
-- User **locks** some parameters (held fixed across the batch) and **varies** others (levels, ranges, or A/B sets — e.g. Seek vs Random, preset ladder, hunger sweep).  
-- Engine runs trials **headless** (tick loop only; skip all draw). Sequential is fine; light parallel workers optional for speed later.  
-- After (or as) runs complete: **results table** + **cool graphs** (distributions, group compares, simple sweep plots) + **export** CSV/JSON.  
-- Interactive **Play** mode (today’s canvas sim) stays separate; Lab is a mode/panel you enter for campaigns of trials.
-
-**Questions this unlocks**
-
-- Seek vs Random: distribution of survivors / time-to-extinction over N seeds  
-- Do Lenient / Balanced / Punishing rank under Seek after 50–100–200 trials?  
-- Where does survival “fall off a cliff” if we vary one unlocked knob?  
-- High-variance (luck) vs stable configs  
-- Data-backed preset retunes and Playbook claims  
-
-**Lock / vary (config UX sketch)**
-
-- Each knob: **Lock** (single value) vs **Vary** (list of levels, min/max/step, or categorical e.g. policy).  
-- Batch = Cartesian product of vary-dimensions × N seeds (or N per cell) — need caps so 200 × huge grids don’t freeze the tab (warn / max cells).  
-- Optional: named experiment (“Seek vs Random @ Balanced”) saved for re-run.  
-
-**What a single trial record might include**
-
-- Locked + vary cell snapshot, seed  
-- Outcomes: duration, final pop, time-to-50%-dead (optional), avg hunger / avg carried food, deaths, peaks  
-- Grouping keys for graphs: policy, preset, sweep value  
-
-**Graphs (v1 → later)**
-
-- v1: histogram / box-ish summary of final pop or duration; bar compare means (Seek vs Random); progress while running  
-- Later: survival curves, 1D sweep line + error band, light 2D heatmap, overlay groups  
-
-**Build arc (suggested)**
-
-1. Shared **metrics schema** (+ export logs from Play if useful).  
-2. **Headless run-one(config, seed) → result** (no canvas path).  
-3. **Lab UI**: N, lock/vary matrix, Start / Cancel, progress.  
-4. **Results table + export**.  
-5. **Graphs** (group compare + one distribution).  
-6. Richer sweeps / more chart types; parallel workers only if needed.  
-
-**What it is not**
-
-- Watching multi-world canvases (explicitly out of scope for this Lab)  
-- Replacing Play mode / Playbook hands-on fun  
-- Full stats package day one (mean/median/p10–p90 + a few graphs first)  
-- Offline-only product (in-app Lab is the goal; CLI only if scale demands)  
-
-**Relations**
-
-- **Play mode** = canvas, single run, feel  
-- **Export logs** = optional bridge / same row shape as one Lab trial  
-- **Playbook** = recipes Lab can automate (“run this 100×”)  
-- **Thematic presets** = one-click lock/vary templates  
-
-**When to pick up:** Design when human prioritizes lab tooling. Memory is **not** a prerequisite. Single-run export shipped (`0.9.4-run-logs`) — Lab should reuse the same trial/envelope shape. Version codename TBD (e.g. `0.x.y-lab-batch` when scoped).
+- Graphs (histograms, bar compare means, survival curves)  
+- Batch history (keep more than last batch)  
+- Cartesian lock/vary matrix (vs today’s explicit 1–5 setups)  
+- World multi-group spawn colored by Lab setup  
+- Help section for Lab workflow  
+- Parallel workers if batch size becomes painful  
 
 ---
 

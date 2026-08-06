@@ -1770,29 +1770,12 @@
                 <p class="help-intro">
                     Agents get hungrier over time. Hunger past 100 → death.
                     They pick up ground food and can self-eat carried food when hungry enough.
-                    <strong>World</strong> = live canvas + rails. <strong>Lab</strong> = headless multi-setup batches.
-                    Long product arc: <strong>Vision…</strong>.
+                    Tune the <strong>world</strong> (left rail), optionally one <strong>Special</strong> agent, then use
+                    <strong>Run logs…</strong> to export evidence. Long product arc: <strong>Vision…</strong>.
                 </p>
 
-                <div class="help-sec">World | Lab</div>
-                <div class="help-entry"><strong>World</strong> — Live canvas, left rails, trends, history, Special… Pause/Reset/Speed apply here. Enter Lab pauses World.</div>
-                <div class="help-entry"><strong>Lab</strong> — No canvas. Compare 1–5 crowd setups over many seeded headless runs. Special is World-only (would muddy batch stats).</div>
-                <div class="help-entry">Default Lab experiment: three setups, all <strong>Random</strong> — Lenient / Balanced / Punishing difficulty packs (add/remove setups in Parameters…).</div>
-
-                <div class="help-sec">Lab desk</div>
-                <div class="help-entry"><strong>Parameters…</strong> — Per-setup knobs (same env pack as World presets + movement) and Batch tab (agents per setup, runs per setup, stop prefer, max duration).</div>
-                <div class="help-entry"><strong>Stop prefer · All dead</strong> — End early on extinction; max duration locked to <strong>600 sim-s</strong> safety so soft worlds cannot hang forever.</div>
-                <div class="help-entry"><strong>Stop prefer · Max time</strong> — Cut each trial at the duration slider (default ~90s; editable 15–600). Best for ranking remnant size on short clocks.</div>
-                <div class="help-entry"><strong>Start batch / Cancel</strong> — Sequential headless trials with progress. Cancel keeps partial results. Last batch only (no history).</div>
-                <div class="help-entry"><strong>Export batch / Copy all</strong> — Pretty JSON <code style="color:#7dd3fc">{ version, mode: "lab", experiment, runs, aggregates }</code> for analysis (e.g. paste to Grok).</div>
-                <div class="help-tip">
-                    <strong>How to read Lab metrics</strong> — Prefer <em>avg alive / dead</em> under a fixed short Max-time (e.g. 75–90s) for difficulty ladders.
-                    Long All-dead runs can leave 1–2 “tycoon” survivors with huge avgFood; mean duration can look “mid” while alive stays ~0 when many seeds wipe early and a few ride the wall.
-                    Random is harsher than Seek for the same preset.
-                </div>
-
-                <div class="help-sec">Header &amp; run control (World)</div>
-                <div class="help-entry"><strong>Pause / Resume</strong> — Stops or starts the sim clock (ticks). Disabled look while in Lab.</div>
+                <div class="help-sec">Header &amp; run control</div>
+                <div class="help-entry"><strong>Pause / Resume</strong> — Stops or starts the sim clock (ticks).</div>
                 <div class="help-entry"><strong>Reset</strong> — Ends the current run (records it), respawns agents + food, starts a new run number.</div>
                 <div class="help-entry"><strong>Speed 1×–10×</strong> — How many sim steps per animation frame. Higher = faster die-off and less smooth motion.</div>
                 <div class="help-entry"><strong>Special… · Help · Vision…</strong> — Popups for overrides, this guide, and the Survive→Economy roadmap.</div>
@@ -1815,11 +1798,11 @@
                 <div class="help-entry"><strong>Hunger rate</strong> — Hunger gain per tick. Higher = harsher.</div>
                 <div class="help-entry"><strong>Food spawn interval</strong> — Ticks between food drops. Higher = rarer food = harder. (Interval is in sim ticks, not wall-clock seconds.)</div>
 
-                <div class="help-sec">Difficulty presets (World + Lab shared pack)</div>
-                <div class="help-entry"><strong>Lenient</strong> — Soft pack. Under Random, a large crowd often remains at short/long experiment windows.</div>
-                <div class="help-entry"><strong>Balanced</strong> — Default. Under Random Max-time ~75s: ~⅓ still alive but very hungry; by ~5 min: smaller, calmer remnant. Alive-first mid rung (not a “half die at 30s wipe”).</div>
-                <div class="help-entry"><strong>Punishing</strong> — Harsh pack. Under Random, full wipe in tens of sim-seconds is normal.</div>
-                <div class="help-entry">Presets set hunger, food spawn, and Advanced eat knobs only. They do <em>not</em> set Seek/Random, sense, seek strength/accel, wander, or max speed. Dragging a preset-linked slider → <strong>custom</strong>. Lab presets match World via one shared package.</div>
+                <div class="help-sec">Difficulty presets</div>
+                <div class="help-entry"><strong>Lenient</strong> — Soft hunger/spawn/eat pack. Demos and “does Seek look right?”</div>
+                <div class="help-entry"><strong>Balanced</strong> — Default lab pressure.</div>
+                <div class="help-entry"><strong>Punishing</strong> — Stress test; remnants only with good forage + luck.</div>
+                <div class="help-entry">Presets set hunger, food spawn, and Advanced eat knobs. They do <em>not</em> set Seek/Random or sense/seek/wander/maxSpeed. Dragging a preset-linked slider → <strong>custom</strong>.</div>
 
                 <div class="help-sec">Advanced… (eating / metabolism)</div>
                 <div class="help-entry"><strong>Ground eat relief</strong> — Hunger removed when eating ground pellets (main rescue).</div>
@@ -1875,8 +1858,8 @@
             // Integer phase index for "current" node. Still Survive (0) until Differ opens.
             const CURRENT_PHASE = 0;
             // 0–1 progress within the current phase toward the next (near Differ ≈ high).
-            // Thick Phase 0 far along (Lab + preset freeze) → nearer Differ; Playbook still open.
-            const PHASE_WITHIN = 0.9;
+            // Thick Phase 0 far along (special + run-logs + Lab desk) → nearer Differ.
+            const PHASE_WITHIN = 0.88;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
