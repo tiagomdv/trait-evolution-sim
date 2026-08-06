@@ -1,6 +1,6 @@
 # Implementation Log — trait-evolution-sim
 
-Dev log. **Append** new dated sections at the bottom. When version/phase names change, add notes to existing entries — do not delete history.
+Dev log of **what already shipped** (past tense). **Append** new dated sections at the bottom. Do not use this file for roadmap, “what’s next,” or backlog — that lives only in **`FUTURE_FEATURES.md`**.
 
 > Safety snapshot before 2026-07-02 resteer: `archive/docs/IMPLEMENTATION_LOG-pre-resteer-2026-07-02.md`
 
@@ -420,7 +420,7 @@ Captures session brainstorm (2026-07-15 movement + always-seek + greed/analysis 
 
 - `archive/index-0.9.0-seek.html` + MANIFEST row  
 - `VERSION` + UI badge `v0.9.0-seek`  
-- README live line; FUTURE_FEATURES next-slice table  
+- README live line; FUTURE_FEATURES updated  
 - Design still: `design-docs/0.9.0-forage-design.html`
 
 ### How applied
@@ -444,11 +444,6 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 | Ground food ceiling | `NUM_FOOD * 10` (~700) |
 | Agent draw fatness | `3 + sqrt(food) * 0.5` (consistent on main/outline paths) |
 | KPI labels | Avg hunger; Min/Max **carried food** (not hunger min/max) |
-
-### Next (human)
-
-- Track A **`0.9.1-ui-chrome`** — no scroll page, policy/speed/badge/presets (retune + highlight)/Advanced + Help glossary (see FUTURE_FEATURES checklist).  
-- Later: special agent, memory, optional run-parameter export logs for cross-session analysis.
 
 ---
 
@@ -489,11 +484,6 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 - README live-release line updated
 - Human: “freeze it” after enjoying Seek feel
 
-### Next
-
-- Track B **`0.9.2-special`** — one marked special agent for pin/compare (planned)
-- Later: `0.9.3-memory`, run-parameter export logs, thematic experiment presets, slide drawers
-
 ## 2026-08-02 — `0.9.2-special` (Track B + chrome freeze)
 
 **Version / Phase:** `0.9.2-special` · Phase 0 · Survive  
@@ -512,14 +502,8 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 
 - `VERSION` + badge → `0.9.2-special`
 - `archive/index-0.9.2-special.html` + MANIFEST
-- FUTURE_FEATURES: special removed from next; **0.9.4-vision** vision reworking logged; next mechanic `0.9.3-memory`
+- FUTURE_FEATURES updated for special shipped
 - Human: freeze + push after feel OK
-
-### Next
-
-- `0.9.3-memory`
-- Optional brand Option B; `0.9.4-vision` (Playbook / Help arc / export)
-- Lab mode, thematic presets (thick Phase 0)
 
 ## 2026-08-02 — `0.9.3-vision` (product framing + brand path)
 
@@ -531,17 +515,11 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 - Header **N4:** `Project name: trait-evolution-sim` + subtitle **Agent evolution lab** + quiet version.
 - **Vision…** modal: what this is, Survive now, Differ/Evolve/Economy later, dream of tuning best survivors (honest not built).
 - Phase **P3** path as top chrome of **canvas-module** (connected to world, not agent field); no “You are here” / lab text on path; ~82% toward Differ.
-- Memory renumbered to **0.9.4-memory** in backlog.
 
 ### Process
 
 - VERSION + archive `index-0.9.3-vision.html` + MANIFEST + README + FUTURE + LOG
 - Builds on uncommitted post-0.9.2 path work after PR merge of special
-
-### Next
-
-- `0.9.4-memory` (Track B)
-- Story presets / Playbook / export / Lab (thick Phase 0)
 
 ---
 
@@ -553,7 +531,7 @@ Session `019fb43e-793a-7df0-9242-2a9b355e5ab3` (Track B feel-tests, then version
 ### What changed
 
 - **README.md**: Replaced outdated “Passive agents…” description with accurate current state (seek, special, vision shipped).
-- **FUTURE_FEATURES.md**: Removed stale “default mechanic queue still `0.9.2-special`” sentence; now points at current next (`0.9.4-memory`).
+- **FUTURE_FEATURES.md**: Removed stale “default mechanic queue still `0.9.2-special`” sentence; backlog pointer corrected.
 - **IMPLEMENTATION_LOG.md**: Corrected section dates for `0.9.2-special` and `0.9.3-vision` from 2026-07-30 → **2026-08-02** (actual commit dates). Appended this entry.
 
 ### Why
@@ -585,66 +563,23 @@ No `VERSION` / `index.html` change.
 
 ---
 
-## 2026-08-06 — `0.9.4-run-logs` (export desk)
+## 2026-08-06 — `0.9.4-run-logs`
 
 **Version / Phase:** `0.9.4-run-logs` · Phase 0 · Survive  
-**Track:** A (modal / export UI) + light data plumbing (knob + special snapshots; no agent behavior change)
+**Track:** A (modal / chrome / export) + light data plumbing (no agent behavior change)  
+**Pull Request:** [#23](https://github.com/tiagomdv/trait-evolution-sim/pull/23)
 
 ### What shipped
 
-- Evolved **All history…** → **Run logs…** large modal (Option A): core comparison columns + click row → detail panel.
-- Detail: outcomes, full **world knobs**, **special** (id, alive, customCount, override list).
-- On `recordCurrentRun`: snapshot `knobs` + `special` (+ `movementPolicy`, `runInitialAgents`).
-- **Export last / Export all** + **Copy last / Copy all** — pretty JSON envelope  
-  `{ "version", "exportedAt", "runs": [ … ] }` (same shape for last and all; last = one-element `runs`).
-- Filenames: `tes-run-N-0.9.4-run-logs.json` / `tes-session-Kruns-0.9.4-run-logs.json`.
-- Help copy updated; toast on copy/export.
+- **Run logs…** modal (evolved All history): Option A table + click row → detail (outcomes, world knobs, special overrides).
+- On `recordCurrentRun`: snapshot `knobs` + `special` (+ `movementPolicy`, `runInitialAgents`); dead special **`lifeSec`** via `specialLifeTicksAtDeath`.
+- **Export last / all** + **Copy last / all** — pretty JSON envelope `{ version, exportedAt, runs }`.
+- World Movement rail: **seek accel**, **wander amp**, **max speed** (parity with Special).
+- Expanded Help glossary (movement knobs, run logs, metrics).
+- Multi-run export → analysis loop documented in README; experiment findings recorded in **`FUTURE_FEATURES.md` Lab notes** (no Playbook file this version).
+- Design: `design-docs/0.9.4-export-run-logs-design.html`.
+- Archive: `archive/index-0.9.4-run-logs.html` + MANIFEST; `VERSION` + badge.
 
-### Process
+### Notes (as shipped)
 
-- `VERSION` + badge → `0.9.4-run-logs`
-- `archive/index-0.9.4-run-logs.html` + MANIFEST
-- README / FUTURE_FEATURES / this log
-- Design ref: `design-docs/0.9.4-export-run-logs-design.html`
-
-### Next
-
-- Lab mode v1 (reuse trial shape)
-- Playbook / thematic presets
-- Optional: seed control later
-
-### Follow-up (same day)
-
-- Human exported multi-run JSON → Grok analysis; README “Run logs → analysis loop” + Playbook seed recipe (“pet special in a random desert”) noted in FUTURE_FEATURES.
-- Known small defects: knobs = end-of-run snapshot; Export last ≠ selected row; Clear does not reset run numbers (accepted for now).
-- **Fixed:** special `lifeSec` when dead — record `specialLifeTicksAtDeath` on starvation; export/detail use it (still under `0.9.4-run-logs`).
-
----
-
-## 2026-08-06 — polish on `0.9.4-run-logs` (no version bump)
-
-**Note:** Human rule — **do not bump VERSION without asking.** These are small adjustments under the same release label.
-
-### What changed
-
-- Left **Movement** rail: world **Seek accel**, **Wander amp**, **Max speed** (parity with Special).
-- **Help** modal expanded (full knob glossary + run logs).
-- Archive snapshot refreshed: `archive/index-0.9.4-run-logs.html` (still `0.9.4-run-logs`).
-
----
-
-## 2026-08-06 — close `0.9.4-run-logs` (docs / backlog only)
-
-**Version / Phase:** `0.9.4-run-logs` · Phase 0 · Survive — **release closed for this cycle**  
-**Track:** docs
-
-### Decisions
-
-- No Playbook file this version (human: Playbook is a **later** version).  
-- Register multi-run experiment findings under **`FUTURE_FEATURES.md` → Lab notes (from run logs)** for later Playbook / Lab / thematic presets.  
-- VERSION stays `0.9.4-run-logs` (do not invent 0.9.5 without asking).
-
-### Next product focus (backlog)
-
-- Lab mode v1 (default next engineering slice)  
-- Later: Playbook + thematic presets (harvest Lab notes)  
+- Knobs snapshot is end-of-run values; Export last is newest run (not necessarily selected row); Clear history does not reset run numbers.
