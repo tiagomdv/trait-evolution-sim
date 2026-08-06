@@ -563,3 +563,88 @@ Review of project docs against live code and Git history found these three factu
 ### How applied
 
 AI Track A under human request to open the PR after the review.
+
+---
+
+## 2026-08-06 — Backlog: park last-food memory (skip as next)
+
+**Version / Phase:** docs only · Phase 0 · Survive (`0.9.3-vision` still live)  
+**Track:** docs / product priority
+
+### Decision
+
+Human does **not** want last-food memory (`0.9.4-memory`) as the next milestone. Keep the idea in `FUTURE_FEATURES.md` as **maybe later** only (revisit if play feel or Phase 1 traits earn it). Forage treated as playable with Seek + special alone.
+
+### Docs updated
+
+- `FUTURE_FEATURES.md` — strategy order, next table, deferred-mechanics section for memory  
+- `README.md` — backlog pointer no longer leads with memory  
+- This log entry  
+
+No `VERSION` / `index.html` change.
+
+---
+
+## 2026-08-06 — `0.9.4-run-logs` (export desk)
+
+**Version / Phase:** `0.9.4-run-logs` · Phase 0 · Survive  
+**Track:** A (modal / export UI) + light data plumbing (knob + special snapshots; no agent behavior change)
+
+### What shipped
+
+- Evolved **All history…** → **Run logs…** large modal (Option A): core comparison columns + click row → detail panel.
+- Detail: outcomes, full **world knobs**, **special** (id, alive, customCount, override list).
+- On `recordCurrentRun`: snapshot `knobs` + `special` (+ `movementPolicy`, `runInitialAgents`).
+- **Export last / Export all** + **Copy last / Copy all** — pretty JSON envelope  
+  `{ "version", "exportedAt", "runs": [ … ] }` (same shape for last and all; last = one-element `runs`).
+- Filenames: `tes-run-N-0.9.4-run-logs.json` / `tes-session-Kruns-0.9.4-run-logs.json`.
+- Help copy updated; toast on copy/export.
+
+### Process
+
+- `VERSION` + badge → `0.9.4-run-logs`
+- `archive/index-0.9.4-run-logs.html` + MANIFEST
+- README / FUTURE_FEATURES / this log
+- Design ref: `design-docs/0.9.4-export-run-logs-design.html`
+
+### Next
+
+- Lab mode v1 (reuse trial shape)
+- Playbook / thematic presets
+- Optional: seed control later
+
+### Follow-up (same day)
+
+- Human exported multi-run JSON → Grok analysis; README “Run logs → analysis loop” + Playbook seed recipe (“pet special in a random desert”) noted in FUTURE_FEATURES.
+- Known small defects: knobs = end-of-run snapshot; Export last ≠ selected row; Clear does not reset run numbers (accepted for now).
+- **Fixed:** special `lifeSec` when dead — record `specialLifeTicksAtDeath` on starvation; export/detail use it (still under `0.9.4-run-logs`).
+
+---
+
+## 2026-08-06 — polish on `0.9.4-run-logs` (no version bump)
+
+**Note:** Human rule — **do not bump VERSION without asking.** These are small adjustments under the same release label.
+
+### What changed
+
+- Left **Movement** rail: world **Seek accel**, **Wander amp**, **Max speed** (parity with Special).
+- **Help** modal expanded (full knob glossary + run logs).
+- Archive snapshot refreshed: `archive/index-0.9.4-run-logs.html` (still `0.9.4-run-logs`).
+
+---
+
+## 2026-08-06 — close `0.9.4-run-logs` (docs / backlog only)
+
+**Version / Phase:** `0.9.4-run-logs` · Phase 0 · Survive — **release closed for this cycle**  
+**Track:** docs
+
+### Decisions
+
+- No Playbook file this version (human: Playbook is a **later** version).  
+- Register multi-run experiment findings under **`FUTURE_FEATURES.md` → Lab notes (from run logs)** for later Playbook / Lab / thematic presets.  
+- VERSION stays `0.9.4-run-logs` (do not invent 0.9.5 without asking).
+
+### Next product focus (backlog)
+
+- Lab mode v1 (default next engineering slice)  
+- Later: Playbook + thematic presets (harvest Lab notes)  

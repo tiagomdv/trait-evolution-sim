@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.9.4-export · Run logs design</title>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d1524;
+      --panel-2: #0a1220;
+      --border: #1e3a5f;
+      --text: #cbd5e1;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --good: #7dd3fc;
+      --warn: #fbbf24;
+      --ok: #4ade80;
+      --bad: #fb7185;
+      --pin: #818cf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.55;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+    .doc-hero {
+      background: linear-gradient(180deg, #0d1524 0%, #070b12 100%);
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      padding: 1.15rem 1.25rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .doc-hero h1 {
+      font-size: 1.55rem; font-weight: 650; color: #f1f5f9;
+      margin: 0.35rem 0 0.4rem; letter-spacing: -0.02em;
+    }
+    .doc-hero .lede { margin: 0; font-size: 0.9rem; color: #94a3b8; max-width: 56rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.15rem; }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .tag.b { background: #1e1b4b; color: #c4b5fd; border-color: #7c3aed; }
+    .tag.muted { background: #1e293b; color: #94a3b8; border-color: #334155; }
+
+    .doc-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+    @media (max-width: 860px) {
+      .doc-grid { grid-template-columns: 1fr; }
+      .toc { position: static !important; }
+    }
+    .toc {
+      position: sticky; top: 0.75rem; background: var(--panel);
+      border: 1px solid var(--border); border-radius: 0.65rem; padding: 0.75rem 0.85rem;
+    }
+    .toc .section-label {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.5rem;
+    }
+    .toc ol { margin: 0; padding-left: 1.1rem; font-size: 0.8rem; }
+    .toc li { margin: 0.28rem 0; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    .main { min-width: 0; }
+    h2 {
+      font-size: 1.12rem; font-weight: 650; color: #e2e8f0; margin: 0 0 0.65rem;
+      padding-bottom: 0.35rem; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.95rem; font-weight: 600; color: #bae6fd; margin: 1.1rem 0 0.4rem; }
+    h2 + h3 { margin-top: 0.65rem; }
+    p, li { font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.84rem; }
+    .section { margin-bottom: 1.85rem; scroll-margin-top: 0.75rem; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 0.75rem 0.9rem; margin: 0.55rem 0;
+    }
+    .card h3 { margin-top: 0; }
+    table.doc { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 0.45rem 0 0.7rem; }
+    table.doc th, table.doc td {
+      border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top;
+    }
+    table.doc th {
+      background: var(--panel-2); color: #94a3b8; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--good); font-size: 0.86em; }
+    .callout {
+      border-left: 3px solid var(--accent); background: var(--panel-2);
+      padding: 0.65rem 0.85rem; border-radius: 0 0.5rem 0.5rem 0; margin: 0.6rem 0;
+      font-size: 0.88rem;
+    }
+    .callout.good { border-left-color: var(--ok); }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.bad { border-left-color: var(--bad); }
+    ul.tight { margin: 0.35rem 0; padding-left: 1.2rem; }
+    ul.tight li { margin: 0.2rem 0; }
+
+    /* ---- Mock modal shell ---- */
+    .mock-stage {
+      background: #04070d;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.85rem;
+      margin: 0.6rem 0 0.9rem;
+    }
+    .mock-stage-label {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.5rem; font-weight: 600;
+    }
+    .mock-modal {
+      background: #0b1220;
+      border: 1px solid #2a4a72;
+      border-radius: 0.7rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+      overflow: hidden;
+      max-width: 100%;
+    }
+    .mock-modal.wide { /* demo of large window */ }
+    .mock-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #101a2c 0%, #0b1220 100%);
+    }
+    .mock-head h4 {
+      margin: 0; font-size: 0.95rem; font-weight: 650; color: #f1f5f9;
+    }
+    .mock-head .sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+    .mock-x {
+      width: 1.6rem; height: 1.6rem; border-radius: 0.35rem;
+      border: 1px solid var(--border); background: #0a1220; color: #94a3b8;
+      display: grid; place-items: center; font-size: 0.85rem; flex-shrink: 0;
+    }
+    .mock-toolbar {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
+      padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border);
+      background: #0a1220;
+    }
+    .mock-btn {
+      font-size: 11px; padding: 0.28rem 0.55rem; border-radius: 0.35rem;
+      border: 1px solid #2a4a72; background: #0f1c30; color: #bae6fd;
+      white-space: nowrap;
+    }
+    .mock-btn.primary { border-color: #0ea5e9; background: #0c4a6e; color: #e0f2fe; }
+    .mock-btn.ghost { color: #94a3b8; border-color: #334155; }
+    .mock-btn:disabled, .mock-btn.dim { opacity: 0.45; }
+    .mock-meta {
+      font-size: 11px; color: var(--muted); margin-left: auto;
+    }
+    .mock-body { padding: 0.55rem 0.75rem 0.75rem; }
+    .mock-split {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 0.65rem;
+      min-height: 200px;
+    }
+    @media (max-width: 720px) {
+      .mock-split { grid-template-columns: 1fr; }
+    }
+    .mock-table-wrap {
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 0.45rem;
+      max-height: 220px;
+      background: #070d16;
+    }
+    .mock-table-wrap.tall { max-height: 260px; }
+    .mock-table-wrap.very-wide-hint {
+      position: relative;
+    }
+    .mock-table {
+      border-collapse: collapse;
+      font-size: 11px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      white-space: nowrap;
+    }
+    .mock-table th, .mock-table td {
+      padding: 0.32rem 0.45rem;
+      border-bottom: 1px solid #152238;
+      border-right: 1px solid #122033;
+      text-align: right;
+    }
+    .mock-table th {
+      position: sticky; top: 0;
+      background: #0f1a2c;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      z-index: 1;
+    }
+    .mock-table td:first-child, .mock-table th:first-child { text-align: left; }
+    .mock-table tr.sel { background: rgba(56, 189, 248, 0.12); }
+    .mock-table tr:hover { background: rgba(56, 189, 248, 0.06); cursor: default; }
+    .mock-table .left { text-align: left; }
+    .mock-table .pre-bal { color: #60a5fa; }
+    .mock-table .pre-pun { color: #f87171; }
+    .mock-table .pre-len { color: #4ade80; }
+    .mock-table .pol-seek { color: #7dd3fc; }
+    .mock-table .pol-rand { color: #c4b5fd; }
+    .mock-table .bad { color: var(--bad); }
+    .mock-table .ok { color: var(--ok); }
+
+    .detail-panel {
+      border: 1px solid var(--border);
+      border-radius: 0.45rem;
+      background: #070d16;
+      padding: 0.5rem 0.6rem;
+      font-size: 11px;
+    }
+    .detail-panel .d-title {
+      font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.35rem;
+    }
+    .detail-panel .d-run {
+      font-size: 12px; color: #e2e8f0; font-weight: 600; margin-bottom: 0.45rem;
+    }
+    .kv { display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 0.5rem; }
+    .kv span:nth-child(odd) { color: var(--muted); }
+    .kv span:nth-child(even) {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--good); text-align: right;
+    }
+    .detail-panel .hint {
+      margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid #152238;
+      color: var(--muted); font-size: 10px; line-height: 1.4;
+    }
+
+    .scroll-hint {
+      position: absolute; right: 0.4rem; top: 50%; transform: translateY(-50%);
+      font-size: 10px; color: #fde68a; background: rgba(66, 32, 6, 0.92);
+      border: 1px solid #d97706; border-radius: 0.35rem; padding: 0.25rem 0.4rem;
+      pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .opt-tabs {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0 0.75rem;
+    }
+    .opt-tab {
+      font-size: 12px; padding: 0.4rem 0.7rem; border-radius: 0.45rem;
+      border: 1px solid var(--border); background: var(--panel-2); color: #94a3b8;
+      cursor: pointer;
+    }
+    .opt-tab:hover { border-color: #2a4a72; color: #cbd5e1; }
+    .opt-tab.active {
+      border-color: #0ea5e9; background: #0c4a6e; color: #e0f2fe; font-weight: 600;
+    }
+    .opt-panel { display: none; }
+    .opt-panel.active { display: block; }
+
+    .compare-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55rem;
+      margin: 0.6rem 0;
+    }
+    @media (max-width: 900px) { .compare-3 { grid-template-columns: 1fr; } }
+    .compare-card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.55rem; padding: 0.65rem 0.7rem; font-size: 0.82rem;
+    }
+    .compare-card h4 { margin: 0 0 0.35rem; font-size: 0.88rem; color: #e2e8f0; }
+    .compare-card .badge {
+      display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 999px;
+      margin-bottom: 0.35rem;
+    }
+    .badge-rec { background: #052e16; color: #bbf7d0; border: 1px solid #22c55e; }
+    .badge-no { background: #450a0a; color: #fecaca; border: 1px solid #ef4444; }
+    .badge-later { background: #422006; color: #fde68a; border: 1px solid #d97706; }
+
+    .tiny-diagram {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px; line-height: 1.45; color: #94a3b8;
+      background: #04070d; border: 1px solid var(--border); border-radius: 0.45rem;
+      padding: 0.65rem 0.75rem; overflow-x: auto; white-space: pre;
+      margin: 0.5rem 0;
+    }
+    .tiny-diagram .hl { color: var(--accent); }
+    .tiny-diagram .ok { color: var(--ok); }
+    .tiny-diagram .warn { color: var(--warn); }
+
+    .json-sample {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px; line-height: 1.45; color: #a5b4c8;
+      background: #04070d; border: 1px solid var(--border); border-radius: 0.45rem;
+      padding: 0.65rem 0.75rem; overflow-x: auto;
+      margin: 0.5rem 0; max-height: 280px;
+    }
+    .json-sample .k { color: #7dd3fc; }
+    .json-sample .s { color: #86efac; }
+    .json-sample .n { color: #fbbf24; }
+    .json-sample .c { color: #64748b; }
+
+    .checklist { list-style: none; padding: 0; margin: 0.4rem 0; }
+    .checklist li {
+      padding: 0.35rem 0.5rem; margin: 0.25rem 0;
+      background: var(--panel-2); border: 1px solid var(--border);
+      border-radius: 0.4rem; font-size: 0.85rem;
+    }
+    .checklist li::before { content: "☐ "; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="doc-hero">
+      <div class="meta-row">
+        <span class="tag good">Shipped as 0.9.4-run-logs</span>
+        <span class="tag b">Track A + light data plumbing</span>
+        <span class="tag">Option A + envelope JSON B</span>
+        <span class="tag warn">Phase 0 · Survive</span>
+      </div>
+      <h1>Run logs modal · export last / export all</h1>
+      <p class="lede">
+        Large modal that shows finished-run science in columns, with download/copy export.
+        <strong>Implemented:</strong> Option A, special in detail + JSON, envelope
+        <code>{ version, exportedAt, runs }</code>, entry renamed Run logs….
+        Mockups below remain for A/B/C comparison.
+      </p>
+    </header>
+
+    <div class="doc-grid">
+      <nav class="toc" aria-label="Contents">
+        <div class="section-label">Contents</div>
+        <ol>
+          <li><a href="#goal">Goal</a></li>
+          <li><a href="#abc-one-line">A vs B vs C (one line)</a></li>
+          <li><a href="#demo">Interactive mockups</a></li>
+          <li><a href="#option-a">Option A detail</a></li>
+          <li><a href="#option-b">Option B detail</a></li>
+          <li><a href="#option-c">Option C detail</a></li>
+          <li><a href="#export">Export + cheap extras</a></li>
+          <li><a href="#schema">JSON schema (v1)</a></li>
+          <li><a href="#entry">Entry point &amp; chrome</a></li>
+          <li><a href="#scope">Scope / non-goals</a></li>
+          <li><a href="#decide">Decision checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="main">
+
+        <!-- GOAL -->
+        <section class="section" id="goal">
+          <h2>1. Goal</h2>
+          <p>
+            Replace (or grow) the slim <strong>All history…</strong> experience into a
+            <strong>Run logs</strong> desk:
+          </p>
+          <ul class="tight">
+            <li>See many finished runs at once in a <strong>wide modal</strong></li>
+            <li>Compare outcomes <em>and</em> (where useful) knobs by eye</li>
+            <li><strong>Export last</strong> / <strong>Export all</strong> as JSON download</li>
+            <li>Cheap extras: <strong>Copy last</strong> / <strong>Copy all</strong> to clipboard; sensible filenames</li>
+          </ul>
+          <div class="callout good">
+            <strong>Important split:</strong> what you <em>see in the table</em> can be compact.
+            What you <em>export in the file</em> should still include the full knob snapshot + metrics.
+            Options A/B/C only change the <strong>on-screen table layout</strong>, not the richness of the JSON.
+          </div>
+        </section>
+
+        <!-- ONE LINE -->
+        <section class="section" id="abc-one-line">
+          <h2>2. A vs B vs C in one sentence each</h2>
+          <div class="compare-3">
+            <div class="compare-card">
+              <span class="badge badge-rec">Recommended v1</span>
+              <h4>Option A — Core columns + detail</h4>
+              <p class="muted" style="margin:0">
+                Table shows ~10 comparison columns. Click a row → side (or bottom) panel lists
+                <em>all</em> knobs for that run.
+              </p>
+            </div>
+            <div class="compare-card">
+              <span class="badge badge-no">Usually avoid</span>
+              <h4>Option B — Every knob is a column</h4>
+              <p class="muted" style="margin:0">
+                One huge spreadsheet: hunger rate, sense, seek, eat knobs… all as columns.
+                Horizontal scroll forever.
+              </p>
+            </div>
+            <div class="compare-card">
+              <span class="badge badge-later">Later polish</span>
+              <h4>Option C — Toggle Wide / Compact</h4>
+              <p class="muted" style="margin:0">
+                Same modal can switch: Compact ≈ A’s table only; Wide ≈ B’s full columns.
+                Extra UI work.
+              </p>
+            </div>
+          </div>
+
+          <div class="tiny-diagram"><span class="hl">Same data under the hood</span> (knobs + metrics stored per run)
+
+<span class="ok">Option A</span>  [ # Pre Pol N Dur Long Dead … ]  +  [ detail panel: all knobs ]
+<span class="warn">Option B</span>  [ # Pre Pol N Dur … hungerRate senseRadius seekStrength … many more → scroll → ]
+<span class="hl">Option C</span>  [ Compact | Wide ] toggle switches between A-like and B-like tables</div>
+        </section>
+
+        <!-- DEMO -->
+        <section class="section" id="demo">
+          <h2>3. Interactive mockups — flip between A / B / C</h2>
+          <p class="muted">
+            Fake session data (3 runs). Click the tabs. This is a design demo only — not the live sim.
+          </p>
+
+          <div class="opt-tabs" role="tablist">
+            <button type="button" class="opt-tab active" data-opt="a" role="tab" aria-selected="true">Option A · Core + detail</button>
+            <button type="button" class="opt-tab" data-opt="b" role="tab" aria-selected="false">Option B · All columns</button>
+            <button type="button" class="opt-tab" data-opt="c" role="tab" aria-selected="false">Option C · Toggle</button>
+          </div>
+
+          <!-- OPTION A MOCK -->
+          <div class="opt-panel active" id="panel-a" data-panel="a">
+            <div class="mock-stage">
+              <div class="mock-stage-label">Mock · Option A — large Run logs modal</div>
+              <div class="mock-modal">
+                <div class="mock-head">
+                  <div>
+                    <h4>Run logs</h4>
+                    <div class="sub">Session science · knobs + outcomes · export station</div>
+                  </div>
+                  <div class="mock-x" title="Close">×</div>
+                </div>
+                <div class="mock-toolbar">
+                  <span class="mock-btn primary">Export last</span>
+                  <span class="mock-btn primary">Export all</span>
+                  <span class="mock-btn">Copy last</span>
+                  <span class="mock-btn">Copy all</span>
+                  <span class="mock-meta">3 finished runs · newest first · v0.9.3-vision</span>
+                </div>
+                <div class="mock-body">
+                  <div class="mock-split">
+                    <div class="mock-table-wrap tall">
+                      <table class="mock-table" id="table-a">
+                        <thead>
+                          <tr>
+                            <th class="left">#</th>
+                            <th class="left">Pre</th>
+                            <th class="left">Pol</th>
+                            <th>N</th>
+                            <th>Dur</th>
+                            <th>Long</th>
+                            <th>Dead</th>
+                            <th>Fin</th>
+                            <th>Hung</th>
+                            <th>Food</th>
+                            <th class="left">End</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="sel" data-run="12">
+                            <td class="left">12</td>
+                            <td class="left pre-bal">bal</td>
+                            <td class="left pol-seek">seek</td>
+                            <td>40</td><td>85</td><td>72</td><td class="bad">38</td><td>2</td><td>14.2</td><td>1.1</td>
+                            <td class="left">extinct</td>
+                          </tr>
+                          <tr data-run="11">
+                            <td class="left">11</td>
+                            <td class="left pre-bal">bal</td>
+                            <td class="left pol-rand">rand</td>
+                            <td>40</td><td>41</td><td>38</td><td class="bad">40</td><td>0</td><td>18.6</td><td>0.4</td>
+                            <td class="left">extinct</td>
+                          </tr>
+                          <tr data-run="10">
+                            <td class="left">10</td>
+                            <td class="left pre-pun">pun</td>
+                            <td class="left pol-seek">seek</td>
+                            <td>40</td><td>29</td><td>27</td><td class="bad">40</td><td>0</td><td>19.1</td><td>0.2</td>
+                            <td class="left">extinct</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <aside class="detail-panel" id="detail-a">
+                      <div class="d-title">Selected run · full knobs</div>
+                      <div class="d-run">Run #12 · balanced · seek</div>
+                      <div class="kv" id="kv-a">
+                        <span>hungerRate</span><span>0.065</span>
+                        <span>foodSpawnInterval</span><span>10</span>
+                        <span>senseRadius</span><span>180</span>
+                        <span>seekStrength</span><span>1.00</span>
+                        <span>seekAccel</span><span>0.35</span>
+                        <span>wanderAmp</span><span>0.50</span>
+                        <span>maxSpeed</span><span>2.00</span>
+                        <span>selfConsumeRelief</span><span>1.00</span>
+                        <span>groundEatRelief</span><span>1.70</span>
+                        <span>selfConsumeThreshold</span><span>12</span>
+                        <span>selfConsumeAmount</span><span>0.75</span>
+                      </div>
+                      <div class="hint">Click another row in the table (demo). Export still dumps this full snapshot even if the table is compact.</div>
+                    </aside>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="callout">
+              <strong>What you’re looking at:</strong> the table is short enough to scan left→right without losing your place.
+              The <em>right panel</em> is where the long list of knobs lives — only for the selected run.
+            </div>
+          </div>
+
+          <!-- OPTION B MOCK -->
+          <div class="opt-panel" id="panel-b" data-panel="b">
+            <div class="mock-stage">
+              <div class="mock-stage-label">Mock · Option B — same modal, every knob as a column</div>
+              <div class="mock-modal">
+                <div class="mock-head">
+                  <div>
+                    <h4>Run logs</h4>
+                    <div class="sub">All knobs as columns · heavy horizontal scroll</div>
+                  </div>
+                  <div class="mock-x">×</div>
+                </div>
+                <div class="mock-toolbar">
+                  <span class="mock-btn primary">Export last</span>
+                  <span class="mock-btn primary">Export all</span>
+                  <span class="mock-btn">Copy last</span>
+                  <span class="mock-btn">Copy all</span>
+                  <span class="mock-meta">3 finished runs · scroll → for more knobs</span>
+                </div>
+                <div class="mock-body">
+                  <div class="mock-table-wrap tall very-wide-hint" style="position:relative">
+                    <span class="scroll-hint">scroll →</span>
+                    <table class="mock-table">
+                      <thead>
+                        <tr>
+                          <th class="left">#</th>
+                          <th class="left">Pre</th>
+                          <th class="left">Pol</th>
+                          <th>N</th>
+                          <th>Dur</th>
+                          <th>Long</th>
+                          <th>Dead</th>
+                          <th>Fin</th>
+                          <th>Hung</th>
+                          <th>Food</th>
+                          <th class="left">End</th>
+                          <th>hRate</th>
+                          <th>spawn</th>
+                          <th>sense</th>
+                          <th>seekStr</th>
+                          <th>seekAcc</th>
+                          <th>wander</th>
+                          <th>maxSpd</th>
+                          <th>scRel</th>
+                          <th>gEat</th>
+                          <th>scThr</th>
+                          <th>scAmt</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="left">12</td>
+                          <td class="left pre-bal">bal</td>
+                          <td class="left pol-seek">seek</td>
+                          <td>40</td><td>85</td><td>72</td><td class="bad">38</td><td>2</td><td>14.2</td><td>1.1</td>
+                          <td class="left">ext</td>
+                          <td>0.065</td><td>10</td><td>180</td><td>1.00</td><td>0.35</td><td>0.50</td><td>2.00</td>
+                          <td>1.00</td><td>1.70</td><td>12</td><td>0.75</td>
+                        </tr>
+                        <tr>
+                          <td class="left">11</td>
+                          <td class="left pre-bal">bal</td>
+                          <td class="left pol-rand">rand</td>
+                          <td>40</td><td>41</td><td>38</td><td class="bad">40</td><td>0</td><td>18.6</td><td>0.4</td>
+                          <td class="left">ext</td>
+                          <td>0.065</td><td>10</td><td>180</td><td>1.00</td><td>0.35</td><td>0.50</td><td>2.00</td>
+                          <td>1.00</td><td>1.70</td><td>12</td><td>0.75</td>
+                        </tr>
+                        <tr>
+                          <td class="left">10</td>
+                          <td class="left pre-pun">pun</td>
+                          <td class="left pol-seek">seek</td>
+                          <td>40</td><td>29</td><td>27</td><td class="bad">40</td><td>0</td><td>19.1</td><td>0.2</td>
+                          <td class="left">ext</td>
+                          <td>0.090</td><td>16</td><td>180</td><td>1.00</td><td>0.35</td><td>0.50</td><td>2.00</td>
+                          <td>0.80</td><td>1.40</td><td>14</td><td>0.60</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="muted" style="margin:0.45rem 0 0;font-size:11px">
+                    No detail panel — everything is in the grid. Fine for power-spreadsheet fans; hard to read on a laptop.
+                    (In a real browser you’d drag the scrollbar under the table far to the right.)
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="callout warn">
+              <strong>Same numbers as A</strong> — just laid out as ~20 columns. Comparing Seek vs Random on Dur/Long is easy;
+              reading <code>selfConsumeThreshold</code> while also tracking deaths means constant horizontal panning.
+            </div>
+          </div>
+
+          <!-- OPTION C MOCK -->
+          <div class="opt-panel" id="panel-c" data-panel="c">
+            <div class="mock-stage">
+              <div class="mock-stage-label">Mock · Option C — toolbar toggle Compact / Wide</div>
+              <div class="mock-modal">
+                <div class="mock-head">
+                  <div>
+                    <h4>Run logs</h4>
+                    <div class="sub">One modal · two table densities</div>
+                  </div>
+                  <div class="mock-x">×</div>
+                </div>
+                <div class="mock-toolbar">
+                  <span class="mock-btn primary">Export last</span>
+                  <span class="mock-btn primary">Export all</span>
+                  <span class="mock-btn">Copy last</span>
+                  <span class="mock-btn">Copy all</span>
+                  <span style="width:1px;height:1.1rem;background:#1e3a5f;margin:0 0.15rem"></span>
+                  <span class="mock-btn primary" id="c-compact-btn">Compact</span>
+                  <span class="mock-btn ghost" id="c-wide-btn">Wide</span>
+                  <span class="mock-meta">Toggle changes table only · export always full</span>
+                </div>
+                <div class="mock-body">
+                  <div id="c-view-compact">
+                    <p class="muted" style="margin:0 0 0.4rem;font-size:11px"><strong style="color:#bae6fd">Compact mode</strong> = Option A table (detail panel optional; shown collapsed here for space).</p>
+                    <div class="mock-table-wrap">
+                      <table class="mock-table">
+                        <thead>
+                          <tr>
+                            <th class="left">#</th><th class="left">Pre</th><th class="left">Pol</th>
+                            <th>N</th><th>Dur</th><th>Long</th><th>Dead</th><th>Hung</th><th class="left">End</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="left">12</td><td class="left pre-bal">bal</td><td class="left pol-seek">seek</td>
+                            <td>40</td><td>85</td><td>72</td><td class="bad">38</td><td>14.2</td><td class="left">extinct</td>
+                          </tr>
+                          <tr>
+                            <td class="left">11</td><td class="left pre-bal">bal</td><td class="left pol-rand">rand</td>
+                            <td>40</td><td>41</td><td>38</td><td class="bad">40</td><td>18.6</td><td class="left">extinct</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div id="c-view-wide" hidden>
+                    <p class="muted" style="margin:0 0 0.4rem;font-size:11px"><strong style="color:#fde68a">Wide mode</strong> = Option B (all knobs as columns).</p>
+                    <div class="mock-table-wrap very-wide-hint" style="position:relative">
+                      <span class="scroll-hint">scroll →</span>
+                      <table class="mock-table">
+                        <thead>
+                          <tr>
+                            <th class="left">#</th><th class="left">Pol</th><th>Dur</th><th>Long</th><th>Dead</th>
+                            <th>hRate</th><th>spawn</th><th>sense</th><th>seekStr</th><th>seekAcc</th>
+                            <th>wander</th><th>maxSpd</th><th>scRel</th><th>gEat</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="left">12</td><td class="left pol-seek">seek</td><td>85</td><td>72</td><td class="bad">38</td>
+                            <td>0.065</td><td>10</td><td>180</td><td>1.00</td><td>0.35</td><td>0.50</td><td>2.00</td><td>1.00</td><td>1.70</td>
+                          </tr>
+                          <tr>
+                            <td class="left">11</td><td class="left pol-rand">rand</td><td>41</td><td>38</td><td class="bad">40</td>
+                            <td>0.065</td><td>10</td><td>180</td><td>1.00</td><td>0.35</td><td>0.50</td><td>2.00</td><td>1.00</td><td>1.70</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="callout">
+              <strong>Option C</strong> is “ship A, then add B as a mode” (or build both up front).
+              Best if you truly need spreadsheet-wide comparison sometimes — not required for v1 export.
+            </div>
+            <p class="muted">In this demo, click <strong>Compact</strong> / <strong>Wide</strong> in the mock toolbar above.</p>
+          </div>
+        </section>
+
+        <!-- A -->
+        <section class="section" id="option-a">
+          <h2>4. Option A — Core columns + row detail (recommended)</h2>
+          <h3>How it works</h3>
+          <ol>
+            <li>Table shows only columns you need for <em>quick A/B</em> (policy, preset, survival outcomes).</li>
+            <li>Click a row → it highlights → detail panel shows every knob for that run.</li>
+            <li>Export always writes full knobs + metrics to JSON (not just visible columns).</li>
+          </ol>
+          <h3>Core columns (v1 proposal)</h3>
+          <table class="doc">
+            <thead>
+              <tr><th>Column</th><th>Meaning</th><th>Why in the grid</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>#</code></td><td>Run number</td><td>Identity</td></tr>
+              <tr><td><code>Pre</code></td><td>lenient / balanced / punishing / custom</td><td>Difficulty ladder</td></tr>
+              <tr><td><code>Pol</code></td><td>seek / random</td><td>Main behavioral A/B</td></tr>
+              <tr><td><code>N</code></td><td>Initial agents</td><td>Setup size</td></tr>
+              <tr><td><code>Dur</code></td><td>Run duration (s)</td><td>How long the world lasted</td></tr>
+              <tr><td><code>Long</code></td><td>Longest agent life (s)</td><td>Lucky survivor signal</td></tr>
+              <tr><td><code>Dead</code></td><td>Starvation deaths</td><td>Hardness</td></tr>
+              <tr><td><code>Fin</code></td><td>Final population</td><td>Remnant or wipe</td></tr>
+              <tr><td><code>Hung</code> / <code>Food</code></td><td>Run averages</td><td>Feel of scarcity</td></tr>
+              <tr><td><code>End</code></td><td>extinction / reset</td><td>How the run closed</td></tr>
+            </tbody>
+          </table>
+          <h3>Detail panel fields</h3>
+          <p class="muted">Everything else: hunger + eat advanced + sense/seek/wander/maxSpeed + food spawn + version string. Optional later: special overrides block.</p>
+          <h3>Pros / cons</h3>
+          <table class="doc">
+            <thead><tr><th>Pros</th><th>Cons</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>
+                  <ul class="tight">
+                    <li>Readable on laptop</li>
+                    <li>Matches “scan then drill in”</li>
+                    <li>Easy Track A layout</li>
+                    <li>Detail can grow without wrecking the table</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul class="tight">
+                    <li>Can’t eyeball 3 runs’ <code>senseRadius</code> side-by-side without clicking each</li>
+                    <li>Needs click affordance (selected row style)</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- B -->
+        <section class="section" id="option-b">
+          <h2>5. Option B — Every knob is a column</h2>
+          <h3>How it works</h3>
+          <p>One table. Outcomes <em>and</em> every parameter each get a column. No detail panel required.</p>
+          <h3>Pros / cons</h3>
+          <table class="doc">
+            <thead><tr><th>Pros</th><th>Cons</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>
+                  <ul class="tight">
+                    <li>True spreadsheet: sort/compare any knob across runs in theory</li>
+                    <li>One mental model (“it’s all rows”)</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul class="tight">
+                    <li>Horizontal scroll hell on real screens</li>
+                    <li>Tiny truncated headers</li>
+                    <li>Most knobs identical across runs (noise)</li>
+                    <li>Harder to style; more DOM</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout bad">
+            <strong>Usually not v1.</strong> Export JSON already gives you the spreadsheet offline (paste into Sheets/Excel).
+            The in-app UI does not need to be Excel.
+          </div>
+        </section>
+
+        <!-- C -->
+        <section class="section" id="option-c">
+          <h2>6. Option C — Compact / Wide toggle</h2>
+          <h3>How it works</h3>
+          <p>
+            Toolbar control: <strong>Compact</strong> (A-like core columns; detail optional) vs
+            <strong>Wide</strong> (B-like full columns). Export buttons unchanged.
+          </p>
+          <h3>Pros / cons</h3>
+          <table class="doc">
+            <thead><tr><th>Pros</th><th>Cons</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>
+                  <ul class="tight">
+                    <li>Best of both for power users</li>
+                    <li>Can ship Compact first, Wide later</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul class="tight">
+                    <li>Two table renderers to maintain</li>
+                    <li>Extra chrome + state</li>
+                    <li>Wide mode still has B’s readability problems</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout">
+            <strong>Process suggestion:</strong> implement <strong>A for 0.9.4-export</strong>.
+            If you later find yourself exporting just to compare one knob in a sheet every day, add Wide (C) as a follow-up — don’t block export on it.
+          </div>
+        </section>
+
+        <!-- EXPORT -->
+        <section class="section" id="export">
+          <h2>7. Export actions + cheap extras</h2>
+          <table class="doc">
+            <thead>
+              <tr><th>Control</th><th>Behavior</th><th>v1?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Export last</strong></td>
+                <td>Download one JSON object (newest finished run). Filename e.g. <code>tes-run-12-0.9.3-vision.json</code></td>
+                <td class="mono" style="color:var(--ok)">yes</td>
+              </tr>
+              <tr>
+                <td><strong>Export all</strong></td>
+                <td>Download JSON array of all session runs. Filename e.g. <code>tes-session-3runs-0.9.3-vision.json</code></td>
+                <td class="mono" style="color:var(--ok)">yes</td>
+              </tr>
+              <tr>
+                <td><strong>Copy last</strong></td>
+                <td>Same payload as Export last → clipboard (toast: “Copied”)</td>
+                <td class="mono" style="color:var(--ok)">yes · cheap</td>
+              </tr>
+              <tr>
+                <td><strong>Copy all</strong></td>
+                <td>Same payload as Export all → clipboard</td>
+                <td class="mono" style="color:var(--ok)">yes · cheap</td>
+              </tr>
+              <tr>
+                <td>Disable when empty</td>
+                <td>If <code>runHistory.length === 0</code>, export/copy buttons disabled or no-op with hint</td>
+                <td class="mono" style="color:var(--ok)">yes</td>
+              </tr>
+              <tr>
+                <td>Export selected row</td>
+                <td>Optional: export the highlighted run instead of “last”</td>
+                <td class="mono" style="color:var(--muted)">nice later</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout good">
+            Prefer <strong>pretty-printed JSON</strong> (<code>JSON.stringify(data, null, 2)</code>) so pasting into notes is human-readable.
+          </div>
+        </section>
+
+        <!-- SCHEMA -->
+        <section class="section" id="schema">
+          <h2>8. JSON schema (v1 sketch)</h2>
+          <p class="muted">Illustrative. Field names can match existing <code>recordCurrentRun()</code> keys where possible. Lab can reuse this row shape later.</p>
+          <div class="json-sample">{  "version": <span class="s">"0.9.3-vision"</span>,
+  <span class="k">"exportedAt"</span>: <span class="s">"2026-08-06T15:00:00.000Z"</span>,
+  <span class="k">"run"</span>: <span class="n">12</span>,
+  <span class="k">"knobs"</span>: {
+    <span class="k">"preset"</span>: <span class="s">"balanced"</span>,
+    <span class="k">"movementPolicy"</span>: <span class="s">"seek"</span>,
+    <span class="k">"numAgents"</span>: <span class="n">40</span>,
+    <span class="k">"hungerRate"</span>: <span class="n">0.065</span>,
+    <span class="k">"foodSpawnInterval"</span>: <span class="n">10</span>,
+    <span class="k">"senseRadius"</span>: <span class="n">180</span>,
+    <span class="k">"seekStrength"</span>: <span class="n">1.0</span>,
+    <span class="k">"seekAccel"</span>: <span class="n">0.35</span>,
+    <span class="k">"wanderAmp"</span>: <span class="n">0.5</span>,
+    <span class="k">"maxSpeed"</span>: <span class="n">2.0</span>,
+    <span class="k">"selfConsumeRelief"</span>: <span class="n">1.0</span>,
+    <span class="k">"groundEatRelief"</span>: <span class="n">1.7</span>,
+    <span class="k">"selfConsumeThreshold"</span>: <span class="n">12</span>,
+    <span class="k">"selfConsumeAmount"</span>: <span class="n">0.75</span>
+  },
+  <span class="k">"outcomes"</span>: {
+    <span class="k">"durationSec"</span>: <span class="n">85</span>,
+    <span class="k">"longestSec"</span>: <span class="n">72</span>,
+    <span class="k">"finalPop"</span>: <span class="n">2</span>,
+    <span class="k">"deaths"</span>: <span class="n">38</span>,
+    <span class="k">"avgPop"</span>: <span class="n">18</span>,
+    <span class="k">"avgHunger"</span>: <span class="n">14.2</span>,
+    <span class="k">"avgFood"</span>: <span class="n">1.1</span>,
+    <span class="k">"endedBy"</span>: <span class="s">"extinction"</span>
+  }
+}</div>
+          <p>
+            <strong>Export all</strong> = JSON array of these objects (or <code>{ "version", "runs": [ … ] }</code> wrapper — human picks at implement time; wrapper is slightly nicer for metadata).
+          </p>
+          <div class="callout warn">
+            <strong>Data plumbing required:</strong> today’s history rows do not store full knobs.
+            On <code>recordCurrentRun()</code>, snapshot live world params into the history object (no agent behavior change).
+          </div>
+        </section>
+
+        <!-- ENTRY -->
+        <section class="section" id="entry">
+          <h2>9. Entry point &amp; chrome</h2>
+          <table class="doc">
+            <thead><tr><th>Choice</th><th>Recommendation</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Open from</td>
+                <td>Grow <strong>All history…</strong> into <strong>Run logs…</strong> (same place in History dock). Avoid a second nearly identical modal.</td>
+              </tr>
+              <tr>
+                <td>Modal size</td>
+                <td>Large: ~min(960px, 92vw) wide · ~min(70vh, 640px) tall body; table scrolls inside.</td>
+              </tr>
+              <tr>
+                <td>History dock</td>
+                <td>Keep last-3 compact strip for glance; full science lives in the modal.</td>
+              </tr>
+              <tr>
+                <td>Special agent knobs</td>
+                <td>Out of v1 table unless cheap; optional block in detail later.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SCOPE -->
+        <section class="section" id="scope">
+          <h2>10. Scope / non-goals</h2>
+          <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:0.65rem">
+            <div class="card">
+              <h3 style="color:var(--ok)">In scope (0.9.4-export)</h3>
+              <ul class="tight">
+                <li>Large Run logs modal</li>
+                <li>Option A layout (unless human picks B/C)</li>
+                <li>Knob snapshot on record</li>
+                <li>Export last / all (download)</li>
+                <li>Copy last / all (clipboard)</li>
+                <li>VERSION + archive + docs ritual</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3 style="color:var(--bad)">Out of scope</h3>
+              <ul class="tight">
+                <li>Lab mode / N headless runs</li>
+                <li>Seeded RNG (can follow if wanted)</li>
+                <li>CSV (JSON first)</li>
+                <li>Server / cloud save</li>
+                <li>Sorting/filtering spreadsheet features</li>
+                <li>Memory mechanic</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- DECIDE -->
+        <section class="section" id="decide">
+          <h2>11. Decision checklist (for the human)</h2>
+          <ul class="checklist">
+            <li>Pick layout: <strong>A</strong> (recommended) / B / C</li>
+            <li>Confirm cheap extras: Copy last + Copy all = yes</li>
+            <li>Confirm entry: evolve All history… → Run logs…</li>
+            <li>Confirm JSON: pretty-print; single object vs array for “all”</li>
+            <li>Special overrides in v1 detail? default no</li>
+            <li>Codename: <code>0.9.4-export</code> (or <code>0.9.4-run-logs</code>)</li>
+          </ul>
+          <div class="callout good">
+            <strong>Default recommendation if undecided:</strong> Option <strong>A</strong> + Export last/all + Copy last/all + grow All history into Run logs.
+            Ship as Track A with light history-record plumbing. No full design rework needed beyond this doc.
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // Tabs A/B/C
+      const tabs = document.querySelectorAll('.opt-tab');
+      const panels = document.querySelectorAll('.opt-panel');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          const id = tab.getAttribute('data-opt');
+          tabs.forEach(function (t) {
+            t.classList.toggle('active', t === tab);
+            t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+          });
+          panels.forEach(function (p) {
+            p.classList.toggle('active', p.getAttribute('data-panel') === id);
+          });
+        });
+      });
+
+      // Option A: row select updates detail
+      const runs = {
+        '12': {
+          title: 'Run #12 · balanced · seek',
+          kv: [
+            ['hungerRate', '0.065'], ['foodSpawnInterval', '10'], ['senseRadius', '180'],
+            ['seekStrength', '1.00'], ['seekAccel', '0.35'], ['wanderAmp', '0.50'],
+            ['maxSpeed', '2.00'], ['selfConsumeRelief', '1.00'], ['groundEatRelief', '1.70'],
+            ['selfConsumeThreshold', '12'], ['selfConsumeAmount', '0.75']
+          ]
+        },
+        '11': {
+          title: 'Run #11 · balanced · random',
+          kv: [
+            ['hungerRate', '0.065'], ['foodSpawnInterval', '10'], ['senseRadius', '180'],
+            ['seekStrength', '1.00'], ['seekAccel', '0.35'], ['wanderAmp', '0.50'],
+            ['maxSpeed', '2.00'], ['selfConsumeRelief', '1.00'], ['groundEatRelief', '1.70'],
+            ['selfConsumeThreshold', '12'], ['selfConsumeAmount', '0.75']
+          ]
+        },
+        '10': {
+          title: 'Run #10 · punishing · seek',
+          kv: [
+            ['hungerRate', '0.090'], ['foodSpawnInterval', '16'], ['senseRadius', '180'],
+            ['seekStrength', '1.00'], ['seekAccel', '0.35'], ['wanderAmp', '0.50'],
+            ['maxSpeed', '2.00'], ['selfConsumeRelief', '0.80'], ['groundEatRelief', '1.40'],
+            ['selfConsumeThreshold', '14'], ['selfConsumeAmount', '0.60']
+          ]
+        }
+      };
+      const tableA = document.getElementById('table-a');
+      const kvA = document.getElementById('kv-a');
+      const dRun = document.querySelector('#detail-a .d-run');
+      if (tableA) {
+        tableA.querySelectorAll('tbody tr').forEach(function (tr) {
+          tr.addEventListener('click', function () {
+            tableA.querySelectorAll('tr').forEach(function (r) { r.classList.remove('sel'); });
+            tr.classList.add('sel');
+            const run = tr.getAttribute('data-run');
+            const data = runs[run];
+            if (!data) return;
+            dRun.textContent = data.title;
+            kvA.innerHTML = '';
+            data.kv.forEach(function (pair) {
+              const s1 = document.createElement('span');
+              s1.textContent = pair[0];
+              const s2 = document.createElement('span');
+              s2.textContent = pair[1];
+              kvA.appendChild(s1);
+              kvA.appendChild(s2);
+            });
+          });
+        });
+      }
+
+      // Option C toggle
+      const compactBtn = document.getElementById('c-compact-btn');
+      const wideBtn = document.getElementById('c-wide-btn');
+      const viewCompact = document.getElementById('c-view-compact');
+      const viewWide = document.getElementById('c-view-wide');
+      function setCMode(wide) {
+        if (!compactBtn) return;
+        compactBtn.classList.toggle('primary', !wide);
+        compactBtn.classList.toggle('ghost', wide);
+        wideBtn.classList.toggle('primary', wide);
+        wideBtn.classList.toggle('ghost', !wide);
+        viewCompact.hidden = wide;
+        viewWide.hidden = !wide;
+      }
+      if (compactBtn) {
+        compactBtn.addEventListener('click', function () { setCMode(false); });
+        wideBtn.addEventListener('click', function () { setCMode(true); });
+      }
+    })();
+  </script>
+</body>
+</html>
