@@ -22,6 +22,17 @@
 
 **Parked (not queued):** last-food memory · food density gradient · greed/hoarding (Differ unless pulled forward) · column slide drawers.
 
+**From 0.9.5-lab review (2026-08-13)** — not blocking `0.9.6-params`. Do **not** revive multi-size pellets / nibble-until-empty (we froze catch = +1, size 1).
+
+| Item | Track | Worth | Notes |
+|------|-------|--------|--------|
+| Fair eat (random winner in range) | **B** | Yes, before Differ | First agent in the array still monopolizes a pellet. Lab: use `state.rng`. |
+| Pin World size to Lab 800×600 (or pass canvas size into headless) | B | If Lab must match World | Sense is pixels; Lab is not a Monte Carlo of the visible field. |
+| Seeded World RNG + seed in export | B | Replay / Special stories | World is `Math.random()`; Lab already records seeds. |
+| Drop cancelled Lab trials from aggregates | A | Cheap Lab polish | Cancel mid-batch pulls avgAlive / duration down. |
+| Shared `stepWorld` + a few replay tests | B | Before Differ | `Agent.update` vs `headlessStep` can drift. |
+| Persist history / JSON import | A | Later | Export is enough. Import needs allowlist + `escapeHtml`. |
+
 **Shipped (pointer):** seek · chrome · special · vision · run-logs · lab · **`0.9.6-params`**.  
 **Design:** `design-docs/0.9.0-forage-design.html` · `0.9.4-export-run-logs-design.html` · `0.9.5-lab-design.html` · `0.9.2-brand-header-design.html` · `0.9.2-special-design.html`.  
 **Archives:** `archive/index-0.9.0-seek.html` … `archive/index-0.9.6-params.html`.
@@ -64,7 +75,7 @@ Living scratch. After a good export, append short findings. Not a shipped Playbo
 
 ### Optional Lab polish
 
-Graphs · batch history · Cartesian lock/vary · World multi-group colors · more Lab Help · parallel workers if batches hurt.
+Graphs · batch history · lock/vary grids · World multi-group colors · more Lab Help · parallel workers · exclude cancelled trials from aggregates.
 
 ---
 
