@@ -6,19 +6,23 @@
 **Arc:** Survive → Differ → Evolve → Economy  
 **Hygiene:** `AGENTS.md`. Older snapshots: `archive/docs/FUTURE_FEATURES-pre-backlog-hygiene-2026-07-30.md`, `…-pre-resteer-2026-07-02.md`, `…-pre-0.9.6-params-2026-08-13.md`.
 
-**Thick Phase 0 (preference, not a law):** usable Play + Lab + export before Differ. Lab v1 and `0.9.6-params` (island / Seek / Agent + masters) are **frozen**. Do not grow Lab graphs forever. Human can open Differ any time.
+**Thick Phase 0 (preference, not a law):** usable Play + Lab + export before Differ. Lab v1 and `0.9.6-params` are **frozen**. Human can open Differ any time. Items still listed under Phase 0 are **not a gate** — they can ship in `0.9.x` *or* later phases.
 
 ---
 
-## Phase 0 · Survive — open
+## Phase 0 · Survive — leftover (optional)
 
-| Next | Track | Notes |
-|------|-------|--------|
-| Thematic experiment presets | A/B | Named stories (Seek vs chance, remnant, feast/famine). Not a replacement for L/B/P. |
-| `PLAYBOOK.md` v0 | docs | Later. Harvest **Lab notes** below — don’t invent recipes. |
-| Optional Lab polish | A | Graphs, batch history, lock/vary grids. |
-| World multi-group from Lab | B | Visual A/B on canvas. Special stays World-only. |
-| Close Phase 0 | — | Human freeze → Phase 1 · Differ design. |
+Not required to close Survive. Any of these can wait until Differ / Evolve / whenever they hurt.
+
+| Item | Track | When | Notes |
+|------|-------|------|--------|
+| Thematic experiment presets | A/B | 0 or later | Named stories (Seek vs chance, remnant, feast/famine). Not a replacement for L/B/P. |
+| `PLAYBOOK.md` v0 | docs | later | Harvest **Lab notes** — don’t invent recipes. |
+| Optional Lab polish | A | 0 or later | Graphs, batch history, lock/vary grids. |
+| World multi-group from Lab | B | later | Visual A/B on canvas. Special stays World-only. |
+| Close Phase 0 | — | human | Declare Survive done → start Differ design. |
+
+**Parked (not queued):** last-food memory · food density gradient · greed/hoarding (Differ unless pulled forward) · column slide drawers.
 
 **Parked (not queued):** last-food memory · food density gradient · greed/hoarding (Differ unless pulled forward) · column slide drawers.
 
@@ -79,20 +83,39 @@ Graphs · batch history · lock/vary grids · World multi-group colors · more L
 
 ---
 
-## Phase 1 · Differ (open sketch)
+## Phase 1 · Differ (sketch · 2026-08-13 talk)
 
-- Per-agent trait values at spawn; run-level distribution controls  
-- Traits affect survival behavior (including optional modulation of hunger parameters once traits exist)  
-- Inspector / Metrics / Trends show trait stats  
-- **No** inheritance or mutation yet  
+**Job:** same island, agents **differ at spawn**. Who lasts depends on **who they are**. No babies, no inheritance, no mutation (that’s Evolve).
 
-### Trait candidates (not locked)
+**Rule:** no extra Crowd shelf. Island = weather (`foodSpawn`, `initialAgents`). Policy / stop / N stay experiment controls. **Agent knobs are the trait dimensions** — Differ is **mean + spread** (or groups) on those, not a second name pile (don’t add HoardingBias *and* Eat threshold).
 
-Live eat/move knobs already exist (Gluttony, Efficiency, Drift, …). Differ can attach **variance** to those rather than a second name pile. Early poetic set: **HoardingBias**, **ExplorationRate**, **TradeBoldness** (TradeBoldness dormant until Economy).
+### Traits = variance on live knobs
 
-Also discussed: Patience / FutureOrientation, SocialAffinity, HarvestEfficiency, RiskSensitivity, Reciprocity; follow-successful-agents; heterogeneous starting groups.
+Start with eat/move that already change remnant (Lab 2026-08-13):
 
-Finalize the set when Phase 1 design starts.
+| Trait (working name) | Writes | Notes |
+|----------------------|--------|--------|
+| **Efficiency** | `efficiency` | Fill per food. First eat trait. |
+| **Gluttony** | `gluttony` | Meal size. Second, only if visible on roster. |
+| **Drift / explore** | `drift` (maybe Sight mix) | Quiet vs noisy. Memory only if this needs a last-meal hook. |
+
+**Eat threshold** is a trigger, **not hoarding**. Hoarding = keep food vs trade/give/eat — later (Economy) or a trait that *pushes* threshold.  
+**TradeBoldness** — dormant until trade exists.  
+Don’t fuse Gluttony + Efficiency into one mystery slider.  
+**Selectivity** (prefer bigger pellets) — only after pellet size hits the bag again. Not “smartness.”
+
+Also discussed, not v1: Patience, SocialAffinity, HarvestEfficiency, RiskSensitivity, Reciprocity, follow-successful-agents.
+
+**Special** stays a one-agent override (any trait / policy). Same island.
+
+### Desk (when Differ opens)
+
+1. **Spawn mix** — groups `{ n, means, spreads }` over the live traits. Import / export / copy JSON; edit in a modal; apply on next Reset. Draft-with-Grok loop like run logs.  
+2. **Roster** — like Run logs, rows = agents: **traits \| performance** (life, dead?, final hunger/food). Not mixed into World knobs.  
+3. **Trends** — after the mix exists: alive mean of a trait, or group A vs B pop. Don’t redesign Trends in Survive.  
+4. Lab setups can carry a mix; World rail stays thin (masters + island + Parameters).
+
+Versioning: `1.x` (e.g. `1.0.0-traits`) when the set is locked. Finalize at design start.
 
 ---
 
