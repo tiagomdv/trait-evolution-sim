@@ -1299,35 +1299,13 @@
                             </div>
                         </div>
 
-                        <div class="section-title" style="margin-top:0.45rem;margin-bottom:0.35rem">Seek</div>
-                        <div class="master-row">
-                            <div class="flex justify-between text-xs mb-0.5">
-                                <span title="More Sight / Hunger pull / Seek push, less Drift">Seek master</span>
-                                <span id="val-seek-master-rail" class="font-mono text-sky-300">0.50</span>
-                            </div>
-                            <input type="range" id="slider-seek-master-rail" min="0" max="1" step="0.01" value="0.5" class="w-full accent-sky-400">
-                            <div class="master-ends"><span>noisy</span><span>committed</span></div>
-                            <p id="seek-master-note-rail" class="text-[10px] text-slate-500 mb-0 mt-1" style="display:none">Custom — a Seek slider left the path</p>
-                        </div>
-
-                        <div class="section-title" style="margin-top:0.45rem;margin-bottom:0.35rem">Agent</div>
-                        <div class="master-row">
-                            <div class="flex justify-between text-xs mb-0.5">
-                                <span title="Harder body: more hunger & gluttony, less efficiency">Agent master</span>
-                                <span id="val-agent-master-rail" class="font-mono text-sky-300">0.50</span>
-                            </div>
-                            <input type="range" id="slider-agent-master-rail" min="0" max="1" step="0.01" value="0.5" class="w-full accent-sky-400">
-                            <div class="master-ends"><span>easy</span><span>hard</span></div>
-                            <p id="agent-master-note-rail" class="text-[10px] text-slate-500 mb-0 mt-1" style="display:none">Custom — an Agent slider left the path</p>
-                        </div>
-
                         <div class="section-title" style="margin-top:0.45rem;margin-bottom:0.35rem">Island</div>
                         <div class="flex gap-1 mb-1">
                             <button type="button" id="preset-lenient" class="btn-preset" onclick="applyPreset('lenient')">Lenient</button>
                             <button type="button" id="preset-balanced" class="btn-preset on" onclick="applyPreset('balanced')">Balanced</button>
                             <button type="button" id="preset-punishing" class="btn-preset" onclick="applyPreset('punishing')">Punishing</button>
                         </div>
-                        <p class="text-[10px] text-slate-500 mb-2">Food spawn + initial agents only. Fine knobs in Parameters…</p>
+                        <p class="text-[10px] text-slate-500 mb-2">Food spawn + initial agents only. Seek / Agent stay as set in Parameters…</p>
 
                         <div class="mb-3">
                             <button type="button" class="btn-rail solid" style="width:100%" onclick="openAdvancedModal()" title="Seek, Agent, Environment sliders">Parameters…</button>
@@ -1672,7 +1650,7 @@
         <!-- Special agent config modal (0.9.2) -->
         <div id="modal-special" class="modal-root" aria-hidden="true">
             <div class="modal-dim" onclick="closeAllModals()"></div>
-            <div class="modal-box params-wide" role="dialog" aria-labelledby="special-title" style="border-color:#fbbf24">
+            <div class="modal-box" role="dialog" aria-labelledby="special-title" style="border-color:#fbbf24;width:min(420px,100%)">
                 <div class="modal-head">
                     <h2 id="special-title" style="color:#fde68a">Special agent</h2>
                     <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
@@ -1694,59 +1672,40 @@
                         <button type="button" id="sp-policy-random" class="btn-speed" onclick="setSpecialPolicy('random')">Random</button>
                     </div>
                 </div>
-                <div class="params-scroll scroll-thin">
                 <div class="section-title" style="margin-bottom:0.35rem">Seek</div>
-                <div class="master-row">
-                    <div class="flex justify-between text-xs mb-0.5">
-                        <span>Seek master</span>
-                        <span id="sp-val-seekMaster" class="font-mono text-sky-300">0.50</span>
-                    </div>
-                    <input type="range" id="sp-slider-seekMaster" min="0" max="1" step="0.01" value="0.5" class="w-full accent-amber-400" oninput="onSpecialSeekMaster(this.value)">
-                    <div class="master-ends"><span>noisy / weak lock</span><span>quiet / committed</span></div>
-                    <p id="sp-seek-master-note" class="text-[10px] text-slate-500 mb-0 mt-1" style="display:none">Custom — a Seek slider left the path</p>
-                </div>
                 <div class="mb-2">
                     <label class="flex items-center gap-2 text-xs mb-0.5">
-                        <input type="checkbox" id="sp-custom-sight" onchange="onSpecialCustomToggle('sight')">
+                        <input type="checkbox" id="sp-custom-senseRadius" onchange="onSpecialCustomToggle('senseRadius')">
                         <span class="flex-1">Sight</span>
-                        <span id="sp-val-sight" class="font-mono text-sky-300">180</span>
+                        <span id="sp-val-senseRadius" class="font-mono text-sky-300">180</span>
                     </label>
-                    <input type="range" id="sp-slider-sight" min="40" max="400" step="5" value="180" class="w-full accent-amber-400" oninput="onSpecialSlider('sight')">
+                    <input type="range" id="sp-slider-senseRadius" min="40" max="400" step="5" value="180" class="w-full accent-amber-400" oninput="onSpecialSlider('senseRadius')">
                 </div>
                 <div class="mb-2">
                     <label class="flex items-center gap-2 text-xs mb-0.5">
-                        <input type="checkbox" id="sp-custom-hungerPull" onchange="onSpecialCustomToggle('hungerPull')">
+                        <input type="checkbox" id="sp-custom-seekStrength" onchange="onSpecialCustomToggle('seekStrength')">
                         <span class="flex-1">Hunger pull</span>
-                        <span id="sp-val-hungerPull" class="font-mono text-sky-300">1.00</span>
+                        <span id="sp-val-seekStrength" class="font-mono text-sky-300">1.00</span>
                     </label>
-                    <input type="range" id="sp-slider-hungerPull" min="0" max="2" step="0.05" value="1" class="w-full accent-amber-400" oninput="onSpecialSlider('hungerPull')">
+                    <input type="range" id="sp-slider-seekStrength" min="0" max="2" step="0.05" value="1" class="w-full accent-amber-400" oninput="onSpecialSlider('seekStrength')">
                 </div>
                 <div class="mb-2">
                     <label class="flex items-center gap-2 text-xs mb-0.5">
-                        <input type="checkbox" id="sp-custom-seekPush" onchange="onSpecialCustomToggle('seekPush')">
+                        <input type="checkbox" id="sp-custom-seekAccel" onchange="onSpecialCustomToggle('seekAccel')">
                         <span class="flex-1">Seek push</span>
-                        <span id="sp-val-seekPush" class="font-mono text-sky-300">0.35</span>
+                        <span id="sp-val-seekAccel" class="font-mono text-sky-300">0.35</span>
                     </label>
-                    <input type="range" id="sp-slider-seekPush" min="0.05" max="1" step="0.05" value="0.35" class="w-full accent-amber-400" oninput="onSpecialSlider('seekPush')">
+                    <input type="range" id="sp-slider-seekAccel" min="0.05" max="1" step="0.05" value="0.35" class="w-full accent-amber-400" oninput="onSpecialSlider('seekAccel')">
                 </div>
                 <div class="mb-2">
                     <label class="flex items-center gap-2 text-xs mb-0.5">
-                        <input type="checkbox" id="sp-custom-drift" onchange="onSpecialCustomToggle('drift')">
+                        <input type="checkbox" id="sp-custom-wanderAmp" onchange="onSpecialCustomToggle('wanderAmp')">
                         <span class="flex-1">Drift</span>
-                        <span id="sp-val-drift" class="font-mono text-sky-300">0.50</span>
+                        <span id="sp-val-wanderAmp" class="font-mono text-sky-300">0.50</span>
                     </label>
-                    <input type="range" id="sp-slider-drift" min="0" max="1.5" step="0.05" value="0.5" class="w-full accent-amber-400" oninput="onSpecialSlider('drift')">
+                    <input type="range" id="sp-slider-wanderAmp" min="0" max="1.5" step="0.05" value="0.5" class="w-full accent-amber-400" oninput="onSpecialSlider('wanderAmp')">
                 </div>
                 <div class="section-title" style="margin-top:0.55rem;margin-bottom:0.35rem">Agent</div>
-                <div class="master-row">
-                    <div class="flex justify-between text-xs mb-0.5">
-                        <span>Agent master</span>
-                        <span id="sp-val-agentMaster" class="font-mono text-sky-300">0.50</span>
-                    </div>
-                    <input type="range" id="sp-slider-agentMaster" min="0" max="1" step="0.01" value="0.5" class="w-full accent-amber-400" oninput="onSpecialAgentMaster(this.value)">
-                    <div class="master-ends"><span>easy body</span><span>hard body</span></div>
-                    <p id="sp-agent-master-note" class="text-[10px] text-slate-500 mb-0 mt-1" style="display:none">Custom — an Agent slider left the path</p>
-                </div>
                 <div class="mb-2">
                     <label class="flex items-center gap-2 text-xs mb-0.5">
                         <input type="checkbox" id="sp-custom-maxSpeed" onchange="onSpecialCustomToggle('maxSpeed')">
@@ -1765,19 +1724,19 @@
                 </div>
                 <div class="mb-2">
                     <label class="flex items-center gap-2 text-xs mb-0.5">
-                        <input type="checkbox" id="sp-custom-gluttony" onchange="onSpecialCustomToggle('gluttony')">
+                        <input type="checkbox" id="sp-custom-mealSize" onchange="onSpecialCustomToggle('mealSize')">
                         <span class="flex-1">Gluttony</span>
-                        <span id="sp-val-gluttony" class="font-mono text-sky-300">0.70</span>
+                        <span id="sp-val-mealSize" class="font-mono text-sky-300">0.70</span>
                     </label>
-                    <input type="range" id="sp-slider-gluttony" min="0.3" max="2" step="0.05" value="0.7" class="w-full accent-amber-400" oninput="onSpecialSlider('gluttony')">
+                    <input type="range" id="sp-slider-mealSize" min="0.3" max="2" step="0.05" value="0.7" class="w-full accent-amber-400" oninput="onSpecialSlider('mealSize')">
                 </div>
                 <div class="mb-2">
                     <label class="flex items-center gap-2 text-xs mb-0.5">
-                        <input type="checkbox" id="sp-custom-efficiency" onchange="onSpecialCustomToggle('efficiency')">
+                        <input type="checkbox" id="sp-custom-fillPerFood" onchange="onSpecialCustomToggle('fillPerFood')">
                         <span class="flex-1">Efficiency</span>
-                        <span id="sp-val-efficiency" class="font-mono text-sky-300">1.60</span>
+                        <span id="sp-val-fillPerFood" class="font-mono text-sky-300">1.60</span>
                     </label>
-                    <input type="range" id="sp-slider-efficiency" min="0.3" max="3" step="0.05" value="1.6" class="w-full accent-amber-400" oninput="onSpecialSlider('efficiency')">
+                    <input type="range" id="sp-slider-fillPerFood" min="0.3" max="3" step="0.05" value="1.6" class="w-full accent-amber-400" oninput="onSpecialSlider('fillPerFood')">
                 </div>
                 <div class="mb-1">
                     <label class="flex items-center gap-2 text-xs mb-0.5">
@@ -1787,8 +1746,7 @@
                     </label>
                     <input type="range" id="sp-slider-eatThreshold" min="5" max="30" step="1" value="11" class="w-full accent-amber-400" oninput="onSpecialSlider('eatThreshold')">
                 </div>
-                <p class="text-[10px] text-slate-500 mt-2 mb-0">Masters write all Seek / Agent overrides. Unchecked child = world. Island is shared. Escape to close</p>
-                </div>
+                <p class="text-[10px] text-slate-500 mt-2 mb-0">Unchecked = world default. Island (Initial agents / Food spawn) is shared. Escape to close</p>
             </div>
         </div>
 
@@ -1860,7 +1818,7 @@
                 <div class="help-entry">Default Lab experiment: three setups, all <strong>Random</strong> — Lenient / Balanced / Punishing <em>island</em> packs (Food spawn + Initial agents).</div>
 
                 <div class="help-sec">Lab desk</div>
-                <div class="help-entry"><strong>Parameters…</strong> — Per-setup Environment / Seek / Agent (same names as World), including <strong>Seek master</strong> and <strong>Agent master</strong> (same paths as World). Batch tab: runs per setup, stop prefer, max duration. N is per setup.</div>
+                <div class="help-entry"><strong>Parameters…</strong> — Per-setup Environment / Seek / Agent (same names as World) plus Batch tab (runs per setup, stop prefer, max duration). Initial agents is per setup (island pack).</div>
                 <div class="help-entry"><strong>Stop prefer · All dead</strong> — End early on extinction; max duration locked to <strong>600 sim-s</strong> safety so soft worlds cannot hang forever.</div>
                 <div class="help-entry"><strong>Stop prefer · Max time</strong> — Cut each trial at the duration slider (default ~90s; editable 15–600). Best for ranking remnant size on short clocks.</div>
                 <div class="help-entry"><strong>Start batch / Cancel</strong> — Sequential headless trials with progress. Cancel keeps partial results. Last batch only (no history).</div>
@@ -1888,14 +1846,14 @@
                 <div class="help-entry"><strong>Island presets</strong> Lenient / Balanced / Punishing set <em>only</em> those two. Not Policy, Seek, or Agent.</div>
 
                 <div class="help-sec">Parameters… · Seek</div>
-                <div class="help-entry"><strong>Seek master</strong> — On the left rail (and in Parameters). Path: more Sight / Hunger pull / Seek push, <em>less</em> Drift. Mid ≈ default. Child slider → custom.</div>
+                <div class="help-entry"><strong>Seek master</strong> — One path: more Sight / Hunger pull / Seek push, <em>less</em> Drift. Mid ≈ default. Child slider → custom.</div>
                 <div class="help-entry"><strong>Sight</strong> — How far they notice food (Seek only).</div>
                 <div class="help-entry"><strong>Hunger pull</strong> — How hard hunger aims them at food.</div>
                 <div class="help-entry"><strong>Seek push</strong> — Acceleration toward the target.</div>
                 <div class="help-entry"><strong>Drift</strong> — Random kick each tick (both policies).</div>
 
                 <div class="help-sec">Parameters… · Agent</div>
-                <div class="help-entry"><strong>Agent master</strong> — On the left rail (and in Parameters). Easy → hard body. Child slider → custom.</div>
+                <div class="help-entry"><strong>Agent master</strong> — Easy body → hard body: more Hunger rate &amp; Gluttony, later Eat threshold, <em>less</em> Efficiency, slightly lower Max speed. Child slider → custom.</div>
                 <div class="help-entry"><strong>Max speed</strong> — Hard cap after acceleration.</div>
                 <div class="help-entry"><strong>Hunger rate</strong> — Hunger gained each tick (energy use).</div>
                 <div class="help-entry"><strong>Gluttony</strong> — Food taken from the bag per nibble (meal size).</div>
@@ -1904,7 +1862,7 @@
                 <div class="help-tip">Catch banks 1 food and deletes the pellet. No ground-fill hunger drop. Pellets are fixed size.</div>
 
                 <div class="help-sec">Special agent</div>
-                <div class="help-entry">One amber agent. Override Policy, Seek, or Agent. Seek / Agent <strong>masters</strong> write the whole shelf as customs (same paths as World). Island stays shared. <strong>Match all → world</strong> clears customs.</div>
+                <div class="help-entry">One amber agent. Override Policy, Seek, or Agent. Island stays shared. <strong>Match all → world</strong> clears customs.</div>
                 <div class="help-entry"><strong>Pin ≠ special</strong> — Pin charts someone. Special changes their rules.</div>
                 <div class="help-tip">In a Random world, a Seek special is usually obvious. In all-Seek, a small edge often still dies.</div>
 
@@ -1924,9 +1882,9 @@
 
                 <div class="help-sec">History strip &amp; Run logs…</div>
                 <div class="help-entry">Strip = last <strong>3</strong> finished runs. <strong>Run logs…</strong> = full table (click a row for knobs + special), <strong>Export/Copy last &amp; all</strong> as pretty JSON for analysis (e.g. paste to Grok).</div>
-                <div class="help-entry"><strong>Pre</strong> preset · <strong>Pol</strong> seek/random · <strong>N</strong> agents · <strong>Dur / Long</strong> run length &amp; longest life · <strong>Dead / Fin</strong> deaths &amp; final pop · <strong>Hung / Food</strong> run averages · <strong>End</strong> extinction vs reset · <strong>Sp</strong> special custom override count.</div>
+                <div class="help-entry"><strong>Pre</strong> preset · <strong>Pol</strong> seek/wander · <strong>N</strong> agents · <strong>Dur / Long</strong> run length &amp; longest life · <strong>Dead / Fin</strong> deaths &amp; final pop · <strong>Hung / Food</strong> run averages · <strong>End</strong> extinction vs reset · <strong>Sp</strong> special custom override count.</div>
                 <div class="help-entry">JSON envelope: <code style="color:#7dd3fc">{ version, exportedAt, runs: [...] }</code> with world knobs + special block (including lifeSec even if the special died).</div>
-                <div class="help-tip">Export after a ladder of Special overrides (Sight → Hunger pull → Seek push → Drift) to see which knobs buy a seat in the remnant.</div>
+                <div class="help-tip">Export after a ladder of special overrides (sense → strength → accel → wander) is a great way to see which knobs actually buy a seat in the remnant.</div>
 
                 <div class="help-sec">What “seconds” mean</div>
                 <div class="help-entry">History <strong>Dur / Long / lifeSec</strong> use sim time: ticks ÷ 60 (not wall-clock). At 10× speed, wall time is much shorter than Dur.</div>
@@ -1997,7 +1955,7 @@
             }
 
 
-            let initialAgents = 60;
+            let numAgents = 60;
             let agents = [];
             let food = [];
             let tick = 0;
@@ -2007,47 +1965,41 @@
 
             // Agent defaults (not island presets). Mid-point of Agent master.
             let hungerRate = 0.062;
-            let efficiency = 1.6;   // Efficiency: hunger drop per 1 bag food
-            let gluttony = 0.7;      // Gluttony: bag food per nibble
+            let fillPerFood = 1.6;   // Efficiency: hunger drop per 1 bag food
+            let mealSize = 0.7;      // Gluttony: bag food per nibble
             let eatThreshold = 11;
 
             // === 0.9.0-seek movement (I1 MVP) ===
             // 'seek' = hunger-weighted nearest-food + residual noise; 'random' = pre-0.9 walk
             let movementPolicy = 'seek';
-            let sight = 180;              // max distance to "see" food for seeking
-            let hungerPull = 1.0;             // scales hunger → blend (0–2)
-            let seekPush = 0.35;               // acceleration toward target
-            let drift = 0.5;                // random kick (same as old 0.5)
+            let senseRadius = 180;              // max distance to "see" food for seeking
+            let seekStrength = 1.0;             // scales hunger → blend (0–2)
+            let seekAccel = 0.35;               // acceleration toward target
+            let wanderAmp = 0.5;                // random kick (same as old 0.5)
             let maxSpeed = 2.0;                 // speed cap (was hardcoded 2)
             const FOOD_AMOUNT_EPS = 0.2;        // same eligibility as ground eat
 
             // === 0.9.2-special: one agent with optional param overrides ===
             const SPECIAL_KEYS = [
-                'movementPolicy', 'sight', 'hungerPull', 'seekPush', 'drift', 'maxSpeed',
-                'hungerRate', 'efficiency', 'gluttony', 'eatThreshold'
+                'movementPolicy', 'senseRadius', 'seekStrength', 'seekAccel', 'wanderAmp', 'maxSpeed',
+                'hungerRate', 'fillPerFood', 'mealSize', 'eatThreshold'
             ];
             let specialAgent = null;
             let specialOverrides = null;
-            const SPECIAL_SEEK_KEYS = ['sight', 'hungerPull', 'seekPush', 'drift'];
-            const SPECIAL_AGENT_KEYS = ['maxSpeed', 'hungerRate', 'gluttony', 'efficiency', 'eatThreshold'];
-            let specialSeekMaster = 0.5;
-            let specialAgentMaster = 0.5;
-            let specialSeekMasterCustom = false;
-            let specialAgentMasterCustom = false;
             // Life (ticks) of special at starvation death; null if still alive or never died this run
             let specialLifeTicksAtDeath = null;
 
             function globalParam(key) {
                 switch (key) {
                     case 'movementPolicy': return movementPolicy;
-                    case 'sight': return sight;
-                    case 'hungerPull': return hungerPull;
-                    case 'seekPush': return seekPush;
-                    case 'drift': return drift;
+                    case 'senseRadius': return senseRadius;
+                    case 'seekStrength': return seekStrength;
+                    case 'seekAccel': return seekAccel;
+                    case 'wanderAmp': return wanderAmp;
                     case 'maxSpeed': return maxSpeed;
                     case 'hungerRate': return hungerRate;
-                    case 'efficiency': return efficiency;
-                    case 'gluttony': return gluttony;
+                    case 'fillPerFood': return fillPerFood;
+                    case 'mealSize': return mealSize;
                     case 'eatThreshold': return eatThreshold;
                     default: return undefined;
                 }
@@ -2136,41 +2088,10 @@
                     specialOverrides[k].useCustom = false;
                     specialOverrides[k].value = globalParam(k);
                 }
-                specialSeekMaster = seekMaster;
-                specialAgentMaster = agentMaster;
-                specialSeekMasterCustom = false;
-                specialAgentMasterCustom = false;
                 syncSpecialModalUI();
                 updateSpecialStatusUI();
                 updateInspector();
             }
-
-            function applySpecialPath(kind, t) {
-                if (!specialOverrides) resetSpecialOverridesFromWorld();
-                const tmp = {};
-                const keys = kind === 'seek' ? SPECIAL_SEEK_KEYS : SPECIAL_AGENT_KEYS;
-                if (kind === 'seek') applySeekMasterTo(tmp, t);
-                else applyAgentMasterTo(tmp, t);
-                for (let i = 0; i < keys.length; i++) {
-                    const key = keys[i];
-                    if (!specialOverrides[key]) continue;
-                    specialOverrides[key].useCustom = true;
-                    specialOverrides[key].value = tmp[key];
-                }
-                if (kind === 'seek') {
-                    specialSeekMaster = t;
-                    specialSeekMasterCustom = false;
-                } else {
-                    specialAgentMaster = t;
-                    specialAgentMasterCustom = false;
-                }
-                syncSpecialModalUI();
-                updateSpecialStatusUI();
-                updateInspector();
-            }
-
-            function onSpecialSeekMaster(v) { applySpecialPath('seek', parseFloat(v)); }
-            function onSpecialAgentMaster(v) { applySpecialPath('agent', parseFloat(v)); }
 
             function setSpecialPolicy(pol) {
                 if (!specialOverrides) resetSpecialOverridesFromWorld();
@@ -2198,8 +2119,6 @@
                         specialOverrides[key].value = v;
                     }
                 }
-                if (SPECIAL_SEEK_KEYS.indexOf(key) !== -1) specialSeekMasterCustom = true;
-                if (SPECIAL_AGENT_KEYS.indexOf(key) !== -1) specialAgentMasterCustom = true;
                 syncSpecialModalUI();
                 updateSpecialStatusUI();
                 updateInspector();
@@ -2217,17 +2136,14 @@
                 const cb = document.getElementById('sp-custom-' + key);
                 if (cb) cb.checked = true;
                 if (valEl) valEl.textContent = formatSpVal(key, v);
-                if (SPECIAL_SEEK_KEYS.indexOf(key) !== -1) specialSeekMasterCustom = true;
-                if (SPECIAL_AGENT_KEYS.indexOf(key) !== -1) specialAgentMasterCustom = true;
                 updateSpecialStatusUI();
                 updateInspector();
-                syncSpecialMasterNotes();
             }
 
             function formatSpVal(key, v) {
                 if (key === 'movementPolicy') return v;
-                if (key === 'hungerRate' || key === 'efficiency' || key === 'gluttony') return Number(v).toFixed(3);
-                if (key === 'hungerPull' || key === 'seekPush' || key === 'drift' || key === 'maxSpeed') return Number(v).toFixed(2);
+                if (key === 'hungerRate' || key === 'fillPerFood' || key === 'mealSize') return Number(v).toFixed(3);
+                if (key === 'seekStrength' || key === 'seekAccel' || key === 'wanderAmp' || key === 'maxSpeed') return Number(v).toFixed(2);
                 return String(v);
             }
 
@@ -2260,15 +2176,6 @@
                     if (valEl) valEl.textContent = formatSpVal(k, o.value);
                 }
                 syncSpecialPolicyButtons();
-                const sm = document.getElementById('sp-slider-seekMaster');
-                const smv = document.getElementById('sp-val-seekMaster');
-                if (sm) sm.value = specialSeekMaster;
-                if (smv) smv.textContent = Number(specialSeekMaster).toFixed(2);
-                const am = document.getElementById('sp-slider-agentMaster');
-                const amv = document.getElementById('sp-val-agentMaster');
-                if (am) am.value = specialAgentMaster;
-                if (amv) amv.textContent = Number(specialAgentMaster).toFixed(2);
-                syncSpecialMasterNotes();
                 const sum = document.getElementById('special-modal-summary');
                 if (sum) {
                     if (!specialAgent) sum.textContent = 'No special body yet — Reset to spawn.';
@@ -2278,13 +2185,6 @@
                         sum.textContent = '#' + specialAgent.id + ' · ' + (alive ? 'alive' : 'dead') + ' · overrides: ' + n;
                     }
                 }
-            }
-
-            function syncSpecialMasterNotes() {
-                const sn = document.getElementById('sp-seek-master-note');
-                const an = document.getElementById('sp-agent-master-note');
-                if (sn) sn.style.display = specialSeekMasterCustom ? '' : 'none';
-                if (an) an.style.display = specialAgentMasterCustom ? '' : 'none';
             }
 
             function updateSpecialStatusUI() {
@@ -2346,7 +2246,7 @@
 
             // Live counters (reset every run)
             let starvationDeaths = 0;
-            let foodSpawn = 8; // balanced island
+            let foodSpawnInterval = 8; // balanced island
             let uiFrame = 0;
 
             // Time-series for current run (sampled, capped)
@@ -2365,7 +2265,7 @@
             // Optional: expose a few computed metrics for inspector / tabs
             let currentMetrics = { alive: 0, deaths: 0, totalFood: 0, avgHunger: 0, minFood: 0, maxFood: 0, avgFood: 0 };
 
-            /** Nearest food pellet within sight (non-toroidal). Returns null if none. */
+            /** Nearest food pellet within senseRadius (non-toroidal). Returns null if none. */
             function nearestFoodInRadius(agent, radius) {
                 let best = null;
                 let bestD2 = radius * radius;
@@ -2400,16 +2300,16 @@
                 }
 
                 update() {
-                    const wAmp = p(this, 'drift');
+                    const wAmp = p(this, 'wanderAmp');
                     const pol = p(this, 'movementPolicy');
-                    const sRad = p(this, 'sight');
-                    const sStr = p(this, 'hungerPull');
-                    const sAcc = p(this, 'seekPush');
+                    const sRad = p(this, 'senseRadius');
+                    const sStr = p(this, 'seekStrength');
+                    const sAcc = p(this, 'seekAccel');
                     const mSpd = p(this, 'maxSpeed');
                     const hRate = p(this, 'hungerRate');
                     const scThresh = p(this, 'eatThreshold');
-                    const scAmt = p(this, 'gluttony');
-                    const scFill = p(this, 'efficiency');
+                    const scAmt = p(this, 'mealSize');
+                    const scFill = p(this, 'fillPerFood');
                     this._effPolicy = pol;
 
                     let ax = (Math.random() - 0.5) * wAmp;
@@ -2511,7 +2411,7 @@
                 food = [];
                 specialAgent = null;
 
-                for (let i = 0; i < initialAgents; i++) {
+                for (let i = 0; i < numAgents; i++) {
                     agents.push(new Agent());
                 }
 
@@ -2562,7 +2462,7 @@
                 // Batch of 3 per interval fire; interval 1–50 for wider feast/famine swing
                 // Ceiling: 10× starting pile (NUM_FOOD) — ~700 pellets max with NUM_FOOD=70
                 if (agents.length > 0 && 
-                    tick % foodSpawn === 0 
+                    tick % foodSpawnInterval === 0 
                     && food.length < NUM_FOOD * 10) {
                     spawnFood(3);
                 }
@@ -2702,7 +2602,7 @@
                 runStartTick = tick;
                 currentRunMaxSurvivalTicks = 0;
                 currentRunEnded = false;
-                runInitialAgents = initialAgents;
+                runInitialAgents = numAgents;
                 specialLifeTicksAtDeath = null;
 
                 // reset new accumulators from 0.7.0-run-compare (per-run avgs for history cards)
@@ -2742,16 +2642,16 @@
                 return {
                     preset: currentPreset,
                     movementPolicy: movementPolicy,
-                    initialAgents: initialAgents,
+                    numAgents: numAgents,
                     hungerRate: hungerRate,
-                    foodSpawn: foodSpawn,
-                    sight: sight,
-                    hungerPull: hungerPull,
-                    seekPush: seekPush,
-                    drift: drift,
+                    foodSpawnInterval: foodSpawnInterval,
+                    senseRadius: senseRadius,
+                    seekStrength: seekStrength,
+                    seekAccel: seekAccel,
+                    wanderAmp: wanderAmp,
                     maxSpeed: maxSpeed,
-                    efficiency: efficiency,
-                    gluttony: gluttony,
+                    fillPerFood: fillPerFood,
+                    mealSize: mealSize,
                     eatThreshold: eatThreshold,
                     seekMaster: seekMaster,
                     agentMaster: agentMaster,
@@ -2831,7 +2731,7 @@
                     longestSec: longestSec,
                     finalPop: finalPop,
                     deaths: deaths,
-                    initialAgents: runInitialAgents != null ? runInitialAgents : initialAgents,
+                    initialAgents: runInitialAgents != null ? runInitialAgents : numAgents,
                     preset: currentPreset,
                     movementPolicy: knobs.movementPolicy,
                     avgPop: avgPop,
@@ -2895,33 +2795,33 @@
                     };
                 }
                 bind('slider-number-agents', 'val-number-agents',
-                    function () { return initialAgents; },
-                    function (v) { initialAgents = parseInt(v, 10); },
+                    function () { return numAgents; },
+                    function (v) { numAgents = parseInt(v, 10); },
                     function (v) { return String(v); },
                     markIslandCustom);
                 bind('slider-food-spawn', 'val-food-spawn',
-                    function () { return foodSpawn; },
-                    function (v) { foodSpawn = parseInt(v, 10); },
+                    function () { return foodSpawnInterval; },
+                    function (v) { foodSpawnInterval = parseInt(v, 10); },
                     function (v) { return String(v); },
                     markIslandCustom);
                 bind('slider-sense-radius', 'val-sense-radius',
-                    function () { return sight; },
-                    function (v) { sight = parseFloat(v); },
+                    function () { return senseRadius; },
+                    function (v) { senseRadius = parseFloat(v); },
                     function (v) { return String(v); },
                     markSeekCustom);
                 bind('slider-seek-strength', 'val-seek-strength',
-                    function () { return hungerPull; },
-                    function (v) { hungerPull = parseFloat(v); },
+                    function () { return seekStrength; },
+                    function (v) { seekStrength = parseFloat(v); },
                     function (v) { return Number(v).toFixed(2); },
                     markSeekCustom);
                 bind('slider-seek-accel', 'val-seek-accel',
-                    function () { return seekPush; },
-                    function (v) { seekPush = parseFloat(v); },
+                    function () { return seekAccel; },
+                    function (v) { seekAccel = parseFloat(v); },
                     function (v) { return Number(v).toFixed(2); },
                     markSeekCustom);
                 bind('slider-wander-amp', 'val-wander-amp',
-                    function () { return drift; },
-                    function (v) { drift = parseFloat(v); },
+                    function () { return wanderAmp; },
+                    function (v) { wanderAmp = parseFloat(v); },
                     function (v) { return Number(v).toFixed(2); },
                     markSeekCustom);
                 bind('slider-max-speed', 'val-max-speed',
@@ -2935,13 +2835,13 @@
                     function (v) { return Number(v).toFixed(3); },
                     markAgentCustom);
                 bind('slider-gluttony', 'val-gluttony',
-                    function () { return gluttony; },
-                    function (v) { gluttony = parseFloat(v); },
+                    function () { return mealSize; },
+                    function (v) { mealSize = parseFloat(v); },
                     function (v) { return Number(v).toFixed(2); },
                     markAgentCustom);
                 bind('slider-efficiency', 'val-efficiency',
-                    function () { return efficiency; },
-                    function (v) { efficiency = parseFloat(v); },
+                    function () { return fillPerFood; },
+                    function (v) { fillPerFood = parseFloat(v); },
                     function (v) { return Number(v).toFixed(2); },
                     markAgentCustom);
                 bind('slider-eat-threshold', 'val-eat-threshold',
@@ -2949,15 +2849,10 @@
                     function (v) { eatThreshold = parseInt(v, 10); },
                     function (v) { return String(v); },
                     markAgentCustom);
-                function bindMaster(ids, applyFn) {
-                    ids.forEach(function (id) {
-                        const el = document.getElementById(id);
-                        if (!el) return;
-                        el.oninput = function () { applyFn(parseFloat(el.value)); syncSliders(); };
-                    });
-                }
-                bindMaster(['slider-seek-master', 'slider-seek-master-rail'], applySeekMaster);
-                bindMaster(['slider-agent-master', 'slider-agent-master-rail'], applyAgentMaster);
+                const sm = document.getElementById('slider-seek-master');
+                if (sm) sm.oninput = function () { applySeekMaster(parseFloat(sm.value)); syncSliders(); };
+                const am = document.getElementById('slider-agent-master');
+                if (am) am.oninput = function () { applyAgentMaster(parseFloat(am.value)); syncSliders(); };
                 syncMovementPolicyButtons();
                 syncPresetButtons();
                 syncMasterNotes();
@@ -2991,10 +2886,10 @@
                 t = Math.max(0, Math.min(1, t));
                 seekMaster = t;
                 seekMasterCustom = false;
-                sight = Math.round(lerp(80, 280, t) / 5) * 5;
-                hungerPull = lerp(0.25, 1.75, t);
-                seekPush = lerp(0.10, 0.60, t);
-                drift = Math.max(0, lerp(1.10, -0.10, t));
+                senseRadius = Math.round(lerp(80, 280, t) / 5) * 5;
+                seekStrength = lerp(0.25, 1.75, t);
+                seekAccel = lerp(0.10, 0.60, t);
+                wanderAmp = Math.max(0, lerp(1.10, -0.10, t));
                 syncMasterNotes();
             }
 
@@ -3003,8 +2898,8 @@
                 agentMaster = t;
                 agentMasterCustom = false;
                 hungerRate = lerp(0.035, 0.089, t);
-                efficiency = lerp(2.40, 0.80, t);
-                gluttony = lerp(0.45, 0.95, t);
+                fillPerFood = lerp(2.40, 0.80, t);
+                mealSize = lerp(0.45, 0.95, t);
                 eatThreshold = Math.round(lerp(7, 15, t));
                 maxSpeed = lerp(2.40, 1.60, t);
                 syncMasterNotes();
@@ -3014,10 +2909,10 @@
                 t = Math.max(0, Math.min(1, t));
                 k.seekMaster = t;
                 k.seekMasterCustom = false;
-                k.sight = Math.round(lerp(80, 280, t) / 5) * 5;
-                k.hungerPull = lerp(0.25, 1.75, t);
-                k.seekPush = lerp(0.10, 0.60, t);
-                k.drift = Math.max(0, lerp(1.10, -0.10, t));
+                k.senseRadius = Math.round(lerp(80, 280, t) / 5) * 5;
+                k.seekStrength = lerp(0.25, 1.75, t);
+                k.seekAccel = lerp(0.10, 0.60, t);
+                k.wanderAmp = Math.max(0, lerp(1.10, -0.10, t));
             }
 
             function applyAgentMasterTo(k, t) {
@@ -3025,23 +2920,17 @@
                 k.agentMaster = t;
                 k.agentMasterCustom = false;
                 k.hungerRate = lerp(0.035, 0.089, t);
-                k.efficiency = lerp(2.40, 0.80, t);
-                k.gluttony = lerp(0.45, 0.95, t);
+                k.fillPerFood = lerp(2.40, 0.80, t);
+                k.mealSize = lerp(0.45, 0.95, t);
                 k.eatThreshold = Math.round(lerp(7, 15, t));
                 k.maxSpeed = lerp(2.40, 1.60, t);
             }
 
             function syncMasterNotes() {
-                const showS = seekMasterCustom ? '' : 'none';
-                const showA = agentMasterCustom ? '' : 'none';
-                ['seek-master-note', 'seek-master-note-rail'].forEach(function (id) {
-                    const el = document.getElementById(id);
-                    if (el) el.style.display = showS;
-                });
-                ['agent-master-note', 'agent-master-note-rail'].forEach(function (id) {
-                    const el = document.getElementById(id);
-                    if (el) el.style.display = showA;
-                });
+                const sn = document.getElementById('seek-master-note');
+                const an = document.getElementById('agent-master-note');
+                if (sn) sn.style.display = seekMasterCustom ? '' : 'none';
+                if (an) an.style.display = agentMasterCustom ? '' : 'none';
             }
 
             function setMovementPolicy(policy) {
@@ -3081,7 +2970,7 @@
             const HISTORY_DOCK_MAX = 3;
 
             function policyShort(pol) {
-                if (pol === 'random') return 'rand';
+                if (pol === 'random') return 'wand';
                 if (pol === 'seek') return 'seek';
                 return pol ? String(pol).slice(0, 4) : '—';
             }
@@ -3208,7 +3097,7 @@
                 if (v === undefined || v === null) return '—';
                 if (key === 'movementPolicy' || key === 'preset') return String(v);
                 if (typeof v === 'number') {
-                    if (key === 'eatThreshold' || key === 'initialAgents' || key === 'foodSpawn') return String(v);
+                    if (key === 'eatThreshold' || key === 'numAgents' || key === 'foodSpawnInterval') return String(v);
                     if (Number.isInteger(v)) return String(v);
                     return (Math.round(v * 1000) / 1000).toString();
                 }
@@ -3252,9 +3141,9 @@
                 if (r.knobs) {
                     const k = r.knobs;
                     const order = [
-                        'preset', 'movementPolicy', 'initialAgents', 'foodSpawn',
-                        'sight', 'hungerPull', 'seekPush', 'drift',
-                        'maxSpeed', 'hungerRate', 'gluttony', 'efficiency', 'eatThreshold',
+                        'preset', 'movementPolicy', 'numAgents', 'foodSpawnInterval',
+                        'senseRadius', 'seekStrength', 'seekAccel', 'wanderAmp',
+                        'maxSpeed', 'hungerRate', 'mealSize', 'fillPerFood', 'eatThreshold',
                         'seekMaster', 'agentMaster'
                     ];
                     const pairs = [];
@@ -3651,19 +3540,19 @@
             function getPresetEnv(type) {
                 // Island only: food spawn + initial agents. First-pass after dropping ground fill.
                 if (type === 'lenient') {
-                    return { foodSpawn: 6, initialAgents: 35 };
+                    return { foodSpawnInterval: 6, numAgents: 35 };
                 }
                 if (type === 'punishing') {
-                    return { foodSpawn: 18, initialAgents: 80 };
+                    return { foodSpawnInterval: 18, numAgents: 80 };
                 }
-                return { foodSpawn: 8, initialAgents: 60 };
+                return { foodSpawnInterval: 8, numAgents: 60 };
             }
 
             function applyPreset(type) {
                 currentPreset = type;
                 const env = getPresetEnv(type);
-                foodSpawn = env.foodSpawn;
-                initialAgents = env.initialAgents;
+                foodSpawnInterval = env.foodSpawnInterval;
+                numAgents = env.numAgents;
                 syncSliders();
                 syncPresetButtons();
             }
@@ -3768,21 +3657,19 @@
                     if (sl) sl.value = value;
                     if (val) val.textContent = fmt ? fmt(value) : String(value);
                 }
-                set('slider-number-agents', 'val-number-agents', initialAgents);
-                set('slider-food-spawn', 'val-food-spawn', foodSpawn);
-                set('slider-sense-radius', 'val-sense-radius', sight);
-                set('slider-seek-strength', 'val-seek-strength', hungerPull, function (v) { return Number(v).toFixed(2); });
-                set('slider-seek-accel', 'val-seek-accel', seekPush, function (v) { return Number(v).toFixed(2); });
-                set('slider-wander-amp', 'val-wander-amp', drift, function (v) { return Number(v).toFixed(2); });
+                set('slider-number-agents', 'val-number-agents', numAgents);
+                set('slider-food-spawn', 'val-food-spawn', foodSpawnInterval);
+                set('slider-sense-radius', 'val-sense-radius', senseRadius);
+                set('slider-seek-strength', 'val-seek-strength', seekStrength, function (v) { return Number(v).toFixed(2); });
+                set('slider-seek-accel', 'val-seek-accel', seekAccel, function (v) { return Number(v).toFixed(2); });
+                set('slider-wander-amp', 'val-wander-amp', wanderAmp, function (v) { return Number(v).toFixed(2); });
                 set('slider-max-speed', 'val-max-speed', maxSpeed, function (v) { return Number(v).toFixed(2); });
                 set('slider-hunger-rate', 'val-hunger-rate', hungerRate, function (v) { return Number(v).toFixed(3); });
-                set('slider-gluttony', 'val-gluttony', gluttony, function (v) { return Number(v).toFixed(2); });
-                set('slider-efficiency', 'val-efficiency', efficiency, function (v) { return Number(v).toFixed(2); });
+                set('slider-gluttony', 'val-gluttony', mealSize, function (v) { return Number(v).toFixed(2); });
+                set('slider-efficiency', 'val-efficiency', fillPerFood, function (v) { return Number(v).toFixed(2); });
                 set('slider-eat-threshold', 'val-eat-threshold', eatThreshold);
                 set('slider-seek-master', 'val-seek-master', seekMaster, function (v) { return Number(v).toFixed(2); });
-                set('slider-seek-master-rail', 'val-seek-master-rail', seekMaster, function (v) { return Number(v).toFixed(2); });
                 set('slider-agent-master', 'val-agent-master', agentMaster, function (v) { return Number(v).toFixed(2); });
-                set('slider-agent-master-rail', 'val-agent-master-rail', agentMaster, function (v) { return Number(v).toFixed(2); });
                 syncMasterNotes();
             }
 
@@ -3971,7 +3858,7 @@
       <div style="color:var(--muted)">Age (sec)</div>
       <div class="font-mono text-right">${(life / 60).toFixed(1)}s</div>
       <div style="color:var(--muted)">Policy (eff.)</div>
-      <div class="font-mono text-right">${effPol === 'random' ? 'random' : effPol}${isSp && specialOverrides && specialOverrides.movementPolicy.useCustom ? ' *' : ''}</div>
+      <div class="font-mono text-right">${effPol === 'random' ? 'wander' : effPol}${isSp && specialOverrides && specialOverrides.movementPolicy.useCustom ? ' *' : ''}</div>
       <div style="color:var(--muted)">Seek blend</div>
       <div class="font-mono text-right">${blend.toFixed(2)}</div>
       <div style="color:var(--muted)">Dist → food</div>
@@ -4029,16 +3916,16 @@
                 const k = {
                     preset: packName,
                     movementPolicy: 'seek',
-                    initialAgents: env.initialAgents,
-                    foodSpawn: env.foodSpawn,
-                    sight: 180,
-                    hungerPull: 1.0,
-                    seekPush: 0.35,
-                    drift: 0.5,
+                    numAgents: env.numAgents,
+                    foodSpawnInterval: env.foodSpawnInterval,
+                    senseRadius: 180,
+                    seekStrength: 1.0,
+                    seekAccel: 0.35,
+                    wanderAmp: 0.5,
                     maxSpeed: 2.0,
                     hungerRate: 0.062,
-                    efficiency: 1.6,
-                    gluttony: 0.7,
+                    fillPerFood: 1.6,
+                    mealSize: 0.7,
                     eatThreshold: 11,
                     seekMaster: 0.5,
                     agentMaster: 0.5,
@@ -4095,7 +3982,7 @@
 
             function createHeadlessWorld(knobs, seed) {
                 const rng = mulberry32(seed >>> 0);
-                const n = Math.max(1, Math.min(200, knobs.initialAgents | 0) || labBatch.agentsPerSetup);
+                const n = Math.max(1, Math.min(200, knobs.numAgents | 0) || labBatch.agentsPerSetup);
                 const agents = [];
                 for (let i = 0; i < n; i++) {
                     agents.push({
@@ -4130,17 +4017,17 @@
             function headlessStep(state) {
                 const knobs = state.knobs;
                 const rng = state.rng;
-                const wAmp = labKnob(knobs, 'drift');
+                const wAmp = labKnob(knobs, 'wanderAmp');
                 const pol = labKnob(knobs, 'movementPolicy');
-                const sRad = labKnob(knobs, 'sight');
-                const sStr = labKnob(knobs, 'hungerPull');
-                const sAcc = labKnob(knobs, 'seekPush');
+                const sRad = labKnob(knobs, 'senseRadius');
+                const sStr = labKnob(knobs, 'seekStrength');
+                const sAcc = labKnob(knobs, 'seekAccel');
                 const mSpd = labKnob(knobs, 'maxSpeed');
                 const hRate = labKnob(knobs, 'hungerRate');
                 const scThresh = labKnob(knobs, 'eatThreshold');
-                const scAmt = labKnob(knobs, 'gluttony');
-                const scFill = labKnob(knobs, 'efficiency');
-                const spawnIv = Math.max(1, labKnob(knobs, 'foodSpawn') | 0);
+                const scAmt = labKnob(knobs, 'mealSize');
+                const scFill = labKnob(knobs, 'fillPerFood');
+                const spawnIv = Math.max(1, labKnob(knobs, 'foodSpawnInterval') | 0);
 
                 state.tick++;
                 const alive = [];
@@ -4246,6 +4133,7 @@
              */
             function runOneHeadlessAsync(setupKnobs, seed, stopWhen, maxTicks, onProgress) {
                 const knobs = cloneKnobs(setupKnobs);
+                knobs.numAgents = labBatch.agentsPerSetup;
                 const state = createHeadlessWorld(knobs, seed);
                 const cap = Math.max(60, maxTicks || labBatch.maxTicks || LAB_MAX_TICKS_DEFAULT);
 
@@ -4316,11 +4204,11 @@
                 return {
                     difficulty: k.preset || 'custom',
                     policy: k.movementPolicy || 'seek',
-                    sense: (k.sight != null ? k.sight : '—') + ' · ' +
-                        (k.hungerPull != null ? Number(k.hungerPull).toFixed(2).replace(/\.?0+$/, '') : '—') + ' · ' +
-                        (k.seekPush != null ? k.seekPush : '—'),
+                    sense: (k.senseRadius != null ? k.senseRadius : '—') + ' · ' +
+                        (k.seekStrength != null ? Number(k.seekStrength).toFixed(2).replace(/\.?0+$/, '') : '—') + ' · ' +
+                        (k.seekAccel != null ? k.seekAccel : '—'),
                     hungerSpawn: (k.hungerRate != null ? k.hungerRate : '—') + ' · ' +
-                        (k.foodSpawn != null ? k.foodSpawn : '—')
+                        (k.foodSpawnInterval != null ? k.foodSpawnInterval : '—')
                 };
             }
 
@@ -4335,9 +4223,7 @@
                     '<div class="lab-sec">Batch</div>' +
                     '<div class="lab-kv"><span class="k">Setups</span><span class="v">' + labSetups.length + '</span></div>' +
                     '<div class="lab-kv"><span class="k">Runs per setup</span><span class="v">' + labBatch.runsPerSetup + '</span></div>' +
-                    '<div class="lab-kv"><span class="k">N / setup</span><span class="v">' +
-                    labSetups.map(function (s) { return s.initialAgents != null ? s.initialAgents : '—'; }).join(' · ') +
-                    '</span></div>' +
+                    '<div class="lab-kv"><span class="k">Agents / setup</span><span class="v">' + labBatch.agentsPerSetup + '</span></div>' +
                     '<div class="lab-kv"><span class="k">Total runs</span><span class="v">' + labTotalRuns() + '</span></div>' +
                     '<div class="lab-kv"><span class="k">Stop prefer</span><span class="v">' + stopLabel + '</span></div>' +
                     '<div class="lab-kv"><span class="k">Max duration</span><span class="v">' + maxSec + 's</span></div>' +
@@ -4347,7 +4233,7 @@
                     const k = labSetups[i];
                     const s = formatSetupSummaryLines(k);
                     const side = i === 0 ? ' setup-a' : (i === 1 ? ' setup-b' : '');
-                    const pol = (k.movementPolicy === 'random') ? 'random' : 'seek';
+                    const pol = (k.movementPolicy === 'random') ? 'wander' : 'seek';
                     const polCls = k.movementPolicy === 'random' ? 'random' : 'seek';
                     html += '<div class="lab-setup-card' + side + '">';
                     html += '<div class="lab-setup-card-head">';
@@ -4355,7 +4241,7 @@
                     html += '<span class="lab-setup-badge ' + polCls + '">' + pol + '</span>';
                     html += '</div>';
                     html += '<div class="lab-kv"><span class="k">Difficulty</span><span class="v">' + s.difficulty + '</span></div>';
-                    html += '<div class="lab-kv"><span class="k">N · food spawn</span><span class="v">' + (k.initialAgents != null ? k.initialAgents : '—') + ' · ' + (k.foodSpawn != null ? k.foodSpawn : '—') + '</span></div>';
+                    html += '<div class="lab-kv"><span class="k">N · food spawn</span><span class="v">' + (k.numAgents != null ? k.numAgents : '—') + ' · ' + (k.foodSpawnInterval != null ? k.foodSpawnInterval : '—') + '</span></div>';
                     html += '<div class="lab-kv"><span class="k">Seek · Agent master</span><span class="v">' +
                         (k.seekMaster != null ? Number(k.seekMaster).toFixed(2) : '—') +
                         (k.seekMasterCustom ? '*' : '') + ' · ' +
@@ -4516,6 +4402,7 @@
                     const setupIndex = si + 1;
                     const seed = (baseSeed + si * 10007 + ri * 97) >>> 0;
                     const knobs = setupsSnap[si];
+                    knobs.numAgents = labBatch.agentsPerSetup;
                     setLabProgress(
                         completed,
                         total,
@@ -4657,53 +4544,6 @@
             function labRemoveSetup() {
                 if (labSetups.length <= 1) return;
                 if (labParamsTab === 'batch') {
-                    labSetups.pop();
-                } else {
-                    const idx = typeof labParamsTab === 'number' ? labParamsTab : 0;
-                    labSetups.splice(idx, 1);
-                    labParamsTab = Math.min(idx, labSetups.length - 1);
-                }
-                renderLabParamsModal();
-                renderLabLeft();
-            }
-
-            function applyLabPresetToSetup(idx, type) {
-                const k = labSetups[idx];
-                if (!k) return;
-                const packName = (type === 'lenient' || type === 'punishing') ? type : 'balanced';
-                const env = getPresetEnv(packName);
-                k.preset = packName;
-                k.foodSpawn = env.foodSpawn;
-                k.initialAgents = env.initialAgents;
-                renderLabParamsModal();
-            }
-
-            function renderLabParamsModal() {
-                const tabs = document.getElementById('lab-params-tabs');
-                const body = document.getElementById('lab-params-body');
-                const addBtn = document.getElementById('btn-lab-add-setup');
-                const remBtn = document.getElementById('btn-lab-remove-setup');
-                if (!tabs || !body) return;
-                if (addBtn) addBtn.disabled = labSetups.length >= LAB_MAX_SETUPS;
-                if (remBtn) remBtn.disabled = labSetups.length <= 1;
-
-                let th = '';
-                for (let i = 0; i < labSetups.length; i++) {
-                    th += '<button type="button" class="btn-speed' + (labParamsTab === i ? ' on' : '') +
-                        '" data-lab-tab="' + i + '">Setup ' + (i + 1) + '</button>';
-                }
-                th += '<button type="button" class="btn-speed' + (labParamsTab === 'batch' ? ' on' : '') +
-                    '" data-lab-tab="batch">Batch</button>';
-                tabs.innerHTML = th;
-                tabs.querySelectorAll('[data-lab-tab]').forEach(function (btn) {
-                    btn.onclick = function () {
-                        const t = btn.getAttribute('data-lab-tab');
-                        labParamsTab = t === 'batch' ? 'batch' : parseInt(t, 10);
-                        renderLabParamsModal();
-                    };
-                });
-
-                if (labParamsTab === 'batch') {
                     const allDead = labBatch.stopWhen === 'extinction';
                     if (allDead) {
                         labBatch.maxTicks = LAB_ALL_DEAD_TICKS;
@@ -4715,7 +4555,7 @@
                         '<div class="mb-2"><div class="flex justify-between text-xs mb-0.5"><span>Fallback agents / setup</span>' +
                         '<span class="font-mono text-sky-300" id="lab-val-agents">' + labBatch.agentsPerSetup + '</span></div>' +
                         '<input type="range" id="lab-slider-agents" min="10" max="100" step="1" value="' + labBatch.agentsPerSetup + '" class="w-full accent-sky-400"></div>' +
-                        '<p class="text-[10px] text-slate-500 mb-2" style="margin-top:-0.25rem">Used only if a setup has no Initial agents. Trials use each setup’s N (island pack).</p>' +
+                        '<p class="text-[10px] text-slate-500 mb-2" style="margin-top:-0.25rem">Used only if a setup has no Initial agents. Prefer the Environment slider on each setup tab.</p>' +
                         '<div class="mb-2"><div class="flex justify-between text-xs mb-0.5"><span>Runs per setup</span>' +
                         '<span class="font-mono text-sky-300" id="lab-val-runs">' + labBatch.runsPerSetup + '</span></div>' +
                         '<input type="range" id="lab-slider-runs" min="1" max="100" step="1" value="' + labBatch.runsPerSetup + '" class="w-full accent-sky-400"></div>' +
@@ -4801,21 +4641,22 @@
                     '<button type="button" class="btn-speed' + (isRandom ? ' on' : '') + '" id="lab-pol-rand">Random</button>' +
                     '</div></div>' +
                     '<div class="section-title" style="margin:0.35rem 0 0.35rem">Environment</div>' +
-                    labSliderRow('Initial agents', 'lab-s-n', 1, 100, 1, k.initialAgents, 0, false) +
-                    labSliderRow('Food spawn', 'lab-s-spawn', 1, 50, 1, k.foodSpawn, 0, false) +
+                    labSliderRow('Initial agents', 'lab-s-n', 1, 100, 1, k.numAgents, 0, false) +
+                    labSliderRow('Food spawn', 'lab-s-spawn', 1, 50, 1, k.foodSpawnInterval, 0, false) +
                     '<div class="section-title" style="margin:0.55rem 0 0.35rem">Seek</div>' +
-                    labMasterBlock('Seek master', 'lab-s-sm', k.seekMaster != null ? k.seekMaster : 0.5, 'noisy / weak lock', 'quiet / committed', k.seekMasterCustom, isRandom) +
-                    labSliderRow('Sight', 'lab-s-sense', 40, 400, 5, k.sight, 0, isRandom) +
-                    labSliderRow('Hunger pull', 'lab-s-str', 0, 2, 0.05, k.hungerPull, 2, isRandom) +
-                    labSliderRow('Seek push', 'lab-s-acc', 0.05, 1, 0.05, k.seekPush, 2, isRandom) +
-                    labSliderRow('Drift', 'lab-s-wan', 0, 1.5, 0.05, k.drift, 2, isRandom) +
-                    (isRandom ? '<p class="text-[10px] text-slate-500 mb-2">Seek sliders apply only in Seek policy.</p>' : '') +
+                    labSliderRow('Seek master', 'lab-s-sm', 0, 1, 0.01, k.seekMaster != null ? k.seekMaster : 0.5, 2, false) +
+                    (k.seekMasterCustom ? '<p class="text-[10px] text-slate-500 mb-2">Seek path custom</p>' : '') +
+                    labSliderRow('Sight', 'lab-s-sense', 40, 400, 5, k.senseRadius, 0, isRandom) +
+                    labSliderRow('Hunger pull', 'lab-s-str', 0, 2, 0.05, k.seekStrength, 2, isRandom) +
+                    labSliderRow('Seek push', 'lab-s-acc', 0.05, 1, 0.05, k.seekAccel, 2, isRandom) +
+                    labSliderRow('Drift', 'lab-s-wan', 0, 1.5, 0.05, k.wanderAmp, 2, false) +
                     '<div class="section-title" style="margin:0.55rem 0 0.35rem">Agent</div>' +
-                    labMasterBlock('Agent master', 'lab-s-am', k.agentMaster != null ? k.agentMaster : 0.5, 'easy body', 'hard body', k.agentMasterCustom) +
+                    labSliderRow('Agent master', 'lab-s-am', 0, 1, 0.01, k.agentMaster != null ? k.agentMaster : 0.5, 2, false) +
+                    (k.agentMasterCustom ? '<p class="text-[10px] text-slate-500 mb-2">Agent path custom</p>' : '') +
                     labSliderRow('Max speed', 'lab-s-spd', 0.5, 4, 0.1, k.maxSpeed, 2, false) +
                     labSliderRow('Hunger rate', 'lab-s-hung', 0.01, 0.15, 0.001, k.hungerRate, 3, false) +
-                    labSliderRow('Gluttony', 'lab-s-glu', 0.3, 2, 0.05, k.gluttony, 2, false) +
-                    labSliderRow('Efficiency', 'lab-s-eff', 0.3, 3, 0.05, k.efficiency, 2, false) +
+                    labSliderRow('Gluttony', 'lab-s-glu', 0.3, 2, 0.05, k.mealSize, 2, false) +
+                    labSliderRow('Efficiency', 'lab-s-eff', 0.3, 3, 0.05, k.fillPerFood, 2, false) +
                     labSliderRow('Eat threshold', 'lab-s-eat', 5, 30, 1, k.eatThreshold, 0, false);
 
                 body.querySelectorAll('[data-p]').forEach(function (btn) {
@@ -4840,7 +4681,7 @@
                     renderLabParamsModal();
                 };
                 const smSeek = document.getElementById('lab-s-sm');
-                if (smSeek && !smSeek.disabled) smSeek.oninput = function () {
+                if (smSeek) smSeek.oninput = function () {
                     applySeekMasterTo(k, parseFloat(smSeek.value));
                     renderLabParamsModal();
                     renderLabLeft();
@@ -4851,30 +4692,17 @@
                     renderLabParamsModal();
                     renderLabLeft();
                 };
-                wireLabSlider(idx, 'lab-s-n', 'initialAgents', 0, 'island');
-                wireLabSlider(idx, 'lab-s-spawn', 'foodSpawn', 0, 'island');
-                wireLabSlider(idx, 'lab-s-sense', 'sight', 0, 'seek');
-                wireLabSlider(idx, 'lab-s-str', 'hungerPull', 2, 'seek');
-                wireLabSlider(idx, 'lab-s-acc', 'seekPush', 2, 'seek');
-                wireLabSlider(idx, 'lab-s-wan', 'drift', 2, 'seek');
+                wireLabSlider(idx, 'lab-s-n', 'numAgents', 0, 'island');
+                wireLabSlider(idx, 'lab-s-spawn', 'foodSpawnInterval', 0, 'island');
+                wireLabSlider(idx, 'lab-s-sense', 'senseRadius', 0, 'seek');
+                wireLabSlider(idx, 'lab-s-str', 'seekStrength', 2, 'seek');
+                wireLabSlider(idx, 'lab-s-acc', 'seekAccel', 2, 'seek');
+                wireLabSlider(idx, 'lab-s-wan', 'wanderAmp', 2, 'seek');
                 wireLabSlider(idx, 'lab-s-spd', 'maxSpeed', 2, 'agent');
                 wireLabSlider(idx, 'lab-s-hung', 'hungerRate', 3, 'agent');
-                wireLabSlider(idx, 'lab-s-glu', 'gluttony', 2, 'agent');
-                wireLabSlider(idx, 'lab-s-eff', 'efficiency', 2, 'agent');
+                wireLabSlider(idx, 'lab-s-glu', 'mealSize', 2, 'agent');
+                wireLabSlider(idx, 'lab-s-eff', 'fillPerFood', 2, 'agent');
                 wireLabSlider(idx, 'lab-s-eat', 'eatThreshold', 0, 'agent');
-            }
-
-            function labMasterBlock(label, id, val, lo, hi, custom, disabled) {
-                const shown = Number(val).toFixed(2);
-                const dis = disabled ? ' disabled' : '';
-                const wrapExtra = disabled ? ' lab-slider-disabled' : '';
-                return '<div class="master-row' + wrapExtra + '">' +
-                    '<div class="flex justify-between text-xs mb-0.5"><span>' + label + '</span>' +
-                    '<span class="font-mono text-sky-300" id="' + id + '-val">' + shown + '</span></div>' +
-                    '<input type="range" id="' + id + '" min="0" max="1" step="0.01" value="' + val + '" class="w-full accent-sky-400"' + dis + '>' +
-                    '<div class="master-ends"><span>' + lo + '</span><span>' + hi + '</span></div>' +
-                    (custom && !disabled ? '<p class="text-[10px] text-slate-500 mb-0 mt-1">Custom — a child slider left the path</p>' : '') +
-                    '</div>';
             }
 
             function labSliderRow(label, id, min, max, step, val, decimals, disabled) {

@@ -615,3 +615,33 @@ No `VERSION` / `index.html` change.
 
 - AI Track A + light B under human request; human verified Lab batches and requested PR after freeze.
 - One IMPLEMENTATION_LOG section per version (standing rule).
+
+---
+
+## 2026-08-13 — `0.9.6-params`
+
+**Version / Phase:** `0.9.6-params` · Phase 0 · Survive  
+**Track:** mixed A + B (human requested apply + freeze after Lab)
+
+### Mechanics
+
+- Ground fill **removed**. Catch = bag **+1**, pellet deleted, no hunger drop. Pellets fixed **amount 1**.
+- Pocket: `hunger −= gluttony × efficiency` when hunger > Eat threshold.
+
+### World / Lab / Special
+
+- Rail: Policy, Seek + Agent **masters**, island L/B/P, Parameters… (all child sliders).
+- Island presets = **Food spawn + Initial agents** only (L 6/35 · B 8/60 · P 18/80; higher N = harder).
+- Seek master: more Sight / Hunger pull / Seek push, less Drift. Agent master: harder body (more Hunger rate & Gluttony, later Eat threshold, less Efficiency, slightly lower Max speed).
+- Keys match UI (`sight`, `hungerPull`, `seekPush`, `drift`, `gluttony`, `efficiency`, …).
+- Lab: per-setup N (Batch fallback does **not** overwrite). Random disables the whole Seek shelf including master. Masters in Lab + Special too.
+
+### Lab freeze (human, 2026-08-13)
+
+- Seek L/B/P @ 90s ranks remnant ~8 / 4 / 0.  
+- Seek master 0.2→0.8 monotone; most gain by 0.5.  
+- Agent master steep: easy ~13 alive, mid ~4, hard ≈ wipe on Balanced. Human: good enough.
+
+### Not in this version
+
+- Differ traits / mix import / roster / trend redesign / Playbook file / Lab graphs.
