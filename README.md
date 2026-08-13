@@ -4,7 +4,7 @@ A **spatial agent-based evolutionary simulation** that starts as a survival sand
 
 **North star:** Watch what helps agents survive become what helps them thrive as the world gets richer — hunger first, then behavioral differences, then generations, then economic interaction.
 
-**Right now:** Phase 0 · Survive. Agents with hunger, food, and seek-food movement. Observability, run history, layout, seek policy, special agent, vision framing, run-log export, and **Lab** (headless multi-setup batches) are shipped. Traits, reproduction, and trade are not implemented yet.
+**Right now:** Phase 0 · Survive. Hunger, food, Seek/Random, Lab, export. Parameters live in a modal (Seek / Agent / island). Catch banks 1 food (no ground fill). Traits still uniform.
 
 This project is also a deliberate learning vehicle for:
 - Understanding emergent evolutionary dynamics in simple (then richer) economic systems
@@ -30,9 +30,11 @@ Active ideas backlog (open only): `FUTURE_FEATURES.md`. Ship history: `IMPLEMENT
 
 **`VERSION` file** is the single source of truth. Update it on every release PR, and update the live-release line below at the same time.
 
-> **Live release:** `0.9.5-lab` · Phase 0 · Survive
+> **Live release:** `0.9.6-params` · Phase 0 · Survive
 
-**0.9.5-lab** — **World | Lab** mode switch; Lab headless batches (1–5 crowd setups, Parameters, progress, result cards, Export/Copy last batch). Default Lab ladder: Random × Lenient / Balanced / Punishing. Shared difficulty packs tuned for an **alive-first** ladder under Random (short Max-time for pop ranking; All-dead + 600s safety for wipe stories). No special in Lab. Design: `design-docs/0.9.5-lab-design.html`.
+**0.9.6-params** — World rail: Policy + island presets + Parameters…. Presets = **Food spawn + Initial agents** (higher N = harder: L 35 / B 60 / P 80). Seek + Agent masters in the modal. Catch = bag +1, no ground fill. Pocket: hunger −= Gluttony × Efficiency.
+
+**0.9.5-lab** — **World | Lab** mode switch; Lab headless batches (1–5 crowd setups, Parameters, progress, result cards, Export/Copy last batch). Default Lab ladder: Wander × Lenient / Balanced / Punishing. Shared difficulty packs tuned for an **alive-first** ladder under Wander (short Max-time for pop ranking; All-dead + 600s safety for wipe stories). No special in Lab. Design: `design-docs/0.9.5-lab-design.html`.
 
 **0.9.4-run-logs** — **Run logs…** modal + export/copy JSON; seek accel / wander / max speed on world rail.  
 **0.9.3-vision** — header N4; Vision…; phase path on canvas-module.  

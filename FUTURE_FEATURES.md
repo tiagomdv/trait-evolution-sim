@@ -1,202 +1,70 @@
 # Future Features & Roadmap — trait-evolution-sim
 
-**Active backlog only.** Open ideas, planned milestones, and deferred-but-still-wanted work.
+**Active backlog only.** When something ships or is dismissed, put it in `IMPLEMENTATION_LOG.md` and **remove it here**.
 
-When something **ships** or is **dismissed**, document it in `IMPLEMENTATION_LOG.md` (and archives/VERSION as needed), then **remove it from this file**. Do not keep “Completed in PR #N” markers here — that history lives in the log.
+**Phase:** 0 · Survive · live `0.9.6-params` (see `VERSION`)  
+**Arc:** Survive → Differ → Evolve → Economy  
+**Hygiene:** `AGENTS.md`. Older snapshots: `archive/docs/FUTURE_FEATURES-pre-backlog-hygiene-2026-07-30.md`, `…-pre-resteer-2026-07-02.md`, `…-pre-0.9.6-params-2026-08-13.md`.
 
-**Current phase:** 0 · Survive  
-**Last shipped (pointer only):** `0.9.5-lab` · see `VERSION` + `IMPLEMENTATION_LOG.md`  
-**Thematic arc:** Survive → Differ → Evolve → Economy
-
-**How this file is maintained:** see `AGENTS.md` (docs resteer 2026-07-30 — backlog hygiene).  
-**Before this resteer:** full prior content frozen at `archive/docs/FUTURE_FEATURES-pre-backlog-hygiene-2026-07-30.md`  
-**Earlier vision resteer snapshot:** `archive/docs/FUTURE_FEATURES-pre-resteer-2026-07-02.md`
-
-### Strategy: thick Phase 0 before Phase 1 · Differ (human 2026-07-30; memory deprioritized 2026-08-06)
-
-**Intent:** Prefer shipping the open **Survive** pile (lab tooling + play/story docs) **before** opening Phase 1 · Differ. Forage core (Seek + special) is treated as **good enough to play**; last-food memory is **not** required to close the forage story.
-
-**Why:** Phase 1 will add traits, new knobs, and more inspector/metrics surface. Building **Play + Lab + export + Help/Playbook** first means Differ plugs into a stable “watch one world / measure many worlds / explain knobs” desk — less redesign thrash mid-traits.
-
-**Not a law:** Human can still jump to Differ earlier. This is the **default preference**, not a hard gate list.
-
-**Suggested order (thick path)**
-
-1. ~~**Single-run science** — run parameter export logs~~ **shipped** as `0.9.4-run-logs`  
-2. ~~**Lab mode v1** — headless multi-setup batches~~ **shipped** as `0.9.5-lab` (1–5 setups, cards, JSON export; **no graphs v1**; special stays World-only)  
-3. **Story layer (later version)** — thematic experiment presets + `PLAYBOOK.md` v0 — harvest notes in **Lab notes** below; do **not** create Playbook until that milestone  
-4. **Optional Lab polish** — graphs, batch history, lock/vary Cartesian grids, World multi-group spawn from Lab setups  
-5. **Close Phase 0** — freeze “Survive lab complete,” then Phase 1 · Differ design  
-
-**Maybe later (not queued):** last-food **memory** — only if feel or Phase 1 traits (e.g. ExplorationRate) make it earn its place. See deferred mechanics below.
-
-**Trap to avoid:** Lab scope creep delaying Differ forever. “Before Phase 1” means a **usable Lab v1**, not every graph ever.
+**Thick Phase 0 (preference, not a law):** usable Play + Lab + export before Differ. Lab v1 and `0.9.6-params` (island / Seek / Agent + masters) are **frozen**. Do not grow Lab graphs forever. Human can open Differ any time.
 
 ---
 
-## Version scheme (reference)
+## Phase 0 · Survive — open
 
-Major version = phase number (`0.x` = Phase 0, `1.x` = Phase 1, …). Codename describes the milestone.
-
-Design artifacts in `design-docs/` use the same nomenclature (e.g. `0.9.0-forage-design.html`). See AGENTS.md.
-
----
-
-## Phase 0 · Survive — next (open)
-
-| Item | Track | Notes |
+| Next | Track | Notes |
 |------|-------|--------|
-| Lab polish — graphs / batch history / lock-vary grids | **A** | Optional. Core Lab shipped in `0.9.5-lab` (cards + JSON only). |
-| World multi-group from Lab setups | **B** | Optional design Phase 4 — visual A/B on canvas; Special stays World-only. |
-| Thematic experiment presets | **A/B** | Named story scenarios. See deferred UI + **Lab notes** for candidates. |
-| `PLAYBOOK.md` v0 | docs | **Later version** — not now. Harvest material lives in **Lab notes** below. |
-| Close Phase 0 | — | After thick Phase 0 path feels done, move to Phase 1 · Differ — human can still cut early. |
+| Thematic experiment presets | A/B | Named stories (Seek vs chance, remnant, feast/famine). Not a replacement for L/B/P. |
+| `PLAYBOOK.md` v0 | docs | Later. Harvest **Lab notes** below — don’t invent recipes. |
+| Optional Lab polish | A | Graphs, batch history, lock/vary grids. |
+| World multi-group from Lab | B | Visual A/B on canvas. Special stays World-only. |
+| Close Phase 0 | — | Human freeze → Phase 1 · Differ design. |
 
-**Forage design (whole arc):** `design-docs/0.9.0-forage-design.html`  
-**Run logs design:** `design-docs/0.9.4-export-run-logs-design.html`  
-**Lab design:** `design-docs/0.9.5-lab-design.html`  
-**Frozen builds:** `archive/index-0.9.0-seek.html` · … · `archive/index-0.9.5-lab.html`  
-**Deferred mechanics (not queued):** last-food **memory** (good/bad TTL) — human 2026-08-06: skip for now; revisit only if it makes sense later; food density gradient; greed/hoarding (Phase 1 flavor unless pulled forward).
+**Parked (not queued):** last-food memory · food density gradient · greed/hoarding (Differ unless pulled forward) · column slide drawers.
 
-**Shipped:** seek · ui-chrome · special · vision · run-logs · **lab**  
-**Brand design:** `design-docs/0.9.2-brand-header-design.html`  
-**Special design:** `design-docs/0.9.2-special-design.html`
+**Shipped (pointer):** seek · chrome · special · vision · run-logs · lab · **`0.9.6-params`**.  
+**Design:** `design-docs/0.9.0-forage-design.html` · `0.9.4-export-run-logs-design.html` · `0.9.5-lab-design.html` · `0.9.2-brand-header-design.html` · `0.9.2-special-design.html`.  
+**Archives:** `archive/index-0.9.0-seek.html` … `archive/index-0.9.6-params.html`.
 
-### Deferred mechanics (maybe later)
+### Version scheme
 
-#### Last-food memory (was `0.9.4-memory`)
+Major = phase (`0.x` Survive, `1.x` Differ). Codenames match `design-docs/` (e.g. `0.9.0-forage-design.html`).
 
-**Status:** **not next** · human deprioritized 2026-08-06 · keep as optional idea only  
-**Track:** B if ever picked up  
+### Parked detail
 
-**Idea (forage design stretch):** When nothing is in sense radius, bias toward a remembered last meal (and maybe avoid “bad” empty spots); memories expire via TTL. Bridge to Phase 1 **ExplorationRate**.
+**Last-food memory** (was `0.9.4-memory`) — not next. Bias toward last meal / away from empty spots, TTL. Revisit if agents feel blind outside Sight, or Differ needs an ExplorationRate hook.
 
-**Why parked:** Seek + special already tell a solid Survive forage story. Extra agent state and edge cases without clear payoff right now.
+**Column drawers** — animate hide/show. Hide ✕ + edge tab is enough.
 
-**Revisit if:** agents feel “blind drunk” when food leaves radius and that hurts play; or Phase 1 traits need a memory hook.
+**Thematic presets (ideas):** Random walk baseline · Seek vs chance · Survival of the few · Chaotic feast/famine. Optional History tag. Pair with Playbook chapters.
 
-### Deferred UI (still wanted)
+**Playbook** — `PLAYBOOK.md` when that version opens. Recipes: setup → do → watch for → why cool. Not Help, not a second roadmap.
 
-#### Slide left / slide right column drawers
+### Lab notes — harvest for Playbook later
 
-**Status:** deferred (post 0.9.1 chrome if still wanted)
+Living scratch. After a good export, append short findings. Not a shipped Playbook.
 
-Animate side panels as drawers (`transform: translateX`) instead of hard show/hide.
+**Method**
 
-1. **Overlay drawers** — canvas full-width; panels slide over it (smoother, less reflow).  
-2. **Layout + slide** — grid still resizes canvas (like current hide); panel slides while width collapses (harder, can jank).
+- Same stop + same max duration when comparing packs.  
+- Rank difficulty by **alive on a short clock** (75–90s). Long-run `avgFood` is tycoon-biased.  
+- Special is **relative to the world**.  
+- Lab JSON: `{ version, mode: "lab", experiment, runs, aggregates }`.  
+- World export: knobs = end-of-run; Export last ≠ selected row.
 
-**Why wait:** Hide ✕ + edge tab + `resizeSimCanvas` is enough for now; 0.9.1 is static chrome first.
+**Knob names (`0.9.6-params`):** Sight · Hunger pull · Seek push · Drift · Max speed · Hunger rate · Gluttony · Efficiency · Eat threshold · Food spawn · Initial agents. Policy Seek / Random. Island presets = Food spawn + N only (higher N = harder).
 
-#### Thematic experiment presets (story / lab scenarios)
+**2026-08-06** — Random L/B/P alive-first freeze (old packs + ground fill). Pet special in Random desert. Accel > sense-alone; high wander often hurt.
 
-**Status:** idea for later (post 0.9.1) · Track A/B
+**2026-08-13** — `0.9.6-params` freeze (no ground fill; catch = bag +1). Seek L/B/P @ 90s: remnant ranks L > B > P (~8 / 4 / 0 alive). Seek master 0.2→0.8: monotone, most gain by 0.5, high end flat. Agent master steep: easy ~13 alive, mid ~4, hard ~wipe on Balanced. Confirm `initialAgents` in export (Batch fallback must not overwrite N).
 
-Beyond Lenient / Balanced / Punishing difficulty numbers, add **thematic presets** that set a whole experiment at once — knobs + movement mode + maybe a short run label — so the human can demo stories without hand-tuning:
+**Playbook candidates:** L/B/P @ 75–90s · Seek vs Random same island · Seek master 0.2/0.5/0.8 · Agent master 0.2/0.5/0.8 · pet special in Random.
 
-- **Random walk baseline** — Random policy + known harsh-or-fair environment; “brownian / undirected walk, no food sense.”  
-- **Seek vs chance** — same world twice: Seek vs Random (or one-click flip + recommended settings) to show survival gap.  
-- **Survival of the few** — punishing scarcity + Seek; watch a remnant cling on.  
-- **Chaotic feast / famine** — extreme spawn vs hunger pairing for dramatic boom-bust.  
-- Other named “lab stories” as they emerge in testing.
+**Still interesting:** median duration + extinction % on Lab cards · dead special final hunger/food · slider range polish.
 
-**Notes:** May share UI with current presets or sit as a second row (“Experiments”). Should not replace simple difficulty ladder. Optionally tag History rows with scenario name. Capture when chrome + Seek feel solid. Pairs with the **Playbook** doc idea below (presets = one-click chapters).
+### Optional Lab polish
 
-#### Playbook / lab experiments doc (“how to have fun with the sim”)
-
-**Status:** **deferred to a later version** · not authored yet (human 2026-08-06: no Playbook file while closing `0.9.4-run-logs`)  
-**Working title:** `PLAYBOOK.md` at repo root when that version ships  
-
-**Idea (unchanged):** Human-facing recipes (setup → do → watch for → why cool). Not a second roadmap; not a substitute for in-app Help.
-
-**Until then:** stash findings under **Lab notes (from run logs)** in this file. When Playbook version opens, **copy/harvest** those notes into `PLAYBOOK.md` — do not invent recipes only from theory.
-
-#### Lab notes (from run logs) — harvest for Playbook / Lab / presets later
-
-**Status:** living scratch · append after good export+analysis sessions · **not** a shipped Playbook  
-**How notes form:** Play → several finished runs → **Run logs… → Copy/Export all** → analyze (e.g. Grok) → write short findings here. See README “Run logs → analysis loop.”
-
-**Process / method lessons**
-
-- Export JSON is enough for multi-run comparison; UI table + detail for eyeballing.  
-- Prefer **same stop rule + same max duration** when comparing packages.  
-- Special upgrades are **relative to the world**: Random crowd ≠ all-Seek crowd.  
-- Knob roles: **sense** = see food; **seek strength** = hunger→pull; **seek accel** = shove to target; **wander** = noise (all policies); **max speed** = cap.  
-- Lab: seeded headless trials; envelope `{ version, mode: "lab", experiment, runs, aggregates }`.  
-- World export quirks: knobs = end-of-run snapshot; Export last ≠ selected row; Clear does not reset run numbers.
-
-**Findings · session 2026-08-06 (World special ladders)**
-
-*1. Pet special in a random desert* — Random world + Seek special → crowd wipe, special often fat remnant.  
-*2. Special ladder in all-Seek* — Accel was the clearest single lever; sense-only weak; high wander often hurt.  
-*3. Quiet seeker* — Wander 0 beat high wander in a snappy Seek field.
-
-**Findings · session 2026-08-06 (Lab + difficulty packs · freeze)**
-
-*4. Alive-first ladder under Random (shipped packs)*  
-Shared `getPresetEnv` for World + Lab. Under **Random · Max-time ~75s · N=30 · 50 agents**, Balanced lands ~**17 alive** (hungry, empty inventory); under **~295s**, ~**12–13 alive** calmer. Hard gauntlet packs (higher hunger/sparser food) collapse to **~0–1 alive** with bimodal wipe-vs-tycoon — mean duration can look mid while avgAlive stays ~0.  
-**Product read:** Lenient = large crowd; Balanced = mid remnant after early cull; Punishing = fast wipe. Rank difficulty by **alive/dead on a fixed short clock**; treat long-run **avgFood** as tycoon-biased.  
-**Default Lab setups:** 3× Random · Lenient / Balanced / Punishing.
-
-*5. Stop rules*  
-All dead + 600s locked safety prevents hangs. Max time (editable) for pop ranking. Chunked headless so Cancel works mid-trial.
-
-**Recipe / Lab candidates to formalize later (Playbook)**
-
-- Default Random L/B/P ladder at 75s and at 295s (alive scale).  
-- Same ladder under Seek (expect larger remnants).  
-- Seek vs Random whole-world A/B, same preset, N seeds.  
-- Special vs world Random (pet special).  
-- Accel / wander sweeps (World Special…).  
-
-**Open questions (still interesting)**
-
-- Lab aggregate **median duration + extinction %** on cards (bimodality visible without export).  
-- Dead special `finalFood`/`finalHunger` at death.  
-- Slider range polish (hunger/spawn playable band) — optional UX.
-
-#### Vision reworking (`0.9.3-vision` — shipped framing)
-
-**Status:** **shipped** as `0.9.3-vision` (N4 header + Vision modal + path on canvas). Export shipped in `0.9.4-run-logs`. Lab desk shipped in `0.9.5-lab`. Playbook deferred.  
-**Track:** mostly **A / docs**; may include light export hooks
-
-**Intent:** Make the long product story legible and actionable *without* shipping fake Phase 2 generations.
-
-**Product story**
-
-- Identity: **agent evolution lab** (spatial agents; tune who lasts).  
-- Arc: Survive → Differ → Evolve → Economy (phase-aware taglines; header polish per brand design doc).  
-- Later dream: lab workflow to **develop the best survival generation by tuning** — real only when **reproduction / generations** (Phase 2) + multi-run **Lab mode** exist.
-
-**In scope for a vision milestone (suggested)**
-
-- Help section: “Where this is going” (honest: Phase 0 = survival only).  
-- `PLAYBOOK.md` v0: survival tuning recipes (Seek A/B, special overrides, presets).  
-- Confirm phase tagline bank + optional implement brand **Option B**.  
-- Optional: single-run **export** (knobs + end metrics) so tuning can leave the browser.  
-- README north-star aligned with in-app wording.
-
-**Out of scope for that milestone**
-
-- In-run inheritance / mutation / generational UI as if Phase 2 were done.  
-- Full Lab Monte Carlo (separate larger slice).  
-- Economy / trade.
-
-**Relations:** Playbook · export · Lab mode · brand-header design · thick Phase 0 strategy.
-
-#### Lab polish (after `0.9.5-lab` core)
-
-**Status:** optional follow-ups · core Lab shipped as `0.9.5-lab`  
-**Track:** mostly A
-
-Still open if wanted later:
-
-- Graphs (histograms, bar compare means, survival curves)  
-- Batch history (keep more than last batch)  
-- Cartesian lock/vary matrix (vs today’s explicit 1–5 setups)  
-- World multi-group spawn colored by Lab setup  
-- Help section for Lab workflow  
-- Parallel workers if batch size becomes painful  
+Graphs · batch history · Cartesian lock/vary · World multi-group colors · more Lab Help · parallel workers if batches hurt.
 
 ---
 
@@ -209,11 +77,11 @@ Still open if wanted later:
 
 ### Trait candidates (not locked)
 
-Early set: **HoardingBias**, **ExplorationRate**, **TradeBoldness**.
+Live eat/move knobs already exist (Gluttony, Efficiency, Drift, …). Differ can attach **variance** to those rather than a second name pile. Early poetic set: **HoardingBias**, **ExplorationRate**, **TradeBoldness** (TradeBoldness dormant until Economy).
 
-Also discussed: Patience / FutureOrientation, SocialAffinity, HarvestEfficiency, RiskSensitivity, Reciprocity; social/grouping (“follow successful agents”); heterogeneous starting groups; larger trait space overall.
+Also discussed: Patience / FutureOrientation, SocialAffinity, HarvestEfficiency, RiskSensitivity, Reciprocity; follow-successful-agents; heterogeneous starting groups.
 
-Finalize trait set when Phase 1 design starts.
+Finalize the set when Phase 1 design starts.
 
 ---
 
