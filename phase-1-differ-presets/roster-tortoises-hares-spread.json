@@ -1,0 +1,632 @@
+{
+  "version": 2,
+  "kind": "differ",
+  "mode": "roster",
+  "n": 60,
+  "id": "tortoises-hares-spread",
+  "name": "Tortoises vs Hares (within-family spread)",
+  "groups": [
+    {
+      "id": "TOR",
+      "name": "Tortoises",
+      "color": "#4ade80",
+      "n": 30,
+      "hungerRate": 0.05,
+      "efficiency": 1.8,
+      "hunt": 0.35,
+      "maxSpeed": 1.2
+    },
+    {
+      "id": "HAR",
+      "name": "Hares",
+      "color": "#fbbf24",
+      "n": 30,
+      "hungerRate": 0.078,
+      "efficiency": 1.4,
+      "hunt": 0.8,
+      "maxSpeed": 2.4
+    }
+  ],
+  "bodies": [
+    {
+      "bodyId": "TOR-01",
+      "name": "Tortoise 01",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.052,
+      "efficiency": 1.88,
+      "hunt": 0.32,
+      "maxSpeed": 1.2
+    },
+    {
+      "bodyId": "TOR-02",
+      "name": "Tortoise 02",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.052,
+      "efficiency": 1.84,
+      "hunt": 0.39,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-03",
+      "name": "Tortoise 03",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.057,
+      "efficiency": 1.79,
+      "hunt": 0.39,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-04",
+      "name": "Tortoise 04",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.054,
+      "efficiency": 1.9,
+      "hunt": 0.42,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "TOR-05",
+      "name": "Tortoise 05",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.051,
+      "efficiency": 1.74,
+      "hunt": 0.34,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-06",
+      "name": "Tortoise 06",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.055,
+      "efficiency": 1.92,
+      "hunt": 0.3,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-07",
+      "name": "Tortoise 07",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.051,
+      "efficiency": 1.85,
+      "hunt": 0.28,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-08",
+      "name": "Tortoise 08",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.049,
+      "efficiency": 1.82,
+      "hunt": 0.33,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-09",
+      "name": "Tortoise 09",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.054,
+      "efficiency": 1.86,
+      "hunt": 0.38,
+      "maxSpeed": 1.2
+    },
+    {
+      "bodyId": "TOR-10",
+      "name": "Tortoise 10",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.055,
+      "efficiency": 1.81,
+      "hunt": 0.34,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "TOR-11",
+      "name": "Tortoise 11",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.05,
+      "efficiency": 1.87,
+      "hunt": 0.31,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-12",
+      "name": "Tortoise 12",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.054,
+      "efficiency": 1.89,
+      "hunt": 0.43,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "TOR-13",
+      "name": "Tortoise 13",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.05,
+      "efficiency": 1.79,
+      "hunt": 0.43,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "TOR-14",
+      "name": "Tortoise 14",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.052,
+      "efficiency": 1.82,
+      "hunt": 0.38,
+      "maxSpeed": 1.2
+    },
+    {
+      "bodyId": "TOR-15",
+      "name": "Tortoise 15",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.053,
+      "efficiency": 1.85,
+      "hunt": 0.41,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "TOR-16",
+      "name": "Tortoise 16",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.055,
+      "efficiency": 1.77,
+      "hunt": 0.32,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "TOR-17",
+      "name": "Tortoise 17",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.056,
+      "efficiency": 1.72,
+      "hunt": 0.31,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-18",
+      "name": "Tortoise 18",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.051,
+      "efficiency": 1.9,
+      "hunt": 0.36,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-19",
+      "name": "Tortoise 19",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.049,
+      "efficiency": 1.75,
+      "hunt": 0.29,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "TOR-20",
+      "name": "Tortoise 20",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.054,
+      "efficiency": 1.79,
+      "hunt": 0.3,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-21",
+      "name": "Tortoise 21",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.05,
+      "efficiency": 1.79,
+      "hunt": 0.41,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "TOR-22",
+      "name": "Tortoise 22",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.05,
+      "efficiency": 1.72,
+      "hunt": 0.34,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-23",
+      "name": "Tortoise 23",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.053,
+      "efficiency": 1.7,
+      "hunt": 0.38,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "TOR-24",
+      "name": "Tortoise 24",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.057,
+      "efficiency": 1.94,
+      "hunt": 0.4,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "TOR-25",
+      "name": "Tortoise 25",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.057,
+      "efficiency": 1.87,
+      "hunt": 0.31,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-26",
+      "name": "Tortoise 26",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.052,
+      "efficiency": 1.9,
+      "hunt": 0.39,
+      "maxSpeed": 1.2
+    },
+    {
+      "bodyId": "TOR-27",
+      "name": "Tortoise 27",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.054,
+      "efficiency": 1.89,
+      "hunt": 0.43,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-28",
+      "name": "Tortoise 28",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.054,
+      "efficiency": 1.77,
+      "hunt": 0.35,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "TOR-29",
+      "name": "Tortoise 29",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.049,
+      "efficiency": 1.88,
+      "hunt": 0.41,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "TOR-30",
+      "name": "Tortoise 30",
+      "color": "#4ade80",
+      "sourceGroupId": "TOR",
+      "hungerRate": 0.057,
+      "efficiency": 1.71,
+      "hunt": 0.31,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "HAR-01",
+      "name": "Hare 01",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.083,
+      "efficiency": 1.45,
+      "hunt": 0.81,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "HAR-02",
+      "name": "Hare 02",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.074,
+      "efficiency": 1.45,
+      "hunt": 0.65,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "HAR-03",
+      "name": "Hare 03",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.079,
+      "efficiency": 1.4,
+      "hunt": 0.76,
+      "maxSpeed": 2.1
+    },
+    {
+      "bodyId": "HAR-04",
+      "name": "Hare 04",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.084,
+      "efficiency": 1.4,
+      "hunt": 0.86,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "HAR-05",
+      "name": "Hare 05",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.077,
+      "efficiency": 1.38,
+      "hunt": 0.72,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "HAR-06",
+      "name": "Hare 06",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.08,
+      "efficiency": 1.39,
+      "hunt": 0.86,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "HAR-07",
+      "name": "Hare 07",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.073,
+      "efficiency": 1.39,
+      "hunt": 0.77,
+      "maxSpeed": 2.3
+    },
+    {
+      "bodyId": "HAR-08",
+      "name": "Hare 08",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.074,
+      "efficiency": 1.37,
+      "hunt": 0.75,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "HAR-09",
+      "name": "Hare 09",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.078,
+      "efficiency": 1.44,
+      "hunt": 0.73,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "HAR-10",
+      "name": "Hare 10",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.075,
+      "efficiency": 1.49,
+      "hunt": 0.74,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "HAR-11",
+      "name": "Hare 11",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.082,
+      "efficiency": 1.39,
+      "hunt": 0.89,
+      "maxSpeed": 2.1
+    },
+    {
+      "bodyId": "HAR-12",
+      "name": "Hare 12",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.076,
+      "efficiency": 1.41,
+      "hunt": 0.75,
+      "maxSpeed": 2.1
+    },
+    {
+      "bodyId": "HAR-13",
+      "name": "Hare 13",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.073,
+      "efficiency": 1.31,
+      "hunt": 0.77,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "HAR-14",
+      "name": "Hare 14",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.084,
+      "efficiency": 1.32,
+      "hunt": 0.71,
+      "maxSpeed": 2.3
+    },
+    {
+      "bodyId": "HAR-15",
+      "name": "Hare 15",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.078,
+      "efficiency": 1.33,
+      "hunt": 0.86,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "HAR-16",
+      "name": "Hare 16",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.082,
+      "efficiency": 1.33,
+      "hunt": 0.88,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "HAR-17",
+      "name": "Hare 17",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.082,
+      "efficiency": 1.35,
+      "hunt": 0.81,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "HAR-18",
+      "name": "Hare 18",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.083,
+      "efficiency": 1.37,
+      "hunt": 0.71,
+      "maxSpeed": 2.3
+    },
+    {
+      "bodyId": "HAR-19",
+      "name": "Hare 19",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.072,
+      "efficiency": 1.48,
+      "hunt": 0.88,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "HAR-20",
+      "name": "Hare 20",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.081,
+      "efficiency": 1.46,
+      "hunt": 0.77,
+      "maxSpeed": 2.3
+    },
+    {
+      "bodyId": "HAR-21",
+      "name": "Hare 21",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.073,
+      "efficiency": 1.38,
+      "hunt": 0.74,
+      "maxSpeed": 2.3
+    },
+    {
+      "bodyId": "HAR-22",
+      "name": "Hare 22",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.077,
+      "efficiency": 1.48,
+      "hunt": 0.69,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "HAR-23",
+      "name": "Hare 23",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.081,
+      "efficiency": 1.36,
+      "hunt": 0.81,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "HAR-24",
+      "name": "Hare 24",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.082,
+      "efficiency": 1.47,
+      "hunt": 0.87,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "HAR-25",
+      "name": "Hare 25",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.074,
+      "efficiency": 1.36,
+      "hunt": 0.88,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "HAR-26",
+      "name": "Hare 26",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.076,
+      "efficiency": 1.48,
+      "hunt": 0.94,
+      "maxSpeed": 2.3
+    },
+    {
+      "bodyId": "HAR-27",
+      "name": "Hare 27",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.074,
+      "efficiency": 1.31,
+      "hunt": 0.85,
+      "maxSpeed": 2.1
+    },
+    {
+      "bodyId": "HAR-28",
+      "name": "Hare 28",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.076,
+      "efficiency": 1.38,
+      "hunt": 0.67,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "HAR-29",
+      "name": "Hare 29",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.079,
+      "efficiency": 1.41,
+      "hunt": 0.71,
+      "maxSpeed": 2.3
+    },
+    {
+      "bodyId": "HAR-30",
+      "name": "Hare 30",
+      "color": "#fbbf24",
+      "sourceGroupId": "HAR",
+      "hungerRate": 0.076,
+      "efficiency": 1.47,
+      "hunt": 0.78,
+      "maxSpeed": 2.2
+    }
+  ]
+}

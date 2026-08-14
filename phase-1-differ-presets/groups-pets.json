@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "kind": "differ",
+  "mode": "groups",
+  "n": 60,
+  "id": "pets",
+  "name": "Prophet / Mayfly / Ghost + Control crowd",
+  "groups": [
+    {
+      "id": "PRO",
+      "name": "Prophet",
+      "color": "#fbbf24",
+      "n": 3,
+      "hungerRate": 0.052,
+      "efficiency": 2.4,
+      "hunt": 1.0,
+      "maxSpeed": 2.2
+    },
+    {
+      "id": "FLY",
+      "name": "Mayfly",
+      "color": "#fb7185",
+      "n": 8,
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "id": "GHO",
+      "name": "Ghost",
+      "color": "#22d3ee",
+      "n": 5,
+      "hungerRate": 0.055,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 1.2
+    },
+    {
+      "id": "CTL",
+      "name": "Control",
+      "color": "#38bdf8",
+      "n": 44,
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    }
+  ]
+}

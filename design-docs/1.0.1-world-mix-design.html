@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1.0.1-world-mix · design</title>
+  <style>
+    :root {
+      --bg: #070b12; --panel: #0d1524; --panel-2: #0a1220; --border: #1e3a5f;
+      --text: #cbd5e1; --muted: #64748b; --accent: #38bdf8; --good: #7dd3fc;
+      --warn: #fbbf24; --ok: #4ade80; --bad: #fb7185; --pin: #818cf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--text); margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+    .doc-hero {
+      background: linear-gradient(180deg, #0d1524 0%, #070b12 100%);
+      border: 1px solid var(--border); border-radius: 0.85rem;
+      padding: 1.15rem 1.25rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    .doc-hero h1 {
+      font-size: 1.55rem; font-weight: 650; color: #f1f5f9;
+      margin: 0.35rem 0 0.4rem; letter-spacing: -0.02em;
+    }
+    .doc-hero .lede { margin: 0; font-size: 0.9rem; color: #94a3b8; max-width: 56rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.15rem; }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .tag.b { background: #1e1b4b; color: #c4b5fd; border-color: #7c3aed; }
+    .tag.muted { background: #1e293b; color: #94a3b8; border-color: #334155; }
+
+    .doc-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+    @media (max-width: 860px) {
+      .doc-grid { grid-template-columns: 1fr; }
+      .toc { position: static !important; }
+    }
+    .toc {
+      position: sticky; top: 0.75rem; background: var(--panel);
+      border: 1px solid var(--border); border-radius: 0.65rem; padding: 0.75rem 0.85rem;
+    }
+    .toc .section-label {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.5rem;
+    }
+    .toc ol { margin: 0; padding-left: 1.1rem; font-size: 0.8rem; }
+    .toc li { margin: 0.28rem 0; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    .main { min-width: 0; }
+    h2 {
+      font-size: 1.12rem; font-weight: 650; color: #e2e8f0; margin: 0 0 0.65rem;
+      padding-bottom: 0.35rem; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.95rem; font-weight: 600; color: #bae6fd; margin: 1.1rem 0 0.4rem; }
+    h2 + h3 { margin-top: 0.65rem; }
+    p, li { font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.84rem; }
+    .section { margin-bottom: 1.85rem; scroll-margin-top: 0.75rem; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 0.75rem 0.9rem; margin: 0.55rem 0;
+    }
+    .card h3 { margin-top: 0; }
+    table.doc { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 0.45rem 0 0.7rem; }
+    table.doc th, table.doc td {
+      border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top;
+    }
+    table.doc th {
+      background: var(--panel-2); color: #94a3b8; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--good); font-size: 0.86em; }
+    .callout {
+      border-left: 3px solid var(--accent); background: var(--panel-2);
+      padding: 0.65rem 0.85rem; border-radius: 0 0.5rem 0.5rem 0; margin: 0.6rem 0;
+      font-size: 0.88rem;
+    }
+    .callout.good { border-left-color: var(--ok); }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.bad { border-left-color: var(--bad); }
+    ul.tight { margin: 0.35rem 0; padding-left: 1.2rem; }
+    ul.tight li { margin: 0.2rem 0; }
+
+    .mock-stage {
+      background: #04070d; border: 1px solid var(--border);
+      border-radius: 0.75rem; padding: 0.75rem; margin: 0.55rem 0 0.85rem;
+    }
+    .mock-stage-label {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.45rem; font-weight: 600;
+    }
+    .mock-app {
+      background: #0b1220; border: 1px solid #2a4a72; border-radius: 0.55rem;
+      overflow: hidden; font-size: 11px;
+    }
+    .mock-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding: 0.45rem 0.65rem; border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #101a2c 0%, #0b1220 100%);
+    }
+    .mock-header .brand { color: #e2e8f0; font-weight: 650; font-size: 12px; }
+    .mock-header .ver { color: var(--muted); font-family: ui-monospace, monospace; font-size: 10px; }
+    .pill {
+      font-size: 10px; padding: 0.2rem 0.45rem; border-radius: 0.3rem;
+      border: 1px solid var(--border); background: #0f1c30; color: #bae6fd;
+    }
+    .pill.ok { border-color: #22c55e; color: #bbf7d0; background: #052e16; }
+    .pill.dim { color: var(--muted); }
+    .fake-btn {
+      font-size: 10px; padding: 0.25rem 0.5rem; border-radius: 0.3rem;
+      border: 1px solid #0ea5e9; background: #0c4a6e; color: #e0f2fe;
+    }
+    .fake-btn.ghost { border-color: #334155; background: #0a1220; color: #94a3b8; }
+    .sec-h {
+      font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin: 0.45rem 0 0.3rem;
+    }
+    .kv-row {
+      display: flex; justify-content: space-between; gap: 0.35rem;
+      padding: 0.2rem 0; border-bottom: 1px solid #152238; font-size: 10px;
+    }
+    .kv-row:last-child { border-bottom: none; }
+    .kv-row .k { color: var(--muted); }
+    .kv-row .v { color: var(--good); font-family: ui-monospace, monospace; }
+    .diagram {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px; line-height: 1.45; color: #94a3b8;
+      background: #04070d; border: 1px solid var(--border); border-radius: 0.45rem;
+      padding: 0.65rem 0.75rem; overflow-x: auto; white-space: pre; margin: 0.5rem 0;
+    }
+    .diagram .hl { color: var(--accent); }
+    .diagram .ok { color: var(--ok); }
+    .fake-slider-row { margin: 0.28rem 0 0.4rem; }
+    .fake-slider-row .lab {
+      display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 0.15rem;
+    }
+    .fake-slider-row .lab span:last-child {
+      font-family: ui-monospace, monospace; color: var(--good);
+    }
+    .fake-slider-track {
+      height: 6px; border-radius: 99px; background: #152238; position: relative;
+    }
+    .fake-slider-track::after {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+      width: var(--w, 40%); background: #0ea5e9; border-radius: 99px;
+    }
+    .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+    .group-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+    @media (max-width: 700px) { .group-row { grid-template-columns: 1fr; } }
+    .gcard { background: #070d16; border: 1px solid #1e3a5f; border-radius: 0.45rem; padding: 0.45rem 0.5rem; }
+    .gcard.a { border-color: #38bdf8; }
+    .gcard.b { border-color: #c4b5fd; }
+    .kpi-fake { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+    .kpi-fake .cell { background: #070d16; border: 1px solid #152238; border-radius: 0.3rem; padding: 0.3rem 0.4rem; }
+    .kpi-fake .cell span { display: block; font-size: 9px; color: var(--muted); }
+    .kpi-fake .cell b { font-family: ui-monospace, monospace; color: #7dd3fc; font-size: 13px; }
+    .screen-split { display: grid; grid-template-columns: 220px 1fr; gap: 0.55rem; }
+    @media (max-width: 700px) { .screen-split { grid-template-columns: 1fr; } }
+    mermaid { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="doc-hero">
+      <div class="meta-row">
+        <span class="tag">Design · not implemented</span>
+        <span class="tag b">World only · Track A + B</span>
+        <span class="tag good">Proposed: 1.0.1-world-mix</span>
+        <span class="tag warn">Phase 1 · Differ</span>
+        <span class="tag muted">Supersedes 1.0.0-mix for World</span>
+      </div>
+      <div class="callout warn" style="margin:0 0 0.85rem">
+        <strong>Layout for this PR:</strong>
+        <a href="1.0.1-differ-layout-design.html">1.0.1-differ-layout-design.html</a>
+        — left column + <strong>Differ…</strong> modal (not “Mix desk”). This file is the long mechanics spec.
+      </div>
+      <h1>World Mix desk · Groups + Roster</h1>
+      <p class="lede">
+        One World screen: thin chrome, a Mix modal that actually controls composition
+        (1–8 groups <em>or</em> a roster of N bodies), Reset-only apply, then
+        <strong>left column + trends + history together</strong> so leftover agents read as
+        <em>who lasted</em>. Lab stays Survive. No phase-path links. Live app stays
+        <code>index.html</code>.
+      </p>
+    </header>
+
+    <div class="doc-grid">
+      <nav class="toc" aria-label="Contents">
+        <div class="section-label">Contents</div>
+        <ol>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#background">Background</a></li>
+          <li><a href="#goals">Goals</a></li>
+          <li><a href="#design">Proposed design</a></li>
+          <li><a href="#chrome">1 · Chrome</a></li>
+          <li><a href="#mix">2 · Mix modal</a></li>
+          <li><a href="#spawn">3 · Spawn / hunt / eat</a></li>
+          <li><a href="#column">4 · Observability column</a></li>
+          <li><a href="#decisions">Key decisions</a></li>
+          <li><a href="#alts">Alternatives</a></li>
+          <li><a href="#api">API &amp; data</a></li>
+          <li><a href="#security">Security</a></li>
+          <li><a href="#obs">Observability</a></li>
+          <li><a href="#rollout">Rollout</a></li>
+          <li><a href="#questions">Open questions</a></li>
+          <li><a href="#prs">PR plan</a></li>
+        </ol>
+      </nav>
+
+      <div class="main">
+
+        <section class="section" id="overview">
+          <h2>1. Overview &amp; metadata</h2>
+          <table class="doc">
+            <thead><tr><th>Field</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Author</td><td>human tiagomdv + assistant</td></tr>
+              <tr><td>Date</td><td>2026-08-14</td></tr>
+              <tr><td>Status</td><td>Draft — design only; do not bump <code>VERSION</code></td></tr>
+              <tr><td>Baseline</td><td>live <code>index.html</code> · <code>archive/index-0.9.6-params.html</code></td></tr>
+              <tr><td>Supersedes</td><td><a href="1.0.0-mix-design.html">1.0.0-mix-design.html</a> as World source of truth</td></tr>
+              <tr><td>Scope</td><td><strong>World only.</strong> Lab stays uniform Survive.</td></tr>
+            </tbody>
+          </table>
+          <p>
+            World is a uniform crowd: <code>init()</code> does <code>initialAgents × new Agent()</code> then
+            <code>pickSpecialAgent()</code>. Differ is composition at spawn. Mix is the desk; Reset is the commit;
+            metrics + trends + history are one observability column. Hunt decode, <code>pendingMix</code>/<code>appliedMix</code>,
+            <code>p()</code> per-body, fair-eat, and skip-Lab stay from 1.0.0. Conflicts (L/B/P, 2–4 groups only,
+            Survive hyperlink, scattered metrics chapters) are overridden here.
+          </p>
+        </section>
+
+        <section class="section" id="background">
+          <h2>2. Background</h2>
+          <ul class="tight">
+            <li>Left rail: Policy, Seek/Agent masters, Island L/B/P, Parameters…, seven KPIs (bag-food tiles), inspector + Pin.</li>
+            <li>Right: pop / total food / avg hunger + pinned series + <code>runHistory[]</code>.</li>
+            <li>N: <code>#slider-number-agents</code> <strong>1–100</strong> (default 60). Food: <code>#slider-food-spawn</code> 1–50.</li>
+            <li>Eat loop (~2531): first-in-array wins. <code>p()</code> (~2055): Special then <code>globalParam</code>.</li>
+            <li><code>escapeHtml</code> <strong>does not exist</strong> in <code>index.html</code>.</li>
+            <li>Lab uniform remnant ≈ 4.2–4.7 is not P(alive | trait) in a mixed spawn. Lab is out of scope.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="goals">
+          <h2>3. Goals &amp; non-goals</h2>
+          <div class="card">
+            <h3>Goals</h3>
+            <ul class="tight">
+              <li>Mix modal: Groups 1–8 <strong>and</strong> Roster N∈[1,100], equally first-class; Groups default.</li>
+              <li>Mix owns N. Food spawn = weather. <strong>No L/B/P</strong> on World.</li>
+              <li>Four traits + hunt <code>t</code>; apply on Reset only; fair-eat in World physics PR.</li>
+              <li>Thin rail; Special disabled; phase path labels only.</li>
+              <li>One observability column (KPIs + inspector + pop multi-line + session history).</li>
+              <li>JSON <code>version === 2</code>; add <code>escapeHtml</code>; single <code>index.html</code>.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Non-goals</h3>
+            <ul class="tight">
+              <li>Lab mix / Lab fair-eat / Lab JSON. Phase-path hyperlink. Evolve genetics.</li>
+              <li>60 random hues. History persist/import. Live apply. Deleting frozen knobs.</li>
+              <li>VERSION / IMPLEMENTATION_LOG / FUTURE_FEATURES in this docs task.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section" id="design">
+          <h2>4. Proposed design — one World screen</h2>
+          <p class="muted">Implement Mix + column from the next four consecutive subsections. Do not hunt later chapters for metrics.</p>
+          <div class="diagram"><span class="hl">chrome</span> → Mix modal (pending) → Reset → appliedMix
+       → spawn + decodeHunt + fair-eat
+       → p() + canvas swatch
+       → <span class="ok">observability column</span> (KPIs · inspector · trends · history)
+          </div>
+        </section>
+
+        <section class="section" id="chrome">
+          <h2>4.1 World chrome</h2>
+          <table class="doc">
+            <thead><tr><th>Surface</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>Policy Seek/Random</td><td><strong>Remove World rail</strong> (<code>#move-seek</code> / <code>#move-random</code>). Force Seek. <strong>No Policy in <code>#modal-advanced</code></strong> — do not add a hide-Policy-in-Parameters task. Random stays Lab only.</td></tr>
+              <tr><td>Seek / Agent masters</td><td><strong>Remove</strong> rail sliders. Mix never calls <code>applySeekMaster</code>.</td></tr>
+              <tr><td>Island L/B/P</td><td><strong>Remove World buttons.</strong> Never call <code>applyPreset</code> from World (it steals N). Lab <code>getPresetEnv</code> stays. History <code>preset</code> = <code>'mix'</code> or omit.</td></tr>
+              <tr><td>Parameters…</td><td>After mix: <strong>disable</strong> Seek master + hunt children + Mix-owned sliders + Agent master. Keep food spawn + frozen knobs. Lab modal untouched.</td></tr>
+              <tr><td>World N</td><td><strong>Mix-only.</strong> <code>#slider-number-agents</code> display-sync + disabled.</td></tr>
+              <tr><td>Mix…</td><td>Primary rail button. PR 1 stub <strong>read-only</strong> 30/30 + Close, or do not wire until PR 3.</td></tr>
+              <tr><td>Special…</td><td><strong>Disabled.</strong> Skip <code>pickSpecialAgent</code> / <code>focusSpecial</code>.</td></tr>
+              <tr><td>Phase path</td><td>Labels only. <strong>No</strong> Survive finish <code>href</code>.</td></tr>
+            </tbody>
+          </table>
+          <div class="callout warn">Do not merge rail-delete (PR 1) to live without Track B spawn (PR 2).</div>
+        </section>
+
+        <section class="section" id="mix">
+          <h2>4.2 Mix modal</h2>
+          <div class="callout good">Differ desk. Writes <code>pendingMix</code>. <strong>Single commit:</strong> <code>applyPendingMixOnReset()</code> inside <code>init()</code> only. Boot: <code>pendingMix = defaultMix()</code> then apply. <code>init</code> is the unique spawn path.</div>
+
+          <h3>Modes</h3>
+          <p>Toggle <strong>Groups | Roster</strong>. Both v1. Default: Groups.</p>
+          <ul class="tight">
+            <li><strong>Groups → Roster:</strong> expand to individuals. Stable ids <code>groupId + ":" + i</code>. Color inherits group.</li>
+            <li><strong>Roster → Groups:</strong> lossy. Fold key = rounded 4-tuple <code>(hungerRate, efficiency, hunt, maxSpeed)</code> at Mix steps — <strong>not color</strong>. Max 8 unique keys or stay in Roster.</li>
+          </ul>
+
+          <div class="mock-stage">
+            <div class="mock-stage-label">Mix… · Groups (default)</div>
+            <div class="mock-app">
+              <div class="mock-header">
+                <span class="brand">Mix · Differ</span>
+                <span class="ver">applies on next Reset · N 60/100</span>
+              </div>
+              <div style="padding:0.55rem 0.65rem">
+                <div style="display:flex;gap:0.3rem;margin-bottom:0.45rem">
+                  <span class="pill ok">Groups</span><span class="pill dim">Roster</span>
+                  <span class="pill">pending ≠ applied</span>
+                </div>
+                <div class="group-row">
+                  <div class="gcard a">
+                    <div class="sec-h"><span class="swatch" style="background:#38bdf8"></span>A Control · n 30</div>
+                    <div class="fake-slider-row"><div class="lab"><span>Hunger rate</span><span>0.062</span></div><div class="fake-slider-track" style="--w:45%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Efficiency</span><span>1.60</span></div><div class="fake-slider-track" style="--w:40%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Hunt t</span><span>0.50</span></div><div class="fake-slider-track" style="--w:50%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Max speed</span><span>2.00</span></div><div class="fake-slider-track" style="--w:55%"></div></div>
+                    <p class="muted" style="margin:0;font-size:10px">sight 180 · pull 1.00 · push 0.35</p>
+                  </div>
+                  <div class="gcard b">
+                    <div class="sec-h"><span class="swatch" style="background:#c4b5fd"></span>B Strain · n 30</div>
+                    <div class="fake-slider-row"><div class="lab"><span>Hunger rate</span><span>0.078</span></div><div class="fake-slider-track" style="--w:70%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Efficiency</span><span>1.30</span></div><div class="fake-slider-track" style="--w:25%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Hunt t</span><span>0.20</span></div><div class="fake-slider-track" style="--w:20%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Max speed</span><span>1.60</span></div><div class="fake-slider-track" style="--w:30%"></div></div>
+                    <p class="muted" style="margin:0;font-size:10px">sight 96 · pull 0.40 · push 0.17</p>
+                  </div>
+                </div>
+                <div style="display:flex;gap:0.3rem;margin-top:0.5rem;flex-wrap:wrap">
+                  <span class="fake-btn ghost">+ Group</span>
+                  <span class="fake-btn ghost">Copy</span>
+                  <span class="fake-btn ghost">Import</span>
+                  <span class="fake-btn ghost">Export pending</span>
+                  <span class="fake-btn">Close</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Groups UX (1–8)</h3>
+          <p>Add disabled at 8; Remove disabled at 1. Per group: stable <code>id</code>, optional name (24 chars), palette swatch, <code>n</code>, four sliders, copy, nudge. Point masses. Palette of 8:
+            <span class="swatch" style="background:#38bdf8"></span>#38bdf8
+            <span class="swatch" style="background:#c4b5fd"></span>#c4b5fd
+            <span class="swatch" style="background:#4ade80"></span>#4ade80
+            <span class="swatch" style="background:#fb923c"></span>#fb923c
+            <span class="swatch" style="background:#f472b6"></span>#f472b6
+            <span class="swatch" style="background:#facc15"></span>#facc15
+            <span class="swatch" style="background:#2dd4bf"></span>#2dd4bf
+            <span class="swatch" style="background:#94a3b8"></span>#94a3b8
+          </p>
+          <table class="doc">
+            <thead><tr><th>Default (provisional)</th><th>n</th><th>hungerRate</th><th>efficiency</th><th>hunt</th><th>maxSpeed</th></tr></thead>
+            <tbody>
+              <tr><td>A Control</td><td>30</td><td>0.062</td><td>1.60</td><td>0.50</td><td>2.0</td></tr>
+              <tr><td>B Strain</td><td>30</td><td>0.078</td><td>1.30</td><td>0.20</td><td>1.6</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Roster UX</h3>
+          <p>Cap N = 100. Compact ~22px rows + side inspector. Virtualize if N&gt;24. Multi-select; duplicate; delete (refuse N=0); set N; paint selected from a group template. Color inherits source group; optional palette override. <strong>Never</strong> 60 random hues. Not 60 giant cards.</p>
+
+          <h3>Trait bands</h3>
+          <table class="doc">
+            <thead><tr><th>Trait</th><th>Mix band</th><th>Engine slider</th></tr></thead>
+            <tbody>
+              <tr><td>hungerRate</td><td>0.049–0.084 step 0.001</td><td>0.01–0.15</td></tr>
+              <tr><td>efficiency</td><td>1.2–2.4 step 0.05</td><td>0.3–3</td></tr>
+              <tr><td>hunt t</td><td>0–1 step <strong>0.01</strong></td><td>decoded</td></tr>
+              <tr><td>maxSpeed</td><td>1.2–2.4 step 0.1</td><td>0.5–4</td></tr>
+            </tbody>
+          </table>
+          <p>Import: warn outside band, reject outside engine. Frozen knobs are not Mix sliders.</p>
+
+          <h3>Validation &amp; JSON <code>version === 2</code></h3>
+          <table class="doc">
+            <thead><tr><th>Error</th><th>UX</th></tr></thead>
+            <tbody>
+              <tr><td>Bad JSON / <code>kind !== "mix"</code> / bad <code>mode</code> / <code>version !== 2</code></td><td>Reject</td></tr>
+              <tr><td>Groups: require <code>groups</code>, ignore <code>bodies</code>, <code>n === sum(group.n)</code></td><td>Else reject</td></tr>
+              <tr><td>Roster: require <code>bodies</code>, <code>n === bodies.length</code>; <code>groups</code> optional templates</td><td>Else reject</td></tr>
+              <tr><td>Trait outside engine / band</td><td>Reject / warn</td></tr>
+              <tr><td><code>__proto__</code> · &gt;32 KiB</td><td>Reject</td></tr>
+            </tbody>
+          </table>
+          <p><strong>Add <code>escapeHtml</code></strong> (missing today). Prefer <code>textContent</code>. <code>cloneMix</code> → <code>Object.create(null)</code>. Export pending and applied. Import writes pending only.</p>
+          <div class="diagram">{ "version": 2, "kind": "mix", "name": "…", "mode": "groups"|"roster", "n": 60,
+  "groups": [{ id, name, color, n, hungerRate, efficiency, hunt, maxSpeed }],
+  "bodies": [{ id, name, color, sourceGroupId, hungerRate, efficiency, hunt, maxSpeed }] }</div>
+        </section>
+
+        <section class="section" id="spawn">
+          <h2>4.3 Spawn, hunt decode, fair-eat</h2>
+          <div class="diagram">boot: pendingMix = defaultMix()
+init(): applyPendingMixOnReset()  // unique commit
+        spawn groups|bodies; spawnFood; skip pickSpecialAgent
+resetSim(): resetRunRng(Date.now()&gt;&gt;&gt;0); record; init(); startNewRun</div>
+
+          <h3>Hunt decode — do not call <code>applySeekMaster</code></h3>
+          <table class="doc">
+            <thead><tr><th>t</th><th>Meaning</th><th>sight</th><th>hungerPull</th><th>seekPush</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>hunt OFF</td><td>40</td><td>0</td><td>0.05</td></tr>
+              <tr><td>0.5</td><td>control</td><td>180</td><td>1.0</td><td>0.35</td></tr>
+              <tr><td>1</td><td>lock</td><td>280</td><td>1.75</td><td>0.60</td></tr>
+            </tbody>
+          </table>
+          <div class="diagram">function decodeHunt(t) {
+  t = clamp(t, 0, 1);
+  if (t &lt;= 0.5) {
+    const u = t / 0.5;
+    return { sight: lerp(40,180,u), hungerPull: lerp(0,1,u), seekPush: lerp(0.05,0.35,u) };
+  }
+  const u = (t - 0.5) / 0.5;
+  return { sight: lerp(180,280,u), hungerPull: lerp(1,1.75,u), seekPush: lerp(0.35,0.60,u) };
+}</div>
+          <p>
+            Write <code>hungerRate</code>, <code>efficiency</code>, <code>maxSpeed</code>, <code>sight</code>,
+            <code>hungerPull</code>, <code>seekPush</code>, <code>hunt</code> into <code>traits{}</code>.
+            <code>p()</code>: Special → <code>agent.traits[key]</code> → <code>globalParam</code>.
+          </p>
+
+          <h3>Fair-eat + run RNG</h3>
+          <p>
+            First-in-array (~2531) biases earlier groups. Shuffle at spawn is not enough.
+            <code>resetRunRng(Date.now() &gt;&gt;&gt; 0)</code> on Reset.
+            <code>fairEatWinner</code> is the <strong>only v1 consumer</strong>.
+            Agent spawn / food / drift stay <code>Math.random</code> unless replay is added later.
+            Lab <code>mulberry32</code> untouched.
+          </p>
+
+          <h3>Canvas</h3>
+          <ul class="tight">
+            <li>Fill = group/swatch; radius <code>3+sqrt(food)*0.5</code>.</li>
+            <li>Starve stroke hunger&gt;75: <code>#fb7185</code> w2 — do not replace fill.</li>
+            <li>Bag pip food&gt;6: <code>#22d3ee</code> r=1.2.</li>
+            <li>Special ring off in v1.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="column">
+          <h2>4.4 Observability column</h2>
+          <p>Left metrics + inspector and right trends + history are <strong>one spec</strong>. Rank remnant count <em>and</em> composition. No bag-food tycoon tiles.</p>
+          <div class="callout warn">First ship implements <strong>inspector + canvas colors only</strong>. This section is the later observability version. Survive KPI / trend / history widgets stay until then.</div>
+
+          <div class="mock-stage">
+            <div class="mock-stage-label">World screen · column</div>
+            <div class="mock-app" style="padding:0.55rem 0.6rem">
+              <div class="screen-split">
+                <div>
+                  <span class="fake-btn" style="display:block;text-align:center;margin-bottom:0.35rem">Mix…</span>
+                  <span class="fake-btn ghost" style="display:block;text-align:center">Parameters…</span>
+                  <div class="sec-h">Live metrics</div>
+                  <div class="kpi-fake">
+                    <div class="cell"><span>Alive</span><b>4</b></div>
+                    <div class="cell"><span>Deaths</span><b style="color:#fb7185">56</b></div>
+                    <div class="cell" style="grid-column:1/-1"><span>By group</span><b><span style="color:#38bdf8">3</span> · <span style="color:#c4b5fd">1</span></b></div>
+                    <div class="cell" style="grid-column:1/-1"><span>Pellets</span><b style="color:#fbbf24">12</b></div>
+                  </div>
+                  <div class="sec-h">Selected</div>
+                  <div class="kv-row"><span class="k">A-01</span><span class="v">Control</span></div>
+                  <div class="kv-row"><span class="k">Hunt t</span><span class="v">0.50</span></div>
+                </div>
+                <div>
+                  <div class="sec-h">Trends · population</div>
+                  <div style="height:56px;border:1px dashed #1e3a5f;border-radius:0.3rem;background:#04070d;margin-bottom:0.4rem"></div>
+                  <div class="sec-h">History · best remnant 7</div>
+                  <div class="kv-row"><span class="k">#12 · 84s · rem 4</span><span class="v">3 / 1</span></div>
+                  <div class="kv-row"><span class="k">#11 · 61s · rem 2</span><span class="v">2 / 0</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>KPIs</h3>
+          <table class="doc">
+            <thead><tr><th>KPI</th><th>Keep?</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Alive</td><td>Yes</td><td>Remnant count</td></tr>
+              <tr><td>Deaths</td><td>Yes</td><td>Pressure</td></tr>
+              <tr><td>Alive-by-group / sourceGroupId / swatch</td><td>Yes</td><td>Groups: <code>groupId</code>. Roster: <code>sourceGroupId</code> if present, else swatch. Fold Mix key is 4-tuple, not color.</td></tr>
+              <tr><td>Pellets</td><td>New <code>#m-pellets</code> = <code>food.length</code></td><td>Do not reuse <code>totalFood</code> / <code>#m-food</code>.</td></tr>
+              <tr><td>Min/max/avg bag food</td><td><strong>Remove</strong></td><td>Tycoon bias</td></tr>
+              <tr><td>Avg hunger</td><td>Omit KPI</td><td>Optional trend only</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Inspector</h3>
+          <p>Title = <code>displayName</code> + <code>bodyId</code>. Numeric <code>id</code> is canvas hit-test only. Four traits + hunt decode. Hide Pin. Replace <code>searchAndPinAgent</code>: match <code>bodyId</code> string then numeric <code>id</code>; select-only.</p>
+
+          <h3>Trends</h3>
+          <ul class="tight">
+            <li>Sample while <code>!currentRunEnded</code> (including post-wipe zeros). Live gate also requires <code>agents.length &gt; 0</code> — change it.</li>
+            <li><code>drawMultiTrend</code>: total <code>#e2e8f0</code> 1.5px + group/signature strokes 1.25px. <code>yMax = Mix N</code>. Dead series push 0.</li>
+            <li>Roster default: total + <code>sourceGroupId</code> or swatch (or total + ≤4 selected).</li>
+            <li>Optional second canvas: alive-mean Hunt or Efficiency.</li>
+            <li><strong>Remove</strong> <code>#chart-food</code>, <code>#chart-hunger</code>, <code>#pinned-section</code>.</li>
+          </ul>
+
+          <h3>History (same column)</h3>
+          <p>Session <code>runHistory[]</code> only. No import. Not a Lab.</p>
+          <div class="diagram">recordCurrentRun += { mix: snapshotAppliedMix(), remnantByGroup, remnantByColor }</div>
+          <ul class="tight">
+            <li>Dock: <code>#run · duration · remnant N · chips</code>. Title = <strong>best remnant</strong> (max <code>finalPop</code>). Keep <code>longestSec</code> on the record.</li>
+            <li>Run logs: mix table + remnant above knobs.</li>
+            <li>Run-log envelope: keep <code>version: APP_VERSION</code>; add <code>schema: 2</code> + per-run <code>mix</code> / remnant. Mix files stay <code>version: 2</code>, <code>kind: "mix"</code>. No history import.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="decisions">
+          <h2>5. Key decisions</h2>
+          <table class="doc">
+            <thead><tr><th>#</th><th>Decision</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Groups 1–8 + Roster both v1; Groups default.</td></tr>
+              <tr><td>2</td><td>Mix owns N. Food = weather. L/B/P removed from World.</td></tr>
+              <tr><td>3</td><td>Apply on Reset only (<code>pendingMix</code> / <code>appliedMix</code>).</td></tr>
+              <tr><td>4</td><td>Hunt one slider + decode table; full keys in <code>traits{}</code>.</td></tr>
+              <tr><td>5</td><td>Expand is lossless; fold is explicit and lossy.</td></tr>
+              <tr><td>6</td><td>Color = source group / palette override — not 60 hues.</td></tr>
+              <tr><td>7</td><td>JSON <code>version === 2</code>; add <code>escapeHtml</code>.</td></tr>
+              <tr><td>8</td><td><code>resetRunRng(Date.now()&gt;&gt;&gt;0)</code>; <code>fairEatWinner</code> only v1 consumer. Spawn/food stay <code>Math.random</code>.</td></tr>
+              <tr><td>9</td><td>Full column (pellets KPI, multi-line trends, mix history) is a <strong>later version</strong>. First ship keeps Survive charts/history; inspector + canvas colors prove Mix.</td></tr>
+              <tr><td>10</td><td>Special off. Seek frozen. No phase-path links. World never <code>applyPreset</code>. Lab untouched.</td></tr>
+              <tr><td>11</td><td><strong>One ship PR</strong> with internal steps A–D. Defer Trends, History, Lab. Light Help fix so it is not a lie.</td></tr>
+              <tr><td>12</td><td>Single commit in <code>init()</code>. Search <code>bodyId</code> then numeric id. N Mix-only. Fold = 4-tuple. Run-log <code>APP_VERSION</code>+<code>schema:2</code>.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="alts">
+          <h2>6. Alternatives</h2>
+          <table class="doc">
+            <thead><tr><th>Alt</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr><td>2–4 groups only (1.0.0)</td><td>Reject — 1–8 + roster</td></tr>
+              <tr><td>Keep L/B/P food packs</td><td>Reject — one weather slider</td></tr>
+              <tr><td>60 roster cards</td><td>Reject — table + inspector</td></tr>
+              <tr><td>Silent fold to groups</td><td>Reject — destroys uniques</td></tr>
+              <tr><td>Rainbow / Special-as-mix / live apply / Lab mix / Survive href</td><td>Reject</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="api">
+          <h2>7. API / data model</h2>
+          <p>
+            New: <code>decodeHunt</code>, <code>defaultMix</code>, <code>cloneMix</code>, <code>validateMix</code>,
+            <code>expandGroupsToRoster</code>, <code>foldRosterToGroups</code>, <code>applyPendingMixOnReset</code> (from <code>init</code> only),
+            <code>spawnAgentFromGroup</code>, <code>spawnAgentFromBody</code>, modal + import/export,
+            <code>escapeHtml</code>, <code>countAliveByGroup</code>, <code>countAliveByColor</code>,
+            <code>drawMultiTrend</code>, <code>resetRunRng</code>, <code>fairEatWinner</code> (only v1 RNG consumer),
+            <code>searchAndSelectAgent</code> (replaces <code>searchAndPinAgent</code>).
+          </p>
+          <p>
+            Agent: numeric <code>id</code> canvas-only; <code>bodyId</code> + <code>displayName</code> in inspector;
+            <code>groupId</code>/<code>sourceGroupId</code>, <code>groupColor</code>, <code>traits{}</code>.
+            Do not change Lab <code>createHeadlessWorld</code> / <code>headlessStep</code> / <code>getPresetEnv</code>.
+          </p>
+        </section>
+
+        <section class="section" id="security">
+          <h2>8. Security &amp; privacy</h2>
+          <table class="doc">
+            <thead><tr><th>Threat</th><th>Sev</th><th>Mitigation</th></tr></thead>
+            <tbody>
+              <tr><td>JSON XSS via names/colors</td><td>High</td><td>Allowlist hex; add <code>escapeHtml</code>; <code>textContent</code></td></tr>
+              <tr><td>Prototype pollution</td><td>High</td><td>Reject <code>__proto__</code>; <code>Object.create(null)</code></td></tr>
+              <tr><td>Huge n / payload</td><td>Med</td><td>n∈[1,100], 32 KiB</td></tr>
+              <tr><td><code>eval</code></td><td>Med</td><td><code>JSON.parse</code> only</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="obs">
+          <h2>9. Observability &amp; risks</h2>
+          <p>Console: <code>mix groups 2 30/30 remnant 3/1</code>. N≤100, one required trend canvas.</p>
+          <table class="doc">
+            <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+            <tbody>
+              <tr><td><code>p()</code> misses a key → uniform crowd</td><td>Audit <code>Agent.update</code></td></tr>
+              <tr><td>Hunt copied from Seek master</td><td>Assert t=0, 0.5, 1</td></tr>
+              <tr><td>Lab mix before shared step</td><td>Lab later</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="rollout">
+          <h2>10. Rollout</h2>
+          <ul class="tight">
+            <li>Archive: <code>archive/index-0.9.6-params.html</code>.</li>
+            <li>One first ship PR (steps A–D). Trends / history / Lab later.</li>
+            <li>Rollback = restore archive. Human owns ship. VERSION after browser test.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="questions">
+          <h2>11. Open questions &amp; references</h2>
+          <p>Forks are locked. Optional later: sessionStorage for pending; color-by-trait mapping.</p>
+          <p class="muted">
+            <code>p</code> · <code>init</code> · <code>resetSim</code> · <code>update</code> eat · <code>Agent.draw</code> ·
+            <code>#slider-number-agents</code> · <code>#metrics-content</code> · <code>runHistory</code> ·
+            <code>drawTrendChart</code> · <code>recordCurrentRun</code> · <code>computeOverallStats</code>
+          </p>
+        </section>
+
+        <section class="section" id="prs">
+          <h2>12. PR plan</h2>
+          <p>World-only. <strong>One first ship PR</strong> with local steps — not five stacked PRs. No Lab. No phase-path. No Trends/History rewrite in v1.</p>
+          <div class="card">
+            <h3>Ship PR — basic World Mix working</h3>
+            <p><strong>Title:</strong> <code>1.0.1-world-mix: Mix desk, per-agent traits, apply on Reset</code></p>
+            <table class="doc">
+              <thead><tr><th>Step</th><th>Track</th><th>What</th></tr></thead>
+              <tbody>
+                <tr><td>A</td><td>A</td><td>Thin rail: drop Policy, masters, L/B/P. Freeze Seek. Disable Special. Food spawn stays weather. Never <code>applyPreset</code> from World.</td></tr>
+                <tr><td>B</td><td>B</td><td><code>p()</code> + <code>traits{}</code>, hunt decode, apply in <code>init</code>, default 30/30, fair-eat, canvas group fill.</td></tr>
+                <tr><td>C</td><td>A+B</td><td>Mix… Groups 1–8 + Roster, JSON v2, <code>escapeHtml</code>.</td></tr>
+                <tr><td>D</td><td>A</td><td>Inspector: group + four traits + <code>bodyId</code>. Keep old KPIs / charts / history so the app still runs.</td></tr>
+              </tbody>
+            </table>
+            <p><strong>Done:</strong> Reset shows two colors; bodies differ; Mix import/export; inspector readable. Old trends may ignore mix.</p>
+          </div>
+          <div class="card">
+            <h3>Later versions (not this ship)</h3>
+            <ul class="tight">
+              <li>Observability column — §4 as written (multi-line trends, mix history, pellet KPI).</li>
+              <li>Lab mix / Lab fair-eat.</li>
+              <li>Help polish if Step A only gets a short lie-fix.</li>
+            </ul>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

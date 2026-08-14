@@ -1,0 +1,642 @@
+{
+  "version": 2,
+  "kind": "differ",
+  "mode": "roster",
+  "n": 60,
+  "id": "three-castes-jitter",
+  "name": "Three castes with within-caste spread (Lost hunt varies)",
+  "groups": [
+    {
+      "id": "RIC",
+      "name": "Idle rich",
+      "color": "#fbbf24",
+      "n": 20,
+      "hungerRate": 0.05,
+      "efficiency": 2.3,
+      "hunt": 0.45,
+      "maxSpeed": 2.0
+    },
+    {
+      "id": "WRK",
+      "name": "Working poor",
+      "color": "#fb7185",
+      "n": 20,
+      "hungerRate": 0.08,
+      "efficiency": 1.25,
+      "hunt": 0.55,
+      "maxSpeed": 2.0
+    },
+    {
+      "id": "LST",
+      "name": "Lost",
+      "color": "#64748b",
+      "n": 20,
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.22,
+      "maxSpeed": 1.4
+    }
+  ],
+  "bodies": [
+    {
+      "bodyId": "RIC-01",
+      "name": "Idle rich 01",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.052,
+      "efficiency": 2.3,
+      "hunt": 0.44,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-02",
+      "name": "Idle rich 02",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.05,
+      "efficiency": 2.12,
+      "hunt": 0.54,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-03",
+      "name": "Idle rich 03",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.049,
+      "efficiency": 2.22,
+      "hunt": 0.49,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-04",
+      "name": "Idle rich 04",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.049,
+      "efficiency": 2.27,
+      "hunt": 0.53,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-05",
+      "name": "Idle rich 05",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.053,
+      "efficiency": 2.28,
+      "hunt": 0.53,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-06",
+      "name": "Idle rich 06",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.049,
+      "efficiency": 2.16,
+      "hunt": 0.48,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-07",
+      "name": "Idle rich 07",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.049,
+      "efficiency": 2.22,
+      "hunt": 0.4,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-08",
+      "name": "Idle rich 08",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.05,
+      "efficiency": 2.17,
+      "hunt": 0.49,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-09",
+      "name": "Idle rich 09",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.049,
+      "efficiency": 2.21,
+      "hunt": 0.41,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-10",
+      "name": "Idle rich 10",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.051,
+      "efficiency": 2.19,
+      "hunt": 0.46,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-11",
+      "name": "Idle rich 11",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.049,
+      "efficiency": 2.11,
+      "hunt": 0.43,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-12",
+      "name": "Idle rich 12",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.049,
+      "efficiency": 2.17,
+      "hunt": 0.49,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-13",
+      "name": "Idle rich 13",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.05,
+      "efficiency": 2.13,
+      "hunt": 0.55,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-14",
+      "name": "Idle rich 14",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.05,
+      "efficiency": 2.16,
+      "hunt": 0.44,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-15",
+      "name": "Idle rich 15",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.052,
+      "efficiency": 2.31,
+      "hunt": 0.52,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-16",
+      "name": "Idle rich 16",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.051,
+      "efficiency": 2.21,
+      "hunt": 0.46,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-17",
+      "name": "Idle rich 17",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.053,
+      "efficiency": 2.11,
+      "hunt": 0.49,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-18",
+      "name": "Idle rich 18",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.052,
+      "efficiency": 2.15,
+      "hunt": 0.51,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-19",
+      "name": "Idle rich 19",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.052,
+      "efficiency": 2.16,
+      "hunt": 0.45,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "RIC-20",
+      "name": "Idle rich 20",
+      "color": "#fbbf24",
+      "sourceGroupId": "RIC",
+      "hungerRate": 0.049,
+      "efficiency": 2.25,
+      "hunt": 0.4,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-01",
+      "name": "Working poor 01",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.081,
+      "efficiency": 1.3,
+      "hunt": 0.52,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-02",
+      "name": "Working poor 02",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.078,
+      "efficiency": 1.27,
+      "hunt": 0.64,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-03",
+      "name": "Working poor 03",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.081,
+      "efficiency": 1.22,
+      "hunt": 0.56,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-04",
+      "name": "Working poor 04",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.076,
+      "efficiency": 1.26,
+      "hunt": 0.66,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-05",
+      "name": "Working poor 05",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.079,
+      "efficiency": 1.24,
+      "hunt": 0.56,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-06",
+      "name": "Working poor 06",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.076,
+      "efficiency": 1.24,
+      "hunt": 0.62,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-07",
+      "name": "Working poor 07",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.076,
+      "efficiency": 1.29,
+      "hunt": 0.73,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-08",
+      "name": "Working poor 08",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.078,
+      "efficiency": 1.22,
+      "hunt": 0.72,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-09",
+      "name": "Working poor 09",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.08,
+      "efficiency": 1.26,
+      "hunt": 0.65,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-10",
+      "name": "Working poor 10",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.078,
+      "efficiency": 1.26,
+      "hunt": 0.55,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-11",
+      "name": "Working poor 11",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.08,
+      "efficiency": 1.25,
+      "hunt": 0.61,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-12",
+      "name": "Working poor 12",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.082,
+      "efficiency": 1.31,
+      "hunt": 0.64,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-13",
+      "name": "Working poor 13",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.08,
+      "efficiency": 1.28,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-14",
+      "name": "Working poor 14",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.078,
+      "efficiency": 1.26,
+      "hunt": 0.55,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-15",
+      "name": "Working poor 15",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.082,
+      "efficiency": 1.21,
+      "hunt": 0.57,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-16",
+      "name": "Working poor 16",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.08,
+      "efficiency": 1.2,
+      "hunt": 0.65,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-17",
+      "name": "Working poor 17",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.081,
+      "efficiency": 1.24,
+      "hunt": 0.67,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-18",
+      "name": "Working poor 18",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.08,
+      "efficiency": 1.21,
+      "hunt": 0.74,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-19",
+      "name": "Working poor 19",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.077,
+      "efficiency": 1.3,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WRK-20",
+      "name": "Working poor 20",
+      "color": "#fb7185",
+      "sourceGroupId": "WRK",
+      "hungerRate": 0.078,
+      "efficiency": 1.3,
+      "hunt": 0.61,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "LST-01",
+      "name": "Lost 01",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.06,
+      "efficiency": 1.64,
+      "hunt": 0.3,
+      "maxSpeed": 1.6
+    },
+    {
+      "bodyId": "LST-02",
+      "name": "Lost 02",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.06,
+      "efficiency": 1.49,
+      "hunt": 0.23,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "LST-03",
+      "name": "Lost 03",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.061,
+      "efficiency": 1.48,
+      "hunt": 0.17,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "LST-04",
+      "name": "Lost 04",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.059,
+      "efficiency": 1.57,
+      "hunt": 0.35,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "LST-05",
+      "name": "Lost 05",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.058,
+      "efficiency": 1.5,
+      "hunt": 0.34,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "LST-06",
+      "name": "Lost 06",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.06,
+      "efficiency": 1.49,
+      "hunt": 0.12,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "LST-07",
+      "name": "Lost 07",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.064,
+      "efficiency": 1.52,
+      "hunt": 0.24,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "LST-08",
+      "name": "Lost 08",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.063,
+      "efficiency": 1.46,
+      "hunt": 0.19,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "LST-09",
+      "name": "Lost 09",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.062,
+      "efficiency": 1.59,
+      "hunt": 0.13,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "LST-10",
+      "name": "Lost 10",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.064,
+      "efficiency": 1.46,
+      "hunt": 0.16,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "LST-11",
+      "name": "Lost 11",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.063,
+      "efficiency": 1.48,
+      "hunt": 0.39,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "LST-12",
+      "name": "Lost 12",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.057,
+      "efficiency": 1.61,
+      "hunt": 0.1,
+      "maxSpeed": 1.6
+    },
+    {
+      "bodyId": "LST-13",
+      "name": "Lost 13",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.063,
+      "efficiency": 1.46,
+      "hunt": 0.33,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "LST-14",
+      "name": "Lost 14",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.059,
+      "efficiency": 1.49,
+      "hunt": 0.18,
+      "maxSpeed": 1.6
+    },
+    {
+      "bodyId": "LST-15",
+      "name": "Lost 15",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.066,
+      "efficiency": 1.56,
+      "hunt": 0.3,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "LST-16",
+      "name": "Lost 16",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.066,
+      "efficiency": 1.54,
+      "hunt": 0.14,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "LST-17",
+      "name": "Lost 17",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.066,
+      "efficiency": 1.51,
+      "hunt": 0.17,
+      "maxSpeed": 1.4
+    },
+    {
+      "bodyId": "LST-18",
+      "name": "Lost 18",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.059,
+      "efficiency": 1.47,
+      "hunt": 0.23,
+      "maxSpeed": 1.3
+    },
+    {
+      "bodyId": "LST-19",
+      "name": "Lost 19",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.066,
+      "efficiency": 1.57,
+      "hunt": 0.4,
+      "maxSpeed": 1.5
+    },
+    {
+      "bodyId": "LST-20",
+      "name": "Lost 20",
+      "color": "#64748b",
+      "sourceGroupId": "LST",
+      "hungerRate": 0.06,
+      "efficiency": 1.47,
+      "hunt": 0.34,
+      "maxSpeed": 1.5
+    }
+  ]
+}

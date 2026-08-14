@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "kind": "differ",
+  "mode": "groups",
+  "n": 60,
+  "id": "seekers-wanderers",
+  "name": "Seekers vs Wanderers",
+  "groups": [
+    {
+      "id": "SEK",
+      "name": "Seekers",
+      "color": "#38bdf8",
+      "n": 30,
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "id": "WAN",
+      "name": "Wanderers",
+      "color": "#c4b5fd",
+      "n": 30,
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    }
+  ]
+}

@@ -172,8 +172,8 @@ Dismissed forever (or for a long time) → one line in `IMPLEMENTATION_LOG.md` (
 
 | Phase | Name | Focus |
 |-------|------|-------|
-| 0 | Survive | Hunger, observability, run comparison, layout/usability ← **now** |
-| 1 | Differ | Behavioral traits (no genetics) |
+| 0 | Survive | Hunger, Lab, params desk — **closed** 2026-08-13 |
+| 1 | Differ | Behavioral traits (no genetics) ← **now** |
 | 2 | Evolve | In-run reproduction, inheritance, generations |
 | 3 | Economy | Trade → storage → production → labor → … |
 

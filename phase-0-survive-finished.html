@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>trait-evolution-sim</title>
+        <title>Phase 0 · Survive finished · trait-evolution-sim</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <style>
             :root {
@@ -479,72 +479,6 @@
                 color: var(--good);
                 border-color: #334155;
             }
-            .btn-differ {
-                width: 100%;
-                display: block;
-                padding: 0.65rem 0.7rem 0.6rem;
-                border-radius: 0.5rem;
-                border: 1px solid #38bdf8;
-                background: linear-gradient(180deg, #0c4a6e 0%, #082f49 100%);
-                color: #f0f9ff;
-                font-size: 15px;
-                font-weight: 700;
-                letter-spacing: 0.02em;
-                cursor: pointer;
-                box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35), 0 8px 22px rgba(14, 165, 233, 0.18);
-                text-align: center;
-            }
-            .btn-differ:hover {
-                background: linear-gradient(180deg, #0369a1 0%, #0c4a6e 100%);
-                box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.55), 0 10px 26px rgba(14, 165, 233, 0.28);
-            }
-            .btn-differ .differ-sub {
-                display: block;
-                margin-top: 0.2rem;
-                font-size: 10px;
-                font-weight: 500;
-                color: #7dd3fc;
-                letter-spacing: 0;
-            }
-            .differ-reset-note {
-                font-size: 10px;
-                color: #fde68a;
-                margin: 0.35rem 0 0.75rem;
-                line-height: 1.35;
-            }
-            .btn-header.frozen,
-            .btn-header:disabled,
-            .btn-speed.frozen,
-            .btn-speed:disabled {
-                opacity: 0.38;
-                cursor: not-allowed;
-                pointer-events: none;
-            }
-            .panel-frozen {
-                position: relative;
-                overflow: hidden;
-            }
-            .panel-frozen .frozen-veil {
-                position: absolute;
-                inset: 0;
-                z-index: 4;
-                background: rgba(7, 11, 18, 0.62);
-                display: flex;
-                align-items: flex-start;
-                justify-content: center;
-                padding-top: 1.1rem;
-                pointer-events: auto;
-            }
-            .panel-frozen .frozen-veil span {
-                font-size: 10px;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: #94a3b8;
-                background: #0d1524;
-                border: 1px solid #334155;
-                border-radius: 999px;
-                padding: 0.2rem 0.55rem;
-            }
             /* Modals (Advanced + Help) */
             .modal-root {
                 position: fixed;
@@ -708,27 +642,6 @@
             .kpi b.good { color: var(--good); }
             .kpi b.warn { color: var(--warn); }
             .kpi b.bad { color: var(--bad); }
-            .gmet {
-                margin-top: 0.4rem;
-                border: 1px solid var(--border);
-                border-radius: var(--radius-sm);
-                overflow: hidden;
-            }
-            .gmet-row {
-                display: grid;
-                grid-template-columns: 10px minmax(0, 1fr) auto;
-                gap: 0.3rem;
-                align-items: center;
-                padding: 0.32rem 0.4rem;
-                font-size: 10px;
-                border-top: 1px solid #152238;
-            }
-            .gmet-row:first-child { border-top: none; }
-            .gmet-row .nm { color: #cbd5e1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-            .gmet-row .nums { font-family: ui-monospace, monospace; text-align: right; line-height: 1.35; white-space: nowrap; }
-            .gmet-row .al { color: var(--good); }
-            .gmet-row .de { color: var(--bad); }
-            .gmet-row .hf { color: #94a3b8; font-size: 9px; }
             .inspector-dock {
                 margin-top: 0.75rem;
                 border: 1px solid var(--border);
@@ -840,184 +753,6 @@
                 min-height: 0;
                 padding-right: 0.2rem;
             }
-            .modal-box.differ-wide {
-                width: min(980px, 96vw);
-                max-height: min(92vh, 860px);
-                display: flex;
-                flex-direction: column;
-                overflow: hidden;
-            }
-            .modal-box.differ-wide .modal-head {
-                flex-shrink: 0;
-                align-items: flex-start;
-                gap: 0.75rem;
-                padding: 0.85rem 1rem 0.75rem;
-            }
-            .modal-box.differ-wide .modal-head h2 { font-size: 1.15rem; }
-            .differ-head-copy { flex: 1; min-width: 0; }
-            .differ-head-copy .sub { font-size: 11px; color: #94a3b8; margin-top: 0.15rem; }
-            .differ-tabs { display: flex; gap: 0.3rem; flex-shrink: 0; }
-            .differ-tabs .btn-speed { padding: 0.35rem 0.75rem; font-size: 12px; }
-            .modal-box.differ-wide .params-scroll {
-                flex: 1 1 auto;
-                min-height: 0;
-                overflow: hidden;
-                padding: 0.75rem 1rem;
-                display: flex;
-                flex-direction: column;
-            }
-            .differ-body {
-                display: grid;
-                grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.85fr);
-                gap: 0.85rem;
-                flex: 1;
-                min-height: 0;
-                min-width: 0;
-            }
-            @media (max-width: 640px) {
-                .differ-body { grid-template-columns: 1fr; }
-            }
-            .differ-list {
-                min-height: 0;
-                display: flex;
-                flex-direction: column;
-                padding-right: 0.15rem;
-            }
-            .differ-agent-scroll {
-                flex: 1 1 auto;
-                min-height: 120px;
-                overflow: auto;
-            }
-            .differ-list-actions { flex-shrink: 0; padding-top: 0.45rem; }
-            .differ-edit {
-                background: #0a1220;
-                border: 1px solid var(--border);
-                border-radius: 0.55rem;
-                padding: 0.75rem 0.8rem;
-                min-height: 0;
-                overflow: auto;
-                align-self: stretch;
-            }
-            .differ-gcard {
-                border: 1px solid var(--border); border-radius: 0.4rem;
-                padding: 0.4rem 0.5rem; margin-bottom: 0.35rem; cursor: pointer;
-            }
-            .differ-gcard.on { box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35); }
-            .differ-sw { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-            .differ-palette {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.45rem 0.5rem;
-                margin: 0.2rem 0 0.7rem;
-            }
-            .differ-sw-wrap {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 3px;
-                min-width: 44px;
-                max-width: 72px;
-                background: transparent;
-                border: none;
-                padding: 0;
-                cursor: pointer;
-                color: inherit;
-            }
-            .differ-sw-btn {
-                width: 28px;
-                height: 28px;
-                border-radius: 0.4rem;
-                border: 2px solid #1e293b;
-                padding: 0;
-                cursor: pointer;
-                box-shadow: inset 0 0 0 1px rgba(0,0,0,0.35);
-            }
-            .differ-sw-btn:hover { filter: brightness(1.12); }
-            .differ-sw-btn.on {
-                border-color: #f8fafc;
-                outline: 2px solid #38bdf8;
-                outline-offset: 2px;
-            }
-            .differ-sw-wrap .sw-lab {
-                font-size: 8px;
-                line-height: 1.1;
-                color: #94a3b8;
-                max-width: 36px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                text-align: center;
-            }
-            .differ-tbl { width: 100%; border-collapse: collapse; font-size: 10px; }
-            .differ-tbl thead th {
-                position: sticky; top: 0; background: #0d1524; z-index: 1;
-            }
-            .differ-tbl th { text-align: left; color: var(--muted); font-weight: 500; padding: 0.15rem 0.25rem; }
-            .differ-tbl td { padding: 0.2rem 0.25rem; border-top: 1px solid #152238; }
-            .differ-tbl tr.on td { background: rgba(12, 74, 110, 0.35); }
-            .roster-gbar {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                gap: 0.4rem;
-                flex-shrink: 0;
-                margin-bottom: 0.5rem;
-                padding-bottom: 0.5rem;
-                border-bottom: 1px solid #152238;
-            }
-            .roster-gchip {
-                display: flex;
-                align-items: center;
-                gap: 0.3rem;
-                background: #0a1220;
-                border: 1px solid #1e3a5f;
-                border-radius: 0.4rem;
-                padding: 0.2rem 0.35rem;
-            }
-            .roster-gchip .rg-name {
-                width: 88px;
-                background: #020617;
-                border: 1px solid #1e293b;
-                border-radius: 0.25rem;
-                color: #e2e8f0;
-                font-size: 11px;
-                padding: 0.15rem 0.3rem;
-            }
-            .roster-gchip .rg-del {
-                background: none;
-                border: none;
-                color: #64748b;
-                cursor: pointer;
-                font-size: 11px;
-                padding: 0 0.15rem;
-            }
-            .roster-gchip .rg-del:hover { color: #fb7185; }
-            .differ-foot {
-                flex-shrink: 0;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-                align-items: center;
-                gap: 0.55rem;
-                margin: 0;
-                padding: 0.7rem 1rem;
-                border-top: 1px solid var(--border);
-                background: #080e16;
-            }
-            .btn-df {
-                font-size: 12px;
-                font-weight: 600;
-                padding: 0.42rem 0.85rem;
-                border-radius: 0.4rem;
-                border: 1px solid #1e3a5f;
-                background: #0f172a;
-                color: #e2e8f0;
-                cursor: pointer;
-            }
-            .btn-df:hover { border-color: #38bdf8; color: #fff; }
-            .btn-df.danger { border-color: #7f1d1d; color: #fda4af; background: #1c1012; }
-            .btn-df.danger:hover { border-color: #fb7185; }
-            .btn-df.primary { background: #0c4a6e; border-color: #38bdf8; color: #f0f9ff; }
             .master-row {
                 background: #0a1220;
                 border: 1px solid var(--border);
@@ -1521,14 +1256,14 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Agent evolution lab</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v1.0.0-differ</span>
+                    <span class="badge-version" id="version-badge">v0.9.6-params</span>
                 </div>
                 <div class="header-mode" role="group" aria-label="App mode">
                     <button type="button" id="mode-world" class="btn-speed on" onclick="setAppMode('world')">World</button>
-                    <button type="button" id="mode-lab" class="btn-speed frozen" disabled title="Lab is frozen until a later Differ version">Lab</button>
+                    <button type="button" id="mode-lab" class="btn-speed" onclick="setAppMode('lab')">Lab</button>
                 </div>
                 <div class="header-actions">
-                    <button type="button" class="btn-header special frozen" id="btn-special" disabled title="Special is frozen until a later Differ version">Special…</button>
+                    <button type="button" class="btn-header special" id="btn-special" onclick="openSpecialModal()" title="Special agent overrides (World only)">Special…</button>
                     <button type="button" class="btn-header" onclick="openVisionModal()" title="Project vision and roadmap">Vision…</button>
                     <button type="button" class="btn-header" onclick="openHelpModal()" title="How the lab works">Help</button>
                     <div class="speed-block header-world-only">
@@ -1556,44 +1291,73 @@
                             <button type="button" class="btn-hide-col" onclick="hideCol('left')" title="Hide left column">Hide ✕</button>
                         </div>
 
+                        <div class="section-title" style="margin-bottom:0.35rem">Policy</div>
                         <div class="mb-2">
-                            <button type="button" class="btn-differ" onclick="openDifferModal()" title="Who is in the crowd — apply on Reset">
-                                Crowd…
-                                <span id="differ-rail-sub" class="differ-sub">2 groups · 60 agents</span>
-                            </button>
-                            <p class="differ-reset-note">Crowd changes apply on <strong>Reset</strong> — not live.</p>
+                            <div class="policy-group">
+                                <button type="button" id="move-seek" class="btn-speed on" onclick="setMovementPolicy('seek')" title="Aim at food in Sight">Seek</button>
+                                <button type="button" id="move-random" class="btn-speed" onclick="setMovementPolicy('random')" title="No food aiming — Drift only">Random</button>
+                            </div>
                         </div>
-                        <div class="section-title" style="margin-bottom:0.3rem">Food spawn</div>
-                        <div class="flex justify-between text-xs mb-0.5">
-                            <span title="Ticks between food drops. Higher = scarcer. Live weather.">Interval</span>
-                            <span id="val-food-spawn-rail" class="font-mono text-sky-300">8</span>
+
+                        <div class="section-title" style="margin-top:0.45rem;margin-bottom:0.35rem">Seek</div>
+                        <div class="master-row">
+                            <div class="flex justify-between text-xs mb-0.5">
+                                <span title="More Sight / Hunger pull / Seek push, less Drift">Seek master</span>
+                                <span id="val-seek-master-rail" class="font-mono text-sky-300">0.50</span>
+                            </div>
+                            <input type="range" id="slider-seek-master-rail" min="0" max="1" step="0.01" value="0.5" class="w-full accent-sky-400">
+                            <div class="master-ends"><span>noisy</span><span>committed</span></div>
+                            <p id="seek-master-note-rail" class="text-[10px] text-slate-500 mb-0 mt-1" style="display:none">Custom — a Seek slider left the path</p>
                         </div>
-                        <input type="range" id="slider-food-spawn-rail" min="1" max="50" step="1" value="8" class="w-full accent-sky-400">
-                        <p id="differ-weather-line" class="text-[10px] font-mono text-slate-400 mt-1 mb-3">N 60 · food spawn 8</p>
+
+                        <div class="section-title" style="margin-top:0.45rem;margin-bottom:0.35rem">Agent</div>
+                        <div class="master-row">
+                            <div class="flex justify-between text-xs mb-0.5">
+                                <span title="Harder body: more hunger & gluttony, less efficiency">Agent master</span>
+                                <span id="val-agent-master-rail" class="font-mono text-sky-300">0.50</span>
+                            </div>
+                            <input type="range" id="slider-agent-master-rail" min="0" max="1" step="0.01" value="0.5" class="w-full accent-sky-400">
+                            <div class="master-ends"><span>easy</span><span>hard</span></div>
+                            <p id="agent-master-note-rail" class="text-[10px] text-slate-500 mb-0 mt-1" style="display:none">Custom — an Agent slider left the path</p>
+                        </div>
+
+                        <div class="section-title" style="margin-top:0.45rem;margin-bottom:0.35rem">Island</div>
+                        <div class="flex gap-1 mb-1">
+                            <button type="button" id="preset-lenient" class="btn-preset" onclick="applyPreset('lenient')">Lenient</button>
+                            <button type="button" id="preset-balanced" class="btn-preset on" onclick="applyPreset('balanced')">Balanced</button>
+                            <button type="button" id="preset-punishing" class="btn-preset" onclick="applyPreset('punishing')">Punishing</button>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mb-2">Food spawn + initial agents only. Fine knobs in Parameters…</p>
+
+                        <div class="mb-3">
+                            <button type="button" class="btn-rail solid" style="width:100%" onclick="openAdvancedModal()" title="Seek, Agent, Environment sliders">Parameters…</button>
+                        </div>
                         <!-- Live metrics (KPI tiles) -->
                         <div class="section-title" style="margin-top:0.5rem">Live metrics</div>
                         <div id="metrics-content" class="kpi-grid">
                             <div class="kpi"><span>Alive</span><b id="m-alive" class="good">—</b></div>
                             <div class="kpi"><span>Deaths</span><b id="m-deaths" class="bad">—</b></div>
-                            <div class="kpi"><span>Pellets</span><b id="m-food" class="warn">—</b></div>
+                            <div class="kpi"><span>Food</span><b id="m-food" class="warn">—</b></div>
                             <div class="kpi"><span>Avg hunger</span><b id="m-avgh">—</b></div>
-                            <div class="kpi" style="grid-column:1 / -1"><span>Avg bag</span><b id="m-avgf">—</b></div>
+                            <div class="kpi"><span>Min food</span><b id="m-minf">—</b></div>
+                            <div class="kpi"><span>Max food</span><b id="m-maxf">—</b></div>
+                            <div class="kpi" style="grid-column:1 / -1"><span>Avg food / agent</span><b id="m-avgf">—</b></div>
                         </div>
-                        <div id="differ-group-metrics" class="gmet"></div>
-                        <p id="differ-metrics-hint" class="text-[10px] text-slate-500 mt-1 mb-0">Per caste (max 8). Click an agent for one body.</p>
 
                         <!-- Selected agent dock (left column — not over canvas) -->
                         <div id="inspector" class="inspector-dock">
                             <div class="insp-head">
                                 <div class="insp-title">Selected agent</div>
                                 <div class="flex gap-1">
+                                    <button type="button" id="inspector-pin-btn" class="btn-tiny pin">Pin to trends</button>
                                     <button type="button" onclick="deselectAgent()" class="btn-tiny">✕</button>
                                 </div>
                             </div>
                             <div class="agent-jump">
-                                <input type="text" id="agent-search" placeholder="id" title="Jump to agent"
-                                    onkeypress="if (event.key === 'Enter') searchAndSelectAgent()" />
-                                <button type="button" class="btn-tiny" onclick="searchAndSelectAgent()">Go</button>
+                                <input type="text" id="agent-search" placeholder="ID" title="Jump to agent ID and pin"
+                                    onkeypress="if (event.key === 'Enter') searchAndPinAgent()" />
+                                <button type="button" class="btn-tiny pin" onclick="searchAndPinAgent()">Pin</button>
+                                <span style="font-size:9px;color:var(--muted)">by ID</span>
                             </div>
                             <div id="inspector-content" class="text-xs leading-tight space-y-1">
                                 <div style="color:var(--muted)">Click an agent on the canvas</div>
@@ -1609,10 +1373,7 @@
                         <div class="phase-path" id="phase-path" aria-label="Project phase path">
                             <div class="phase-path-track" id="phase-path-track"></div>
                             <div class="phase-path-labels" id="phase-path-labels">
-                                <span data-phase="0">Survive</span>
-                                <span data-phase="1">Differ</span>
-                                <span data-phase="2">Evolve</span>
-                                <span data-phase="3">Economy</span>
+                                <span data-phase="0">Survive · finished</span>
                             </div>
                         </div>
                         <div class="canvas-host" id="canvas-host">
@@ -1624,8 +1385,7 @@
 
                 <!-- RIGHT: trends then history (history flex-grows) -->
                 <div class="col col-right">
-                    <div class="col-panel panel-frozen" id="panel-trends">
-                        <div class="frozen-veil" title="Trends are Survive leftovers — not Differ yet"><span>Later · frozen</span></div>
+                    <div class="col-panel" id="panel-trends">
                         <div class="panel-head">
                             <div class="section-title">Trends</div>
                             <button type="button" class="btn-hide-col" onclick="hideCol('right')" title="Hide right column">Hide ✕</button>
@@ -1665,8 +1425,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-panel panel-frozen" id="panel-history">
-                        <div class="frozen-veil" title="History does not store Differ crowds yet"><span>Later · frozen</span></div>
+                    <div class="col-panel" id="panel-history">
                         <div class="history-head">
                             <div class="section-title" style="margin:0">History</div>
                             <div class="history-best" id="history-best" title="Best longest survival this session">
@@ -1779,7 +1538,8 @@
                 </div>
                 <div class="params-scroll scroll-thin">
                 <p class="text-[10px] text-slate-400 mb-2" style="margin-top:0">
-                    N comes from Crowd…. Food spawn is weather. Hunt / hunger / efficiency / speed on mixed bodies follow Differ, not these sliders.
+                    Island presets (left) set Food spawn + Initial agents only.
+                    Seek / Agent masters follow Lab-shaped paths (not +10% every knob). Drag a child → that shelf is custom.
                 </p>
 
                 <div class="section-title">Environment</div>
@@ -1888,42 +1648,6 @@
         </div>
 
         <!-- Lab Parameters modal (0.9.5) — setups + batch; no special -->
-        <div id="modal-differ" class="modal-root" aria-hidden="true">
-            <div class="modal-dim" onclick="closeAllModals()"></div>
-            <div class="modal-box differ-wide" role="dialog" aria-labelledby="differ-title">
-                <div class="modal-head">
-                    <div class="differ-head-copy">
-                        <h2 id="differ-title">Crowd</h2>
-                        <div class="sub">Who is in the world · Phase 1 · Differ · applies on Reset</div>
-                    </div>
-                    <div class="differ-tabs">
-                        <button type="button" class="btn-speed on" id="differ-tab-groups" onclick="setDifferTab('groups')">Groups</button>
-                        <button type="button" class="btn-speed" id="differ-tab-roster" onclick="setDifferTab('roster')">Roster</button>
-                    </div>
-                    <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
-                </div>
-                <div class="params-scroll scroll-thin">
-                    <div class="differ-body">
-                        <div class="differ-list" id="differ-list"></div>
-                        <div class="differ-edit" id="differ-edit"></div>
-                    </div>
-                </div>
-                <div class="differ-foot">
-                    <div class="flex gap-2 flex-wrap">
-                        <button type="button" class="btn-df" onclick="importDifferJson()">Import</button>
-                        <button type="button" class="btn-df" onclick="exportDifferJson()">Export</button>
-                        <button type="button" class="btn-df danger" onclick="clearDifferCrowd()" title="Delete all groups and agents">Clear</button>
-                        <input type="file" id="differ-file" accept="application/json,.json" style="display:none" onchange="onDifferFile(event)">
-                    </div>
-                    <span id="differ-foot-hint" class="text-[11px] text-slate-400">Draft · Apply then Reset</span>
-                    <div class="flex gap-2">
-                        <button type="button" class="btn-df primary" onclick="stampAppliedFromDraft()">Apply</button>
-                        <button type="button" class="btn-df" onclick="closeAllModals()">Done</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div id="modal-lab-params" class="modal-root" aria-hidden="true">
             <div class="modal-dim" onclick="closeAllModals()"></div>
             <div class="modal-box" role="dialog" aria-labelledby="lab-params-title">
@@ -2075,25 +1799,27 @@
                 </div>
                 <p class="help-intro">
                     An <strong>agent evolution lab</strong>: spatial agents in a 2D world.
-                    Live is <code style="color:#7dd3fc">1.0.0-differ</code> — Phase 1 · Differ. Survive is closed.
+                    Watch what helps them last — then, over phases, what helps them thrive.
                 </p>
 
                 <div class="help-sec">What this is</div>
                 <div class="help-entry">
                     Project id <code style="color:#7dd3fc">trait-evolution-sim</code> —
-                    a single-file, observable simulation. <strong>World</strong> is live.
-                    Lab, Special, Trends, and History are frozen until a later version.
+                    a single-file, observable simulation. Two modes: <strong>World</strong> (live canvas) and
+                    <strong>Lab</strong> (headless multi-setup batches). Same engine, same knobs.
                 </div>
 
-                <div class="help-sec">Phase path</div>
-                <div class="help-entry"><strong>0 · Survive</strong> — closed. Frozen copy next to the live file.</div>
-                <div class="help-entry"><strong>1 · Differ</strong> — current. Agents differ at spawn (Crowd… modal).</div>
-                <div class="help-entry"><strong>2 · Evolve</strong> / <strong>3 · Economy</strong> — later.</div>
+                <div class="help-sec">This file</div>
+                <div class="help-entry">
+                    <strong>Phase 0 · Survive — finished</strong> (2026-08-13). Frozen desk <code style="color:#7dd3fc">0.9.6-params</code>.
+                    Hunger, Seek/Random, Special, Lab, island + Seek/Agent. Agents are still uniform.
+                    Live lab is <code>index.html</code> — do not keep editing this file.
+                </div>
 
                 <div class="help-sec">How to use today</div>
-                <div class="help-entry"><strong>Crowd…</strong> — set Groups or a Roster. Changes apply on <strong>Reset</strong>.</div>
-                <div class="help-entry"><strong>Food spawn</strong> — weather on the left rail (live).</div>
-                <div class="help-entry">Click an agent to read Hunt, hunger rate, efficiency, speed.</div>
+                <div class="help-entry"><strong>World</strong> — feel one run; Special… for a probe agent; Run logs… for single-run JSON.</div>
+                <div class="help-entry"><strong>Lab</strong> — compare 1–5 crowd setups over many seeds; Export / Copy last batch. No special in Lab.</div>
+                <div class="help-entry">Help covers knobs and how to read Lab metrics. This frozen file is Phase 0 · Survive finished.</div>
 
                 <p class="text-[10px] text-slate-500 mt-3 mb-0">Escape or click outside to close</p>
             </div>
@@ -2104,45 +1830,92 @@
             <div class="modal-dim" onclick="closeAllModals()"></div>
             <div class="modal-box help-wide" role="dialog" aria-labelledby="help-title">
                 <div class="modal-head">
-                    <h2 id="help-title">Help · Differ World</h2>
+                    <h2 id="help-title">Help · how the lab works</h2>
                     <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
                 </div>
 
                 <p class="help-intro">
-                    Agents get hungrier every tick. Hunger past 100 → death.
-                    A catch puts <strong>1 food in the bag</strong>. They nibble the bag after Eat threshold.
-                    Live version <code style="color:#7dd3fc">1.0.0-differ</code>: the crowd is set in <strong>Crowd…</strong>.
+                    Agents get hungrier over time. Hunger past 100 → death.
+                    A catch puts <strong>1 food in the bag</strong> (no instant hunger drop). They eat from the bag when hunger crosses Eat threshold.
+                    <strong>World</strong> = canvas. <strong>Lab</strong> = headless batches. Arc: <strong>Vision…</strong>.
                 </p>
 
-                <div class="help-sec">What works now</div>
-                <div class="help-entry"><strong>Crowd…</strong> — Groups (types) or Roster (individuals). Four traits: hunger rate, efficiency, hunt, speed. Import / Export JSON from <code>phase-1-differ-presets/</code>.</div>
-                <div class="help-entry"><strong>Apply then Reset</strong> — Edit Groups or Roster, press <strong>Apply</strong> to stamp that tab, then <strong>Reset</strong> to spawn. The other tab is a separate draft.</div>
-                <div class="help-entry"><strong>Food spawn</strong> — Left rail. Ticks between pellet drops. Higher = scarcer. This one is <em>live</em> weather.</div>
-                <div class="help-entry"><strong>Pause / Speed / Reset</strong> — Clock, 1×–10×, respawn crowd + food.</div>
-                <div class="help-entry"><strong>Click an agent</strong> — Inspector shows name, hunt, hunger rate, efficiency, speed, bag.</div>
-                <div class="help-entry"><strong>Colors</strong> — Fill = group. Pink ring = starving. Cyan pip = food in the bag.</div>
+                <div class="help-sec">World | Lab</div>
+                <div class="help-entry"><strong>World</strong> — Live canvas, left rails, trends, history, Special… Pause/Reset/Speed apply here. Enter Lab pauses World.</div>
+                <div class="help-entry"><strong>Lab</strong> — No canvas. Compare 1–5 crowd setups over many seeded headless runs. Special is World-only (would muddy batch stats).</div>
+                <div class="help-entry">Default Lab experiment: three setups, all <strong>Random</strong> — Lenient / Balanced / Punishing <em>island</em> packs (Food spawn + Initial agents).</div>
 
-                <div class="help-sec">The four traits</div>
-                <div class="help-entry"><strong>Hunger rate</strong> — How fast they burn. Higher dies sooner if they miss food.</div>
-                <div class="help-entry"><strong>Efficiency</strong> — Hunger dropped per bag food. Higher = better meals.</div>
-                <div class="help-entry"><strong>Hunt</strong> — One number. Low ≈ wander (don’t lock food). High ≈ lock the nearest pellet.</div>
-                <div class="help-entry"><strong>Speed</strong> — Movement cap. Slow is a tax; faster is not always more survivors.</div>
+                <div class="help-sec">Lab desk</div>
+                <div class="help-entry"><strong>Parameters…</strong> — Per-setup Environment / Seek / Agent (same names as World), including <strong>Seek master</strong> and <strong>Agent master</strong> (same paths as World). Batch tab: runs per setup, stop prefer, max duration. N is per setup.</div>
+                <div class="help-entry"><strong>Stop prefer · All dead</strong> — End early on extinction; max duration locked to <strong>600 sim-s</strong> safety so soft worlds cannot hang forever.</div>
+                <div class="help-entry"><strong>Stop prefer · Max time</strong> — Cut each trial at the duration slider (default ~90s; editable 15–600). Best for ranking remnant size on short clocks.</div>
+                <div class="help-entry"><strong>Start batch / Cancel</strong> — Sequential headless trials with progress. Cancel keeps partial results. Last batch only (no history).</div>
+                <div class="help-entry"><strong>Export batch / Copy all</strong> — Pretty JSON <code style="color:#7dd3fc">{ version, mode: "lab", experiment, runs, aggregates }</code> for analysis (e.g. paste to Grok).</div>
+                <div class="help-tip">
+                    <strong>How to read Lab metrics</strong> — Prefer <em>avg alive / dead</em> under a fixed short Max-time (e.g. 75–90s) for difficulty ladders.
+                    Long All-dead runs can leave 1–2 “tycoon” survivors with huge avgFood; mean duration can look “mid” while alive stays ~0 when many seeds wipe early and a few ride the wall.
+                    Random is harsher than Seek on the same island. Use Lab to sweep Seek / Agent masters.
+                </div>
 
-                <div class="help-sec">How to run a story</div>
-                <div class="help-entry">Open Crowd… → Import a file from <code>phase-1-differ-presets/</code> (try seekers vs wanderers) → Done → <strong>Reset</strong>.</div>
-                <div class="help-entry">Watch leftover colors. Rank <strong>who is still alive</strong>, not how fat the bags are.</div>
-                <div class="help-entry">N is the sum of group counts (or roster length). Max 100.</div>
+                <div class="help-sec">Header &amp; run control (World)</div>
+                <div class="help-entry"><strong>Pause / Resume</strong> — Stops or starts the sim clock (ticks). Disabled look while in Lab.</div>
+                <div class="help-entry"><strong>Reset</strong> — Ends the current run (records it), respawns agents + food, starts a new run number.</div>
+                <div class="help-entry"><strong>Speed 1×–10×</strong> — How many sim steps per animation frame. Higher = faster die-off and less smooth motion.</div>
+                <div class="help-entry"><strong>Special… · Help · Vision…</strong> — Popups for overrides, this guide, and the Survive→Economy roadmap.</div>
 
-                <div class="help-sec">Frozen (later)</div>
-                <div class="help-entry"><strong>Lab</strong> — Headless batches. Off for this version.</div>
-                <div class="help-entry"><strong>Special…</strong> — One pet override. Off.</div>
-                <div class="help-entry"><strong>Trends / History</strong> — Survive leftovers; they do not know Differ groups yet.</div>
-                <div class="help-entry"><strong>Parameters… / L B P / Policy</strong> — Removed from World. Seek is always on.</div>
+                <div class="help-sec">Policy</div>
+                <div class="help-entry"><strong>Seek</strong> — Aim at nearest food inside Sight. Hunger pull scales how hard they commit. Drift remains so paths aren’t lasers.</div>
+                <div class="help-entry"><strong>Random</strong> — No food targeting. Drift only. Same island should usually kill Random faster than Seek.</div>
+                <div class="help-tip">Classic A/B: same island, Seek vs Random. Or island Random + Special Seek.</div>
 
-                <div class="help-sec">Rules of the world</div>
-                <div class="help-entry">Catch = bag +1, pellet gone. Pocket eat uses frozen gluttony × efficiency (not Differ traits).</div>
-                <div class="help-entry">If several agents reach a pellet, a random one in range wins.</div>
-                <div class="help-entry">Sim “seconds” = ticks ÷ 60. Speed 10× shortens wall time, not the sim second.</div>
+                <div class="help-sec">Parameters… · Environment (island)</div>
+                <div class="help-entry"><strong>Initial agents</strong> — Count at next Reset.</div>
+                <div class="help-entry"><strong>Food spawn</strong> — Ticks between drops. Higher = scarcer.</div>
+                <div class="help-entry"><strong>Island presets</strong> Lenient / Balanced / Punishing set <em>only</em> those two. Not Policy, Seek, or Agent.</div>
+
+                <div class="help-sec">Parameters… · Seek</div>
+                <div class="help-entry"><strong>Seek master</strong> — On the left rail (and in Parameters). Path: more Sight / Hunger pull / Seek push, <em>less</em> Drift. Mid ≈ default. Child slider → custom.</div>
+                <div class="help-entry"><strong>Sight</strong> — How far they notice food (Seek only).</div>
+                <div class="help-entry"><strong>Hunger pull</strong> — How hard hunger aims them at food.</div>
+                <div class="help-entry"><strong>Seek push</strong> — Acceleration toward the target.</div>
+                <div class="help-entry"><strong>Drift</strong> — Random kick each tick (both policies).</div>
+
+                <div class="help-sec">Parameters… · Agent</div>
+                <div class="help-entry"><strong>Agent master</strong> — On the left rail (and in Parameters). Easy → hard body. Child slider → custom.</div>
+                <div class="help-entry"><strong>Max speed</strong> — Hard cap after acceleration.</div>
+                <div class="help-entry"><strong>Hunger rate</strong> — Hunger gained each tick (energy use).</div>
+                <div class="help-entry"><strong>Gluttony</strong> — Food taken from the bag per nibble (meal size).</div>
+                <div class="help-entry"><strong>Efficiency</strong> — Hunger dropped per 1 food eaten. Hunger −= Gluttony × Efficiency.</div>
+                <div class="help-entry"><strong>Eat threshold</strong> — Hunger before they nibble the bag. Not hoarding.</div>
+                <div class="help-tip">Catch banks 1 food and deletes the pellet. No ground-fill hunger drop. Pellets are fixed size.</div>
+
+                <div class="help-sec">Special agent</div>
+                <div class="help-entry">One amber agent. Override Policy, Seek, or Agent. Seek / Agent <strong>masters</strong> write the whole shelf as customs (same paths as World). Island stays shared. <strong>Match all → world</strong> clears customs.</div>
+                <div class="help-entry"><strong>Pin ≠ special</strong> — Pin charts someone. Special changes their rules.</div>
+                <div class="help-tip">In a Random world, a Seek special is usually obvious. In all-Seek, a small edge often still dies.</div>
+
+                <div class="help-sec">Live metrics (left dock)</div>
+                <div class="help-entry"><strong>Alive / Deaths</strong> — Living count · starvation deaths this run.</div>
+                <div class="help-entry"><strong>Food</strong> — Pellets on the map (not inventories).</div>
+                <div class="help-entry"><strong>Avg hunger</strong> — Mean hunger of living agents.</div>
+                <div class="help-entry"><strong>Min / Max food</strong> — Min/max <em>carried</em> food among living (not hunger).</div>
+                <div class="help-entry"><strong>Avg food / agent</strong> — Mean inventory. High avg food late often means a fat remnant (or one loaded special).</div>
+
+                <div class="help-sec">Canvas · select · pin</div>
+                <div class="help-entry">Click an agent: id, hunger, carried food, effective policy, seek blend, distance to food. <strong>Pin to trends</strong> keeps their series on the right after you click away.</div>
+                <div class="help-entry">This file is the Phase 0 · Survive finish. Live lab is index.html.</div>
+
+                <div class="help-sec">Trends (right)</div>
+                <div class="help-entry">Population, map food, and average hunger over the current run. Optional pinned-agent hunger/food if you pin someone.</div>
+
+                <div class="help-sec">History strip &amp; Run logs…</div>
+                <div class="help-entry">Strip = last <strong>3</strong> finished runs. <strong>Run logs…</strong> = full table (click a row for knobs + special), <strong>Export/Copy last &amp; all</strong> as pretty JSON for analysis (e.g. paste to Grok).</div>
+                <div class="help-entry"><strong>Pre</strong> preset · <strong>Pol</strong> seek/random · <strong>N</strong> agents · <strong>Dur / Long</strong> run length &amp; longest life · <strong>Dead / Fin</strong> deaths &amp; final pop · <strong>Hung / Food</strong> run averages · <strong>End</strong> extinction vs reset · <strong>Sp</strong> special custom override count.</div>
+                <div class="help-entry">JSON envelope: <code style="color:#7dd3fc">{ version, exportedAt, runs: [...] }</code> with world knobs + special block (including lifeSec even if the special died).</div>
+                <div class="help-tip">Export after a ladder of Special overrides (Sight → Hunger pull → Seek push → Drift) to see which knobs buy a seat in the remnant.</div>
+
+                <div class="help-sec">What “seconds” mean</div>
+                <div class="help-entry">History <strong>Dur / Long / lifeSec</strong> use sim time: ticks ÷ 60 (not wall-clock). At 10× speed, wall time is much shorter than Dur.</div>
             </div>
         </div>
 
@@ -2152,7 +1925,7 @@
 
             // Product brand: Option A — title + lab tagline + quiet version (no phase chip).
             // P3 path sits above the canvas (center column only).
-            const PHASE_NAMES = { 0: 'Survive', 1: 'Differ', 2: 'Evolve', 3: 'Economy' };
+            const PHASE_NAMES = { 0: 'Survive' };
             // Short lab line only (N4 header); phase story lives in Vision modal + path
             const PHASE_TAGLINES = {
                 0: 'Agent evolution lab',
@@ -2160,10 +1933,8 @@
                 2: 'Agent evolution lab',
                 3: 'Agent evolution lab'
             };
-            // Integer phase index for "current" node. Survive closed → Differ design (no 1.x ship yet).
-            const CURRENT_PHASE = 1;
-            // 0–1 progress within the current phase toward the next.
-            const PHASE_WITHIN = 0.08;
+            const CURRENT_PHASE = 0;
+            const PHASE_WITHIN = 1;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
@@ -2174,25 +1945,8 @@
                 // P3 track: node · seg · node · seg · … (partial fill on active segment)
                 const track = document.getElementById('phase-path-track');
                 if (track) {
-                    const within = Math.max(0, Math.min(1, PHASE_WITHIN));
                     let html = '';
-                    for (let i = 0; i < 4; i++) {
-                        let cls = 'phase-path-node';
-                        if (i < CURRENT_PHASE) cls += ' done';
-                        else if (i === CURRENT_PHASE) cls += ' current';
-                        else cls += ' future';
-                        html += '<div class="' + cls + '" title="Phase ' + i + ' · ' + (PHASE_NAMES[i] || '') + '"></div>';
-                        if (i < 3) {
-                            if (i < CURRENT_PHASE) {
-                                html += '<div class="phase-path-seg on"></div>';
-                            } else if (i === CURRENT_PHASE) {
-                                const pct = Math.round(within * 100);
-                                html += '<div class="phase-path-seg" title="' + pct + '% toward next phase"><div class="fill" style="width:' + pct + '%"></div></div>';
-                            } else {
-                                html += '<div class="phase-path-seg"></div>';
-                            }
-                        }
-                    }
+                    html += '<div class="phase-path-node done current" title="Phase 0 · Survive finished"></div>';
                     track.innerHTML = html;
                 }
 
@@ -2277,172 +2031,7 @@
                 if (agent && agent.isSpecial && specialOverrides && specialOverrides[key] && specialOverrides[key].useCustom) {
                     return specialOverrides[key].value;
                 }
-                if (agent && agent.traits && agent.traits[key] != null) return agent.traits[key];
                 return globalParam(key);
-            }
-
-            const GROUP_COLORS = ['#38bdf8', '#c4b5fd', '#4ade80', '#fbbf24', '#fb7185', '#22d3ee', '#a3e635', '#f472b6'];
-            const DIFFER_MAX_N = 100;
-            const DIFFER_MAX_GROUPS = 8;
-
-            function defaultDifferCrowd() {
-                return {
-                    version: 2,
-                    kind: 'differ',
-                    mode: 'groups',
-                    n: 60,
-                    groups: [
-                        { id: 'A', name: 'Control', color: GROUP_COLORS[0], n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2 },
-                        { id: 'B', name: 'Strain', color: GROUP_COLORS[1], n: 30, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6 }
-                    ],
-                    bodies: []
-                };
-            }
-
-            function emptyGroupsDraft() {
-                return { version: 2, kind: 'differ', mode: 'groups', n: 0, groups: [], bodies: [] };
-            }
-
-            function emptyRosterDraft() {
-                return { version: 2, kind: 'differ', mode: 'roster', n: 0, groups: [], bodies: [] };
-            }
-
-            function defaultRosterDraft() {
-                const gs = defaultDifferCrowd().groups.map(function (g) {
-                    const x = JSON.parse(JSON.stringify(g));
-                    x.n = 0;
-                    return x;
-                });
-                return { version: 2, kind: 'differ', mode: 'roster', n: 0, groups: gs, bodies: [] };
-            }
-
-            let crowdGroups = defaultDifferCrowd();
-            let crowdRoster = defaultRosterDraft();
-            let appliedDiffer = JSON.parse(JSON.stringify(crowdGroups));
-            let stampedDiffer = JSON.parse(JSON.stringify(crowdGroups));
-            let differTab = 'groups';
-            let differSel = 0;
-
-            function currentDraft() {
-                return differTab === 'roster' ? crowdRoster : crowdGroups;
-            }
-            let runRng = Math.random;
-
-            function resetRunRng(seed) {
-                let a = (seed >>> 0) || 1;
-                runRng = function () {
-                    a |= 0;
-                    a = (a + 0x6D2B79F5) | 0;
-                    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-                    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-                    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-                };
-            }
-
-            function escapeHtml(s) {
-                return String(s == null ? '' : s)
-                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-            }
-
-            function decodeHunt(t) {
-                t = Math.max(0, Math.min(1, Number(t) || 0));
-                function mix(a, b, u) {
-                    return {
-                        hungerPull: a[0] + (b[0] - a[0]) * u,
-                        seekPush: a[1] + (b[1] - a[1]) * u,
-                        sight: Math.round((a[2] + (b[2] - a[2]) * u) / 5) * 5
-                    };
-                }
-                const off = [0, 0.05, 40], lo = [0.35, 0.12, 80], mid = [1, 0.35, 180], hi = [1.75, 0.6, 280];
-                if (t <= 0.15) return mix(off, lo, t / 0.15);
-                if (t <= 0.5) return mix(lo, mid, (t - 0.15) / 0.35);
-                return mix(mid, hi, (t - 0.5) / 0.5);
-            }
-
-            function traitsFromSpec(spec) {
-                const hunt = spec.hunt != null ? Number(spec.hunt) : 0.5;
-                const d = decodeHunt(hunt);
-                return {
-                    hungerRate: Number(spec.hungerRate),
-                    efficiency: Number(spec.efficiency),
-                    maxSpeed: Number(spec.maxSpeed),
-                    hunt: hunt,
-                    sight: d.sight,
-                    hungerPull: d.hungerPull,
-                    seekPush: d.seekPush,
-                    movementPolicy: 'seek'
-                };
-            }
-
-            function cloneDiffer(c) {
-                return JSON.parse(JSON.stringify(c));
-            }
-
-            function sumGroupN(c) {
-                let n = 0;
-                const gs = (c && c.groups) || [];
-                for (let i = 0; i < gs.length; i++) n += Math.max(0, gs[i].n | 0);
-                return n;
-            }
-
-            function syncDifferN(c) {
-                if (!c) return;
-                if (c.bodies && c.bodies.length) c.n = c.bodies.length;
-                else c.n = sumGroupN(c);
-                if (c.n > DIFFER_MAX_N) c.n = DIFFER_MAX_N;
-            }
-
-            function expandGroupsToBodies(c) {
-                const bodies = [];
-                const gs = c.groups || [];
-                for (let gi = 0; gi < gs.length; gi++) {
-                    const g = gs[gi];
-                    const k = Math.max(0, g.n | 0);
-                    for (let i = 0; i < k; i++) {
-                        bodies.push({
-                            bodyId: (g.id || ('G' + gi)) + ':' + i,
-                            name: (g.name || 'G' + gi) + ' ' + i,
-                            color: g.color || GROUP_COLORS[gi % GROUP_COLORS.length],
-                            sourceGroupId: g.id,
-                            hungerRate: g.hungerRate,
-                            efficiency: g.efficiency,
-                            hunt: g.hunt,
-                            maxSpeed: g.maxSpeed
-                        });
-                    }
-                }
-                return bodies.slice(0, DIFFER_MAX_N);
-            }
-
-            function stampAppliedFromDraft() {
-                const d = currentDraft();
-                if (differTab === 'roster') {
-                    d.mode = 'roster';
-                    if (d.bodies && d.bodies.length > DIFFER_MAX_N) d.bodies.length = DIFFER_MAX_N;
-                    d.n = (d.bodies && d.bodies.length) || 0;
-                    stampedDiffer = cloneDiffer(d);
-                } else {
-                    d.mode = 'groups';
-                    d.bodies = [];
-                    syncDifferN(d);
-                    stampedDiffer = cloneDiffer(d);
-                }
-                updateDifferRailChip();
-            }
-
-            function applyPendingDifferOnReset() {
-                movementPolicy = 'seek';
-                if (stampedDiffer) appliedDiffer = cloneDiffer(stampedDiffer);
-                if (!appliedDiffer) appliedDiffer = cloneDiffer(crowdGroups);
-                syncDifferN(appliedDiffer);
-                initialAgents = appliedDiffer.n || 0;
-            }
-
-            function spawnSpecsFromApplied() {
-                const c = appliedDiffer || defaultDifferCrowd();
-                if (c.bodies && c.bodies.length) return c.bodies.slice();
-                return expandGroupsToBodies(c);
             }
 
             function countSpecialCustoms() {
@@ -2702,7 +2291,7 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs + special snapshots
-            const APP_VERSION = '1.0.0-differ';
+            const APP_VERSION = '0.9.6-params';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
@@ -2761,7 +2350,7 @@
             }
 
             class Agent {
-                constructor(spec) {
+                constructor() {
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
                     this.vx = (Math.random() - 0.5) * 1.5;
@@ -2774,12 +2363,6 @@
                     this._seekBlend = 0;
                     this._distFood = null;
                     this._effPolicy = 'seek';
-                    spec = spec || {};
-                    this.bodyId = spec.bodyId || String(this.id);
-                    this.displayName = spec.name || this.bodyId;
-                    this.groupColor = spec.color || '#64748b';
-                    this.sourceGroupId = spec.sourceGroupId || '';
-                    this.traits = traitsFromSpec(spec);
                 }
 
                 update() {
@@ -2852,23 +2435,29 @@
 
                 draw() {
                     const size = 3 + Math.sqrt(Math.max(0, this.food)) * 0.5;
-                    ctx.fillStyle = this.groupColor || '#64748b';
+
+                    ctx.fillStyle = this.hunger > 75 ? '#fb7185' : '#64748b';
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, size, 0, Math.PI * 2);
                     ctx.fill();
-                    if (this.hunger > 75) {
-                        ctx.strokeStyle = '#fb7185';
-                        ctx.lineWidth = 1.5;
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, size + 1.5, 0, Math.PI * 2);
-                        ctx.stroke();
-                        ctx.lineWidth = 1;
-                    }
+
                     if (this.food > 6) {
-                        ctx.fillStyle = '#22d3ee';
+                        ctx.fillStyle = '#67e8f9';
                         ctx.beginPath();
                         ctx.arc(this.x + 1.5, this.y - 1.5, 1.2, 0, Math.PI * 2);
                         ctx.fill();
+                    }
+
+                    if (this.isSpecial) {
+                        ctx.strokeStyle = '#fbbf24';
+                        ctx.lineWidth = 2;
+                        ctx.shadowColor = 'rgba(251, 191, 36, 0.45)';
+                        ctx.shadowBlur = 8;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, size + 3.5, 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.shadowBlur = 0;
+                        ctx.lineWidth = 1;
                     }
                 }
             }
@@ -2887,13 +2476,14 @@
                 agents = [];
                 food = [];
                 specialAgent = null;
-                resetRunRng(Date.now());
-                applyPendingDifferOnReset();
-                const specs = spawnSpecsFromApplied();
-                for (let i = 0; i < specs.length; i++) agents.push(new Agent(specs[i]));
+
+                for (let i = 0; i < initialAgents; i++) {
+                    agents.push(new Agent());
+                }
+
                 spawnFood(NUM_FOOD);
                 if (!specialOverrides) resetSpecialOverridesFromWorld();
-                updateDifferRailChip();
+                pickSpecialAgent();
             }
 
             function update() {
@@ -2918,18 +2508,15 @@
                     const f = food[i];
                     let eaten = false;
 
-                    const near = [];
-                    for (let ai = 0; ai < agents.length; ai++) {
-                        const agent = agents[ai];
+                    for (let agent of agents) {
                         const dx = f.x - agent.x;
                         const dy = f.y - agent.y;
-                        if (dx * dx + dy * dy < 20 * 20 && f.amount > 0.2) near.push(agent);
-                    }
-                    if (near.length) {
-                        const winner = near[Math.floor(runRng() * near.length)];
-                        winner.food += 1;
-                        f.amount = 0;
-                        eaten = true;
+                        if (dx * dx + dy * dy < 20 * 20 && f.amount > 0.2) {
+                            agent.food += 1;
+                            f.amount = 0;
+                            eaten = true;
+                            break;
+                        }
                     }
 
                     if (f.amount < 0.2 || eaten) {
@@ -3112,6 +2699,8 @@
                 tick = 0;
                 init();
                 startNewRun();
+                focusSpecial();
+                syncSpecialModalUI();
                 updateInspector();
             }
 
@@ -3236,9 +2825,9 @@
             function start() {
                 resizeSimCanvas();
                 if (!specialOverrides) resetSpecialOverridesFromWorld();
-                movementPolicy = 'seek';
-                if (!crowdGroups) crowdGroups = defaultDifferCrowd();
                 init();
+                focusSpecial();
+                syncSpecialModalUI();
                 gameLoop();
             }
 
@@ -3273,20 +2862,14 @@
                 }
                 bind('slider-number-agents', 'val-number-agents',
                     function () { return initialAgents; },
-                    function () { /* N owned by Crowd… */ },
-                    function (v) { return String(v); });
-                const nSl = document.getElementById('slider-number-agents');
-                if (nSl) { nSl.disabled = true; nSl.style.opacity = '0.45'; }
+                    function (v) { initialAgents = parseInt(v, 10); },
+                    function (v) { return String(v); },
+                    markIslandCustom);
                 bind('slider-food-spawn', 'val-food-spawn',
                     function () { return foodSpawn; },
                     function (v) { foodSpawn = parseInt(v, 10); },
                     function (v) { return String(v); },
-                    function () { markIslandCustom(); updateDifferRailChip(); syncSliders(); });
-                bind('slider-food-spawn-rail', 'val-food-spawn-rail',
-                    function () { return foodSpawn; },
-                    function (v) { foodSpawn = parseInt(v, 10); },
-                    function (v) { return String(v); },
-                    function () { markIslandCustom(); updateDifferRailChip(); syncSliders(); });
+                    markIslandCustom);
                 bind('slider-sense-radius', 'val-sense-radius',
                     function () { return sight; },
                     function (v) { sight = parseFloat(v); },
@@ -3928,38 +3511,6 @@
                     : 'best this session';
             }
 
-            function differMetricCastes() {
-                const c = appliedDiffer;
-                const rows = [];
-                if (c && c.bodies && c.bodies.length) {
-                    const map = {};
-                    for (let i = 0; i < c.bodies.length; i++) {
-                        const b = c.bodies[i];
-                        const id = b.sourceGroupId || b.color || String(b.bodyId || '').split('-')[0] || 'x';
-                        if (!map[id]) {
-                            map[id] = { id: id, name: id, color: b.color || '#64748b', started: 0 };
-                            rows.push(map[id]);
-                        }
-                        map[id].started++;
-                    }
-                    if (c.groups) {
-                        for (let i = 0; i < c.groups.length; i++) {
-                            const g = c.groups[i];
-                            if (map[g.id]) {
-                                map[g.id].name = g.name || g.id;
-                                if (g.color) map[g.id].color = g.color;
-                            }
-                        }
-                    }
-                } else if (c && c.groups && c.groups.length) {
-                    for (let i = 0; i < c.groups.length; i++) {
-                        const g = c.groups[i];
-                        rows.push({ id: g.id, name: g.name || g.id, color: g.color || GROUP_COLORS[i], started: g.n | 0 });
-                    }
-                }
-                return rows;
-            }
-
             function updateMetricsTab() {
                 const m = currentMetrics || {};
                 const set = (id, v) => {
@@ -3968,48 +3519,11 @@
                 };
                 set('m-alive', m.alive ?? 0);
                 set('m-deaths', m.deaths ?? 0);
-                set('m-food', food.length);
+                set('m-food', m.totalFood ?? 0);
                 set('m-avgh', Number.isFinite(m.avgHunger) ? m.avgHunger.toFixed(1) : '—');
+                set('m-minf', Number.isFinite(m.minFood) ? m.minFood.toFixed(1) : '—');
+                set('m-maxf', Number.isFinite(m.maxFood) ? m.maxFood.toFixed(1) : '—');
                 set('m-avgf', Number.isFinite(m.avgFood) ? m.avgFood.toFixed(1) : '—');
-                const box = document.getElementById('differ-group-metrics');
-                const hint = document.getElementById('differ-metrics-hint');
-                if (!box) return;
-                const castes = differMetricCastes();
-                const stats = {};
-                for (let i = 0; i < agents.length; i++) {
-                    const a = agents[i];
-                    const id = a.sourceGroupId || a.groupColor || String(a.bodyId || '').split('-')[0] || 'x';
-                    if (!stats[id]) stats[id] = { n: 0, h: 0, f: 0 };
-                    stats[id].n++;
-                    stats[id].h += a.hunger;
-                    stats[id].f += a.food;
-                }
-                if (!castes.length) {
-                    box.innerHTML = '';
-                    if (hint) hint.textContent = 'Click an agent for one body.';
-                    return;
-                }
-                if (castes.length > DIFFER_MAX_GROUPS) {
-                    box.innerHTML = '';
-                    if (hint) {
-                        hint.textContent = 'Roster · ' + castes.length + ' kinds (over 8). Left column stays world totals — click an agent for hunger / bag / traits.';
-                    }
-                    return;
-                }
-                if (hint) hint.textContent = 'Per caste (max 8). Click an agent for one body.';
-                box.innerHTML = castes.map(function (g) {
-                    const s = stats[g.id] || { n: 0, h: 0, f: 0 };
-                    const al = s.n;
-                    const dead = Math.max(0, (g.started | 0) - al);
-                    const hAvg = al ? (s.h / al).toFixed(1) : '—';
-                    const fAvg = al ? (s.f / al).toFixed(1) : '—';
-                    return '<div class="gmet-row">' +
-                        '<span class="differ-sw" style="background:' + escapeHtml(g.color) + '"></span>' +
-                        '<span class="nm">' + escapeHtml(g.name) + '</span>' +
-                        '<span class="nums"><span class="al">' + al + '/' + (g.started | 0) + '</span> <span class="de">−' + dead + '</span><br>' +
-                        '<span class="hf">H ' + hAvg + ' · bag ' + fAvg + '</span></span>' +
-                        '</div>';
-                }).join('');
             }
 
             function sizeTrendCanvas(canvasEl) {
@@ -4222,7 +3736,6 @@
                 }
                 set('slider-number-agents', 'val-number-agents', initialAgents);
                 set('slider-food-spawn', 'val-food-spawn', foodSpawn);
-                set('slider-food-spawn-rail', 'val-food-spawn-rail', foodSpawn);
                 set('slider-sense-radius', 'val-sense-radius', sight);
                 set('slider-seek-strength', 'val-seek-strength', hungerPull, function (v) { return Number(v).toFixed(2); });
                 set('slider-seek-accel', 'val-seek-accel', seekPush, function (v) { return Number(v).toFixed(2); });
@@ -4245,7 +3758,6 @@
                 closeSpecialModalOnly();
                 closeHistoryModalOnly();
                 closeVisionModalOnly();
-                closeDifferModalOnly();
                 const m = document.getElementById('modal-advanced');
                 if (!m) return;
                 m.classList.add('open');
@@ -4295,11 +3807,6 @@
                 m.setAttribute('aria-hidden', 'true');
             }
 
-            function closeDifferModalOnly() {
-                const m = document.getElementById('modal-differ');
-                if (m) { m.classList.remove('open'); m.setAttribute('aria-hidden', 'true'); }
-            }
-
             function closeAllModals() {
                 closeAdvancedModalOnly();
                 closeHelpModalOnly();
@@ -4307,560 +3814,6 @@
                 closeSpecialModalOnly();
                 closeHistoryModalOnly();
                 closeLabParamsModalOnly();
-                closeDifferModalOnly();
-            }
-
-            function draftSnapshot() {
-                const d = cloneDiffer(currentDraft());
-                d.mode = differTab === 'roster' ? 'roster' : 'groups';
-                if (d.mode === 'groups') d.bodies = [];
-                return d;
-            }
-
-            function differPendingDirty() {
-                try { return JSON.stringify(draftSnapshot()) !== JSON.stringify(stampedDiffer); }
-                catch (e) { return true; }
-            }
-
-            function differStampWaitingReset() {
-                try { return JSON.stringify(stampedDiffer) !== JSON.stringify(appliedDiffer); }
-                catch (e) { return false; }
-            }
-
-            function updateDifferRailChip() {
-                const d = currentDraft();
-                syncDifferN(d);
-                const sub = document.getElementById('differ-rail-sub');
-                const weather = document.getElementById('differ-weather-line');
-                const a = appliedDiffer;
-                const n = (a && a.n) || 0;
-                const mode = (a && a.mode) || 'groups';
-                let line = mode === 'roster'
-                    ? ('Roster · ' + n + ' agents')
-                    : (((a && a.groups) || []).length + ' groups · ' + n + ' agents');
-                if (differPendingDirty()) line = 'not applied — press Apply';
-                else if (differStampWaitingReset()) line = 'applied — Reset to spawn';
-                if (sub) sub.textContent = line;
-                if (weather) weather.textContent = 'N ' + n + ' · food spawn ' + foodSpawn;
-                const hint = document.getElementById('differ-foot-hint');
-                if (hint) {
-                    const dn = differTab === 'roster' ? ((d.bodies && d.bodies.length) || 0) : sumGroupN(d);
-                    hint.textContent = 'Draft N ' + dn + ' · Apply then Reset';
-                }
-            }
-
-            function openDifferModal() {
-                closeAllModals();
-                renderDifferModal();
-                const m = document.getElementById('modal-differ');
-                if (!m) return;
-                m.classList.add('open');
-                m.setAttribute('aria-hidden', 'false');
-            }
-
-            function setDifferTab(tab) {
-                differTab = tab;
-                differSel = 0;
-                renderDifferModal();
-                updateDifferRailChip();
-            }
-
-            function ensureGroupsFromBodies(c) {
-                if (!c || (c.groups && c.groups.length)) return;
-                const bs = c.bodies || [];
-                const map = {};
-                const order = [];
-                for (let i = 0; i < bs.length; i++) {
-                    const b = bs[i];
-                    const id = b.sourceGroupId || 'IND';
-                    if (!map[id]) {
-                        map[id] = {
-                            id: id,
-                            name: id,
-                            color: b.color || GROUP_COLORS[order.length % GROUP_COLORS.length],
-                            n: 0,
-                            hungerRate: b.hungerRate,
-                            efficiency: b.efficiency,
-                            hunt: b.hunt,
-                            maxSpeed: b.maxSpeed
-                        };
-                        order.push(id);
-                    }
-                    map[id].n++;
-                }
-                c.groups = order.map(function (k) { return map[k]; }).slice(0, DIFFER_MAX_GROUPS);
-            }
-
-            function foldBodiesToGroups(bodies) {
-                const map = {};
-                const order = [];
-                for (let i = 0; i < bodies.length; i++) {
-                    const b = bodies[i];
-                    const key = [Number(b.hungerRate).toFixed(3), Number(b.efficiency).toFixed(2), Number(b.hunt).toFixed(2), Number(b.maxSpeed).toFixed(1)].join('|');
-                    if (!map[key]) {
-                        map[key] = {
-                            id: 'G' + order.length,
-                            name: b.name || ('G' + order.length),
-                            color: b.color || GROUP_COLORS[order.length % GROUP_COLORS.length],
-                            n: 0,
-                            hungerRate: Number(b.hungerRate),
-                            efficiency: Number(b.efficiency),
-                            hunt: Number(b.hunt),
-                            maxSpeed: Number(b.maxSpeed)
-                        };
-                        order.push(key);
-                    }
-                    map[key].n++;
-                }
-                return order.map(function (k) { return map[k]; }).slice(0, DIFFER_MAX_GROUPS);
-            }
-
-            function selectedDifferSpec() {
-                if (currentDraft().mode === 'roster') {
-                    const b = currentDraft().bodies && currentDraft().bodies[differSel];
-                    return b || null;
-                }
-                return (currentDraft().groups && currentDraft().groups[differSel]) || null;
-            }
-
-            function renderDifferModal() {
-                const list = document.getElementById('differ-list');
-                const edit = document.getElementById('differ-edit');
-                const tg = document.getElementById('differ-tab-groups');
-                const tr = document.getElementById('differ-tab-roster');
-                if (tg) tg.classList.toggle('on', differTab === 'groups');
-                if (tr) tr.classList.toggle('on', differTab === 'roster');
-                if (!list || !edit) return;
-                syncDifferN(currentDraft());
-                if (differTab === 'roster') renderDifferRoster(list, edit);
-                else renderDifferGroups(list, edit);
-                updateDifferRailChip();
-            }
-
-            function renderDifferGroups(list, edit) {
-                const gs = currentDraft().groups || [];
-                if (differSel >= gs.length) differSel = Math.max(0, gs.length - 1);
-                let html = '';
-                for (let i = 0; i < gs.length; i++) {
-                    const g = gs[i];
-                    html += '<div class="differ-gcard' + (i === differSel ? ' on' : '') + '" data-i="' + i + '" style="border-color:' + escapeHtml(g.color) + '">';
-                    html += '<div class="flex justify-between text-xs"><span><span class="differ-sw" style="background:' + escapeHtml(g.color) + '"></span>' + escapeHtml(g.name) + '</span><span class="font-mono">' + (g.n | 0) + '</span></div></div>';
-                }
-                html += '<button type="button" class="btn-tiny mt-1" id="differ-add-g">+ Group</button>';
-                list.innerHTML = html;
-                list.querySelectorAll('.differ-gcard').forEach(function (el) {
-                    el.onclick = function () { differSel = parseInt(el.getAttribute('data-i'), 10); renderDifferModal(); };
-                });
-                const add = document.getElementById('differ-add-g');
-                if (add) add.onclick = function () {
-                    if (gs.length >= DIFFER_MAX_GROUPS) return;
-                    const i = gs.length;
-                    gs.push({
-                        id: 'G' + i, name: 'Group ' + (i + 1), color: GROUP_COLORS[i % GROUP_COLORS.length],
-                        n: 10, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2
-                    });
-                    differSel = gs.length - 1;
-                    renderDifferModal();
-                };
-                const g = gs[differSel];
-                if (!g) { edit.innerHTML = ''; return; }
-                edit.innerHTML = differEditorHtml(g, true);
-                wireDifferEditor(g, true);
-            }
-
-            function renderDifferRoster(list, edit) {
-                const keepScroll = (list.querySelector('.differ-agent-scroll') || {}).scrollTop || 0;
-                const d = crowdRoster;
-                if (!d.bodies) d.bodies = [];
-                if (!d.groups) d.groups = [];
-                const bs = d.bodies;
-                if (differSel >= bs.length) differSel = Math.max(0, bs.length - 1);
-                let html = '<div class="roster-gbar" id="roster-gbar">';
-                html += '<div class="text-[10px] text-slate-400 mb-1">Groups — add / rename here. Color on an agent assigns the group.</div>';
-                for (let i = 0; i < d.groups.length; i++) {
-                    const g = d.groups[i];
-                    const mem = bs.filter(function (b) { return b.sourceGroupId === g.id; }).length;
-                    html += '<div class="roster-gchip" data-gi="' + i + '">';
-                    html += '<span class="differ-sw" style="background:' + escapeHtml(g.color) + '"></span>';
-                    html += '<input type="text" class="rg-name" data-gi="' + i + '" value="' + escapeHtml(g.name || '') + '">';
-                    html += '<span class="font-mono text-[10px] text-slate-500">' + mem + '</span>';
-                    html += '<button type="button" class="rg-del" data-gi="' + i + '" title="Remove group">✕</button></div>';
-                }
-                html += '<button type="button" class="btn-tiny" id="roster-add-g">+ Group</button></div>';
-                html += '<div class="differ-agent-scroll"><table class="differ-tbl"><thead><tr><th></th><th>ID</th><th>Hunt</th><th>Burn</th></tr></thead><tbody>';
-                for (let i = 0; i < bs.length; i++) {
-                    const b = bs[i];
-                    html += '<tr class="' + (i === differSel ? 'on' : '') + '" data-i="' + i + '"><td><span class="differ-sw" style="background:' + escapeHtml(b.color) + '"></span></td>';
-                    html += '<td class="font-mono">' + escapeHtml(b.bodyId) + '</td><td>' + Number(b.hunt).toFixed(2) + '</td><td>' + Number(b.hungerRate).toFixed(3) + '</td></tr>';
-                }
-                html += '</tbody></table></div>';
-                html += '<div class="differ-list-actions flex gap-1 flex-wrap">';
-                html += '<button type="button" class="btn-tiny" id="differ-add-one">+ Agent</button>';
-                html += '<button type="button" class="btn-tiny" id="differ-dup">Duplicate</button>';
-                html += '<button type="button" class="btn-tiny" id="differ-del">Delete</button></div>';
-                list.innerHTML = html;
-                const sc = list.querySelector('.differ-agent-scroll');
-                if (sc) sc.scrollTop = keepScroll;
-                list.querySelectorAll('tr[data-i]').forEach(function (el) {
-                    el.onclick = function () { differSel = parseInt(el.getAttribute('data-i'), 10); renderDifferModal(); };
-                });
-                const addG = document.getElementById('roster-add-g');
-                if (addG) addG.onclick = function () {
-                    if (d.groups.length >= DIFFER_MAX_GROUPS) return;
-                    const used = {};
-                    d.groups.forEach(function (g) { used[String(g.color).toLowerCase()] = true; });
-                    let col = GROUP_COLORS[0];
-                    for (let i = 0; i < GROUP_COLORS.length; i++) {
-                        if (!used[GROUP_COLORS[i].toLowerCase()]) { col = GROUP_COLORS[i]; break; }
-                    }
-                    d.groups.push({
-                        id: 'G' + d.groups.length,
-                        name: 'Group ' + (d.groups.length + 1),
-                        color: col, n: 0,
-                        hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2
-                    });
-                    renderDifferModal();
-                };
-                list.querySelectorAll('.rg-name').forEach(function (inp) {
-                    inp.onchange = function () {
-                        const i = parseInt(inp.getAttribute('data-gi'), 10);
-                        if (d.groups[i]) d.groups[i].name = inp.value;
-                    };
-                });
-                list.querySelectorAll('.rg-del').forEach(function (btn) {
-                    btn.onclick = function (ev) {
-                        ev.stopPropagation();
-                        const i = parseInt(btn.getAttribute('data-gi'), 10);
-                        const g = d.groups[i];
-                        if (!g) return;
-                        d.groups.splice(i, 1);
-                        d.bodies.forEach(function (b) {
-                            if (b.sourceGroupId === g.id) b.sourceGroupId = '';
-                        });
-                        renderDifferModal();
-                    };
-                });
-                const addOne = document.getElementById('differ-add-one');
-                if (addOne) addOne.onclick = function () {
-                    if (bs.length >= DIFFER_MAX_N) return;
-                    const n = bs.length + 1;
-                    const gs = d.groups || [];
-                    const src = bs[differSel];
-                    const gid = (src && src.sourceGroupId) || (gs[0] && gs[0].id) || '';
-                    const g = gs.filter(function (x) { return x.id === gid; })[0];
-                    const used = {};
-                    for (let i = 0; i < bs.length; i++) used[bs[i].color] = true;
-                    let col = (g && g.color) || (src && src.color);
-                    if (!g) {
-                        col = null;
-                        for (let i = 0; i < GROUP_COLORS.length; i++) {
-                            if (!used[GROUP_COLORS[i]]) { col = GROUP_COLORS[i]; break; }
-                        }
-                        if (!col) col = GROUP_COLORS[n % GROUP_COLORS.length];
-                    }
-                    bs.push({
-                        bodyId: (gid || 'AGT') + '-' + String(n).padStart(2, '0'),
-                        name: 'Agent ' + n,
-                        color: col,
-                        sourceGroupId: gid,
-                        hungerRate: (g && g.hungerRate) || (src && src.hungerRate) || 0.062,
-                        efficiency: (g && g.efficiency) || (src && src.efficiency) || 1.6,
-                        hunt: (g && g.hunt) || (src && src.hunt) || 0.5,
-                        maxSpeed: (g && g.maxSpeed) || (src && src.maxSpeed) || 2
-                    });
-                    differSel = bs.length - 1;
-                    renderDifferModal();
-                };
-                const dup = document.getElementById('differ-dup');
-                if (dup) dup.onclick = function () {
-                    if (bs.length >= DIFFER_MAX_N || !bs[differSel]) return;
-                    const copy = JSON.parse(JSON.stringify(bs[differSel]));
-                    copy.bodyId = copy.bodyId + 'c';
-                    bs.splice(differSel + 1, 0, copy);
-                    differSel++;
-                    renderDifferModal();
-                };
-                const del = document.getElementById('differ-del');
-                if (del) del.onclick = function () {
-                    if (!bs.length) return;
-                    bs.splice(differSel, 1);
-                    if (differSel >= bs.length) differSel = Math.max(0, bs.length - 1);
-                    renderDifferModal();
-                };
-                const b = bs[differSel];
-                if (!b) { edit.innerHTML = ''; return; }
-                edit.innerHTML = differEditorHtml(b, false);
-                wireDifferEditor(b, false);
-            }
-
-            function groupForColor(hex) {
-                const gs = currentDraft().groups || [];
-                const want = String(hex || '').toLowerCase();
-                for (let i = 0; i < gs.length; i++) {
-                    if (String(gs[i].color || '').toLowerCase() === want) return gs[i];
-                }
-                return null;
-            }
-
-            function groupById(id) {
-                const gs = currentDraft().groups || [];
-                for (let i = 0; i < gs.length; i++) {
-                    if (gs[i].id === id) return gs[i];
-                }
-                return null;
-            }
-
-            function upsertGroupForColor(hex) {
-                let g = groupForColor(hex);
-                if (g) return g;
-                if (!currentDraft().groups) currentDraft().groups = [];
-                if (currentDraft().groups.length >= DIFFER_MAX_GROUPS) return groupForColor(hex);
-                const i = currentDraft().groups.length;
-                g = {
-                    id: 'G' + i,
-                    name: 'Group ' + (i + 1),
-                    color: hex,
-                    n: 0,
-                    hungerRate: 0.062,
-                    efficiency: 1.6,
-                    hunt: 0.5,
-                    maxSpeed: 2
-                };
-                currentDraft().groups.push(g);
-                return g;
-            }
-
-            function differColorRow(selected, asGroupPicker, selectedGid) {
-                const gs = currentDraft().groups || [];
-                if (asGroupPicker) {
-                    let h = '<div class="text-[10px] text-slate-500 mb-0.5">Group (by color)</div>';
-                    h += '<p class="text-[10px] text-slate-500 mb-2">Name groups on the <strong>Groups</strong> tab. Roster only picks color — that color becomes the group.</p>';
-                    h += '<div class="differ-palette" id="de-colors">';
-                    const used = {};
-                    for (let i = 0; i < gs.length; i++) {
-                        const g = gs[i];
-                        used[String(g.color).toLowerCase()] = true;
-                        const on = (selectedGid && selectedGid === g.id)
-                            || (selected && String(selected).toLowerCase() === String(g.color).toLowerCase());
-                        h += '<button type="button" class="differ-sw-wrap" data-c="' + escapeHtml(g.color) + '" title="' + escapeHtml(g.name || g.id) + '">';
-                        h += '<span class="differ-sw-btn' + (on ? ' on' : '') + '" style="background:' + escapeHtml(g.color) + '"></span>';
-                        h += '<span class="sw-lab">' + escapeHtml(g.name || g.id) + '</span>';
-                        h += '</button>';
-                    }
-                    for (let i = 0; i < GROUP_COLORS.length; i++) {
-                        const c = GROUP_COLORS[i];
-                        if (used[c.toLowerCase()]) continue;
-                        const on = selected && String(selected).toLowerCase() === c.toLowerCase();
-                        h += '<button type="button" class="differ-sw-wrap" data-c="' + c + '" title="New group">';
-                        h += '<span class="differ-sw-btn' + (on ? ' on' : '') + '" style="background:' + c + '"></span>';
-                        h += '<span class="sw-lab">new</span>';
-                        h += '</button>';
-                    }
-                    h += '</div>';
-                    return h;
-                }
-                const palette = GROUP_COLORS.slice();
-                if (selected && !palette.some(function (c) { return c.toLowerCase() === String(selected).toLowerCase(); })) {
-                    palette.push(selected);
-                }
-                let h = '<div class="text-[10px] text-slate-500 mb-0.5">Color</div>';
-                h += '<div class="differ-palette" id="de-colors">';
-                for (let i = 0; i < palette.length; i++) {
-                    const c = palette[i];
-                    const on = String(selected).toLowerCase() === String(c).toLowerCase() ? ' on' : '';
-                    h += '<button type="button" class="differ-sw-wrap" data-c="' + escapeHtml(c) + '">';
-                    h += '<span class="differ-sw-btn' + on + '" style="background:' + escapeHtml(c) + '"></span>';
-                    h += '</button>';
-                }
-                h += '</div>';
-                return h;
-            }
-
-            function differEditorHtml(spec, isGroup) {
-                const d = decodeHunt(spec.hunt);
-                let h = '<div class="text-[10px] text-slate-400 mb-1">Selected</div>';
-                h += '<label class="text-[10px] text-slate-500">Name</label>';
-                h += '<input type="text" id="de-name" class="w-full mb-1 bg-slate-950 border border-slate-700 rounded px-1 text-xs" value="' + escapeHtml(spec.name || '') + '">';
-                if (isGroup) {
-                    h += '<label class="text-[10px] text-slate-500">Count</label>';
-                    h += '<input type="number" id="de-n" min="1" max="100" class="w-full mb-1 bg-slate-950 border border-slate-700 rounded px-1 text-xs" value="' + (spec.n | 0) + '">';
-                }
-                h += differColorRow(spec.color, !isGroup, spec.sourceGroupId);
-                h += differSlider('Hunger rate', 'de-hung', 0.049, 0.084, 0.001, spec.hungerRate, 3);
-                h += differSlider('Efficiency', 'de-eff', 1.2, 2.4, 0.05, spec.efficiency, 2);
-                h += differSlider('Hunt', 'de-hunt', 0, 1, 0.01, spec.hunt, 2);
-                h += '<p class="text-[9px] text-slate-500 mb-1">sight ' + d.sight + ' · pull ' + d.hungerPull.toFixed(2) + ' · push ' + d.seekPush.toFixed(2) + '</p>';
-                h += differSlider('Speed', 'de-spd', 1.2, 2.4, 0.1, spec.maxSpeed, 2);
-                if (isGroup) h += '<button type="button" class="btn-tiny" id="de-rm">Remove group</button>';
-                return h;
-            }
-
-            function differSlider(label, id, min, max, step, val, digits) {
-                return '<div class="flex justify-between text-[10px]"><span>' + label + '</span><span class="font-mono" id="' + id + '-v">' + Number(val).toFixed(digits) + '</span></div>' +
-                    '<input type="range" id="' + id + '" min="' + min + '" max="' + max + '" step="' + step + '" value="' + val + '" class="w-full accent-sky-400 mb-1">';
-            }
-
-            function wireDifferEditor(spec, isGroup) {
-                function bind(id, key, digits) {
-                    const sl = document.getElementById(id);
-                    const lab = document.getElementById(id + '-v');
-                    if (!sl) return;
-                    sl.oninput = function () {
-                        spec[key] = parseFloat(sl.value);
-                        if (lab) lab.textContent = Number(spec[key]).toFixed(digits);
-                        if (key === 'hunt') renderDifferModal();
-                        else updateDifferRailChip();
-                    };
-                }
-                bind('de-hung', 'hungerRate', 3);
-                bind('de-eff', 'efficiency', 2);
-                bind('de-hunt', 'hunt', 2);
-                bind('de-spd', 'maxSpeed', 2);
-                const name = document.getElementById('de-name');
-                if (name) name.oninput = function () { spec.name = name.value; };
-                const colors = document.getElementById('de-colors');
-                if (colors) {
-                    colors.querySelectorAll('[data-c]').forEach(function (btn) {
-                        btn.onclick = function () {
-                            const hex = btn.getAttribute('data-c');
-                            spec.color = hex;
-                            if (!isGroup) {
-                                const g = upsertGroupForColor(hex);
-                                if (g) spec.sourceGroupId = g.id;
-                            } else if (spec.id && currentDraft().bodies) {
-                                for (let i = 0; i < currentDraft().bodies.length; i++) {
-                                    if (currentDraft().bodies[i].sourceGroupId === spec.id) {
-                                        currentDraft().bodies[i].color = hex;
-                                    }
-                                }
-                            }
-                            renderDifferModal();
-                        };
-                    });
-                }
-                const nn = document.getElementById('de-n');
-                if (nn) nn.onchange = function () {
-                    spec.n = Math.max(1, Math.min(DIFFER_MAX_N, parseInt(nn.value, 10) || 1));
-                    renderDifferModal();
-                };
-                const rm = document.getElementById('de-rm');
-                if (rm) rm.onclick = function () {
-                    if (!currentDraft().groups || currentDraft().groups.length <= 1) return;
-                    currentDraft().groups.splice(differSel, 1);
-                    differSel = Math.min(differSel, currentDraft().groups.length - 1);
-                    renderDifferModal();
-                };
-            }
-
-            function clearDifferCrowd() {
-                if (!confirm('Clear this tab’s draft? Apply + Reset to empty the world.')) return;
-                if (differTab === 'roster') crowdRoster = emptyRosterDraft();
-                else crowdGroups = emptyGroupsDraft();
-                differSel = 0;
-                renderDifferModal();
-                updateDifferRailChip();
-            }
-
-            function exportDifferJson() {
-                syncDifferN(currentDraft());
-                const blob = new Blob([JSON.stringify(currentDraft(), null, 2)], { type: 'application/json' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = 'tes-differ.json';
-                a.click();
-                URL.revokeObjectURL(a.href);
-            }
-
-            function importDifferJson() {
-                const f = document.getElementById('differ-file');
-                if (f) f.click();
-            }
-
-            function onDifferFile(ev) {
-                const file = ev.target.files && ev.target.files[0];
-                ev.target.value = '';
-                if (!file) return;
-                if (file.size > 32768) { alert('File too large'); return; }
-                const reader = new FileReader();
-                reader.onload = function () {
-                    try {
-                        const raw = JSON.parse(reader.result);
-                        const c = validateDifferImport(raw);
-                        if (!c) { alert('Invalid Differ file'); return; }
-                        if (c.mode === 'roster') {
-                            crowdRoster = c;
-                            differTab = 'roster';
-                        } else {
-                            crowdGroups = c;
-                            differTab = 'groups';
-                        }
-                        differSel = 0;
-                        renderDifferModal();
-                        updateDifferRailChip();
-                    } catch (e) { alert('Invalid JSON'); }
-                };
-                reader.readAsText(file);
-            }
-
-            function isDifferHex(c) {
-                return typeof c === 'string' && /^#[0-9a-fA-F]{6}$/.test(c);
-            }
-
-            function pickDifferColor(rawColor, key, assigned) {
-                if (isDifferHex(rawColor)) return rawColor;
-                if (key && assigned[key]) return assigned[key];
-                const used = {};
-                Object.keys(assigned).forEach(function (k) { used[assigned[k]] = true; });
-                let pick = GROUP_COLORS[0];
-                for (let i = 0; i < GROUP_COLORS.length; i++) {
-                    if (!used[GROUP_COLORS[i]]) { pick = GROUP_COLORS[i]; break; }
-                }
-                if (key) assigned[key] = pick;
-                return pick;
-            }
-
-            function validateDifferImport(raw) {
-                if (!raw || typeof raw !== 'object') return null;
-                if (raw.kind !== 'differ' && raw.kind !== 'mix') return null;
-                if (raw.version !== 2 && raw.version !== 1) return null;
-                const c = defaultDifferCrowd();
-                c.mode = raw.mode === 'roster' ? 'roster' : 'groups';
-                const assigned = {};
-                if (c.mode === 'groups') {
-                    if (!Array.isArray(raw.groups) || !raw.groups.length) return null;
-                    c.groups = raw.groups.slice(0, DIFFER_MAX_GROUPS).map(function (g, i) {
-                        const id = String(g.id || ('G' + i)).slice(0, 12);
-                        return {
-                            id: id,
-                            name: String(g.name || ('Group ' + (i + 1))).slice(0, 24),
-                            color: pickDifferColor(g.color, id, assigned),
-                            n: Math.max(1, Math.min(DIFFER_MAX_N, g.n | 0)),
-                            hungerRate: Number(g.hungerRate),
-                            efficiency: Number(g.efficiency),
-                            hunt: Number(g.hunt),
-                            maxSpeed: Number(g.maxSpeed)
-                        };
-                    });
-                    c.bodies = [];
-                } else {
-                    if (!Array.isArray(raw.bodies) || !raw.bodies.length) return null;
-                    c.bodies = raw.bodies.slice(0, DIFFER_MAX_N).map(function (b, i) {
-                        const sid = b.sourceGroupId != null ? String(b.sourceGroupId) : (String(b.bodyId || i).split('-')[0]);
-                        return {
-                            bodyId: String(b.bodyId || i),
-                            name: String(b.name || b.bodyId || i).slice(0, 24),
-                            color: pickDifferColor(b.color, sid, assigned),
-                            sourceGroupId: sid,
-                            hungerRate: Number(b.hungerRate),
-                            efficiency: Number(b.efficiency),
-                            hunt: Number(b.hunt),
-                            maxSpeed: Number(b.maxSpeed)
-                        };
-                    });
-                    if (Array.isArray(raw.groups)) c.groups = raw.groups;
-                }
-                syncDifferN(c);
-                return c;
             }
 
             document.addEventListener('keydown', function (e) {
@@ -4917,25 +3870,26 @@
                 }
             }
 
-            function searchAndSelectAgent() {
+            function searchAndPinAgent() {
                 const input = document.getElementById('agent-search');
                 if (!input) return;
-                const q = input.value.trim();
-                if (!q) return;
-                const asNum = parseInt(q, 10);
-                for (let i = 0; i < agents.length; i++) {
-                    const a = agents[i];
-                    if (a.bodyId === q || a.displayName === q || a.id === asNum) {
-                        selectedAgent = a;
+                const id = parseInt(input.value.trim());
+                if (isNaN(id)) return;
+                for (let agent of agents) {
+                    if (agent.id === id) {
+                        pinnedAgent = agent;
+                        selectedAgent = agent;
+                        pinnedHunger = [];
+                        pinnedFood = [];
+                        updatePinnedBoxStatus();
                         updateInspector();
                         input.value = '';
+                        syncTrendsPinClass();
+                        renderTrends();
                         return;
                     }
                 }
-            }
-
-            function searchAndPinAgent() {
-                searchAndSelectAgent();
+                input.value = '';
             }
 
             function updateInspector() {
@@ -4943,29 +3897,60 @@
                 const content = document.getElementById('inspector-content');
                 if (!el || !content) return;
 
+                const pinBtn = document.getElementById('inspector-pin-btn');
+
                 if (!selectedAgent) {
                     el.classList.remove('has-selection');
                     content.innerHTML = `<div style="color:var(--muted)">Click an agent on the canvas</div>`;
+                    if (pinBtn) {
+                        pinBtn.textContent = 'Pin to trends';
+                        pinBtn.onclick = null;
+                        pinBtn.disabled = true;
+                        pinBtn.style.opacity = '0.45';
+                    }
                     return;
                 }
 
                 el.classList.add('has-selection');
                 const life = tick - selectedAgent.birthTick;
-                const tr = selectedAgent.traits || {};
-                const col = selectedAgent.groupColor || '#64748b';
-                content.innerHTML =
-                    '<div class="mb-1 text-xs"><span class="differ-sw" style="background:' + escapeHtml(col) + '"></span>' +
-                    escapeHtml(selectedAgent.displayName || selectedAgent.bodyId) +
-                    ' <span class="font-mono text-slate-500">' + escapeHtml(selectedAgent.bodyId || '') + '</span></div>' +
-                    '<div class="grid grid-cols-2 gap-x-3 gap-y-1">' +
-                    '<div style="color:var(--muted)">Hunger</div><div class="font-mono text-right">' + selectedAgent.hunger.toFixed(1) + '</div>' +
-                    '<div style="color:var(--muted)">Bag</div><div class="font-mono text-right">' + selectedAgent.food.toFixed(1) + '</div>' +
-                    '<div style="color:var(--muted)">Hunt</div><div class="font-mono text-right">' + Number(tr.hunt != null ? tr.hunt : 0.5).toFixed(2) + '</div>' +
-                    '<div style="color:var(--muted)">Hunger rate</div><div class="font-mono text-right">' + Number(p(selectedAgent, 'hungerRate')).toFixed(3) + '</div>' +
-                    '<div style="color:var(--muted)">Efficiency</div><div class="font-mono text-right">' + Number(p(selectedAgent, 'efficiency')).toFixed(2) + '</div>' +
-                    '<div style="color:var(--muted)">Speed</div><div class="font-mono text-right">' + Number(p(selectedAgent, 'maxSpeed')).toFixed(2) + '</div>' +
-                    '<div style="color:var(--muted)">Age</div><div class="font-mono text-right">' + (life / 60).toFixed(1) + 's</div>' +
-                    '</div>';
+                const blend = selectedAgent._seekBlend != null ? selectedAgent._seekBlend : 0;
+                const dFood = selectedAgent._distFood;
+                const dFoodStr = (dFood != null && Number.isFinite(dFood)) ? dFood.toFixed(0) : '—';
+                const effPol = selectedAgent._effPolicy || p(selectedAgent, 'movementPolicy');
+                const isSp = !!selectedAgent.isSpecial;
+                const nCust = isSp ? countSpecialCustoms() : 0;
+                const spBadge = isSp
+                    ? `<div class="mb-1.5"><span style="font-size:9px;padding:1px 6px;border-radius:999px;border:1px solid #fbbf24;color:#fde68a;background:#422006">SPECIAL</span>
+                       <span style="font-size:9px;color:var(--muted);margin-left:0.35rem">${nCust} override${nCust===1?'':'s'}</span></div>`
+                    : '';
+                content.innerHTML = `
+    ${spBadge}
+    <div class="grid grid-cols-2 gap-x-3 gap-y-1">
+      <div style="color:var(--muted)">ID</div>
+      <div class="font-mono text-right">#${selectedAgent.id}</div>
+      <div style="color:var(--muted)">Hunger</div>
+      <div class="font-mono text-right">${selectedAgent.hunger.toFixed(1)}</div>
+      <div style="color:var(--muted)">Food carried</div>
+      <div class="font-mono text-right" style="color:var(--warn)">${selectedAgent.food.toFixed(1)}</div>
+      <div style="color:var(--muted)">Age (ticks)</div>
+      <div class="font-mono text-right">${life}</div>
+      <div style="color:var(--muted)">Age (sec)</div>
+      <div class="font-mono text-right">${(life / 60).toFixed(1)}s</div>
+      <div style="color:var(--muted)">Policy (eff.)</div>
+      <div class="font-mono text-right">${effPol === 'random' ? 'random' : effPol}${isSp && specialOverrides && specialOverrides.movementPolicy.useCustom ? ' *' : ''}</div>
+      <div style="color:var(--muted)">Seek blend</div>
+      <div class="font-mono text-right">${blend.toFixed(2)}</div>
+      <div style="color:var(--muted)">Dist → food</div>
+      <div class="font-mono text-right">${dFoodStr}</div>
+    </div>
+    <div class="mt-2" style="font-size:10px;color:var(--muted)">${isSp ? 'Amber ring · overrides if custom · ' : ''}click another or ✕</div>
+  `;
+                if (pinBtn) {
+                    pinBtn.disabled = false;
+                    pinBtn.style.opacity = '1';
+                    pinBtn.textContent = pinnedAgent === selectedAgent ? 'Unpin from trends' : 'Pin to trends';
+                    pinBtn.onclick = togglePin;
+                }
             }
 
             // =====================================================================
@@ -5260,7 +4245,6 @@
             }
 
             function setAppMode(mode) {
-                if (mode === 'lab') return;
                 if (mode === appMode) return;
                 if (labBatchRunning && mode === 'world') {
                     if (!confirm('A Lab batch is running. Leave Lab and cancel the batch?')) return;
