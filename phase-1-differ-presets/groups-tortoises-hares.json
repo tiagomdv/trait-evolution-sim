@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "kind": "differ",
+  "mode": "groups",
+  "n": 60,
+  "id": "tortoises-hares",
+  "name": "Tortoises vs Hares",
+  "groups": [
+    {
+      "id": "TOR",
+      "name": "Tortoises",
+      "color": "#4ade80",
+      "n": 30,
+      "hungerRate": 0.05,
+      "efficiency": 1.8,
+      "hunt": 0.35,
+      "maxSpeed": 1.2
+    },
+    {
+      "id": "HAR",
+      "name": "Hares",
+      "color": "#fbbf24",
+      "n": 30,
+      "hungerRate": 0.078,
+      "efficiency": 1.4,
+      "hunt": 0.8,
+      "maxSpeed": 2.4
+    }
+  ]
+}

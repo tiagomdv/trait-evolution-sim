@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1.0.1 · Differ layout</title>
+  <style>
+    :root {
+      --bg: #070b12; --panel: #0d1524; --panel-2: #0a1220; --border: #1e3a5f;
+      --text: #cbd5e1; --muted: #64748b; --accent: #38bdf8; --good: #7dd3fc;
+      --warn: #fbbf24; --ok: #4ade80; --bad: #fb7185; --pin: #818cf8;
+      --ga: #38bdf8; --gb: #c4b5fd;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--text); margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+    .doc-hero {
+      background: linear-gradient(180deg, #0d1524 0%, #070b12 100%);
+      border: 1px solid var(--border); border-radius: 0.85rem;
+      padding: 1.15rem 1.25rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    .doc-hero h1 {
+      font-size: 1.55rem; font-weight: 650; color: #f1f5f9;
+      margin: 0.35rem 0 0.4rem; letter-spacing: -0.02em;
+    }
+    .doc-hero .lede { margin: 0; font-size: 0.9rem; color: #94a3b8; max-width: 56rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.15rem; }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .tag.b { background: #1e1b4b; color: #c4b5fd; border-color: #7c3aed; }
+    .tag.muted { background: #1e293b; color: #94a3b8; border-color: #334155; }
+    .doc-grid { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+    @media (max-width: 860px) {
+      .doc-grid { grid-template-columns: 1fr; }
+      .toc { position: static !important; }
+    }
+    .toc {
+      position: sticky; top: 0.75rem; background: var(--panel);
+      border: 1px solid var(--border); border-radius: 0.65rem; padding: 0.75rem 0.85rem;
+    }
+    .toc .section-label {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.5rem;
+    }
+    .toc ol { margin: 0; padding-left: 1.1rem; font-size: 0.8rem; }
+    .toc li { margin: 0.28rem 0; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .main { min-width: 0; }
+    h2 {
+      font-size: 1.12rem; font-weight: 650; color: #e2e8f0; margin: 0 0 0.65rem;
+      padding-bottom: 0.35rem; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.95rem; font-weight: 600; color: #bae6fd; margin: 1.1rem 0 0.4rem; }
+    h2 + h3 { margin-top: 0.65rem; }
+    p, li { font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.84rem; }
+    .section { margin-bottom: 1.85rem; scroll-margin-top: 0.75rem; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 0.75rem 0.9rem; margin: 0.55rem 0;
+    }
+    table.doc { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 0.45rem 0 0.7rem; }
+    table.doc th, table.doc td {
+      border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top;
+    }
+    table.doc th {
+      background: var(--panel-2); color: #94a3b8; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--good); font-size: 0.86em; }
+    .callout {
+      border-radius: 0.5rem; padding: 0.65rem 0.8rem; margin: 0.55rem 0;
+      font-size: 0.84rem; border: 1px solid var(--border); background: var(--panel-2);
+    }
+    .callout.warn { border-color: #854d0e; background: #1c1408; color: #fde68a; }
+    .callout.good { border-color: #166534; background: #052e16; color: #bbf7d0; }
+    a { color: var(--accent); }
+
+    /* layout mocks */
+    .stage {
+      background: #04070d; border: 1px solid var(--border); border-radius: 0.55rem;
+      padding: 0.55rem; margin: 0.6rem 0 0.85rem;
+    }
+    .stage-label {
+      font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .app {
+      background: #0a1018; border: 1px solid #152238; border-radius: 0.4rem;
+      overflow: hidden; font-size: 10px;
+    }
+    .hdr {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding: 0.4rem 0.55rem; border-bottom: 1px solid #152238; background: #0d1524;
+    }
+    .hdr .nm { color: #94a3b8; font-weight: 600; }
+    .hdr .btns { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+    .chip {
+      font-size: 9px; padding: 2px 7px; border-radius: 4px;
+      background: #152238; color: #94a3b8; border: 1px solid #1e3a5f;
+    }
+    .chip.on { background: #0c4a6e; color: #bae6fd; border-color: #0ea5e9; }
+    .chip.pri { background: #0c4a6e; color: #f0f9ff; }
+    .chip.ghost { opacity: 0.4; }
+    .cols { display: grid; grid-template-columns: 200px 1fr 168px; min-height: 280px; }
+    @media (max-width: 720px) { .cols { grid-template-columns: 1fr; } }
+    .c-l, .c-c, .c-r { padding: 0.45rem; }
+    .c-l { border-right: 1px solid #152238; }
+    .c-r { border-left: 1px solid #152238; background: #080e16; }
+    .c-r.later { opacity: 0.42; }
+    .later-tag {
+      font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #854d0e; margin-bottom: 0.3rem;
+    }
+    .sec { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin: 0.45rem 0 0.25rem; }
+    .btn-wide {
+      width: 100%; text-align: center; padding: 0.4rem 0.35rem;
+      background: #0c4a6e; color: #e0f2fe; border: 1px solid #0ea5e9;
+      border-radius: 0.35rem; font-size: 11px; font-weight: 600;
+    }
+    .btn-wide sub { display: block; font-weight: 400; font-size: 8px; color: #7dd3fc; margin-top: 1px; }
+    .btn-sec {
+      width: 100%; text-align: center; padding: 0.28rem;
+      background: #111827; color: #94a3b8; border: 1px solid #1e3a5f;
+      border-radius: 0.3rem; font-size: 10px; margin-top: 0.3rem;
+    }
+    .nchip { font-family: ui-monospace, monospace; color: #7dd3fc; font-size: 10px; margin: 0.3rem 0 0.15rem; }
+    .kpi2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem; }
+    .kpi2 .cell { background: #070d16; border: 1px solid #152238; border-radius: 0.28rem; padding: 0.25rem 0.35rem; }
+    .kpi2 span { display: block; font-size: 8px; color: #64748b; }
+    .kpi2 b { font-family: ui-monospace, monospace; color: #7dd3fc; font-size: 12px; }
+    .gline { display: flex; gap: 0.3rem; margin-top: 0.3rem; }
+    .gline .g { flex: 1; background: #070d16; border: 1px solid #152238; border-radius: 0.28rem; padding: 0.22rem 0.3rem; text-align: center; }
+    .gline .g b { display: block; font-family: ui-monospace, monospace; font-size: 12px; }
+    .insp {
+      margin-top: 0.45rem; border: 1px solid #1e3a5f; border-radius: 0.35rem;
+      padding: 0.35rem 0.4rem; background: #0a1220;
+    }
+    .insp .t { color: #94a3b8; font-size: 9px; margin-bottom: 0.2rem; }
+    .insp .row { display: flex; justify-content: space-between; font-size: 9px; padding: 1px 0; color: #94a3b8; }
+    .insp .row em { color: #7dd3fc; font-style: normal; font-family: ui-monospace, monospace; }
+    .field {
+      height: 200px; background: #070d16; border: 1px solid #152238; border-radius: 0.35rem;
+      position: relative; overflow: hidden;
+    }
+    .dot { position: absolute; width: 7px; height: 7px; border-radius: 50%; }
+    .dot.a { background: var(--ga); }
+    .dot.b { background: var(--gb); }
+    .dot.s { box-shadow: 0 0 0 1px #fb7185; }
+    .chart { height: 36px; background: #04070d; border: 1px dashed #1e3a5f; border-radius: 0.25rem; margin: 0.2rem 0 0.35rem; }
+
+    /* modal mock */
+    .modal {
+      background: #0d1524; border: 1px solid #1e3a5f; border-radius: 0.55rem;
+      overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    }
+    .m-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.5rem 0.7rem; border-bottom: 1px solid #152238;
+    }
+    .m-head h4 { margin: 0; font-size: 13px; color: #e2e8f0; font-weight: 600; }
+    .m-tabs { display: flex; gap: 0.25rem; }
+    .m-body { display: grid; grid-template-columns: 1fr 200px; min-height: 240px; }
+    @media (max-width: 640px) { .m-body { grid-template-columns: 1fr; } }
+    .m-list { padding: 0.5rem; border-right: 1px solid #152238; }
+    .m-edit { padding: 0.5rem 0.65rem; background: #0a1220; }
+    .m-foot {
+      display: flex; justify-content: space-between; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 0.65rem; border-top: 1px solid #152238; background: #080e16;
+    }
+    .gcard {
+      border: 1px solid #1e3a5f; border-radius: 0.4rem; padding: 0.4rem 0.45rem;
+      margin-bottom: 0.35rem; background: #0a1220;
+    }
+    .gcard.sel { border-color: var(--ga); box-shadow: 0 0 0 1px rgba(56,189,248,0.25); }
+    .gcard.b { border-color: #6d28d9; }
+    .gcard.b.sel { border-color: var(--gb); }
+    .gcard .gh { display: flex; justify-content: space-between; align-items: center; }
+    .sw { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+    .tbl { width: 100%; border-collapse: collapse; font-size: 9px; }
+    .tbl th { text-align: left; color: #64748b; font-weight: 500; padding: 0.15rem 0.2rem; }
+    .tbl td { padding: 0.18rem 0.2rem; border-top: 1px solid #152238; color: #cbd5e1; }
+    .tbl tr.sel td { background: #0c4a6e33; }
+    .sl { height: 4px; background: #1e3a5f; border-radius: 99px; margin: 0.15rem 0 0.4rem; position: relative; }
+    .sl i { position: absolute; top: -3px; width: 10px; height: 10px; border-radius: 50%; background: #38bdf8; }
+    .strike { text-decoration: line-through; opacity: 0.35; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="doc-hero">
+      <div class="meta-row">
+        <span class="tag">Layout only</span>
+        <span class="tag warn">This PR</span>
+        <span class="tag good">World · Differ</span>
+        <span class="tag muted">Merges 1.0.0 + 1.0.1 for UI</span>
+      </div>
+      <h1>Differ layout · left column + Differ… modal</h1>
+      <p class="lede">
+        How World <em>looks</em> for the first Differ ship. Not hunt curves, not JSON schema, not Lab.
+        Right-side Trends / History stay as they are (dimmed below). Mechanics live in the older specs if you need them.
+      </p>
+    </header>
+
+    <div class="doc-grid">
+      <nav class="toc">
+        <div class="section-label">Contents</div>
+        <ol>
+          <li><a href="#names">Names</a></li>
+          <li><a href="#world">World frame</a></li>
+          <li><a href="#left">Left column</a></li>
+          <li><a href="#modal">Differ… modal</a></li>
+          <li><a href="#groups">Groups tab</a></li>
+          <li><a href="#roster">Roster tab</a></li>
+          <li><a href="#out">Out of this PR</a></li>
+        </ol>
+      </nav>
+
+      <div class="main">
+
+        <section class="section" id="names">
+          <h2>1. Names</h2>
+          <p>
+            <strong>Desk</strong> was our shorthand for “the panel where you set the experiment.”
+            <strong>Mix</strong> was the spawn recipe (who is in the crowd). Both read like kitchen jargon, not the phase.
+          </p>
+          <table class="doc">
+            <thead><tr><th>In the UI, say</th><th>Not</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Differ…</strong> (button + modal title)</td>
+                <td>Mix…, Mix desk, Crowd desk</td>
+                <td>Same word as the phase. You open it to make agents <em>differ</em>.</td>
+              </tr>
+              <tr>
+                <td><strong>Groups</strong> / <strong>Roster</strong> (tabs in that modal)</td>
+                <td>Mix modes, cards vs individuals</td>
+                <td>One crowd of types, or a list of bodies.</td>
+              </tr>
+              <tr>
+                <td><strong>Apply on Reset</strong> (footer hint)</td>
+                <td>Commit pending mix</td>
+                <td>Matches the Reset button they already know.</td>
+              </tr>
+              <tr>
+                <td>Parameters…</td>
+                <td>—</td>
+                <td>Weather + leftover sliders. Unchanged name.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="muted">Older files still say “mix” in code sketches. Layout + this PR copy use <strong>Differ…</strong>.</p>
+        </section>
+
+        <section class="section" id="world">
+          <h2>2. World frame — this PR</h2>
+          <p>Header unchanged except <span class="strike">Special…</span> (disabled or gone). Center canvas unchanged. Right column <strong>untouched</strong>.</p>
+
+          <div class="stage">
+            <div class="stage-label">After · World</div>
+            <div class="app">
+              <div class="hdr">
+                <span class="nm">trait-evolution-sim</span>
+                <span class="btns">
+                  <span class="chip on">World</span>
+                  <span class="chip">Lab</span>
+                  <span class="chip ghost">Special…</span>
+                  <span class="chip">Vision…</span>
+                  <span class="chip">Help</span>
+                  <span class="chip">1×</span>
+                  <span class="chip">Pause</span>
+                  <span class="chip pri">Reset</span>
+                </span>
+              </div>
+              <div class="cols">
+                <div class="c-l">
+                  <div class="sec">Crowd</div>
+                  <div class="btn-wide">Differ…<sub>2 groups · 60 agents</sub></div>
+                  <button class="btn-sec" type="button">Parameters…</button>
+                  <div class="nchip">N 60 · food spawn 8</div>
+                  <div class="sec">Live</div>
+                  <div class="kpi2">
+                    <div class="cell"><span>Alive</span><b>4</b></div>
+                    <div class="cell"><span>Deaths</span><b>56</b></div>
+                  </div>
+                  <div class="gline">
+                    <div class="g"><span class="sw" style="background:var(--ga)"></span><b style="color:var(--ga)">2</b></div>
+                    <div class="g"><span class="sw" style="background:var(--gb)"></span><b style="color:var(--gb)">2</b></div>
+                  </div>
+                  <div class="insp">
+                    <div class="t">A12 · Control</div>
+                    <div class="row">Hunt <em>0.50</em></div>
+                    <div class="row">Hunger <em>0.062</em></div>
+                    <div class="row">Eff <em>1.60</em></div>
+                    <div class="row">Speed <em>2.0</em></div>
+                  </div>
+                </div>
+                <div class="c-c">
+                  <div class="muted" style="font-size:8px;margin-bottom:0.25rem">Survive · <b style="color:#bae6fd">Differ</b> · Evolve · Economy</div>
+                  <div class="field">
+                    <span class="dot a" style="left:18%;top:30%"></span>
+                    <span class="dot a" style="left:40%;top:55%"></span>
+                    <span class="dot a s" style="left:62%;top:28%"></span>
+                    <span class="dot b" style="left:28%;top:70%"></span>
+                    <span class="dot b" style="left:72%;top:48%"></span>
+                    <span class="dot b s" style="left:50%;top:40%"></span>
+                  </div>
+                </div>
+                <div class="c-r later">
+                  <div class="later-tag">Not this PR</div>
+                  <div class="sec">Trends</div>
+                  <div class="chart"></div>
+                  <div class="chart"></div>
+                  <div class="sec">History</div>
+                  <div class="muted">Survive strip stays</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <table class="doc">
+            <thead><tr><th>Gone from the left rail</th><th>Stays</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Policy Seek / Random · Seek master · Agent master · Island L / B / P · Special as a first-class World tool</td>
+                <td>Differ… · Parameters… (food spawn + leftover knobs) · Live counts · Inspector · Hide ✕ · canvas · phase <em>labels</em> (not links)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="left">
+          <h2>3. Left column — this PR</h2>
+          <p>Top to bottom. Tight. One primary action.</p>
+          <ol>
+            <li><strong>Differ…</strong> — full-width, strongest button. Subline = applied crowd (“2 groups · 60 agents” or “Roster · 60”). If the modal was edited but Reset not pressed, subline reads <em>pending — Reset to apply</em>.</li>
+            <li><strong>Parameters…</strong> — secondary. Food spawn lives here. N slider hidden or read-only (N comes from Differ…).</li>
+            <li><strong>One line of weather:</strong> <code>N 60 · food 8</code>.</li>
+            <li><strong>Live:</strong> Alive + Deaths (keep today’s tiles if cheaper). Optional one row of <em>alive per group color</em> — only if it stays a small strip, not a second dashboard.</li>
+            <li><strong>Inspector:</strong> click on canvas. Show name/id, group color, hunger, bag, four traits. No Pin button in the new layout (can leave the old Pin in the DOM unused, or hide it). Search jumps to an agent; it does not pin charts.</li>
+          </ol>
+          <div class="callout">Bag-food KPI tiles and Pin-to-trends can remain in the file this PR if ripping them out is extra work. Prefer hide over a big metrics redesign.</div>
+        </section>
+
+        <section class="section" id="modal">
+          <h2>4. Differ… modal — chrome</h2>
+          <p>Same modal shell as Parameters / Lab: overlay, panel, close. Wider than Parameters (room for a list + an editor).</p>
+          <ul>
+            <li><strong>Title:</strong> Differ</li>
+            <li><strong>Tabs:</strong> Groups | Roster</li>
+            <li><strong>Left:</strong> the list (group cards or roster table)</li>
+            <li><strong>Right:</strong> editor for the current selection (the four traits + name + color)</li>
+            <li><strong>Footer:</strong> Import · Export · Close. Hint: <em>Applies on Reset</em>. No live “apply now.”</li>
+          </ul>
+          <p class="muted">Default open tab: Groups. Switching Groups → Roster expands cards into rows. Roster → Groups asks before folding look-alikes.</p>
+        </section>
+
+        <section class="section" id="groups">
+          <h2>5. Groups tab</h2>
+          <div class="stage">
+            <div class="stage-label">Differ… · Groups</div>
+            <div class="modal">
+              <div class="m-head">
+                <h4>Differ</h4>
+                <div class="m-tabs">
+                  <span class="chip on">Groups</span>
+                  <span class="chip">Roster</span>
+                </div>
+              </div>
+              <div class="m-body">
+                <div class="m-list">
+                  <div class="gcard sel">
+                    <div class="gh"><span><span class="sw" style="background:var(--ga)"></span>Control</span><span class="mono">n 30</span></div>
+                  </div>
+                  <div class="gcard b">
+                    <div class="gh"><span><span class="sw" style="background:var(--gb)"></span>Strain</span><span class="mono">n 30</span></div>
+                  </div>
+                  <span class="chip" style="margin-top:0.25rem">+ Group</span>
+                </div>
+                <div class="m-edit">
+                  <div class="sec">Selected · Control</div>
+                  <div class="muted" style="font-size:9px">Name · color · count</div>
+                  <div class="sec">Hunger rate</div><div class="sl"><i style="left:40%"></i></div>
+                  <div class="sec">Efficiency</div><div class="sl"><i style="left:50%"></i></div>
+                  <div class="sec">Hunt</div><div class="sl"><i style="left:50%"></i></div>
+                  <div class="sec">Speed</div><div class="sl"><i style="left:55%"></i></div>
+                </div>
+              </div>
+              <div class="m-foot">
+                <span>
+                  <span class="chip">Import</span>
+                  <span class="chip">Export</span>
+                </span>
+                <span class="muted">N 60 · applies on Reset</span>
+                <span class="chip">Close</span>
+              </div>
+            </div>
+          </div>
+          <p>Up to 8 group cards. Select a card → sliders on the right. Copy / remove on the card. N = sum of counts.</p>
+        </section>
+
+        <section class="section" id="roster">
+          <h2>6. Roster tab</h2>
+          <div class="stage">
+            <div class="stage-label">Differ… · Roster</div>
+            <div class="modal">
+              <div class="m-head">
+                <h4>Differ</h4>
+                <div class="m-tabs">
+                  <span class="chip">Groups</span>
+                  <span class="chip on">Roster</span>
+                </div>
+              </div>
+              <div class="m-body">
+                <div class="m-list">
+                  <table class="tbl">
+                    <thead><tr><th></th><th>ID</th><th>Hunt</th><th>Burn</th></tr></thead>
+                    <tbody>
+                      <tr class="sel"><td><span class="sw" style="background:var(--ga)"></span></td><td>A0</td><td>0.50</td><td>0.062</td></tr>
+                      <tr><td><span class="sw" style="background:var(--ga)"></span></td><td>A1</td><td>0.50</td><td>0.062</td></tr>
+                      <tr><td><span class="sw" style="background:var(--gb)"></span></td><td>B0</td><td>0.20</td><td>0.078</td></tr>
+                      <tr><td colspan="4" class="muted">… scroll · compact rows</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="m-edit">
+                  <div class="sec">A0 · same sliders as Groups</div>
+                  <div class="sl"><i style="left:50%"></i></div>
+                  <div class="sl"><i style="left:50%"></i></div>
+                  <span class="chip">Duplicate</span>
+                  <span class="chip">Delete</span>
+                </div>
+              </div>
+              <div class="m-foot">
+                <span class="muted">Set N · paint selected from a group</span>
+                <span class="chip">Close</span>
+              </div>
+            </div>
+          </div>
+          <p>One row per agent. Click row → same trait editor. Multi-select + paint is nice-to-have if easy; single-select is enough to ship.</p>
+        </section>
+
+        <section class="section" id="out">
+          <h2>7. Out of this PR</h2>
+          <table class="doc">
+            <thead><tr><th>Surface</th><th>This PR</th></tr></thead>
+            <tbody>
+              <tr><td>Trends / History / Run logs</td><td>Leave Survive layout. Do not redesign.</td></tr>
+              <tr><td>Lab</td><td>Do not touch.</td></tr>
+              <tr><td>Phase path</td><td>Labels only. No links.</td></tr>
+              <tr><td>Hunt math, JSON, fair-eat</td><td>Implement, but not the subject of this layout file. See <a href="1.0.1-world-mix-design.html">1.0.1-world-mix-design.html</a> if needed.</td></tr>
+            </tbody>
+          </table>
+          <p class="muted">
+            This file is the layout source of truth for the PR.
+            <a href="1.0.0-mix-design.html">1.0.0-mix</a> and
+            <a href="1.0.1-world-mix-design.html">1.0.1-world-mix</a> stay as mechanics / backlog notes.
+          </p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

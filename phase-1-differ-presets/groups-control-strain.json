@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "kind": "differ",
+  "mode": "groups",
+  "n": 60,
+  "id": "control-strain",
+  "name": "Control vs Strain",
+  "groups": [
+    {
+      "id": "CTL",
+      "name": "Control",
+      "color": "#38bdf8",
+      "n": 30,
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "id": "STN",
+      "name": "Strain",
+      "color": "#c4b5fd",
+      "n": 30,
+      "hungerRate": 0.078,
+      "efficiency": 1.3,
+      "hunt": 0.2,
+      "maxSpeed": 1.6
+    }
+  ]
+}

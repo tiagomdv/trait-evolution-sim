@@ -1,0 +1,652 @@
+{
+  "version": 2,
+  "kind": "differ",
+  "mode": "roster",
+  "n": 60,
+  "id": "pets-roster",
+  "name": "Prophet / Mayfly / Ghost + Control crowd (roster)",
+  "groups": [
+    {
+      "id": "PRO",
+      "name": "Prophet",
+      "color": "#fbbf24",
+      "n": 3,
+      "hungerRate": 0.052,
+      "efficiency": 2.4,
+      "hunt": 1.0,
+      "maxSpeed": 2.2
+    },
+    {
+      "id": "FLY",
+      "name": "Mayfly",
+      "color": "#fb7185",
+      "n": 8,
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "id": "GHO",
+      "name": "Ghost",
+      "color": "#22d3ee",
+      "n": 5,
+      "hungerRate": 0.055,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 1.2
+    },
+    {
+      "id": "CTL",
+      "name": "Control",
+      "color": "#38bdf8",
+      "n": 44,
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    }
+  ],
+  "bodies": [
+    {
+      "bodyId": "PRO-01",
+      "name": "Prophet 01",
+      "color": "#fbbf24",
+      "sourceGroupId": "PRO",
+      "hungerRate": 0.052,
+      "efficiency": 2.4,
+      "hunt": 1.0,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "PRO-02",
+      "name": "Prophet 02",
+      "color": "#fbbf24",
+      "sourceGroupId": "PRO",
+      "hungerRate": 0.052,
+      "efficiency": 2.4,
+      "hunt": 1.0,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "PRO-03",
+      "name": "Prophet 03",
+      "color": "#fbbf24",
+      "sourceGroupId": "PRO",
+      "hungerRate": 0.052,
+      "efficiency": 2.4,
+      "hunt": 1.0,
+      "maxSpeed": 2.2
+    },
+    {
+      "bodyId": "FLY-01",
+      "name": "Mayfly 01",
+      "color": "#fb7185",
+      "sourceGroupId": "FLY",
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "FLY-02",
+      "name": "Mayfly 02",
+      "color": "#fb7185",
+      "sourceGroupId": "FLY",
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "FLY-03",
+      "name": "Mayfly 03",
+      "color": "#fb7185",
+      "sourceGroupId": "FLY",
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "FLY-04",
+      "name": "Mayfly 04",
+      "color": "#fb7185",
+      "sourceGroupId": "FLY",
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "FLY-05",
+      "name": "Mayfly 05",
+      "color": "#fb7185",
+      "sourceGroupId": "FLY",
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "FLY-06",
+      "name": "Mayfly 06",
+      "color": "#fb7185",
+      "sourceGroupId": "FLY",
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "FLY-07",
+      "name": "Mayfly 07",
+      "color": "#fb7185",
+      "sourceGroupId": "FLY",
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "FLY-08",
+      "name": "Mayfly 08",
+      "color": "#fb7185",
+      "sourceGroupId": "FLY",
+      "hungerRate": 0.084,
+      "efficiency": 1.2,
+      "hunt": 0.85,
+      "maxSpeed": 2.4
+    },
+    {
+      "bodyId": "GHO-01",
+      "name": "Ghost 01",
+      "color": "#22d3ee",
+      "sourceGroupId": "GHO",
+      "hungerRate": 0.055,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 1.2
+    },
+    {
+      "bodyId": "GHO-02",
+      "name": "Ghost 02",
+      "color": "#22d3ee",
+      "sourceGroupId": "GHO",
+      "hungerRate": 0.055,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 1.2
+    },
+    {
+      "bodyId": "GHO-03",
+      "name": "Ghost 03",
+      "color": "#22d3ee",
+      "sourceGroupId": "GHO",
+      "hungerRate": 0.055,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 1.2
+    },
+    {
+      "bodyId": "GHO-04",
+      "name": "Ghost 04",
+      "color": "#22d3ee",
+      "sourceGroupId": "GHO",
+      "hungerRate": 0.055,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 1.2
+    },
+    {
+      "bodyId": "GHO-05",
+      "name": "Ghost 05",
+      "color": "#22d3ee",
+      "sourceGroupId": "GHO",
+      "hungerRate": 0.055,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 1.2
+    },
+    {
+      "bodyId": "CTL-01",
+      "name": "Control 01",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-02",
+      "name": "Control 02",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-03",
+      "name": "Control 03",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-04",
+      "name": "Control 04",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-05",
+      "name": "Control 05",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-06",
+      "name": "Control 06",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-07",
+      "name": "Control 07",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-08",
+      "name": "Control 08",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-09",
+      "name": "Control 09",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-10",
+      "name": "Control 10",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-11",
+      "name": "Control 11",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-12",
+      "name": "Control 12",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-13",
+      "name": "Control 13",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-14",
+      "name": "Control 14",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-15",
+      "name": "Control 15",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-16",
+      "name": "Control 16",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-17",
+      "name": "Control 17",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-18",
+      "name": "Control 18",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-19",
+      "name": "Control 19",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-20",
+      "name": "Control 20",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-21",
+      "name": "Control 21",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-22",
+      "name": "Control 22",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-23",
+      "name": "Control 23",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-24",
+      "name": "Control 24",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-25",
+      "name": "Control 25",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-26",
+      "name": "Control 26",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-27",
+      "name": "Control 27",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-28",
+      "name": "Control 28",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-29",
+      "name": "Control 29",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-30",
+      "name": "Control 30",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-31",
+      "name": "Control 31",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-32",
+      "name": "Control 32",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-33",
+      "name": "Control 33",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-34",
+      "name": "Control 34",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-35",
+      "name": "Control 35",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-36",
+      "name": "Control 36",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-37",
+      "name": "Control 37",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-38",
+      "name": "Control 38",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-39",
+      "name": "Control 39",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-40",
+      "name": "Control 40",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-41",
+      "name": "Control 41",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-42",
+      "name": "Control 42",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-43",
+      "name": "Control 43",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "CTL-44",
+      "name": "Control 44",
+      "color": "#38bdf8",
+      "sourceGroupId": "CTL",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.5,
+      "maxSpeed": 2.0
+    }
+  ]
+}

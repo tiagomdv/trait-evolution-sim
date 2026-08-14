@@ -1,0 +1,632 @@
+{
+  "version": 2,
+  "kind": "differ",
+  "mode": "roster",
+  "n": 60,
+  "id": "seekers-wanderers-roster",
+  "name": "Seekers vs Wanderers (roster)",
+  "groups": [
+    {
+      "id": "SEK",
+      "name": "Seekers",
+      "color": "#38bdf8",
+      "n": 30,
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "id": "WAN",
+      "name": "Wanderers",
+      "color": "#c4b5fd",
+      "n": 30,
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    }
+  ],
+  "bodies": [
+    {
+      "bodyId": "SEK-01",
+      "name": "Seekers 01",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-02",
+      "name": "Seekers 02",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-03",
+      "name": "Seekers 03",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-04",
+      "name": "Seekers 04",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-05",
+      "name": "Seekers 05",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-06",
+      "name": "Seekers 06",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-07",
+      "name": "Seekers 07",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-08",
+      "name": "Seekers 08",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-09",
+      "name": "Seekers 09",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-10",
+      "name": "Seekers 10",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-11",
+      "name": "Seekers 11",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-12",
+      "name": "Seekers 12",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-13",
+      "name": "Seekers 13",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-14",
+      "name": "Seekers 14",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-15",
+      "name": "Seekers 15",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-16",
+      "name": "Seekers 16",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-17",
+      "name": "Seekers 17",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-18",
+      "name": "Seekers 18",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-19",
+      "name": "Seekers 19",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-20",
+      "name": "Seekers 20",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-21",
+      "name": "Seekers 21",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-22",
+      "name": "Seekers 22",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-23",
+      "name": "Seekers 23",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-24",
+      "name": "Seekers 24",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-25",
+      "name": "Seekers 25",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-26",
+      "name": "Seekers 26",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-27",
+      "name": "Seekers 27",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-28",
+      "name": "Seekers 28",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-29",
+      "name": "Seekers 29",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "SEK-30",
+      "name": "Seekers 30",
+      "color": "#38bdf8",
+      "sourceGroupId": "SEK",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.7,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-01",
+      "name": "Wanderers 01",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-02",
+      "name": "Wanderers 02",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-03",
+      "name": "Wanderers 03",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-04",
+      "name": "Wanderers 04",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-05",
+      "name": "Wanderers 05",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-06",
+      "name": "Wanderers 06",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-07",
+      "name": "Wanderers 07",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-08",
+      "name": "Wanderers 08",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-09",
+      "name": "Wanderers 09",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-10",
+      "name": "Wanderers 10",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-11",
+      "name": "Wanderers 11",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-12",
+      "name": "Wanderers 12",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-13",
+      "name": "Wanderers 13",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-14",
+      "name": "Wanderers 14",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-15",
+      "name": "Wanderers 15",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-16",
+      "name": "Wanderers 16",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-17",
+      "name": "Wanderers 17",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-18",
+      "name": "Wanderers 18",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-19",
+      "name": "Wanderers 19",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-20",
+      "name": "Wanderers 20",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-21",
+      "name": "Wanderers 21",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-22",
+      "name": "Wanderers 22",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-23",
+      "name": "Wanderers 23",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-24",
+      "name": "Wanderers 24",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-25",
+      "name": "Wanderers 25",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-26",
+      "name": "Wanderers 26",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-27",
+      "name": "Wanderers 27",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-28",
+      "name": "Wanderers 28",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-29",
+      "name": "Wanderers 29",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    },
+    {
+      "bodyId": "WAN-30",
+      "name": "Wanderers 30",
+      "color": "#c4b5fd",
+      "sourceGroupId": "WAN",
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 2.0
+    }
+  ]
+}

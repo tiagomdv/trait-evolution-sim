@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1.0.0-mix · design</title>
+  <style>
+    :root {
+      --bg: #070b12; --panel: #0d1524; --panel-2: #0a1220; --border: #1e3a5f;
+      --text: #cbd5e1; --muted: #64748b; --accent: #38bdf8; --good: #7dd3fc;
+      --warn: #fbbf24; --ok: #4ade80; --bad: #fb7185; --pin: #818cf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--text); margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+    .doc-hero {
+      background: linear-gradient(180deg, #0d1524 0%, #070b12 100%);
+      border: 1px solid var(--border); border-radius: 0.85rem;
+      padding: 1.15rem 1.25rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    .doc-hero h1 {
+      font-size: 1.55rem; font-weight: 650; color: #f1f5f9;
+      margin: 0.35rem 0 0.4rem; letter-spacing: -0.02em;
+    }
+    .doc-hero .lede { margin: 0; font-size: 0.9rem; color: #94a3b8; max-width: 56rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.15rem; }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .tag.b { background: #1e1b4b; color: #c4b5fd; border-color: #7c3aed; }
+    .tag.muted { background: #1e293b; color: #94a3b8; border-color: #334155; }
+
+    .doc-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+    @media (max-width: 860px) {
+      .doc-grid { grid-template-columns: 1fr; }
+      .toc { position: static !important; }
+    }
+    .toc {
+      position: sticky; top: 0.75rem; background: var(--panel);
+      border: 1px solid var(--border); border-radius: 0.65rem; padding: 0.75rem 0.85rem;
+    }
+    .toc .section-label {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 0.5rem;
+    }
+    .toc ol { margin: 0; padding-left: 1.1rem; font-size: 0.8rem; }
+    .toc li { margin: 0.28rem 0; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    .main { min-width: 0; }
+    h2 {
+      font-size: 1.12rem; font-weight: 650; color: #e2e8f0; margin: 0 0 0.65rem;
+      padding-bottom: 0.35rem; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.95rem; font-weight: 600; color: #bae6fd; margin: 1.1rem 0 0.4rem; }
+    h2 + h3 { margin-top: 0.65rem; }
+    p, li { font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.84rem; }
+    .section { margin-bottom: 1.85rem; scroll-margin-top: 0.75rem; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 0.75rem 0.9rem; margin: 0.55rem 0;
+    }
+    .card h3 { margin-top: 0; }
+    table.doc { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 0.45rem 0 0.7rem; }
+    table.doc th, table.doc td {
+      border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top;
+    }
+    table.doc th {
+      background: var(--panel-2); color: #94a3b8; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--good); font-size: 0.86em; }
+    .callout {
+      border-left: 3px solid var(--accent); background: var(--panel-2);
+      padding: 0.65rem 0.85rem; border-radius: 0 0.5rem 0.5rem 0; margin: 0.6rem 0;
+      font-size: 0.88rem;
+    }
+    .callout.good { border-left-color: var(--ok); }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.bad { border-left-color: var(--bad); }
+    ul.tight { margin: 0.35rem 0; padding-left: 1.2rem; }
+    ul.tight li { margin: 0.2rem 0; }
+
+    .mock-stage {
+      background: #04070d; border: 1px solid var(--border);
+      border-radius: 0.75rem; padding: 0.75rem; margin: 0.55rem 0 0.85rem;
+    }
+    .mock-stage-label {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.45rem; font-weight: 600;
+    }
+    .mock-app {
+      background: #0b1220; border: 1px solid #2a4a72; border-radius: 0.55rem;
+      overflow: hidden; font-size: 11px;
+    }
+    .mock-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding: 0.45rem 0.65rem; border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #101a2c 0%, #0b1220 100%);
+    }
+    .mock-header .brand { color: #e2e8f0; font-weight: 650; font-size: 12px; }
+    .mock-header .ver { color: var(--muted); font-family: ui-monospace, monospace; font-size: 10px; }
+    .pill {
+      font-size: 10px; padding: 0.2rem 0.45rem; border-radius: 0.3rem;
+      border: 1px solid var(--border); background: #0f1c30; color: #bae6fd;
+    }
+    .pill.ok { border-color: #22c55e; color: #bbf7d0; background: #052e16; }
+    .pill.dim { color: var(--muted); }
+    .fake-btn {
+      font-size: 10px; padding: 0.25rem 0.5rem; border-radius: 0.3rem;
+      border: 1px solid #0ea5e9; background: #0c4a6e; color: #e0f2fe;
+    }
+    .fake-btn.ghost { border-color: #334155; background: #0a1220; color: #94a3b8; }
+    .sec-h {
+      font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin: 0.45rem 0 0.3rem;
+    }
+    .kv-row {
+      display: flex; justify-content: space-between; gap: 0.35rem;
+      padding: 0.2rem 0; border-bottom: 1px solid #152238; font-size: 10px;
+    }
+    .kv-row:last-child { border-bottom: none; }
+    .kv-row .k { color: var(--muted); }
+    .kv-row .v { color: var(--good); font-family: ui-monospace, monospace; }
+    .diagram {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px; line-height: 1.45; color: #94a3b8;
+      background: #04070d; border: 1px solid var(--border); border-radius: 0.45rem;
+      padding: 0.65rem 0.75rem; overflow-x: auto; white-space: pre; margin: 0.5rem 0;
+    }
+    .diagram .hl { color: var(--accent); }
+    .diagram .ok { color: var(--ok); }
+    .checklist { list-style: none; padding: 0; margin: 0.4rem 0; }
+    .checklist li {
+      padding: 0.35rem 0.5rem; margin: 0.25rem 0;
+      background: var(--panel-2); border: 1px solid var(--border);
+      border-radius: 0.4rem; font-size: 0.85rem;
+    }
+    .checklist li::before { content: "☐ "; color: var(--muted); }
+    .fake-slider-row { margin: 0.28rem 0 0.4rem; }
+    .fake-slider-row .lab {
+      display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 0.15rem;
+    }
+    .fake-slider-row .lab span:last-child {
+      font-family: ui-monospace, monospace; color: var(--good);
+    }
+    .fake-slider-track {
+      height: 6px; border-radius: 99px; background: #152238; position: relative;
+    }
+    .fake-slider-track::after {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+      width: var(--w, 40%); background: #0ea5e9; border-radius: 99px;
+    }
+    .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+    .group-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+    @media (max-width: 700px) { .group-row { grid-template-columns: 1fr; } }
+    .gcard { background: #070d16; border: 1px solid #1e3a5f; border-radius: 0.45rem; padding: 0.45rem 0.5rem; }
+    .gcard.a { border-color: #38bdf8; }
+    .gcard.b { border-color: #c4b5fd; }
+    .kpi-fake { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+    .kpi-fake .cell { background: #070d16; border: 1px solid #152238; border-radius: 0.3rem; padding: 0.3rem 0.4rem; }
+    .kpi-fake .cell span { display: block; font-size: 9px; color: var(--muted); }
+    .kpi-fake .cell b { font-family: ui-monospace, monospace; color: #7dd3fc; font-size: 13px; }
+    .chart-fake {
+      height: 72px; border: 1px dashed #1e3a5f; border-radius: 0.35rem;
+      display: flex; align-items: flex-end; gap: 6px; padding: 0.4rem 0.5rem;
+      background: #04070d; margin-top: 0.4rem;
+    }
+    .chart-fake i {
+      display: block; width: 18px; background: #0ea5e9; border-radius: 2px 2px 0 0;
+      opacity: 0.85;
+    }
+    mermaid { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="doc-hero">
+      <div class="callout warn" style="margin:0 0 0.85rem">
+        <strong>Layout for this PR:</strong>
+        <a href="1.0.1-differ-layout-design.html" style="color:#fde68a">1.0.1-differ-layout-design.html</a>
+        (left column + <strong>Differ…</strong> modal). This file is mechanics notes only.
+      </div>
+      <div class="meta-row">
+        <span class="tag">Design · not implemented</span>
+        <span class="tag b">Track A + B · PR1+2 same ship window</span>
+        <span class="tag good">Proposed: 1.0.0-mix</span>
+        <span class="tag warn">Phase 1 · Differ</span>
+        <span class="tag muted">Baseline 0.9.6-params</span>
+      </div>
+      <h1>Mix desk + Differ observability</h1>
+      <p class="lede">
+        Same island, agents <strong>differ at spawn</strong>. No babies, inheritance, or mutation.
+        This spec is the <strong>Mix… modal</strong> (groups, four traits, hunt <code>t</code>, apply on Reset)
+        and the <strong>World column</strong> so leftover agents are readable as <em>who lasted</em>,
+        not only <em>how many</em>. Live app stays a single <code>index.html</code>.
+      </p>
+    </header>
+
+    <div class="doc-grid">
+      <nav class="toc" aria-label="Contents">
+        <div class="section-label">Contents</div>
+        <ol>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#background">Background</a></li>
+          <li><a href="#goals">Goals</a></li>
+          <li><a href="#decisions">Key decisions</a></li>
+          <li><a href="#design">Proposed design</a></li>
+          <li><a href="#mix">Mix modal</a></li>
+          <li><a href="#metrics">Metrics</a></li>
+          <li><a href="#trends">Trends</a></li>
+          <li><a href="#history">History</a></li>
+          <li><a href="#api">API &amp; data</a></li>
+          <li><a href="#alts">Alternatives</a></li>
+          <li><a href="#security">Security</a></li>
+          <li><a href="#obs">Observability</a></li>
+          <li><a href="#rollout">Rollout</a></li>
+          <li><a href="#questions">Open questions</a></li>
+          <li><a href="#prs">PR plan</a></li>
+        </ol>
+      </nav>
+
+      <div class="main">
+
+        <section class="section" id="overview">
+          <h2>1. Overview</h2>
+          <p>
+            Phase 0 · Survive is closed. World today is a <strong>uniform crowd</strong>: every body reads
+            the same sliders via <code>p(agent, key)</code> except one Special. Lab (2026-08-13, Seek + Balanced + 90s + 30 seeds)
+            measured <strong>uniform remnant ≈ 4.2–4.7</strong>. That is not P(alive&nbsp;|&nbsp;trait) in a mixed spawn.
+          </p>
+          <p>
+            Differ’s job is composition. Mix is the desk. The left column and trends must rank
+            <strong>remnant count and remnant share by group</strong>. Island L/B/P stays weather.
+            Policy Seek is frozen on the World rail. Lab stays uniform until a later PR.
+          </p>
+          <table class="doc">
+            <thead><tr><th>Field</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Author</td><td>design session (human tiagomdv + assistant)</td></tr>
+              <tr><td>Date</td><td>2026-08-14</td></tr>
+              <tr><td>Status</td><td>Draft</td></tr>
+              <tr><td>Ship version</td><td><code>1.0.0-mix</code> — do not bump <code>VERSION</code> in this design-only task</td></tr>
+              <tr><td>Baseline</td><td><code>index.html</code> · <code>archive/index-0.9.6-params.html</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="background">
+          <h2>2. Background &amp; motivation</h2>
+          <h3>Live World (<code>index.html</code>)</h3>
+          <ul class="tight">
+            <li>Left rail: Policy, Seek/Agent masters, Island L/B/P, Parameters…, seven KPIs (including min/max/avg <em>bag</em> food), inspector + pin-to-trends.</li>
+            <li>Right: pop / total food / avg hunger canvases + pinned series + <code>runHistory[]</code> + Run logs.</li>
+            <li><code>init()</code> loops <code>initialAgents</code> × <code>new Agent()</code> then <code>pickSpecialAgent()</code>.</li>
+            <li><code>p()</code> already supports per-body Special overrides. Differ = many bodies, not one pet.</li>
+            <li><code>createHeadlessWorld</code> is uniform; no mix.</li>
+            <li><code>CURRENT_PHASE = 1</code>, <code>PHASE_WITHIN = 0.08</code>. Survive chip is not yet a sibling link.</li>
+          </ul>
+          <h3>Lab facts that constrain UI</h3>
+          <table class="doc">
+            <thead><tr><th>Knob</th><th>Uniform remnant</th><th>Differ</th></tr></thead>
+            <tbody>
+              <tr><td>Hunger rate 0.049–0.084 (mean 0.062)</td><td>cliff + slope</td><td>Trait 1</td></tr>
+              <tr><td>Efficiency 1.2–2.4 (mean 1.6); 0.80 wipe</td><td>dose</td><td>Trait 2</td></tr>
+              <tr><td>Hunt off (pull 0 / push 0.05 / sight 40)</td><td>large wipe</td><td>One <code>t</code> — not <code>applySeekMaster</code></td></tr>
+              <tr><td>Max speed 1.2–2.4 mean 2.0; mid-band flat</td><td>flavor + tax</td><td>Trait 4; not “faster wins”</td></tr>
+              <tr><td>Gluttony, eat threshold</td><td>null</td><td>Frozen; Parameters / Lab only</td></tr>
+              <tr><td>avgFood / long clock</td><td>tycoon bias</td><td>Do not dominate the column</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="goals">
+          <h2>3. Goals &amp; non-goals</h2>
+          <div class="card">
+            <h3>Goals</h3>
+            <ul class="tight">
+              <li>Mix modal: 2–4 groups, four traits, import/export, apply <strong>on Reset only</strong>.</li>
+              <li>Spawn writes traits + hunt decode into existing fields.</li>
+              <li>Color-by <strong>group</strong>. Fixed four colors.</li>
+              <li>Metrics + trends + history answer <em>who lasted</em>.</li>
+              <li>Thin rail: freeze Seek; remove Policy + masters.</li>
+              <li>Survive chip → <code>phase-0-survive-finished.html</code>. First ship identity <code>1.0.0-mix</code>.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Non-goals (v1)</h3>
+            <ul class="tight">
+              <li>Evolve genetics. Gaussian 60-color rainbow. Lab mix. Compare-two-runs. History persist/import.</li>
+              <li>Special as the mix. Deleting frozen knobs. Splitting <code>index.html</code>.</li>
+              <li>Fair-eat is <strong>in PR 2</strong> (not deferred). Full <code>stepWorld</code> extract remains optional.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section" id="decisions">
+          <h2>4. Key decisions</h2>
+          <table class="doc">
+            <thead><tr><th>#</th><th>Decision</th><th>Rationale</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>2–4 groups, fixed palette</td><td>A legend a human can hold. 60 hues is not a legend.</td></tr>
+              <tr><td>2</td><td>Apply mix on Reset only</td><td><code>pendingMix</code> vs <code>appliedMix</code>. Same contract as <code>initialAgents</code>.</td></tr>
+              <tr><td>3</td><td>Mix owns N. L/B/P change <strong>food spawn only</strong></td><td>No silent rescale of group <code>n</code>. Custom-N chip if Mix N ≠ table N. Buttons stay enabled.</td></tr>
+              <tr><td>4</td><td>Default = two groups of 30 (control vs strain)</td><td><strong>Provisional</strong> from uniform Lab 2026-08-13, not a locked trait-band study.</td></tr>
+              <tr><td>5</td><td>Hunt one slider; sliders = <strong>band</strong> range</td><td>Write decoded keys into <code>traits{}</code>. Not <code>applySeekMaster</code>.</td></tr>
+              <tr><td>6</td><td>Fill=group, stroke=starve, pip, Special outermost</td><td>Do not overwrite hunger with group fill-only.</td></tr>
+              <tr><td>7</td><td>Policy Seek frozen on World — <strong>rail and Parameters</strong></td><td>Random = Lab + Survive finish only.</td></tr>
+              <tr><td>8</td><td>Special <strong>disabled</strong> on Differ World</td><td>Skip <code>pickSpecialAgent</code> / <code>focusSpecial</code> in <code>resetSim</code>. Button note.</td></tr>
+              <tr><td>9</td><td>KPIs: remnant + composition, not food tycoon</td><td>Drop min/max/avg bag food from the primary grid.</td></tr>
+              <tr><td>10</td><td><code>drawMultiTrend</code>, yMax = Mix N, keep 0s; hide Pin</td><td>Dock title = best remnant. Keep <code>longestSec</code> in export.</td></tr>
+              <tr><td>11</td><td>History stores mix + remnant-by-group; session-only</td><td>A run without mix is unlabeled. Not a Lab.</td></tr>
+              <tr><td>12</td><td>Lab stays uniform</td><td><code>Agent.update</code> vs <code>headlessStep</code> drift is a later risk.</td></tr>
+              <tr><td>13</td><td><strong>Fair-eat in PR 2</strong> (run RNG)</td><td>Spawn shuffle is not enough. First-in-array eat confounds groups.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="design">
+          <h2>5. Proposed design</h2>
+          <div class="diagram"><span class="hl">Mix modal</span>  pendingMix ──Reset──► appliedMix
+     │                         │
+     ▼                         ▼
+ validate / import        spawn + decodeHunt(t)
+                                │
+                     agent.traits + groupId + color
+                                │
+              ┌─────────────────┼─────────────────┐
+              ▼                 ▼                 ▼
+         p(agent,key)      canvas fill      KPIs / trends / history
+         Agent.update      group color      remnant + shares
+          </div>
+
+          <h3>Hunt decode (Track B)</h3>
+          <p>Piecewise linear. Most remnant drama in <code>0–0.5</code>. Do <strong>not</strong> call <code>applySeekMaster</code>.</p>
+          <table class="doc">
+            <thead><tr><th>t</th><th>Meaning</th><th>sight</th><th>hungerPull</th><th>seekPush</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>hunt OFF</td><td>40</td><td>0</td><td>0.05</td></tr>
+              <tr><td>0.5</td><td>today’s control</td><td>180</td><td>1.0</td><td>0.35</td></tr>
+              <tr><td>1</td><td>full lock</td><td>280</td><td>1.75</td><td>0.60</td></tr>
+            </tbody>
+          </table>
+          <div class="diagram">function decodeHunt(t) {
+  t = clamp(t, 0, 1);
+  if (t &lt;= 0.5) {
+    const u = t / 0.5;
+    return { sight: lerp(40,180,u), hungerPull: lerp(0,1,u), seekPush: lerp(0.05,0.35,u) };
+  }
+  const u = (t - 0.5) / 0.5;
+  return { sight: lerp(180,280,u), hungerPull: lerp(1,1.75,u), seekPush: lerp(0.35,0.60,u) };
+}</div>
+          <p>
+            Extend <code>p()</code>: Special first, then <code>agent.traits[key] != null</code>, then <code>globalParam</code>.
+            PR 2 must write <code>hungerRate</code>, <code>efficiency</code>, <code>maxSpeed</code>, <code>sight</code>, <code>hungerPull</code>, <code>seekPush</code> into <code>traits{}</code> (plus <code>hunt</code> for inspector). Mute Parameters rows Mix owns.
+          </p>
+
+          <h3>World rail (thin)</h3>
+          <p><strong>Keep:</strong> Island L/B/P (food only), Parameters… (no Policy), Mix…, KPIs, inspector. <strong>Remove rail:</strong> Policy, Seek/Agent masters. <strong>Hide Policy in World Parameters.</strong> Do not merge this strip to live without PR 2.</p>
+
+          <h3>Canvas layering (exact)</h3>
+          <ul class="tight">
+            <li><strong>Fill</strong> = group <code>#38bdf8 / #c4b5fd / #4ade80 / #fb923c</code>, radius <code>3+sqrt(food)*0.5</code>.</li>
+            <li><strong>Starve stroke</strong> if hunger&gt;75: <code>#fb7185</code>, width 2, radius size+1.5. Do not replace fill with pink.</li>
+            <li><strong>Bag pip</strong> if food&gt;6: <code>#22d3ee</code> r=1.2 (not old cyan — collides with group green).</li>
+            <li><strong>Special ring</strong> outermost if ever on: <code>#fbbf24</code> width 2, size+3.5, amber shadow. v1: Special off.</li>
+          </ul>
+          <h3>Fair-eat</h3>
+          <p>First-in-array pellet win systematically favors earlier groups. PR 2: random winner among in-range agents using the <strong>run RNG</strong>. Shuffle at spawn is not enough (filter/eat re-orders). Uniform Lab remnants do not measure this bias.</p>
+          <h3>Phase path</h3>
+          <p>Survive → <code>phase-0-survive-finished.html</code> (404 if user only has <code>index.html</code>). Finish file frozen.</p>
+        </section>
+
+        <section class="section" id="mix">
+          <h2>6. Mix modal</h2>
+          <div class="callout good">Differ desk. Not a second Parameters catalog. Applies on next Reset only.</div>
+
+          <div class="mock-stage">
+            <div class="mock-stage-label">Mix… (mock)</div>
+            <div class="mock-app">
+              <div class="mock-header">
+                <span class="brand">Mix · Differ</span>
+                <span class="ver">applies on next Reset</span>
+              </div>
+              <div style="padding:0.55rem 0.65rem">
+                <div class="group-row">
+                  <div class="gcard a">
+                    <div class="sec-h"><span class="swatch" style="background:#38bdf8"></span>Group A · n 30</div>
+                    <div class="fake-slider-row"><div class="lab"><span>Hunger rate</span><span>0.062</span></div><div class="fake-slider-track" style="--w:45%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Efficiency</span><span>1.60</span></div><div class="fake-slider-track" style="--w:40%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Hunt t</span><span>0.50</span></div><div class="fake-slider-track" style="--w:50%"></div></div>
+                    <p class="muted" style="margin:0;font-size:10px">sight 180 · pull 1.00 · push 0.35</p>
+                  </div>
+                  <div class="gcard b">
+                    <div class="sec-h"><span class="swatch" style="background:#c4b5fd"></span>Group B · n 30</div>
+                    <div class="fake-slider-row"><div class="lab"><span>Hunger rate</span><span>0.078</span></div><div class="fake-slider-track" style="--w:70%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Efficiency</span><span>1.30</span></div><div class="fake-slider-track" style="--w:25%"></div></div>
+                    <div class="fake-slider-row"><div class="lab"><span>Hunt t</span><span>0.20</span></div><div class="fake-slider-track" style="--w:20%"></div></div>
+                    <p class="muted" style="margin:0;font-size:10px">sight 96 · pull 0.40 · push 0.17</p>
+                  </div>
+                </div>
+                <div style="display:flex;gap:0.3rem;margin-top:0.5rem;flex-wrap:wrap">
+                  <span class="fake-btn ghost">+ Group</span>
+                  <span class="fake-btn ghost">Import</span>
+                  <span class="fake-btn ghost">Export applied</span>
+                  <span class="fake-btn">Close</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Model</h3>
+          <p>Palette: <code>#38bdf8</code> · <code>#c4b5fd</code> · <code>#4ade80</code> · <code>#fb923c</code>. v1 groups are <strong>point masses</strong>. Mix sliders use <strong>band</strong> min/max. Import: warn outside band, reject outside engine. Defaults below are <strong>provisional</strong> (uniform Lab), not a locked scientific band.</p>
+          <table class="doc">
+            <thead><tr><th>Default</th><th>n</th><th>hungerRate</th><th>efficiency</th><th>hunt</th><th>maxSpeed</th></tr></thead>
+            <tbody>
+              <tr><td>A Control</td><td>30</td><td>0.062</td><td>1.60</td><td>0.50</td><td>2.0</td></tr>
+              <tr><td>B Strain</td><td>30</td><td>0.078</td><td>1.30</td><td>0.20</td><td>1.6</td></tr>
+            </tbody>
+          </table>
+
+          <h3>N vs island (one rule)</h3>
+          <p>
+            L/B/P stay <strong>enabled</strong> and change <strong>food spawn only</strong>. They never mutate <code>pendingMix</code> group counts (no silent rescale, no match-N toast).
+            Mix owns N. If Mix N ≠ that preset’s table N (L35 / B60 / P80), show a <strong>custom N</strong> chip; last weather button may stay highlighted.
+            Parameters N slider enabled only for 1-group mixes.
+          </p>
+          <p>JSON: <code>version === 1</code> (number only). Optional <code>name</code>. 1-group import: one card, Add on, Remove off. <code>cloneMix</code> normalizes into <code>Object.create(null)</code>.</p>
+
+          <h3>Validation</h3>
+          <table class="doc">
+            <thead><tr><th>Error</th><th>UX</th></tr></thead>
+            <tbody>
+              <tr><td>Bad JSON / not object</td><td>Reject · “Invalid JSON”</td></tr>
+              <tr><td>groups length ∉ [1,4]</td><td>Reject (import may be 1 group; editor Add/Remove clamps 2–4)</td></tr>
+              <tr><td>sum n ∉ [1,100] or envelope n ≠ sum</td><td>Reject “n mismatch”</td></tr>
+              <tr><td>Trait outside engine slider range</td><td>Reject</td></tr>
+              <tr><td>Trait outside recommended band</td><td>Warn, allow</td></tr>
+              <tr><td><code>__proto__</code> / huge payload (&gt;32&nbsp;KiB)</td><td>Reject</td></tr>
+              <tr><td>Unknown keys / odd hex</td><td>Strip / map to palette</td></tr>
+            </tbody>
+          </table>
+          <p><strong>Add</strong> <code>escapeHtml</code> in PR 3 (it does not exist in live <code>index.html</code>). Or <code>textContent</code>-only mix UI. Same helper for history chips. Export applied mix, <code>kind: "mix"</code>.</p>
+        </section>
+
+        <section class="section" id="metrics">
+          <h2>7. Metrics philosophy &amp; left column</h2>
+          <table class="doc">
+            <thead><tr><th>Layer</th><th>What</th><th>UI</th></tr></thead>
+            <tbody>
+              <tr><td>Island weather</td><td>N, food spawn, L/B/P</td><td>Rail island + Parameters</td></tr>
+              <tr><td>Mix</td><td>Who they are at spawn</td><td>Mix modal + applied chip</td></tr>
+              <tr><td>Outcomes</td><td>Who is left</td><td>KPIs + trends + history</td></tr>
+            </tbody>
+          </table>
+          <p>Uniform Lab leftover ≠ mixed P(alive|trait). Rank remnant <strong>and</strong> composition (share by group). Do not let avgFood dominate.</p>
+
+          <div class="mock-stage">
+            <div class="mock-stage-label">Left column · Differ</div>
+            <div class="mock-app" style="padding:0.55rem 0.6rem;max-width:280px">
+              <div class="sec-h">Island</div>
+              <div style="display:flex;gap:0.25rem;margin-bottom:0.4rem">
+                <span class="pill dim">L</span><span class="pill ok">B</span><span class="pill dim">P</span>
+              </div>
+              <span class="fake-btn" style="display:block;text-align:center;margin-bottom:0.35rem">Mix…</span>
+              <span class="fake-btn ghost" style="display:block;text-align:center">Parameters…</span>
+              <div class="sec-h">Live metrics</div>
+              <div class="kpi-fake">
+                <div class="cell"><span>Alive</span><b>4</b></div>
+                <div class="cell"><span>Deaths</span><b style="color:#fb7185">56</b></div>
+                <div class="cell" style="grid-column:1/-1"><span>By group</span><b><span style="color:#38bdf8">3</span> · <span style="color:#c4b5fd">1</span></b></div>
+                <div class="cell" style="grid-column:1/-1"><span>Pellets (ground)</span><b style="color:#fbbf24">12</b></div>
+              </div>
+              <div class="sec-h">Selected agent</div>
+              <div class="kv-row"><span class="k">Group</span><span class="v">A Control</span></div>
+              <div class="kv-row"><span class="k">Hunt t</span><span class="v">0.50</span></div>
+              <div class="kv-row"><span class="k">Eff · burn · vmax</span><span class="v">1.60 · 0.062 · 2.0</span></div>
+            </div>
+          </div>
+
+          <table class="doc">
+            <thead><tr><th>KPI</th><th>Keep?</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Alive (total)</td><td>Yes</td><td>Remnant count</td></tr>
+              <tr><td>Deaths</td><td>Yes</td><td>Pressure</td></tr>
+              <tr><td>Alive by group (≤4, one row)</td><td>Yes — Differ question</td><td>Composition</td></tr>
+              <tr><td>Pellets (ground)</td><td>Optional one tile</td><td>Weather pulse</td></tr>
+              <tr><td>Avg / min / max bag food</td><td><strong>Remove</strong></td><td>Tycoon bias</td></tr>
+              <tr><td>Avg hunger</td><td>Omit from KPI</td><td>Optional trend only</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Inspector</h3>
+          <p>Show ID, group <strong>name</strong> + color, hunger, bag food, four traits (hunt as <code>t</code> + muted decode). Demote policy / seek blend / dist. <strong>Hide Pin</strong> in PR 4. Keep search-by-ID.</p>
+        </section>
+
+        <section class="section" id="trends">
+          <h2>8. Trends</h2>
+          <ul class="tight">
+            <li><strong>Canvas 1:</strong> <code>drawMultiTrend(canvas, series[], yMax, runDurationTicks)</code>. Total stroke <code>#e2e8f0</code> 1.5px; groups 1.25px. <code>yMax = applied Mix N</code>. Dead groups keep pushing 0. One group: draw group only.</li>
+            <li><strong>Canvas 2 (optional):</strong> alive-mean of Hunt or Efficiency. Keep <code>drawTrendChart</code> for this.</li>
+            <li><strong>Remove:</strong> Total Food, Avg Hunger, <code>#pinned-section</code>. Hide inspector Pin.</li>
+          </ul>
+          <div class="chart-fake" title="mock group remnant">
+            <i style="height:90%;background:#e2e8f0"></i>
+            <i style="height:70%;background:#38bdf8"></i>
+            <i style="height:40%;background:#c4b5fd"></i>
+            <i style="height:55%;background:#38bdf8"></i>
+            <i style="height:28%;background:#c4b5fd"></i>
+            <i style="height:22%"></i>
+          </div>
+        </section>
+
+        <section class="section" id="history">
+          <h2>9. History</h2>
+          <p>A Differ run without the mix is meaningless. Session <code>runHistory[]</code> only — not a Lab.</p>
+          <div class="diagram">recordCurrentRun += {
+  mix: snapshotAppliedMix(),     // allowlisted clone
+  remnantByGroup: [3, 1]
+}</div>
+          <ul class="tight">
+            <li>Dock row: <code>#run · duration · remnant N · chips 3/1</code>. Select → mix chip. No two-run compare.</li>
+            <li>Rewrite <code>computeOverallStats</code> / <code>updateHistoryStats</code>: dock title = <strong>best remnant</strong> (max <code>finalPop</code>). Keep <code>longestSec</code> on the record and in export. Retire <code>bestLongestSec</code> as the displayed stat.</li>
+            <li>Run logs detail: mix table + remnant-by-group above knobs; Special last.</li>
+            <li>Export: add <code>schema: 2</code>, <code>mix</code>, <code>remnantByGroup</code>. No history import (allowlist later).</li>
+          </ul>
+        </section>
+
+        <section class="section" id="api">
+          <h2>10. API / data model</h2>
+          <p>All in <code>index.html</code>. New: <code>decodeHunt</code>, <code>validateMix</code>, <code>cloneMix</code>, <code>defaultMix</code>, <code>applyPendingMixOnReset</code>, <code>spawnAgentFromGroup</code>, modal open/close, import/export, <code>countAliveByGroup</code>.</p>
+          <div class="diagram">init():
+  appliedMix = cloneMix(pendingMix)
+  initialAgents = sumMixN(appliedMix)
+  for each group, n times: spawnAgentFromGroup
+  spawnFood(NUM_FOOD)
+  // no pickSpecialAgent()
+resetSim(): record → init → startNewRun; skip focusSpecial(); syncSpecialModalUI + updateInspector</div>
+          <p>Agent fields: <code>groupId</code>, <code>groupColor</code>, <code>traits</code> (full hunt decode keys), <code>hunt</code>. Special button disabled with note. No persist.</p>
+        </section>
+
+        <section class="section" id="alts">
+          <h2>11. Alternatives considered</h2>
+          <table class="doc">
+            <thead><tr><th>Alt</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr><td>Special as the mix</td><td>Reject — probe, not a population</td></tr>
+              <tr><td>Color-by-trait rainbow</td><td>Reject v1 — no legend</td></tr>
+              <tr><td>Delete frozen knobs</td><td>Reject — Lab + finish file still need them</td></tr>
+              <tr><td>Keep Policy on rail</td><td>Reject — apples-to-oranges remnants</td></tr>
+              <tr><td>Apply mix live</td><td>Reject — spawn identity must be fixed</td></tr>
+              <tr><td>Persist / import history</td><td>Defer — FUTURE_FEATURES allowlist</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="security">
+          <h2>12. Security &amp; privacy</h2>
+          <table class="doc">
+            <thead><tr><th>Threat</th><th>Sev</th><th>Mitigation</th></tr></thead>
+            <tbody>
+              <tr><td>JSON XSS via labels/colors into <code>innerHTML</code></td><td>High</td><td>Allowlist, palette hex, <strong>add</strong> <code>escapeHtml</code> in PR 3 (none today), prefer <code>textContent</code></td></tr>
+              <tr><td>Prototype pollution</td><td>High</td><td>Reject <code>__proto__</code> / <code>constructor</code>; <code>Object.create(null)</code></td></tr>
+              <tr><td>Huge n / payload</td><td>Med</td><td>n∈[1,100], 32&nbsp;KiB cap</td></tr>
+              <tr><td><code>eval</code> / function values</td><td>Med</td><td><code>JSON.parse</code> only</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="obs">
+          <h2>13. Observability &amp; risks</h2>
+          <p>Console: keep <code>[Run History]</code>; add <code>2 groups 30/30 remnant 3/1</code>. No remote alerting. Load unchanged (N≤100, 2 canvases).</p>
+          <table class="doc">
+            <thead><tr><th>Risk</th><th>Sev</th><th>Mitigation</th></tr></thead>
+            <tbody>
+              <tr><td><code>p()</code> misses a key → mixed bodies still uniform</td><td>High</td><td>Audit <code>Agent.update</code>; inspector shows traits</td></tr>
+              <tr><td>Hunt decode copied from Seek master</td><td>High</td><td>Table + asserts at t=0, 0.5, 1</td></tr>
+              <tr><td>Lab mix before shared <code>stepWorld</code></td><td>Med</td><td>Lab mix later</td></tr>
+              <tr><td>Survive sibling 404</td><td>Low</td><td>Help caveat</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="rollout">
+          <h2>14. Rollout</h2>
+          <ul class="tight">
+            <li>Archive already: <code>archive/index-0.9.6-params.html</code>.</li>
+            <li>PRs reviewable separately. <strong>Do not merge PR 1 to live alone</strong> — same ship window as PR 2 (or keep masters until Mix exists).</li>
+            <li>Rollback = restore that archive to live <code>index.html</code>.</li>
+            <li>Never push. Human owns ship. No feature flags.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="questions">
+          <h2>15. Open questions</h2>
+          <p>Product forks are locked. Optional later: a third “null speed-only” recipe.</p>
+          <h3>References</h3>
+          <p class="muted">
+            <code>p</code> · <code>SPECIAL_KEYS</code> · <code>init</code> · <code>resetSim</code> · <code>startNewRun</code> ·
+            <code>focusSpecial</code> · <code>pickSpecialAgent</code> · <code>createHeadlessWorld</code> · <code>headlessStep</code> ·
+            <code>labKnob</code> · <code>recordCurrentRun</code> · <code>runRecordForExport</code> · <code>renderRunHistory</code> ·
+            <code>updateMetricsTab</code> · <code>updateInspector</code> · <code>drawTrendChart</code> · <code>renderTrends</code> ·
+            <code>computeOverallStats</code> · <code>updateHistoryStats</code> · <code>applyPreset</code> · <code>getPresetEnv</code> ·
+            <code>Agent.draw</code> · <code>APP_VERSION</code> · <code>syncPhaseBrand</code>
+          </p>
+        </section>
+
+        <section class="section" id="prs">
+          <h2>16. PR Plan</h2>
+          <p>Independently reviewable. <strong>Do not merge PR 1 to live <code>index.html</code> alone.</strong> PR 1+2 share one ship window.</p>
+
+          <div class="card">
+            <h3>PR 1 — Thin Differ rail + Survive finish link</h3>
+            <p><strong>Title:</strong> <code>1.0.0-mix: thin World rail, freeze Seek, link Survive finish</code></p>
+            <p><strong>Files:</strong> <code>index.html</code> (rail + hide Policy in Parameters, Survive sibling link)</p>
+            <p><strong>Dependencies:</strong> none for review. Must ship with PR 2 or keep masters until Mix exists.</p>
+            <p>Remove Policy + masters from rail. Hide Policy in Parameters. Force Seek. No VERSION bump.</p>
+          </div>
+
+          <div class="card">
+            <h3>PR 2 — Mix model + spawn + hunt decode + fair-eat</h3>
+            <p><strong>Title:</strong> <code>1.0.0-mix: per-agent traits, hunt decode, fair-eat at Reset</code></p>
+            <p><strong>Files:</strong> <code>index.html</code> (<code>decodeHunt</code>, <code>p()</code>, <code>init</code>/<code>resetSim</code>/<code>start</code>, eat loop, <code>Agent.draw</code>)</p>
+            <p><strong>Dependencies:</strong> same ship window as PR 1. Track B.</p>
+            <p>Full <code>traits{}</code> including hunt decode. Skip pick/focus Special. Fair-eat via run RNG. Mix owns N; presets food-only. Canvas layering as specified.</p>
+          </div>
+
+          <div class="card">
+            <h3>PR 3 — Mix modal UI + JSON</h3>
+            <p><strong>Title:</strong> <code>1.0.0-mix: Mix… modal, import/export, apply-on-Reset</code></p>
+            <p><strong>Files:</strong> <code>index.html</code> (<code>#modal-mix</code>, <code>validateMix</code>, <strong>add <code>escapeHtml</code></strong>)</p>
+            <p><strong>Dependencies:</strong> PR 2.</p>
+            <p>Band sliders, <code>version === 1</code> number, optional name, 1-group import, <code>cloneMix</code> normalize. Do not claim reuse of a missing helper.</p>
+          </div>
+
+          <div class="card">
+            <h3>PR 4 — Left column metrics, trends, history</h3>
+            <p><strong>Title:</strong> <code>1.0.0-mix: remnant composition metrics, group trends, mix in history</code></p>
+            <p><strong>Files:</strong> <code>index.html</code> (KPIs, <code>drawMultiTrend</code>, <code>computeOverallStats</code>, inspector)</p>
+            <p><strong>Dependencies:</strong> PR 2; PR 3 nice for chips.</p>
+            <p>yMax = Mix N; keep 0s; hide Pin; best remnant dock; export keeps <code>longestSec</code> + <code>schema: 2</code>.</p>
+          </div>
+
+          <div class="card">
+            <h3>PR 5 — Polish + first Differ identity</h3>
+            <p><strong>Title:</strong> <code>1.0.0-mix: Differ chrome, VERSION, docs</code></p>
+            <p><strong>Files:</strong> <code>index.html</code>, <code>VERSION</code>, <code>README.md</code>, <code>archive/MANIFEST.md</code>, <code>IMPLEMENTATION_LOG.md</code>, <code>FUTURE_FEATURES.md</code></p>
+            <p><strong>Dependencies:</strong> PR 2–4 merged and browser-tested. Human ship ritual.</p>
+            <p>Identity <code>1.0.0-mix</code>. Help: composition vs Lab uniform remnant. <strong>This design task does not bump VERSION.</strong></p>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

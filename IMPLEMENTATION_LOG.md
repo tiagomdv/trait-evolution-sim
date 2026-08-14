@@ -645,3 +645,58 @@ No `VERSION` / `index.html` change.
 ### Not in this version
 
 - Differ traits / mix import / roster / trend redesign / Playbook file / Lab graphs.
+
+---
+
+## 2026-08-13 — Phase 0 · Survive closed (docs)
+
+**Version / Phase:** still live `0.9.6-params` · product phase **1 · Differ** (design)  
+**Track:** docs only · local
+
+Human declared Survive complete. No `VERSION` / in-app path bump until first Differ ship.
+
+**Differ brainstorm (in `FUTURE_FEATURES.md`):** prefer prune low-impact knobs then **1:1 trait ↔ remaining high-impact field**. Merging many knobs into one trait would only remap spawn unless we invent new physics — skip composites as the start. New invented traits after that set is readable.
+
+---
+
+## 2026-08-13 — Differ Lab screen (human + assistant, in-app)
+
+**Version / Phase:** live `0.9.6-params` · Phase 1 · Differ (design)  
+**Track:** Lab science only · no `index.html` change · docs in README / this log / `FUTURE_FEATURES.md`
+
+Human ran Lab batches in the app (Seek + **Balanced** island + Max time **90s** + **30** seeds + 5 setups). Assistant parsed exports and ranked knobs. Goal: which Survive parameters are **worth becoming Differ traits**.
+
+**Protocol:** one control (mid Seek/Agent) + four one-knob variants (slider ends, then mid-band **doses**). Rank **mean alive**, not `avgFood`. Control remnant stayed **~4.2–4.7** across batches.
+
+**What moved remnant (uniform crowds):**
+
+- **Hunger rate** — continuous; cliff then slope. 0.034→~48 · 0.049→6.6 · 0.062→4.4 · 0.084→1.5. Slider 0.01=60 / 0.15=wipe (clock artifacts). Working band **~0.049–0.084**.
+- **Efficiency** — 0.80 wipes (~41s). Dose 1.20→1.9 · 1.60→4.2 · 2.00→6.6 · 2.40→8.2. Working band **1.2–2.4**.
+- **Hunt off-switches** — Hunger pull 0, Seek push 0.05, Max speed 0.5 (and Sight 40 as a tax). High sight/pull/push almost flat. Prefer one **hunt lock** `t`, not three 1:1 sliders.
+- **Max speed** mid-band **1.6–3.0 flat**; 1.2 tax; 4.0 hurts. Freeze **2.0** unless we want a one-sided “slow” trait.
+- **Gluttony** and **Eat threshold** — remnant null. Threshold only changes survivor hunger / bag fat (hoard timing later).
+- **Drift** on Seek — small (0 → +0.8, 1.5 → −0.5). Old “high wander” notes were mostly **Random**.
+
+**Not measured here:** mixed spawn on one island (uniform Lab ≠ Differ); Lenient/Punishing robustness of the same curves; hunt-`t` merge curve.
+
+Working v1 remnant set: **Hunger rate · Efficiency · Hunt lock**. Speed/Drift optional flavor. Details + leftover band work: `FUTURE_FEATURES.md`.
+
+---
+
+## 2026-08-14 — `1.0.0-differ`
+
+**Version / Phase:** `1.0.0-differ` · Phase 1 · Differ (first `1.x`)  
+**Track:** mixed A + B · local · not pushed
+
+First Differ ship. Layout: `design-docs/1.0.1-differ-layout-design.html`.
+
+**World**
+- Rail: **Differ…** + Parameters…. No Policy, Seek/Agent masters, L/B/P. Seek frozen. Special disabled. N owned by Differ….
+- Default crowd: 30 Control + 30 Strain. Four traits per body (hunger rate, efficiency, hunt `t`, max speed). Hunt decodes to sight/pull/push at Reset.
+- Differ… modal: Groups (1–8) + Roster, Import/Export JSON `version: 2` `kind: differ`. Apply on Reset.
+- Fair-eat: random in-range winner (`runRng`). Canvas fill = group color; starve = pink stroke.
+- Inspector: name / bodyId / four traits. Search by id. No Pin.
+
+**Not in this version:** Trends / History rewrite, Lab mix, phase-path links.
+
+**Archive:** `archive/index-0.9.6-params.html` remains the Survive snapshot. No new archive until this version freezes.

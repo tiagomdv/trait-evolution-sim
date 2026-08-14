@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "kind": "differ",
+  "mode": "groups",
+  "n": 60,
+  "id": "three-castes",
+  "name": "Idle rich / Working poor / Lost",
+  "groups": [
+    {
+      "id": "RIC",
+      "name": "Idle rich",
+      "color": "#fbbf24",
+      "n": 20,
+      "hungerRate": 0.05,
+      "efficiency": 2.3,
+      "hunt": 0.45,
+      "maxSpeed": 2.0
+    },
+    {
+      "id": "WRK",
+      "name": "Working poor",
+      "color": "#fb7185",
+      "n": 20,
+      "hungerRate": 0.08,
+      "efficiency": 1.25,
+      "hunt": 0.55,
+      "maxSpeed": 2.0
+    },
+    {
+      "id": "LST",
+      "name": "Lost",
+      "color": "#64748b",
+      "n": 20,
+      "hungerRate": 0.062,
+      "efficiency": 1.6,
+      "hunt": 0.0,
+      "maxSpeed": 1.4
+    }
+  ]
+}
