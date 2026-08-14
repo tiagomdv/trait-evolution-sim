@@ -686,12 +686,45 @@ Working v1 remnant set: hunger rate, efficiency, hunt (one number), speed as fla
 ## 2026-08-14 — `1.0.0-differ`
 
 **Version / Phase:** `1.0.0-differ` · Phase 1 · Differ (first `1.x`)  
-**Track:** mixed A + B · PR #26
+**Track:** mixed A + B · PR #26 · live
 
-First Differ ship. World is a **crowd**, not one global body.
+This is the first Differ **ship**, not a plan. World is a **crowd**, not one global body. Survive stays playable as `phase-0-survive-finished.html`. Snapshot: `archive/index-0.9.6-params.html`.
 
-**What you can do:** Crowd… (Groups and Roster are separate drafts). Name groups on Roster. Apply stamps the open tab; Reset respawns that stamp (the left column stays on the field until Reset). Four traits: hunger rate, efficiency, hunt, speed. Fair-eat. Caste metrics. Presets in `phase-1-differ-presets/`. Survive game frozen as `phase-0-survive-finished.html`.
+### What shipped
 
-**Left off:** Differ-aware Trends/History, Lab for mixed crowds, Special. Why these traits, and what’s still open: `FUTURE_FEATURES.md`.
+- **Crowd…** modal — two tabs, **two drafts**:
+  - **Groups** — named kinds + counts + trait means/spreads. Clone a group, change one knob, keep the rest.
+  - **Roster** — named people. Each row has a group (color + name) and its own four traits. Switching to Groups does **not** fold the roster (and the other way around).
+- **Apply** stamps the **open** tab only. The left column and the dots **do not** change yet.
+- **Reset** copies that stamp onto the field (`appliedDiffer`) and respawns. That is when you see the mix.
+- **Four traits** on every body: hunger rate, efficiency, hunt `t`, speed.
+- **Hunt decode** — `t = 0` is off (pull 0 / push floor), `t = 0.5` is control Seek, `t = 1` locks hunt on. Not a copy of the Seek master (the master never reached the off region).
+- **Fair-eat** — if several agents are on the same pellet, a random one in range eats. Group order no longer monopolizes.
+- **Rail** — Food spawn stays. Parameters… off the rail (sliders never moved mixed bodies). Special / Trends / History / Lab frozen or veiled.
+- **Left metrics** — Alive / Deaths / Pellets + avg hunger / avg bag. Per-caste rows when ≤8 kinds. Roster with more than 8 kinds → totals only.
+- **+ Agent** on World adds one body of the last-used group.
+- **Clear** wipes the **open** draft (empty, not “restore 30/30”).
+- **Import / export** Crowd JSON (`version: 2`, `kind: "differ"`). Color follows caste / `sourceGroupId`, not rainbow-by-index.
+- **Presets** in `phase-1-differ-presets/` (group mixes + roster examples). Lost-hunt jitter is `0.10–0.40`, not all zeros.
+- **Help** rewritten for Differ World.
 
-**Archive:** `archive/index-0.9.6-params.html` is the Survive snapshot.
+### What you can do (play this)
+
+1. Open **Crowd…**. Stay on **Groups** for “three kinds, 20 each.” Stay on **Roster** for named people. Do not expect the other tab to update — they are independent.
+2. Edit names, colors, counts, the four sliders. **Apply**. Nothing on the island should move yet. That is correct.
+3. **Reset**. Now the left column and the dots match the stamp.
+4. Watch remnant (who is still standing) and the caste hunger/bag rows. Same island, different bodies.
+5. Load a file from `phase-1-differ-presets/`, Apply, Reset. Or export your mix and send the JSON.
+6. Want Survive again (one body, Lab, L/B/P island)? Open `phase-0-survive-finished.html`. Do not grow that file.
+
+**Apply vs Reset in one line:** Apply = remember. Reset = spawn what you remembered.
+
+### What this version does not do
+
+- Trends / History that know groups (still Survive’s one-line story — veiled).
+- Lab that imports a Crowd and scores *who* lived.
+- Special… as a second “make this one different.”
+- Babies / inheritance (Evolve). Trade (Economy).
+- World seed in the export.
+
+Still-open checklists (hunt `t` curve, mixed-edge method, hunger-band refine, Trends/Lab later): `FUTURE_FEATURES.md`. Why these four traits: README *Why the leftover four*.
