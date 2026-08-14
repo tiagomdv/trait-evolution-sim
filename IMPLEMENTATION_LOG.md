@@ -679,24 +679,19 @@ Human ran Lab batches in the app (Seek + **Balanced** island + Max time **90s** 
 
 **Not measured here:** mixed spawn on one island (uniform Lab ≠ Differ); Lenient/Punishing robustness of the same curves; hunt-`t` merge curve.
 
-Working v1 remnant set: **Hunger rate · Efficiency · Hunt lock**. Speed/Drift optional flavor. Details + leftover band work: `FUTURE_FEATURES.md`.
+Working v1 remnant set: hunger rate, efficiency, hunt (one number), speed as flavor. Human write-up: README *Why the leftover four*.
 
 ---
 
 ## 2026-08-14 — `1.0.0-differ`
 
 **Version / Phase:** `1.0.0-differ` · Phase 1 · Differ (first `1.x`)  
-**Track:** mixed A + B · local · not pushed
+**Track:** mixed A + B · PR #26
 
-First Differ ship. Layout: `design-docs/1.0.1-differ-layout-design.html`.
+First Differ ship. World is a **crowd**, not one global body.
 
-**World**
-- Rail: **Differ…** + Parameters…. No Policy, Seek/Agent masters, L/B/P. Seek frozen. Special disabled. N owned by Differ….
-- Default crowd: 30 Control + 30 Strain. Four traits per body (hunger rate, efficiency, hunt `t`, max speed). Hunt decodes to sight/pull/push at Reset.
-- Differ… modal: Groups (1–8) + Roster, Import/Export JSON `version: 2` `kind: differ`. Apply on Reset.
-- Fair-eat: random in-range winner (`runRng`). Canvas fill = group color; starve = pink stroke.
-- Inspector: name / bodyId / four traits. Search by id. No Pin.
+**What you can do:** Crowd… (Groups and Roster are separate drafts). Name groups on Roster. Apply stamps the open tab; Reset respawns that stamp (the left column stays on the field until Reset). Four traits: hunger rate, efficiency, hunt, speed. Fair-eat. Caste metrics. Presets in `phase-1-differ-presets/`. Survive game frozen as `phase-0-survive-finished.html`.
 
-**Not in this version:** Trends / History rewrite, Lab mix, phase-path links.
+**Left off:** Differ-aware Trends/History, Lab for mixed crowds, Special. Why these traits, and what’s still open: `FUTURE_FEATURES.md`.
 
-**Archive:** `archive/index-0.9.6-params.html` remains the Survive snapshot. No new archive until this version freezes.
+**Archive:** `archive/index-0.9.6-params.html` is the Survive snapshot.
