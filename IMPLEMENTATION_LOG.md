@@ -1,6 +1,8 @@
 # Implementation Log — trait-evolution-sim
 
-Dev log of **what already shipped** (past tense). **Append** new dated sections at the bottom. Do not use this file for roadmap, “what’s next,” or backlog — that lives only in **`FUTURE_FEATURES.md`**.
+What **already shipped**. Newest at the bottom. **Add** new dated sections; do not rewrite or delete old ones. What’s next lives only in `FUTURE_FEATURES.md`.
+
+Older entries keep the words they had when we wrote them. New entries: normal English.
 
 > Safety snapshot before 2026-07-02 resteer: `archive/docs/IMPLEMENTATION_LOG-pre-resteer-2026-07-02.md`
 
@@ -805,3 +807,9 @@ Roster stories, two kinds:
 - **Rungs** — hunt/hunger/efficiency/speed ladders, scramble 60, 12 oddballs.
 
 JSON files in `phase-1-differ-presets/roster-*.json` are still Import extras.
+
+---
+
+## 2026-08-27 — Project docs in normal English
+
+README, AGENTS, FUTURE_FEATURES, presets README, Help already in the app: rewritten so a person who just opened Crowd… can read them. Old log sections below (and above) stay as they were. FUTURE_FEATURES is open work only.
