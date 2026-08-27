@@ -1,6 +1,8 @@
 # Implementation Log — trait-evolution-sim
 
-Dev log of **what already shipped** (past tense). **Append** new dated sections at the bottom. Do not use this file for roadmap, “what’s next,” or backlog — that lives only in **`FUTURE_FEATURES.md`**.
+What **already shipped**. Newest at the bottom. **Add** new dated sections; do not rewrite or delete old ones. What’s next lives only in `FUTURE_FEATURES.md`.
+
+Older entries keep the words they had when we wrote them. New entries: normal English.
 
 > Safety snapshot before 2026-07-02 resteer: `archive/docs/IMPLEMENTATION_LOG-pre-resteer-2026-07-02.md`
 
@@ -655,7 +657,7 @@ No `VERSION` / `index.html` change.
 
 Human declared Survive complete. No `VERSION` / in-app path bump until first Differ ship.
 
-**Differ brainstorm (in `FUTURE_FEATURES.md`):** prefer prune low-impact knobs then **1:1 trait ↔ remaining high-impact field**. Merging many knobs into one trait would only remap spawn unless we invent new physics — skip composites as the start. New invented traits after that set is readable.
+**Trait-set rule (decided here, shipped in `1.0.0-differ`):** prune low-impact knobs, then **1:1 trait ↔ remaining high-impact field**. Skip mystery composites except hunt (one `t`). New invented traits only after that set is readable.
 
 ---
 
@@ -679,7 +681,7 @@ Human ran Lab batches in the app (Seek + **Balanced** island + Max time **90s** 
 
 **Not measured here:** mixed spawn on one island (uniform Lab ≠ Differ); Lenient/Punishing robustness of the same curves; hunt-`t` merge curve.
 
-Working v1 remnant set: hunger rate, efficiency, hunt (one number), speed as flavor. Human write-up: README *Why the leftover four*.
+Working v1 remnant set: hunger rate, efficiency, hunt (one number), speed as flavor. Human write-up: README *Phase 1 · Differ*.
 
 ---
 
@@ -688,7 +690,11 @@ Working v1 remnant set: hunger rate, efficiency, hunt (one number), speed as fla
 **Version / Phase:** `1.0.0-differ` · Phase 1 · Differ (first `1.x`)  
 **Track:** mixed A + B · PR #26 · live
 
-This is the first Differ **ship**, not a plan. World is a **crowd**, not one global body. Survive stays playable as `phase-0-survive-finished.html`. Snapshot: `archive/index-0.9.6-params.html`.
+First Differ ship. World is a **crowd**, not one global body. Survive freeze: `phase-0-survive-finished.html`. Snapshot: `archive/index-0.9.6-params.html`.
+
+### How the trait set was chosen
+
+Survive Lab (section above, 2026-08-13): one knob at a time, rank mean alive at 90s, Seek + Balanced + 30 seeds. Keep what moved remnant. Merge hunt into one `t` (off region included). Keep speed as flavor. Drop gluttony / eat threshold for remnant. Bands and counts stay in that Lab section — not re-copied here.
 
 ### What shipped
 
@@ -707,24 +713,103 @@ This is the first Differ **ship**, not a plan. World is a **crowd**, not one glo
 - **Import / export** Crowd JSON (`version: 2`, `kind: "differ"`). Color follows caste / `sourceGroupId`, not rainbow-by-index.
 - **Presets** in `phase-1-differ-presets/` (group mixes + roster examples). Lost-hunt jitter is `0.10–0.40`, not all zeros.
 - **Help** rewritten for Differ World.
+- **Survive freeze:** `phase-0-survive-finished.html` + `archive/index-0.9.6-params.html`.
 
-### What you can do (play this)
+---
 
-1. Open **Crowd…**. Stay on **Groups** for “three kinds, 20 each.” Stay on **Roster** for named people. Do not expect the other tab to update — they are independent.
-2. Edit names, colors, counts, the four sliders. **Apply**. Nothing on the island should move yet. That is correct.
-3. **Reset**. Now the left column and the dots match the stamp.
-4. Watch remnant (who is still standing) and the caste hunger/bag rows. Same island, different bodies.
-5. Load a file from `phase-1-differ-presets/`, Apply, Reset. Or export your mix and send the JSON.
-6. Want Survive again (one body, Lab, L/B/P island)? Open `phase-0-survive-finished.html`. Do not grow that file.
+## 2026-08-27 — `1.0.1-stories`
 
-**Apply vs Reset in one line:** Apply = remember. Reset = spawn what you remembered.
+**Version / Phase:** `1.0.1-stories` · Phase 1 · Differ  
+**Track:** A (chrome + docs) · local until human asks for a PR  
+**Archive:** `archive/index-1.0.0-differ.html`
 
-### What this version does not do
+### Talk like a person
 
-- Trends / History that know groups (still Survive’s one-line story — veiled).
-- Lab that imports a Crowd and scores *who* lived.
-- Special… as a second “make this one different.”
-- Babies / inheritance (Evolve). Trade (Economy).
-- World seed in the export.
+`AGENTS.md` now requires normal English in chat, comments, Help, and all project docs. No jargon stacks.
 
-Still-open checklists (hunt `t` curve, mixed-edge method, hunger-band refine, Trends/Lab later): `FUTURE_FEATURES.md`. Why these four traits: README *Why the leftover four*.
+### Crowd stories
+
+The six **group** mixes from `phase-1-differ-presets/` are buttons at the top of Crowd…. Click fills the Groups draft. You still **Apply** then **Reset**. Roster JSON stays Import-only. Files remain in the folder as the same mixes.
+
+### Help
+
+Short “what this is / how a run works,” then traits, what you see, rules, what’s off. Vision modal shortened the same way.
+
+### Dropped from the backlog
+
+Lab for mixed crowds (and matching Lab eat / Lab mixed spawn). Differ is judged on the island.
+
+### Not this version (Evolve)
+
+Using who is still alive to *make* the next crowd is Phase 2. Looking at the living people is already a click on the island.
+
+---
+
+## 2026-08-27 — Drop Phase 0 leftovers from the backlog
+
+Human: not worth going back. Checked each leftover against Differ.
+
+**Dropped:** extra Survive-style stories, playbook of old runs, pin canvas to Lab 800×600, import old World runs as a Survive chore, last-food memory, food-density gradient, sliding column drawers.
+
+**Still true for Differ (not a backlog item):** catch = bag +1, pellet gone. No multi-size pellets, no chew-until-empty.
+
+**Already on Phase 1 if it mattered:** Trends / History that know groups, World seed on export. Extra Crowd stories we already shipped six of; invent more only if a mix is actually interesting.
+
+---
+
+## 2026-08-27 — Food interval floor 8
+
+First pass (floor 8, max 50) was wrong: **8 is already hungry** at 60 people, and 50 is pointless famine.
+
+Second pass: slider **1–20**. Default gap **6**. Easy 4 / hard 16. Zero is not a real interval (would break the clock). How scarce it feels still depends on how many people — not auto-scaled yet.
+
+Bigger map and patchy food rates are on the Phase 1 backlog as weather — not shipped here.
+
+---
+
+## 2026-08-27 — `1.0.2-trends`
+
+**Version / Phase:** `1.0.2-trends` · Phase 1 · Differ  
+**Track:** A (graphs + history) · local until human asks for a PR  
+**Archive:** `archive/index-1.0.1-stories.html`
+
+Trends and History are live again. They know kinds of people.
+
+- One graph: white = everyone, color = each group. Dead kinds sit at zero.
+- Food / hunger / pin-agent charts removed from this column (they were Survive leftovers).
+- History row: mix name, how long, leftover count, chip per group.
+- Best this session = most leftover people, not longest clock.
+- Run logs detail shows who was left vs who started.
+
+Not this version: world seed on export, bigger map, patchy food.
+
+---
+
+## 2026-08-27 — Version numbers: stories is 1.1.0, trends is 1.2.0
+
+We had labeled stories `1.0.1` and trends `1.0.2` like tiny patches. They aren’t. Middle number = a playable slice.
+
+- `1.0.0-differ` — Crowd… first ship (unchanged)
+- `1.1.0-stories` — stories + Help (frozen file still named `archive/index-1.0.1-stories.html`)
+- `1.2.0-trends` — graphs that know groups (live)
+
+Last number stays for small fixes on a slice.
+
+---
+
+## 2026-08-27 — Roster stories in Crowd… (folded into unreleased 1.1.0 / live 1.2.0)
+
+Stories now have two rows: Groups and Roster.
+
+Roster stories, two kinds:
+
+- **Families** — same plots as Groups, but each named person is a little off the group average (not 30 twins). Hunt-off kinds stay nearly blind.
+- **Rungs** — hunt/hunger/efficiency/speed ladders, scramble 60, 12 oddballs.
+
+JSON files in `phase-1-differ-presets/roster-*.json` are still Import extras.
+
+---
+
+## 2026-08-27 — Project docs in normal English
+
+README, AGENTS, FUTURE_FEATURES, presets README, Help already in the app: rewritten so a person who just opened Crowd… can read them. Old log sections below (and above) stay as they were. FUTURE_FEATURES is open work only.

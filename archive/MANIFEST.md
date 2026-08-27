@@ -28,6 +28,8 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-0.9.4-run-logs.html` | 0.9.4-run-logs | 0 · Survive | (local) | — | Run logs modal + export; world seek accel/wander/maxSpeed; expanded Help (refreshed snapshot) |
 | `index-0.9.5-lab.html` | 0.9.5-lab | 0 · Survive | (local) | — | World\|Lab mode; 1–5 setup headless batches; Lab Parameters; result cards; Export/Copy last batch; no special in Lab |
 | `index-0.9.6-params.html` | 0.9.6-params | 0 · Survive | (local) | — | No rail sliders; island presets (higher N = harder); Seek/Agent masters; no ground fill; fill-per-food pocket eat |
+| `index-1.0.0-differ.html` | 1.0.0-differ | 1 · Differ | #26 | — | First Differ: Crowd…, four traits, Apply then Reset |
+| `index-1.0.1-stories.html` | 1.1.0-stories (file still named 1.0.1) | 1 · Differ | (local) | — | Crowd stories + Help. Product name is 1.1.0. |
 
 ---
 
