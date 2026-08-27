@@ -387,39 +387,6 @@
                 height: 64px;
                 max-width: 100%;
             }
-            .trend-legend {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.35rem 0.65rem;
-                margin: 0.35rem 0 0;
-                font-size: 10px;
-                color: #94a3b8;
-            }
-            .trend-legend .lg {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.28rem;
-            }
-            .trend-legend .sw {
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                display: inline-block;
-            }
-            .rchip {
-                display: inline-block;
-                font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-                font-size: 10px;
-                font-weight: 650;
-                margin-right: 0.35rem;
-            }
-            table.hist td.mix {
-                color: #cbd5e1;
-                max-width: 7.5rem;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
             .section-title {
                 font-size: 10px;
                 letter-spacing: 0.12em;
@@ -749,46 +716,19 @@
             }
             .gmet-row {
                 display: grid;
-                grid-template-columns: 10px minmax(0, 1fr);
-                gap: 0.4rem;
-                align-items: start;
-                padding: 0.4rem 0.45rem;
-                font-size: 11px;
+                grid-template-columns: 10px minmax(0, 1fr) auto;
+                gap: 0.3rem;
+                align-items: center;
+                padding: 0.32rem 0.4rem;
+                font-size: 10px;
                 border-top: 1px solid #152238;
             }
             .gmet-row:first-child { border-top: none; }
-            .gmet-row .differ-sw { margin-top: 0.45rem; }
-            .gmet-main { min-width: 0; }
-            .gmet-top {
-                display: flex;
-                justify-content: space-between;
-                align-items: baseline;
-                gap: 0.5rem;
-            }
-            .gmet-row .nm {
-                color: #cbd5e1;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                min-width: 0;
-            }
-            .gmet-row .al {
-                font-family: ui-monospace, monospace;
-                font-size: 15px;
-                font-weight: 650;
-                color: var(--good);
-                flex-shrink: 0;
-            }
-            .gmet-row .de {
-                font-family: ui-monospace, monospace;
-                color: var(--bad);
-                font-size: 11px;
-            }
-            .gmet-row .hf {
-                color: #94a3b8;
-                font-size: 10px;
-                margin-top: 0.12rem;
-            }
+            .gmet-row .nm { color: #cbd5e1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            .gmet-row .nums { font-family: ui-monospace, monospace; text-align: right; line-height: 1.35; white-space: nowrap; }
+            .gmet-row .al { color: var(--good); }
+            .gmet-row .de { color: var(--bad); }
+            .gmet-row .hf { color: #94a3b8; font-size: 9px; }
             .inspector-dock {
                 margin-top: 0.75rem;
                 border: 1px solid var(--border);
@@ -1052,45 +992,6 @@
                 padding: 0 0.15rem;
             }
             .roster-gchip .rg-del:hover { color: #fb7185; }
-            .differ-stories {
-                flex-shrink: 0;
-                display: flex;
-                flex-direction: column;
-                gap: 0.35rem;
-                padding: 0.45rem 1rem 0.5rem;
-                border-bottom: 1px solid var(--border);
-                background: #080e16;
-            }
-            .differ-stories .st-row {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                gap: 0.35rem;
-            }
-            .differ-stories .st-lab {
-                font-size: 10px;
-                color: #64748b;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                margin-right: 0.25rem;
-                min-width: 4.2rem;
-            }
-            .btn-story {
-                font-size: 11px;
-                font-weight: 600;
-                padding: 0.22rem 0.55rem;
-                border-radius: 999px;
-                border: 1px solid #1e3a5f;
-                background: #0f172a;
-                color: #cbd5e1;
-                cursor: pointer;
-            }
-            .btn-story:hover { border-color: #38bdf8; color: #fff; }
-            .btn-story.on {
-                border-color: #38bdf8;
-                background: #0c4a6e;
-                color: #f0f9ff;
-            }
             .differ-foot {
                 flex-shrink: 0;
                 display: flex;
@@ -1205,46 +1106,6 @@
                 margin-bottom: 0.25rem;
                 font-weight: 600;
             }
-            .run-logs-detail .gblock {
-                margin: 0.35rem 0 0.5rem;
-                padding-bottom: 0.35rem;
-                border-bottom: 1px solid #152238;
-            }
-            .run-logs-detail .gblock:last-child { border-bottom: none; }
-            .run-logs-detail .ghead {
-                display: flex;
-                justify-content: space-between;
-                align-items: baseline;
-                gap: 0.4rem;
-            }
-            .run-logs-detail .gname { color: #e2e8f0; font-weight: 600; }
-            .run-logs-detail .gleft {
-                font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-                color: var(--good);
-            }
-            .run-logs-detail .gtraits {
-                color: #94a3b8;
-                font-size: 10px;
-                margin-top: 0.12rem;
-            }
-            .run-logs-detail table.surv {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 10px;
-                margin-top: 0.25rem;
-            }
-            .run-logs-detail table.surv th {
-                text-align: left;
-                color: var(--muted);
-                font-weight: 500;
-                padding: 0.1rem 0.25rem;
-            }
-            .run-logs-detail table.surv td {
-                padding: 0.15rem 0.25rem;
-                border-top: 1px solid #152238;
-                color: #cbd5e1;
-            }
-            .run-logs-detail table.surv td.r { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
             .run-logs-toast {
                 position: fixed;
                 bottom: 1.25rem;
@@ -1660,7 +1521,7 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Agent evolution lab</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v1.2.0-trends</span>
+                    <span class="badge-version" id="version-badge">v1.0.0-differ</span>
                 </div>
                 <div class="header-mode" role="group" aria-label="App mode">
                     <button type="button" id="mode-world" class="btn-speed on" onclick="setAppMode('world')">World</button>
@@ -1705,10 +1566,10 @@
                         <div class="section-title" style="margin-bottom:0.3rem">Food spawn</div>
                         <div class="flex justify-between text-xs mb-0.5">
                             <span title="Ticks between food drops. Higher = scarcer. Live weather.">Interval</span>
-                            <span id="val-food-spawn-rail" class="font-mono text-sky-300">6</span>
+                            <span id="val-food-spawn-rail" class="font-mono text-sky-300">8</span>
                         </div>
-                        <input type="range" id="slider-food-spawn-rail" min="1" max="20" step="1" value="6" class="w-full accent-sky-400">
-                        <p id="differ-weather-line" class="text-[10px] font-mono text-slate-400 mt-1 mb-3">N 60 · food spawn 6</p>
+                        <input type="range" id="slider-food-spawn-rail" min="1" max="50" step="1" value="8" class="w-full accent-sky-400">
+                        <p id="differ-weather-line" class="text-[10px] font-mono text-slate-400 mt-1 mb-3">N 60 · food spawn 8</p>
                         <!-- Live metrics (KPI tiles) -->
                         <div class="section-title" style="margin-top:0.5rem">Live metrics</div>
                         <div id="metrics-content" class="kpi-grid">
@@ -1763,31 +1624,52 @@
 
                 <!-- RIGHT: trends then history (history flex-grows) -->
                 <div class="col col-right">
-                    <div class="col-panel" id="panel-trends">
+                    <div class="col-panel panel-frozen" id="panel-trends">
+                        <div class="frozen-veil" title="Trends are Survive leftovers — not Differ yet"><span>Later · frozen</span></div>
                         <div class="panel-head">
                             <div class="section-title">Trends</div>
                             <button type="button" class="btn-hide-col" onclick="hideCol('right')" title="Hide right column">Hide ✕</button>
                         </div>
-                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">This run · by group</div>
-                        <div class="trend-legend" id="trend-legend"></div>
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Current run</div>
 
                         <div class="chart-row">
-                            <div class="chart-label pop">Alive</div>
-                            <canvas id="chart-pop" width="240" height="64" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            <div class="chart-label pop">Population</div>
+                            <canvas id="chart-pop" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
                         <div class="chart-row">
-                            <div class="chart-label food">Avg bag</div>
-                            <canvas id="chart-bag" width="240" height="64" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            <div class="chart-label food">Total Food</div>
+                            <canvas id="chart-food" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
                         <div class="chart-row">
-                            <div class="chart-label hunger">Avg hunger</div>
-                            <canvas id="chart-hunger" width="240" height="64" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            <div class="chart-label hunger">Avg Hunger</div>
+                            <canvas id="chart-hunger" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                        </div>
+
+
+                        <div id="pinned-section" class="hidden mt-4">
+                            <div class="flex justify-between items-center mb-1">
+                                <div>
+                                    <span class="text-xs uppercase tracking-widest text-violet-400">Pinned Agent Trends</span>
+                                    <span id="pinned-box-id" class="font-mono text-[9px] ml-1"></span>
+                                    <span id="pinned-box-status" class="text-[9px] ml-1"></span>
+                                </div>
+                                <button onclick="unpinAgent()" class="text-[9px] px-1.5 py-0.5 bg-slate-700 hover:bg-slate-600 rounded">Remove</button>
+                            </div>
+                            <div class="mb-1">
+                                <div class="text-[9px] text-violet-400">Hunger</div>
+                                <canvas id="chart-pinned-hunger" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            </div>
+                            <div>
+                                <div class="text-[9px] text-violet-400">Food</div>
+                                <canvas id="chart-pinned-food" width="240" height="52" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-panel" id="panel-history">
+                    <div class="col-panel panel-frozen" id="panel-history">
+                        <div class="frozen-veil" title="History does not store Differ crowds yet"><span>Later · frozen</span></div>
                         <div class="history-head">
                             <div class="section-title" style="margin:0">History</div>
-                            <div class="history-best" id="history-best" title="Most leftover people this session">
+                            <div class="history-best" id="history-best" title="Best longest survival this session">
                                 <div class="val" id="history-best-val">—</div>
                                 <div class="sub" id="history-best-sub">no runs yet</div>
                             </div>
@@ -1864,7 +1746,7 @@
                 </div>
                 <div id="history-modal-best" class="mb-3" style="display:flex;justify-content:space-between;align-items:baseline;gap:0.75rem;padding:0.5rem 0.65rem;background:#0a1220;border:1px solid var(--border);border-radius:0.5rem">
                     <div>
-                        <div style="font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)">Most leftover</div>
+                        <div style="font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)">Best longest survival</div>
                         <div id="history-modal-best-sub" style="font-size:11px;color:var(--muted)">—</div>
                     </div>
                     <div id="history-modal-best-val" style="font-size:1.25rem;font-weight:650;font-family:ui-monospace,monospace;color:var(--good)">—</div>
@@ -1876,7 +1758,7 @@
                     <aside id="run-logs-detail" class="run-logs-detail" aria-live="polite">
                         <div class="d-title">Selected run</div>
                         <div class="d-run" id="run-logs-detail-title">Click a row</div>
-                        <div id="run-logs-detail-body" class="muted" style="font-size:11px;color:var(--muted)">Group traits and who was left for the selected run.</div>
+                        <div id="run-logs-detail-body" class="muted" style="font-size:11px;color:var(--muted)">World knobs + special overrides appear here.</div>
                     </aside>
                 </div>
                 <div class="flex gap-1 mt-3">
@@ -1911,9 +1793,9 @@
                 <div class="mb-3">
                     <div class="flex justify-between text-xs mb-0.5">
                         <span title="Ticks between food drops. Higher = scarcer">Food spawn</span>
-                        <span id="val-food-spawn" class="font-mono text-sky-300">6</span>
+                        <span id="val-food-spawn" class="font-mono text-sky-300">8</span>
                     </div>
-                    <input type="range" id="slider-food-spawn" min="1" max="20" step="1" value="6" class="w-full accent-sky-400">
+                    <input type="range" id="slider-food-spawn" min="1" max="50" step="1" value="8" class="w-full accent-sky-400">
                 </div>
 
                 <div class="section-title">Seek</div>
@@ -2020,7 +1902,6 @@
                     </div>
                     <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
                 </div>
-                <div class="differ-stories" id="differ-stories"></div>
                 <div class="params-scroll scroll-thin">
                     <div class="differ-body">
                         <div class="differ-list" id="differ-list"></div>
@@ -2193,17 +2074,26 @@
                     <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
                 </div>
                 <p class="help-intro">
-                    Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">1.2.0-trends</code> — people are <em>not</em> all the same (Phase 1 · Differ).
+                    An <strong>agent evolution lab</strong>: spatial agents in a 2D world.
+                    Live is <code style="color:#7dd3fc">1.0.0-differ</code> — Phase 1 · Differ. Survive is closed.
                 </p>
 
-                <div class="help-sec">The long path</div>
-                <div class="help-entry"><strong>Survive</strong> — finished. Everyone shared one body. Frozen file next to this one.</div>
-                <div class="help-entry"><strong>Differ</strong> — now. Mix kinds of people, watch who is left.</div>
-                <div class="help-entry"><strong>Evolve</strong> — later. Survivors have children.</div>
-                <div class="help-entry"><strong>Economy</strong> — later still. Trade, bags, jobs.</div>
+                <div class="help-sec">What this is</div>
+                <div class="help-entry">
+                    Project id <code style="color:#7dd3fc">trait-evolution-sim</code> —
+                    a single-file, observable simulation. <strong>World</strong> is live.
+                    Lab, Special, Trends, and History are frozen until a later version.
+                </div>
 
-                <div class="help-entry" style="margin-top:0.5rem">Open <strong>Crowd…</strong>, pick a story or edit groups, <strong>Apply</strong>, then <strong>Reset</strong>. Food spawn on the left is weather; it changes live.</div>
+                <div class="help-sec">Phase path</div>
+                <div class="help-entry"><strong>0 · Survive</strong> — closed. Frozen copy next to the live file.</div>
+                <div class="help-entry"><strong>1 · Differ</strong> — current. Agents differ at spawn (Crowd… modal).</div>
+                <div class="help-entry"><strong>2 · Evolve</strong> / <strong>3 · Economy</strong> — later.</div>
+
+                <div class="help-sec">How to use today</div>
+                <div class="help-entry"><strong>Crowd…</strong> — set Groups or a Roster. Changes apply on <strong>Reset</strong>.</div>
+                <div class="help-entry"><strong>Food spawn</strong> — weather on the left rail (live).</div>
+                <div class="help-entry">Click an agent to read Hunt, hunger rate, efficiency, speed.</div>
 
                 <p class="text-[10px] text-slate-500 mt-3 mb-0">Escape or click outside to close</p>
             </div>
@@ -2219,43 +2109,40 @@
                 </div>
 
                 <p class="help-intro">
-                    Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
-                    Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
-                    People are not copies of each other. You set the mix in <strong>Crowd…</strong>.
-                    Version <code style="color:#7dd3fc">1.2.0-trends</code>.
+                    Agents get hungrier every tick. Hunger past 100 → death.
+                    A catch puts <strong>1 food in the bag</strong>. They nibble the bag after Eat threshold.
+                    Live version <code style="color:#7dd3fc">1.0.0-differ</code>: the crowd is set in <strong>Crowd…</strong>.
                 </p>
 
-                <div class="help-sec">How a run works</div>
-                <div class="help-entry">Open <strong>Crowd…</strong>. <strong>Groups</strong> — kinds, everyone in a kind is the same. <strong>Families</strong> — the same mixes, but each named person sits a little off the group average. <strong>Rungs</strong> — hunt/hunger/efficiency/speed ladders, a scramble, or 12 oddballs. Groups and Roster tabs are separate drafts.</div>
-                <div class="help-entry">Press <strong>Apply</strong> to remember the open tab. The island does not change yet.</div>
-                <div class="help-entry">Press <strong>Reset</strong> to spawn that mix. That is when colors and counts on the field update.</div>
-                <div class="help-entry"><strong>Food spawn</strong> on the left is weather (live). Gap between pellet drops, <strong>1–20</strong>. Higher = scarcer. 8 is already a hungry island at 60 people. 1 is almost a pellet every tick. (Zero is not a real gap — it would break the clock.)</div>
-                <div class="help-entry"><strong>Pause / Speed</strong> — clock. 10× is faster wall time; a sim-second is still 60 ticks.</div>
-                <div class="help-entry">Watch leftover <strong>colors</strong>. Score <em>who is still walking</em>, not how fat the bags are. Right side: a graph per group, and a history row when you Reset or when everyone dies.</div>
+                <div class="help-sec">What works now</div>
+                <div class="help-entry"><strong>Crowd…</strong> — Groups (types) or Roster (individuals). Four traits: hunger rate, efficiency, hunt, speed. Import / Export JSON from <code>phase-1-differ-presets/</code>.</div>
+                <div class="help-entry"><strong>Apply then Reset</strong> — Edit Groups or Roster, press <strong>Apply</strong> to stamp that tab, then <strong>Reset</strong> to spawn. The other tab is a separate draft.</div>
+                <div class="help-entry"><strong>Food spawn</strong> — Left rail. Ticks between pellet drops. Higher = scarcer. This one is <em>live</em> weather.</div>
+                <div class="help-entry"><strong>Pause / Speed / Reset</strong> — Clock, 1×–10×, respawn crowd + food.</div>
+                <div class="help-entry"><strong>Click an agent</strong> — Inspector shows name, hunt, hunger rate, efficiency, speed, bag.</div>
+                <div class="help-entry"><strong>Colors</strong> — Fill = group. Pink ring = starving. Cyan pip = food in the bag.</div>
 
                 <div class="help-sec">The four traits</div>
-                <div class="help-entry"><strong>Hunger rate</strong> — How fast they burn. High = starve sooner if they miss food.</div>
-                <div class="help-entry"><strong>Efficiency</strong> — How much a bite from the bag lowers hunger. High = better meals.</div>
-                <div class="help-entry"><strong>Hunt</strong> — One number for “do I lock onto food?” Zero is basically off (wander). Around the middle is normal seeking. One is fully locked on. Extra hunt past that barely saves more lives.</div>
-                <div class="help-entry"><strong>Speed</strong> — How fast they can walk. Slow is a tax. Faster is not always more survivors — it is there so a mix can look slow vs twitchy.</div>
+                <div class="help-entry"><strong>Hunger rate</strong> — How fast they burn. Higher dies sooner if they miss food.</div>
+                <div class="help-entry"><strong>Efficiency</strong> — Hunger dropped per bag food. Higher = better meals.</div>
+                <div class="help-entry"><strong>Hunt</strong> — One number. Low ≈ wander (don’t lock food). High ≈ lock the nearest pellet.</div>
+                <div class="help-entry"><strong>Speed</strong> — Movement cap. Slow is a tax; faster is not always more survivors.</div>
 
-                <div class="help-sec">What you see</div>
-                <div class="help-entry"><strong>Click a person</strong> — name, four traits, bag.</div>
-                <div class="help-entry"><strong>Fill color</strong> = group. <strong>Pink ring</strong> = starving. <strong>Cyan pip</strong> = food in the bag.</div>
-                <div class="help-entry">Total people is the sum of group counts (or roster length). Cap 100.</div>
-                <div class="help-entry">Import / Export still work if you want a JSON file. Stories are the same mixes that used to live only as files, including roster.</div>
+                <div class="help-sec">How to run a story</div>
+                <div class="help-entry">Open Crowd… → Import a file from <code>phase-1-differ-presets/</code> (try seekers vs wanderers) → Done → <strong>Reset</strong>.</div>
+                <div class="help-entry">Watch leftover colors. Rank <strong>who is still alive</strong>, not how fat the bags are.</div>
+                <div class="help-entry">N is the sum of group counts (or roster length). Max 100.</div>
 
-                <div class="help-sec">Rules</div>
-                <div class="help-entry">Catch = bag +1, pellet gone. Reach is <strong>20 pixels past the drawn circle</strong>. Dots grow with the bag (still climbing after 1000–2000 pellets). Fat leftovers are slower — same speed trait, but the extra mass drags them. If several people reach the same pellet, a random one in range eats it.</div>
-                <div class="help-entry">Bite size from the bag still uses a frozen “how big a mouthful” number times efficiency. Efficiency is the Differ trait; mouthful size is not.</div>
+                <div class="help-sec">Frozen (later)</div>
+                <div class="help-entry"><strong>Lab</strong> — Headless batches. Off for this version.</div>
+                <div class="help-entry"><strong>Special…</strong> — One pet override. Off.</div>
+                <div class="help-entry"><strong>Trends / History</strong> — Survive leftovers; they do not know Differ groups yet.</div>
+                <div class="help-entry"><strong>Parameters… / L B P / Policy</strong> — Removed from World. Seek is always on.</div>
 
-                <div class="help-sec">Trends and History</div>
-                <div class="help-entry"><strong>Trends</strong> — one colored line per kind: alive, average bag, average hunger. Left edge is the start of the run (time 0). Bottom is 0. Alive goes to zero when a kind is gone; bag and hunger keep the last living average.</div>
-                <div class="help-entry"><strong>History</strong> — one row per finished run (Reset or wipe). Leftover count plus a chip per group. Best this session is the run that left the most people, not the one that lasted longest.</div>
-
-                <div class="help-sec">Off for now</div>
-                <div class="help-entry"><strong>Lab</strong> — batch runner from Survive. Not for mixed crowds. Stay in the frozen Survive file.</div>
-                <div class="help-entry"><strong>Special…</strong> — pin one pet. Off.</div>
+                <div class="help-sec">Rules of the world</div>
+                <div class="help-entry">Catch = bag +1, pellet gone. Pocket eat uses frozen gluttony × efficiency (not Differ traits).</div>
+                <div class="help-entry">If several agents reach a pellet, a random one in range wins.</div>
+                <div class="help-entry">Sim “seconds” = ticks ÷ 60. Speed 10× shortens wall time, not the sim second.</div>
             </div>
         </div>
 
@@ -2412,263 +2299,6 @@
                 };
             }
 
-            // Same mixes as phase-1-differ-presets/*.json — built here so Crowd… works without a server.
-            const STORY_CTL = [
-                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 },
-                { id: 'STN', name: 'Strain', color: '#c4b5fd', n: 30, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6 }
-            ];
-            const STORY_SEK = [
-                { id: 'SEK', name: 'Seekers', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.7, maxSpeed: 2.0 },
-                { id: 'WAN', name: 'Wanderers', color: '#c4b5fd', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 2.0 }
-            ];
-            const STORY_TOR = [
-                { id: 'TOR', name: 'Tortoises', color: '#4ade80', n: 30, hungerRate: 0.05, efficiency: 1.8, hunt: 0.35, maxSpeed: 1.2 },
-                { id: 'HAR', name: 'Hares', color: '#fbbf24', n: 30, hungerRate: 0.078, efficiency: 1.4, hunt: 0.8, maxSpeed: 2.4 }
-            ];
-            const STORY_GRZ = [
-                { id: 'GRZ', name: 'Grazers', color: '#4ade80', n: 30, hungerRate: 0.055, efficiency: 2.2, hunt: 0.15, maxSpeed: 1.6 },
-                { id: 'HNT', name: 'Hunters', color: '#fb7185', n: 30, hungerRate: 0.075, efficiency: 1.3, hunt: 0.9, maxSpeed: 2.2 }
-            ];
-            const STORY_RIC = [
-                { id: 'RIC', name: 'Idle rich', color: '#fbbf24', n: 20, hungerRate: 0.05, efficiency: 2.3, hunt: 0.45, maxSpeed: 2.0 },
-                { id: 'WRK', name: 'Working poor', color: '#fb7185', n: 20, hungerRate: 0.08, efficiency: 1.25, hunt: 0.55, maxSpeed: 2.0 },
-                { id: 'LST', name: 'Lost', color: '#64748b', n: 20, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.4 }
-            ];
-            const STORY_PET = [
-                { id: 'PRO', name: 'Prophet', color: '#fbbf24', n: 3, hungerRate: 0.052, efficiency: 2.4, hunt: 1.0, maxSpeed: 2.2 },
-                { id: 'FLY', name: 'Mayfly', color: '#fb7185', n: 8, hungerRate: 0.084, efficiency: 1.2, hunt: 0.85, maxSpeed: 2.4 },
-                { id: 'GHO', name: 'Ghost', color: '#22d3ee', n: 5, hungerRate: 0.055, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.2 },
-                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 44, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 }
-            ];
-
-            const STORY_LADDER = [
-                { id: 'LAD', name: 'Ladder', color: '#38bdf8', n: 60, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 }
-            ];
-            const STORY_ODD_GROUPS = [
-                { id: 'ODD', name: 'Oddballs', color: '#fbbf24', n: 12, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 }
-            ];
-            const STORY_ODD_BODIES = [
-                { bodyId: 'BLI', name: 'Blind', color: '#c4b5fd', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 2.0 },
-                { bodyId: 'LOK', name: 'Locked on', color: '#38bdf8', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 1.0, maxSpeed: 2.0 },
-                { bodyId: 'EAS', name: 'Easy burn', color: '#4ade80', sourceGroupId: 'ODD', hungerRate: 0.049, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 },
-                { bodyId: 'HOT', name: 'Hot burn', color: '#fb7185', sourceGroupId: 'ODD', hungerRate: 0.084, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 },
-                { bodyId: 'FAT', name: 'Good meals', color: '#fbbf24', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 2.4, hunt: 0.5, maxSpeed: 2.0 },
-                { bodyId: 'THN', name: 'Bad meals', color: '#fb7185', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.2, hunt: 0.5, maxSpeed: 2.0 },
-                { bodyId: 'SLO', name: 'Slow', color: '#4ade80', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 1.2 },
-                { bodyId: 'TWI', name: 'Twitchy', color: '#fbbf24', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.4 },
-                { bodyId: 'GHO', name: 'Ghost', color: '#22d3ee', sourceGroupId: 'ODD', hungerRate: 0.052, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.2 },
-                { bodyId: 'FLY', name: 'Mayfly', color: '#fb7185', sourceGroupId: 'ODD', hungerRate: 0.084, efficiency: 1.2, hunt: 0.9, maxSpeed: 2.4 },
-                { bodyId: 'PRO', name: 'Prophet', color: '#fbbf24', sourceGroupId: 'ODD', hungerRate: 0.049, efficiency: 2.4, hunt: 1.0, maxSpeed: 2.2 },
-                { bodyId: 'STN', name: 'Strain', color: '#c4b5fd', sourceGroupId: 'ODD', hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6 }
-            ];
-
-            const DIFFER_STORIES = [
-                { id: 'control-strain', label: 'Control vs Strain', mode: 'groups', groups: STORY_CTL },
-                { id: 'seekers-wanderers', label: 'Seekers vs Wanderers', mode: 'groups', groups: STORY_SEK },
-                { id: 'tortoises-hares', label: 'Tortoises vs Hares', mode: 'groups', groups: STORY_TOR },
-                { id: 'grazers-hunters', label: 'Grazers vs Hunters', mode: 'groups', groups: STORY_GRZ },
-                { id: 'three-castes', label: 'Three kinds', mode: 'groups', groups: STORY_RIC },
-                { id: 'pets', label: 'Pets + control', mode: 'groups', groups: STORY_PET },
-                { id: 'roster-control-strain', label: 'Control vs Strain', mode: 'roster', family: true, groups: STORY_CTL },
-                { id: 'roster-seekers-wanderers', label: 'Seekers vs Wanderers', mode: 'roster', family: true, groups: STORY_SEK },
-                { id: 'roster-tortoises-hares', label: 'Tortoises vs Hares', mode: 'roster', family: true, groups: STORY_TOR },
-                { id: 'roster-grazers-hunters', label: 'Grazers vs Hunters', mode: 'roster', family: true, groups: STORY_GRZ },
-                { id: 'roster-three-castes', label: 'Three kinds', mode: 'roster', family: true, groups: STORY_RIC },
-                { id: 'roster-pets', label: 'Pets + control', mode: 'roster', family: true, groups: STORY_PET },
-                { id: 'roster-hunt-ladder', label: 'Hunt 0 → 1', mode: 'roster', groups: STORY_LADDER, nameBy: 'hunt', spread: { LAD: { hunt: [0, 1] } } },
-                { id: 'roster-hunger-ladder', label: 'Hunger easy → hard', mode: 'roster', groups: STORY_LADDER, nameBy: 'hungerRate', spread: { LAD: { hungerRate: [0.049, 0.084] } } },
-                { id: 'roster-eff-ladder', label: 'Efficiency 1.2 → 2.4', mode: 'roster', groups: STORY_LADDER, nameBy: 'efficiency', spread: { LAD: { efficiency: [1.2, 2.4] } } },
-                { id: 'roster-speed-ladder', label: 'Speed slow → twitchy', mode: 'roster', groups: STORY_LADDER, nameBy: 'maxSpeed', spread: { LAD: { maxSpeed: [1.2, 2.4] } } },
-                { id: 'roster-scramble', label: 'Scramble 60', mode: 'roster', groups: STORY_LADDER, scramble: true },
-                { id: 'roster-oddballs', label: 'Oddballs ×12', mode: 'roster', groups: STORY_ODD_GROUPS, bodies: STORY_ODD_BODIES }
-            ];
-
-            function storyPad(n) {
-                return n < 10 ? '0' + n : String(n);
-            }
-
-            function storyLerp(i, n, a, b) {
-                if (n <= 1) return a;
-                return a + (b - a) * (i / (n - 1));
-            }
-
-            function storyClamp(v, lo, hi) {
-                return Math.max(lo, Math.min(hi, v));
-            }
-
-            function storyJitterSlot(id, i, n) {
-                let h = 2166136261;
-                const s = String(id) + ':' + i;
-                for (let k = 0; k < s.length; k++) {
-                    h ^= s.charCodeAt(k);
-                    h = Math.imul(h, 16777619);
-                }
-                return Math.abs(h) % Math.max(1, n);
-            }
-
-            // Family roster: each person sits near the group average, not on it.
-            function familySpread(groups) {
-                const out = {};
-                for (let i = 0; i < groups.length; i++) {
-                    const g = groups[i];
-                    const huntOff = Number(g.hunt) <= 0.08;
-                    out[g.id] = {
-                        hungerRate: [storyClamp(g.hungerRate - 0.01, 0.049, 0.084), storyClamp(g.hungerRate + 0.01, 0.049, 0.084)],
-                        efficiency: [storyClamp(g.efficiency - 0.22, 1.2, 2.4), storyClamp(g.efficiency + 0.22, 1.2, 2.4)],
-                        hunt: huntOff
-                            ? [0, 0.08]
-                            : [storyClamp(g.hunt - 0.16, 0, 1), storyClamp(g.hunt + 0.16, 0, 1)],
-                        maxSpeed: [storyClamp(g.maxSpeed - 0.25, 1.2, 2.4), storyClamp(g.maxSpeed + 0.25, 1.2, 2.4)]
-                    };
-                }
-                return out;
-            }
-
-            function expandStoryBodies(groups, spread, nameBy, scramble, family) {
-                const bodies = [];
-                spread = spread || {};
-                const digits = { hungerRate: 3, efficiency: 2, hunt: 2, maxSpeed: 1 };
-                for (let gi = 0; gi < groups.length; gi++) {
-                    const g = groups[gi];
-                    const n = g.n | 0;
-                    const sp = spread[g.id] || {};
-                    for (let i = 0; i < n; i++) {
-                        function pick(key) {
-                            const pair = sp[key];
-                            let v;
-                            if (scramble) {
-                                const steps = { hungerRate: 7, efficiency: 11, hunt: 1, maxSpeed: 3 };
-                                const j = (i * (steps[key] || 1)) % n;
-                                const lo = { hungerRate: 0.049, efficiency: 1.2, hunt: 0, maxSpeed: 1.2 }[key];
-                                const hi = { hungerRate: 0.084, efficiency: 2.4, hunt: 1, maxSpeed: 2.4 }[key];
-                                v = storyLerp(j, n, lo, hi);
-                            } else if (pair) {
-                                const slot = family ? storyJitterSlot(g.id + key, i, n) : i;
-                                v = storyLerp(slot, n, pair[0], pair[1]);
-                            } else {
-                                v = g[key];
-                            }
-                            return Number(Number(v).toFixed(digits[key]));
-                        }
-                        const hungerRate = pick('hungerRate');
-                        const efficiency = pick('efficiency');
-                        const hunt = pick('hunt');
-                        const maxSpeed = pick('maxSpeed');
-                        let name = (g.name || g.id) + ' ' + storyPad(i + 1);
-                        if (nameBy === 'hunt') name = 'Hunt ' + hunt.toFixed(2);
-                        else if (nameBy === 'hungerRate') name = 'Hunger ' + hungerRate.toFixed(3);
-                        else if (nameBy === 'efficiency') name = 'Eff ' + efficiency.toFixed(2);
-                        else if (nameBy === 'maxSpeed') name = 'Speed ' + maxSpeed.toFixed(1);
-                        else if (scramble) name = 'Mix ' + storyPad(i + 1);
-                        bodies.push({
-                            bodyId: g.id + '-' + storyPad(i + 1),
-                            name: name,
-                            color: g.color,
-                            sourceGroupId: g.id,
-                            hungerRate: hungerRate,
-                            efficiency: efficiency,
-                            hunt: hunt,
-                            maxSpeed: maxSpeed
-                        });
-                    }
-                }
-                return bodies;
-            }
-
-            function storyPayload(story) {
-                const mode = story.mode === 'roster' ? 'roster' : 'groups';
-                const groups = JSON.parse(JSON.stringify(story.groups));
-                let bodies = [];
-                if (mode === 'roster') {
-                    bodies = story.bodies
-                        ? JSON.parse(JSON.stringify(story.bodies))
-                        : expandStoryBodies(
-                            groups,
-                            story.family ? familySpread(groups) : story.spread,
-                            story.nameBy,
-                            story.scramble,
-                            !!story.family
-                        );
-                }
-                const n = bodies.length
-                    ? bodies.length
-                    : groups.reduce(function (s, g) { return s + (g.n | 0); }, 0);
-                return {
-                    version: 2,
-                    kind: 'differ',
-                    mode: mode,
-                    n: n,
-                    id: story.id,
-                    name: story.label,
-                    groups: groups,
-                    bodies: bodies
-                };
-            }
-
-            function matchingStoryId(draft) {
-                if (!draft) return '';
-                if (draft.storyId) return draft.storyId;
-                const wantMode = draft.mode === 'roster' ? 'roster' : 'groups';
-                const keyOf = function (gs) {
-                    return (gs || []).map(function (g) {
-                        return [g.name, g.n | 0, Number(g.hungerRate).toFixed(3), Number(g.efficiency).toFixed(2), Number(g.hunt).toFixed(2), Number(g.maxSpeed).toFixed(1)].join('|');
-                    }).join('/');
-                };
-                const here = keyOf(draft.groups);
-                for (let i = 0; i < DIFFER_STORIES.length; i++) {
-                    const s = DIFFER_STORIES[i];
-                    const sm = s.mode === 'roster' ? 'roster' : 'groups';
-                    if (sm !== wantMode) continue;
-                    if (s.spread && wantMode === 'roster') continue;
-                    if (keyOf(s.groups) === here) return s.id;
-                }
-                return '';
-            }
-
-            function applyDifferStory(id) {
-                let story = null;
-                for (let i = 0; i < DIFFER_STORIES.length; i++) {
-                    if (DIFFER_STORIES[i].id === id) { story = DIFFER_STORIES[i]; break; }
-                }
-                if (!story) return;
-                const c = validateDifferImport(storyPayload(story));
-                if (!c) return;
-                c.storyId = story.id;
-                c.name = story.label;
-                if (story.mode === 'roster') {
-                    crowdRoster = c;
-                    differTab = 'roster';
-                } else {
-                    crowdGroups = c;
-                    differTab = 'groups';
-                }
-                differSel = 0;
-                renderDifferModal();
-                updateDifferRailChip();
-            }
-
-            function renderDifferStories() {
-                const el = document.getElementById('differ-stories');
-                if (!el) return;
-                const onId = matchingStoryId(currentDraft());
-                function row(lab, pred) {
-                    let h = '<div class="st-row"><span class="st-lab">' + lab + '</span>';
-                    for (let i = 0; i < DIFFER_STORIES.length; i++) {
-                        const s = DIFFER_STORIES[i];
-                        if (!pred(s)) continue;
-                        h += '<button type="button" class="btn-story' + (s.id === onId ? ' on' : '') + '" data-story="' + s.id + '">' + escapeHtml(s.label) + '</button>';
-                    }
-                    return h + '</div>';
-                }
-                el.innerHTML =
-                    row('Groups', function (s) { return s.mode !== 'roster'; }) +
-                    row('Families', function (s) { return s.mode === 'roster' && s.family; }) +
-                    row('Rungs', function (s) { return s.mode === 'roster' && !s.family; });
-                el.querySelectorAll('[data-story]').forEach(function (btn) {
-                    btn.onclick = function () { applyDifferStory(btn.getAttribute('data-story')); };
-                });
-            }
-
             function emptyGroupsDraft() {
                 return { version: 2, kind: 'differ', mode: 'groups', n: 0, groups: [], bodies: [] };
             }
@@ -2811,13 +2441,8 @@
 
             function spawnSpecsFromApplied() {
                 const c = appliedDiffer || defaultDifferCrowd();
-                const groups = c.groups || [];
-                const raw = (c.bodies && c.bodies.length) ? c.bodies.slice() : expandGroupsToBodies(c);
-                return raw.map(function (s) {
-                    const o = JSON.parse(JSON.stringify(s));
-                    o.color = bodyVizColor(o, groups);
-                    return o;
-                });
+                if (c.bodies && c.bodies.length) return c.bodies.slice();
+                return expandGroupsToBodies(c);
             }
 
             function countSpecialCustoms() {
@@ -3077,14 +2702,13 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs + special snapshots
-            const APP_VERSION = '1.2.0-trends';
+            const APP_VERSION = '1.0.0-differ';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
             let currentRunMaxSurvivalTicks = 0;
             let currentRunEnded = false;
             let bestLongestSec = 0;
-            let bestLeftover = 0;
             let runInitialAgents = 100;
             let selectedRunLog = null; // run number selected in Run logs modal
 
@@ -3099,14 +2723,14 @@
 
             // Live counters (reset every run)
             let starvationDeaths = 0;
-            let foodSpawn = 6; // ~60 people; 8 already feels hungry
+            let foodSpawn = 8; // balanced island
             let uiFrame = 0;
 
             // Time-series for current run (sampled, capped)
-            let trendByGroup = {};
-            let trendGroupMeta = [];
-            let trendSampleAt = [];
-            const MAX_TREND_SAMPLES = 8000;
+            let trendPop = [];
+            let trendFood = [];
+            let trendAvgHunger = [];
+            const MAX_TREND_SAMPLES = 4000;
             let lastTrendSampleTick = 0;
 
             // New accumulators for per-run averages (reset every run)
@@ -3117,26 +2741,6 @@
 
             // Optional: expose a few computed metrics for inspector / tabs
             let currentMetrics = { alive: 0, deaths: 0, totalFood: 0, avgHunger: 0, minFood: 0, maxFood: 0, avgFood: 0 };
-
-            function agentBag(agent) {
-                const f = agent && agent.food;
-                return Number.isFinite(Number(f)) ? Math.max(0, Number(f)) : 0;
-            }
-
-            // Size keeps climbing after 1000–2000 pellets (old 0.5×√bag flattened too soon).
-            function agentDrawRadius(agent) {
-                const f = agentBag(agent);
-                const grow = Math.sqrt(f / (1 + f / 2800));
-                return 3 + grow * 1.15;
-            }
-
-            // Fat leftovers crawl. Skinny bodies keep their speed trait.
-            function agentSpeedCap(agent, traitMax) {
-                const r0 = 3;
-                const r = agentDrawRadius(agent);
-                const mul = r0 / (r0 + 0.28 * Math.max(0, r - r0));
-                return traitMax * mul;
-            }
 
             /** Nearest food pellet within sight (non-toroidal). Returns null if none. */
             function nearestFoodInRadius(agent, radius) {
@@ -3184,7 +2788,7 @@
                     const sRad = p(this, 'sight');
                     const sStr = p(this, 'hungerPull');
                     const sAcc = p(this, 'seekPush');
-                    const mSpd = agentSpeedCap(this, p(this, 'maxSpeed'));
+                    const mSpd = p(this, 'maxSpeed');
                     const hRate = p(this, 'hungerRate');
                     const scThresh = p(this, 'eatThreshold');
                     const scAmt = p(this, 'gluttony');
@@ -3247,7 +2851,7 @@
                 }
 
                 draw() {
-                    const size = agentDrawRadius(this);
+                    const size = 3 + Math.sqrt(Math.max(0, this.food)) * 0.5;
                     ctx.fillStyle = this.groupColor || '#64748b';
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, size, 0, Math.PI * 2);
@@ -3304,9 +2908,8 @@
                 }
                 agents = alive;
 
-                // Wipe: sample a last zero so the graph sits on the floor, then log the run.
+                // NEW: detect natural population crash for run history
                 if (agents.length === 0 && !currentRunEnded && runNumber > 0) {
-                    sampleTrendPoint();
                     recordCurrentRun();
                 }
 
@@ -3320,8 +2923,7 @@
                         const agent = agents[ai];
                         const dx = f.x - agent.x;
                         const dy = f.y - agent.y;
-                        const reach = agentDrawRadius(agent) + 20;
-                        if (dx * dx + dy * dy < reach * reach && f.amount > 0.2) near.push(agent);
+                        if (dx * dx + dy * dy < 20 * 20 && f.amount > 0.2) near.push(agent);
                     }
                     if (near.length) {
                         const winner = near[Math.floor(runRng() * near.length)];
@@ -3335,11 +2937,11 @@
                     }
                 }
 
-                // Pellets drop every foodSpawn ticks. Useful weather is 1–20.
-                // Higher = scarcer. How hungry that feels also depends on how many people.
-                const spawnEvery = Math.max(1, Math.min(20, foodSpawn | 0));
-                if (agents.length > 0 &&
-                    tick % spawnEvery === 0
+                // Food respawn (improved + tunable via slider)
+                // Batch of 3 per interval fire; interval 1–50 for wider feast/famine swing
+                // Ceiling: 10× starting pile (NUM_FOOD) — ~700 pellets max with NUM_FOOD=70
+                if (agents.length > 0 && 
+                    tick % foodSpawn === 0 
                     && food.length < NUM_FOOD * 10) {
                     spawnFood(3);
                 }
@@ -3349,9 +2951,44 @@
                     computeMetrics();
                 }
 
-                // Who-is-left graph: keep sampling after a wipe until the run is logged.
-                if (!currentRunEnded && tick - lastTrendSampleTick >= 30) {
-                    sampleTrendPoint();
+                // Time series sampling for Trends tab (every ~30 ticks)
+                if (agents.length > 0 && !currentRunEnded && tick - lastTrendSampleTick >= 30) {
+                    lastTrendSampleTick = tick;
+
+                    // Accumulate for averages
+                    if (agents.length > 0) {
+                        runPopSum += agents.length;
+
+                        let hSum = 0;
+                        let fSum = 0;
+                        for (let a of agents) {
+                            hSum += a.hunger;
+                            fSum += a.food;
+                        }
+                        runHungerSum += hSum / agents.length;
+                        runFoodSum += fSum / agents.length;
+                        runSampleCount++;
+                    }
+
+                    trendPop.push(agents.length);
+                    trendFood.push(currentMetrics.totalFood);
+                    trendAvgHunger.push(currentMetrics.avgHunger);
+
+                    if (pinnedAgent && agents.indexOf(pinnedAgent) !== -1) {
+                        pinnedHunger.push(pinnedAgent.hunger);
+                        pinnedFood.push(pinnedAgent.food);
+                        if (pinnedHunger.length > MAX_TREND_SAMPLES) {
+                            pinnedHunger.shift();
+                            pinnedFood.shift();
+                        }
+                    }
+
+
+                    if (trendPop.length > MAX_TREND_SAMPLES) {
+                        trendPop.shift();
+                        trendFood.shift();
+                        trendAvgHunger.shift();
+                    }
                 }
             }
 
@@ -3455,12 +3092,10 @@
 
                 // New for UI/UX Polish V1
                 starvationDeaths = 0;
-                trendByGroup = {};
-                trendGroupMeta = [];
-                trendSampleAt = [];
+                trendPop = [];
+                trendFood = [];
+                trendAvgHunger = [];
                 lastTrendSampleTick = tick;
-                initTrendGroups();
-                sampleTrendPoint();
                 currentMetrics = { alive: 0, deaths: 0, totalFood: 0, avgHunger: 0, minFood: 0, maxFood: 0, avgFood: 0 };
                 selectedAgent = null;
                 pinnedAgent = null;
@@ -3564,9 +3199,8 @@
                 const avgHunger = runSampleCount > 0 ? Math.round((runHungerSum / runSampleCount) * 100) / 100 : 0;
                 const avgFood = runSampleCount > 0 ? Math.round((runFoodSum / runSampleCount) * 100) / 100 : 0;
                 const endedBy = (agents.length === 0) ? 'extinction' : 'reset';
-                const remnant = remnantSnapshot();
-                const mixLabel = mixLabelFromApplied();
-                const mix = snapshotMixForLog(remnant);
+                const knobs = snapshotWorldKnobs();
+                const special = snapshotSpecialForLog();
 
                 runHistory.push({
                     run: runNumber,
@@ -3575,19 +3209,17 @@
                     finalPop: finalPop,
                     deaths: deaths,
                     initialAgents: runInitialAgents != null ? runInitialAgents : initialAgents,
-                    mixLabel: mixLabel,
-                    mixMode: mix.mode,
-                    remnant: remnant,
-                    groups: mix.groups,
-                    survivors: mix.survivors,
+                    preset: currentPreset,
+                    movementPolicy: knobs.movementPolicy,
                     avgPop: avgPop,
                     avgHunger: avgHunger,
                     avgFood: avgFood,
-                    endedBy: endedBy
+                    endedBy: endedBy,
+                    knobs: knobs,
+                    special: special
                 });
 
                 if (longestSec > bestLongestSec) bestLongestSec = longestSec;
-                if (finalPop > bestLeftover) bestLeftover = finalPop;
 
                 currentRunEnded = true;
                 selectedRunLog = runNumber;
@@ -3620,7 +3252,7 @@
                 for (let i = agents.length - 1; i >= 0; i--) {
                     const a = agents[i];
                     const dist = Math.hypot(a.x - cx, a.y - cy);
-                    const size = agentDrawRadius(a);
+                    const size = 3 + Math.sqrt(Math.max(0, a.food)) * 0.5;
                     if (dist < size + 18) { selectedAgent = a; break; }
                 }
                 updateInspector();   // will be defined later
@@ -3647,12 +3279,12 @@
                 if (nSl) { nSl.disabled = true; nSl.style.opacity = '0.45'; }
                 bind('slider-food-spawn', 'val-food-spawn',
                     function () { return foodSpawn; },
-                    function (v) { foodSpawn = Math.max(1, Math.min(20, parseInt(v, 10) || 1)); },
+                    function (v) { foodSpawn = parseInt(v, 10); },
                     function (v) { return String(v); },
                     function () { markIslandCustom(); updateDifferRailChip(); syncSliders(); });
                 bind('slider-food-spawn-rail', 'val-food-spawn-rail',
                     function () { return foodSpawn; },
-                    function (v) { foodSpawn = Math.max(1, Math.min(20, parseInt(v, 10) || 1)); },
+                    function (v) { foodSpawn = parseInt(v, 10); },
                     function (v) { return String(v); },
                     function () { markIslandCustom(); updateDifferRailChip(); syncSliders(); });
                 bind('slider-sense-radius', 'val-sense-radius',
@@ -3843,17 +3475,6 @@
                 return '';
             }
 
-            function remnantChipsHtml(r) {
-                const rem = r.remnant || [];
-                if (!rem.length) return '—';
-                let h = '';
-                for (let i = 0; i < rem.length; i++) {
-                    const g = rem[i];
-                    h += '<span class="rchip" style="color:' + escapeHtml(g.color || '#94a3b8') + '" title="' + escapeHtml(g.name || g.id) + '">' + (g.alive | 0) + '</span>';
-                }
-                return h;
-            }
-
             function historyTableHtml(rowsNewestFirst, opts) {
                 opts = opts || {};
                 const compact = !!opts.compact;
@@ -3865,13 +3486,17 @@
                     const r = rowsNewestFirst[i];
                     const end = r.finalPop ?? 0;
                     const endClass = end === 0 ? 'end-zero' : '';
-                    const mix = escapeHtml(r.mixLabel || 'crowd');
+                    const hung = formatHistNum(r.avgHunger, 0);
+                    const food = formatHistNum(r.avgFood, 1);
+                    const long = r.longestSec != null ? r.longestSec : (r.durationSec || 0);
                     rows += `<tr>
   <td style="color:var(--muted)">${r.run}</td>
-  <td class="mix" title="${mix}">${mix}</td>
+  <td class="${presetClass(r.preset)}">${presetShort(r.preset)}</td>
   <td class="r">${r.durationSec ?? 0}s</td>
   <td class="r ${endClass}">${end}</td>
-  <td>${remnantChipsHtml(r)}</td>
+  <td class="r">${hung}</td>
+  <td class="r food-col">${food}</td>
+  ${compact ? '' : `<td class="r" style="color:var(--good)">${long}s</td>`}
 </tr>`;
                 }
                 return `
@@ -3879,10 +3504,12 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>Mix</th>
+      <th>Pre</th>
       <th class="r">Dur</th>
-      <th class="r">Left</th>
-      <th>Who</th>
+      <th class="r">End</th>
+      <th class="r">Hung</th>
+      <th class="r">Food</th>
+      ${compact ? '' : '<th class="r">Long</th>'}
     </tr>
   </thead>
   <tbody>${rows}</tbody>
@@ -3907,16 +3534,19 @@
                     const endLabel = r.endedBy === 'reset' ? 'reset' : (r.endedBy === 'extinction' ? 'extinct' : (end === 0 ? 'extinct' : '—'));
                     const sel = (selectedRunLog === r.run) ? ' logs-sel' : '';
                     const spN = r.special && r.special.customCount ? r.special.customCount : 0;
-                    const mix = escapeHtml(r.mixLabel || 'crowd');
                     rows += `<tr class="logs-row${sel}" data-run="${r.run}" onclick="selectRunLog(${r.run})">
   <td style="color:var(--muted)">${r.run}</td>
-  <td class="mix" title="${mix}">${mix}</td>
+  <td class="${presetClass(r.preset)}">${presetShort(r.preset)}</td>
+  <td class="${policyClass(pol)}">${policyShort(pol)}</td>
   <td class="r">${n}</td>
   <td class="r">${r.durationSec ?? 0}s</td>
+  <td class="r" style="color:var(--good)">${long}s</td>
   <td class="r">${dead}</td>
   <td class="r ${endClass}">${end}</td>
-  <td>${remnantChipsHtml(r)}</td>
+  <td class="r">${hung}</td>
+  <td class="r food-col">${food}</td>
   <td>${endLabel}</td>
+  <td class="r" style="color:${spN ? '#fbbf24' : 'var(--muted)'}">${spN || '—'}</td>
 </tr>`;
                 }
                 return `
@@ -3924,13 +3554,17 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>Mix</th>
+      <th>Pre</th>
+      <th>Pol</th>
       <th class="r">N</th>
       <th class="r">Dur</th>
+      <th class="r">Long</th>
       <th class="r">Dead</th>
-      <th class="r">Left</th>
-      <th>Who</th>
+      <th class="r">Fin</th>
+      <th class="r">Hung</th>
+      <th class="r">Food</th>
       <th>End</th>
+      <th class="r" title="Special custom override count">Sp</th>
     </tr>
   </thead>
   <tbody>${rows}</tbody>
@@ -3971,7 +3605,7 @@
 
                 if (!runHistory.length) {
                     titleEl.textContent = 'No runs yet';
-                    bodyEl.innerHTML = '<span style="color:var(--muted)">Finish a run (everyone dies or Reset) to log the mix and who was left.</span>';
+                    bodyEl.innerHTML = '<span style="color:var(--muted)">Finish a run (extinction or Reset) to log knobs and outcomes.</span>';
                     return;
                 }
 
@@ -3981,54 +3615,70 @@
                     selectedRunLog = r.run;
                 }
 
-                titleEl.textContent = 'Run #' + r.run + ' · ' + (r.mixLabel || 'crowd') + ' · leftover ' + (r.finalPop ?? 0);
+                const pol = r.movementPolicy || (r.knobs && r.knobs.movementPolicy) || '—';
+                titleEl.textContent = 'Run #' + r.run + ' · ' + (r.preset || '—') + ' · ' + pol;
 
                 let html = '';
+                html += '<div class="d-title" style="margin-bottom:0.2rem">Outcomes</div>';
                 html += kvHtml([
-                    ['mix', r.mixLabel || 'crowd'],
-                    ['kind', r.mixMode === 'roster' ? 'roster' : 'groups'],
-                    ['duration', String(r.durationSec ?? '—') + 's'],
+                    ['durationSec', String(r.durationSec ?? '—')],
+                    ['longestSec', String(r.longestSec ?? '—')],
                     ['deaths', String(r.deaths ?? '—')],
-                    ['leftover', String(r.finalPop ?? '—')],
-                    ['ended', r.endedBy === 'extinction' ? 'everyone died' : (r.endedBy || 'reset')]
+                    ['finalPop', String(r.finalPop ?? '—')],
+                    ['avgPop', String(r.avgPop ?? '—')],
+                    ['avgHunger', formatHistNum(r.avgHunger, 2)],
+                    ['avgFood', formatHistNum(r.avgFood, 2)],
+                    ['endedBy', r.endedBy || '—']
                 ]);
 
-                const groups = r.groups && r.groups.length ? r.groups : (r.remnant || []);
-                html += '<div class="sec"><div class="sec-h">Groups</div>';
-                if (!groups.length) {
-                    html += '<div style="color:var(--muted);font-size:10px">No group snapshot on this run.</div>';
-                } else {
-                    for (let i = 0; i < groups.length; i++) {
-                        const g = groups[i];
-                        html += '<div class="gblock">';
-                        html += '<div class="ghead"><span class="gname"><span class="differ-sw" style="background:' + escapeHtml(g.color || '#94a3b8') + '"></span>' +
-                            escapeHtml(g.name || g.id) + '</span><span class="gleft">' + (g.alive | 0) + ' / ' + (g.started | 0) + '</span></div>';
-                        html += '<div class="gtraits">' + escapeHtml(traitLine(g)) + '</div>';
-                        html += '</div>';
+                html += '<div class="sec"><div class="sec-h" style="color:#7dd3fc">World knobs</div>';
+                if (r.knobs) {
+                    const k = r.knobs;
+                    const order = [
+                        'preset', 'movementPolicy', 'initialAgents', 'foodSpawn',
+                        'sight', 'hungerPull', 'seekPush', 'drift',
+                        'maxSpeed', 'hungerRate', 'gluttony', 'efficiency', 'eatThreshold',
+                        'seekMaster', 'agentMaster'
+                    ];
+                    const pairs = [];
+                    for (let i = 0; i < order.length; i++) {
+                        const key = order[i];
+                        if (k[key] !== undefined) pairs.push([key, formatKnobVal(key, k[key])]);
                     }
+                    html += kvHtml(pairs);
+                } else {
+                    html += '<div style="color:var(--muted);font-size:10px">No knob snapshot (run recorded before 0.9.4-run-logs).</div>';
                 }
                 html += '</div>';
 
-                if (r.mixMode === 'roster') {
-                    const surv = r.survivors || [];
-                    html += '<div class="sec"><div class="sec-h">Survivors (' + surv.length + ')</div>';
-                    if (!surv.length) {
-                        html += '<div style="color:var(--muted);font-size:10px">Nobody left.</div>';
-                    } else {
-                        html += '<table class="surv"><thead><tr><th>Name</th><th>Group</th><th class="r">Hunger</th><th class="r">Eff</th><th class="r">Hunt</th><th class="r">Speed</th></tr></thead><tbody>';
-                        for (let i = 0; i < surv.length; i++) {
-                            const s = surv[i];
-                            const gname = (groups.filter(function (g) { return g.id === s.sourceGroupId; })[0] || {}).name || s.sourceGroupId || '';
-                            html += '<tr><td>' + escapeHtml(s.name) + '</td><td>' + escapeHtml(gname) + '</td>' +
-                                '<td class="r">' + Number(s.hungerRate).toFixed(3) + '</td>' +
-                                '<td class="r">' + Number(s.efficiency).toFixed(2) + '</td>' +
-                                '<td class="r">' + Number(s.hunt).toFixed(2) + '</td>' +
-                                '<td class="r">' + Number(s.maxSpeed).toFixed(1) + '</td></tr>';
+                html += '<div class="sec"><div class="sec-h">Special agent</div>';
+                if (r.special) {
+                    const s = r.special;
+                    const spPairs = [
+                        ['agentId', s.agentId != null ? '#' + s.agentId : '—'],
+                        ['aliveAtEnd', s.alive ? 'yes' : 'no'],
+                        ['lifeSec', s.lifeSec != null ? String(s.lifeSec) : '—'],
+                        ['finalHunger', s.finalHunger != null ? formatHistNum(s.finalHunger, 1) : '—'],
+                        ['finalFood', s.finalFood != null ? formatHistNum(s.finalFood, 2) : '—'],
+                        ['customCount', String(s.customCount != null ? s.customCount : 0)]
+                    ];
+                    html += kvHtml(spPairs);
+                    const ovs = s.overrides || {};
+                    const oKeys = Object.keys(ovs);
+                    if (oKeys.length) {
+                        html += '<div class="d-title" style="margin-top:0.4rem">Custom overrides</div>';
+                        const op = [];
+                        for (let i = 0; i < oKeys.length; i++) {
+                            op.push([oKeys[i], formatKnobVal(oKeys[i], ovs[oKeys[i]])]);
                         }
-                        html += '</tbody></table>';
+                        html += kvHtml(op);
+                    } else {
+                        html += '<div style="color:var(--muted);font-size:10px;margin-top:0.25rem">No custom overrides (matched world).</div>';
                     }
-                    html += '</div>';
+                } else {
+                    html += '<div style="color:var(--muted);font-size:10px">No special snapshot.</div>';
                 }
+                html += '</div>';
 
                 bodyEl.innerHTML = html;
             }
@@ -4056,25 +3706,27 @@
             }
 
             function runRecordForExport(r) {
-                const rec = {
+                return {
                     run: r.run,
-                    mix: r.mixLabel || null,
-                    kind: r.mixMode === 'roster' ? 'roster' : 'groups',
-                    n: r.initialAgents,
+                    preset: r.preset,
+                    movementPolicy: r.movementPolicy || (r.knobs && r.knobs.movementPolicy) || null,
+                    initialAgents: r.initialAgents,
                     durationSec: r.durationSec,
+                    longestSec: r.longestSec,
                     deaths: r.deaths,
-                    leftover: r.finalPop,
-                    endedBy: r.endedBy === 'extinction' ? 'everyone died' : (r.endedBy || 'reset'),
-                    groups: r.groups || r.remnant || []
+                    finalPop: r.finalPop,
+                    avgPop: r.avgPop,
+                    avgHunger: r.avgHunger,
+                    avgFood: r.avgFood,
+                    endedBy: r.endedBy,
+                    knobs: r.knobs || null,
+                    special: r.special || null
                 };
-                if (r.mixMode === 'roster') rec.survivors = r.survivors || [];
-                return rec;
             }
 
             function buildExportEnvelope(runsArr) {
                 return {
                     version: APP_VERSION,
-                    kind: 'differ-session',
                     exportedAt: new Date().toISOString(),
                     runs: runsArr.map(runRecordForExport)
                 };
@@ -4192,14 +3844,14 @@
                 const bestSub = document.getElementById('history-modal-best-sub');
                 const stats = computeOverallStats();
                 if (bestVal && bestSub) {
-                    if (!stats || stats.bestLeftover == null) {
+                    if (!stats || !stats.bestLongest) {
                         bestVal.textContent = '—';
                         bestSub.textContent = 'no runs yet';
                     } else {
-                        bestVal.textContent = String(stats.bestLeftover);
+                        bestVal.textContent = stats.bestLongest + 's';
                         bestSub.textContent = stats.bestRun
-                            ? ('run #' + stats.bestRun + ' · ' + (stats.bestMix || 'crowd'))
-                            : 'most leftover';
+                            ? ('run #' + stats.bestRun + ' · ' + presetShort(stats.bestPreset))
+                            : 'best this session';
                     }
                 }
 
@@ -4232,7 +3884,6 @@
             function clearRuns() {
                 runHistory = [];
                 bestLongestSec = 0;
-                bestLeftover = 0;
                 selectedRunLog = null;
                 renderRunHistory();
                 updateHistoryStats();
@@ -4240,18 +3891,22 @@
 
             function computeOverallStats() {
                 if (!runHistory || runHistory.length === 0) return null;
-                let best = { leftover: -1, run: 0, mix: '' };
+                let best = { longest: 0, run: 0, preset: '' };
                 for (let r of runHistory) {
-                    const left = r.finalPop != null ? r.finalPop : 0;
-                    if (left > best.leftover) {
-                        best = { leftover: left, run: r.run, mix: r.mixLabel || '' };
+                    // Prefer longestSec; fall back to durationSec for older records
+                    const long = (r.longestSec != null) ? r.longestSec : (r.durationSec || 0);
+                    if (long > best.longest) {
+                        best = { longest: long, run: r.run, preset: r.preset || '' };
                     }
                 }
-                if (bestLeftover > best.leftover) best.leftover = bestLeftover;
+                // Keep global bestLongestSec in sync for display
+                if (bestLongestSec > best.longest) {
+                    best.longest = bestLongestSec;
+                }
                 return {
-                    bestLeftover: best.leftover < 0 ? 0 : best.leftover,
+                    bestLongest: best.longest || bestLongestSec,
                     bestRun: best.run,
-                    bestMix: best.mix
+                    bestPreset: best.preset
                 };
             }
 
@@ -4261,15 +3916,16 @@
                 if (!valEl || !subEl) return;
 
                 const stats = computeOverallStats();
-                if (!stats || !runHistory.length) {
+                if (!stats || !stats.bestLongest) {
                     valEl.textContent = '—';
                     subEl.textContent = 'no runs yet';
                     return;
                 }
-                valEl.textContent = String(stats.bestLeftover);
+                valEl.textContent = stats.bestLongest + 's';
+                const pre = presetShort(stats.bestPreset);
                 subEl.textContent = stats.bestRun
-                    ? ('most leftover · run #' + stats.bestRun)
-                    : 'most leftover this session';
+                    ? `best · run #${stats.bestRun} · ${pre}`
+                    : 'best this session';
             }
 
             function differMetricCastes() {
@@ -4302,145 +3958,6 @@
                     }
                 }
                 return rows;
-            }
-
-            function mixLabelFromApplied() {
-                const c = appliedDiffer;
-                if (!c) return 'crowd';
-                if (c.name) return String(c.name);
-                const gs = differMetricCastes();
-                if (!gs.length) return 'crowd';
-                return gs.map(function (g) { return (g.name || g.id) + ' ' + (g.started | 0); }).join(' / ');
-            }
-
-            function remnantSnapshot() {
-                const gs = differMetricCastes();
-                const stats = {};
-                for (let i = 0; i < agents.length; i++) {
-                    const a = agents[i];
-                    const id = a.sourceGroupId || a.groupColor || 'x';
-                    stats[id] = (stats[id] || 0) + 1;
-                }
-                return gs.map(function (g) {
-                    return {
-                        id: g.id,
-                        name: g.name,
-                        color: g.color,
-                        started: g.started | 0,
-                        alive: stats[g.id] || 0
-                    };
-                });
-            }
-
-            function traitLine(t) {
-                if (!t || !Number.isFinite(Number(t.hungerRate))) return '—';
-                return 'hunger ' + Number(t.hungerRate).toFixed(3) +
-                    ' · efficiency ' + Number(t.efficiency).toFixed(2) +
-                    ' · hunt ' + Number(t.hunt).toFixed(2) +
-                    ' · speed ' + Number(t.maxSpeed).toFixed(1);
-            }
-
-            function snapshotMixForLog(remnant) {
-                const c = appliedDiffer || {};
-                const mode = c.mode === 'roster' ? 'roster' : 'groups';
-                const byId = {};
-                const gs = c.groups || [];
-                for (let i = 0; i < gs.length; i++) {
-                    const g = gs[i];
-                    byId[g.id] = g;
-                }
-                const groups = (remnant || []).map(function (r) {
-                    const g = byId[r.id] || {};
-                    return {
-                        id: r.id,
-                        name: r.name,
-                        color: r.color,
-                        started: r.started | 0,
-                        alive: r.alive | 0,
-                        hungerRate: g.hungerRate,
-                        efficiency: g.efficiency,
-                        hunt: g.hunt,
-                        maxSpeed: g.maxSpeed
-                    };
-                });
-                const survivors = [];
-                if (mode === 'roster') {
-                    for (let i = 0; i < agents.length; i++) {
-                        const a = agents[i];
-                        const t = a.traits || {};
-                        survivors.push({
-                            name: a.displayName || a.bodyId || ('#' + a.id),
-                            bodyId: a.bodyId || '',
-                            sourceGroupId: a.sourceGroupId || '',
-                            color: a.groupColor || '#94a3b8',
-                            hungerRate: t.hungerRate,
-                            efficiency: t.efficiency,
-                            hunt: t.hunt,
-                            maxSpeed: t.maxSpeed,
-                            hunger: Math.round(a.hunger * 10) / 10,
-                            bag: Math.round(a.food * 10) / 10
-                        });
-                    }
-                }
-                return { mode: mode, groups: groups, survivors: survivors };
-            }
-
-            function emptyTrendSeries() {
-                return { pop: [], bag: [], hunger: [] };
-            }
-
-            function initTrendGroups() {
-                trendGroupMeta = differMetricCastes();
-                trendByGroup = {};
-                for (let i = 0; i < trendGroupMeta.length; i++) {
-                    trendByGroup[trendGroupMeta[i].id] = emptyTrendSeries();
-                }
-            }
-
-            function sampleTrendPoint() {
-                lastTrendSampleTick = tick;
-                if (agents.length > 0) {
-                    runPopSum += agents.length;
-                    let hSum = 0;
-                    let fSum = 0;
-                    for (let i = 0; i < agents.length; i++) {
-                        hSum += agents[i].hunger;
-                        fSum += agents[i].food;
-                    }
-                    runHungerSum += hSum / agents.length;
-                    runFoodSum += fSum / agents.length;
-                    runSampleCount++;
-                }
-                const stats = {};
-                for (let i = 0; i < agents.length; i++) {
-                    const a = agents[i];
-                    const id = a.sourceGroupId || a.groupColor || 'x';
-                    if (!stats[id]) stats[id] = { n: 0, h: 0, f: 0 };
-                    stats[id].n++;
-                    stats[id].h += a.hunger;
-                    stats[id].f += a.food;
-                }
-                trendSampleAt.push(Math.max(0, tick - runStartTick));
-                for (let i = 0; i < trendGroupMeta.length; i++) {
-                    const id = trendGroupMeta[i].id;
-                    if (!trendByGroup[id]) trendByGroup[id] = emptyTrendSeries();
-                    const ser = trendByGroup[id];
-                    const s = stats[id] || { n: 0, h: 0, f: 0 };
-                    const n = s.n;
-                    ser.pop.push(n);
-                    ser.bag.push(n ? (s.f / n) : (ser.bag.length ? ser.bag[ser.bag.length - 1] : 0));
-                    ser.hunger.push(n ? (s.h / n) : (ser.hunger.length ? ser.hunger[ser.hunger.length - 1] : 0));
-                }
-                if (trendSampleAt.length > MAX_TREND_SAMPLES) {
-                    trendSampleAt.shift();
-                    for (let i = 0; i < trendGroupMeta.length; i++) {
-                        const ser = trendByGroup[trendGroupMeta[i].id];
-                        if (!ser) continue;
-                        ser.pop.shift();
-                        ser.bag.shift();
-                        ser.hunger.shift();
-                    }
-                }
             }
 
             function updateMetricsTab() {
@@ -4479,7 +3996,7 @@
                     }
                     return;
                 }
-                if (hint) hint.textContent = 'Per group (max 8). Click a person for one body.';
+                if (hint) hint.textContent = 'Per caste (max 8). Click an agent for one body.';
                 box.innerHTML = castes.map(function (g) {
                     const s = stats[g.id] || { n: 0, h: 0, f: 0 };
                     const al = s.n;
@@ -4488,12 +4005,10 @@
                     const fAvg = al ? (s.f / al).toFixed(1) : '—';
                     return '<div class="gmet-row">' +
                         '<span class="differ-sw" style="background:' + escapeHtml(g.color) + '"></span>' +
-                        '<div class="gmet-main">' +
-                        '<div class="gmet-top"><span class="nm">' + escapeHtml(g.name) + '</span>' +
-                        '<span class="al">' + al + '/' + (g.started | 0) + '</span></div>' +
-                        '<div class="hf">hunger ' + hAvg + ' · bag ' + fAvg +
-                        ' <span class="de">−' + dead + '</span></div>' +
-                        '</div></div>';
+                        '<span class="nm">' + escapeHtml(g.name) + '</span>' +
+                        '<span class="nums"><span class="al">' + al + '/' + (g.started | 0) + '</span> <span class="de">−' + dead + '</span><br>' +
+                        '<span class="hf">H ' + hAvg + ' · bag ' + fAvg + '</span></span>' +
+                        '</div>';
                 }).join('');
             }
 
@@ -4507,97 +4022,63 @@
                 if (canvasEl.height !== cssH) canvasEl.height = cssH;
             }
 
-            function trendXMax() {
-                const elapsed = Math.max(0, tick - runStartTick);
-                const last = trendSampleAt.length ? trendSampleAt[trendSampleAt.length - 1] : 0;
-                return Math.max(1, elapsed, last);
-            }
+            function drawTrendChart(canvasEl, data, color, runDurationTicks) {
+                if (!canvasEl || !data || data.length < 2) return;
+                sizeTrendCanvas(canvasEl);
+                const ctx = canvasEl.getContext('2d');
+                if (!ctx) return;
+                const w = canvasEl.width, h = canvasEl.height;
+                ctx.clearRect(0, 0, w, h);
 
-            function strokeSeries(ctx, data, color, width, yMax, w, h) {
-                if (!data || !data.length) return;
-                const range = yMax || 1;
-                const xMax = trendXMax();
-                function xAt(i) {
-                    const t = trendSampleAt[i] != null ? trendSampleAt[i] : i;
-                    return (t / xMax) * (w - 1);
+                let min = Infinity, max = -Infinity;
+                for (let i = 0; i < data.length; i++) {
+                    const v = data[i];
+                    if (!Number.isFinite(v)) continue;
+                    if (v < min) min = v;
+                    if (v > max) max = v;
                 }
-                function yAt(v) {
-                    return h - 2 - (Math.max(0, v) / range) * (h - 4);
-                }
+                if (!Number.isFinite(min) || !Number.isFinite(max)) return;
+                const range = (max - min) || 1;
+
                 ctx.strokeStyle = color;
-                ctx.fillStyle = color;
-                ctx.lineWidth = width;
-                if (data.length === 1) {
-                    const v = Number(data[0]);
-                    if (!Number.isFinite(v)) return;
-                    ctx.beginPath();
-                    ctx.arc(xAt(0), yAt(v), 2.2, 0, Math.PI * 2);
-                    ctx.fill();
-                    return;
-                }
+                ctx.lineWidth = 1.5;
                 ctx.beginPath();
                 let started = false;
                 for (let i = 0; i < data.length; i++) {
-                    const v = Number(data[i]);
+                    const v = data[i];
                     if (!Number.isFinite(v)) continue;
-                    const x = xAt(i);
-                    const y = yAt(v);
+                    const x = (i / (data.length - 1)) * (w - 1);
+                    const y = h - 2 - ((v - min) / range) * (h - 4);
                     if (!started) { ctx.moveTo(x, y); started = true; }
                     else ctx.lineTo(x, y);
                 }
                 if (started) ctx.stroke();
             }
 
-            function trendFieldMax(field) {
-                let m = 1;
-                for (let i = 0; i < trendGroupMeta.length; i++) {
-                    const ser = trendByGroup[trendGroupMeta[i].id];
-                    const data = ser && ser[field];
-                    if (!data) continue;
-                    for (let j = 0; j < data.length; j++) {
-                        const v = Number(data[j]);
-                        if (Number.isFinite(v) && v > m) m = v;
-                    }
-                }
-                return m;
-            }
-
-            function drawGroupTrend(canvasEl, field, yMax) {
-                if (!canvasEl) return;
-                sizeTrendCanvas(canvasEl);
-                const ctx = canvasEl.getContext('2d');
-                if (!ctx) return;
-                const w = canvasEl.width, h = canvasEl.height;
-                ctx.clearRect(0, 0, w, h);
-                yMax = Math.max(1, yMax || 1);
-                for (let i = 0; i < trendGroupMeta.length; i++) {
-                    const g = trendGroupMeta[i];
-                    const ser = trendByGroup[g.id];
-                    const data = ser && ser[field];
-                    strokeSeries(ctx, data, g.color || '#38bdf8', 1.25, yMax, w, h);
-                }
-            }
-
-            function renderTrendLegend() {
-                const el = document.getElementById('trend-legend');
-                if (!el) return;
-                let h = '';
-                for (let i = 0; i < trendGroupMeta.length; i++) {
-                    const g = trendGroupMeta[i];
-                    h += '<span class="lg"><span class="sw" style="background:' + escapeHtml(g.color) + '"></span>' + escapeHtml(g.name || g.id) + '</span>';
-                }
-                el.innerHTML = h || '<span class="lg">No groups this run</span>';
-            }
-
             function renderTrends() {
-                let popMax = 0;
-                for (let i = 0; i < trendGroupMeta.length; i++) {
-                    popMax = Math.max(popMax, trendGroupMeta[i].started | 0);
+                const popC = document.getElementById('chart-pop');
+                const foodC = document.getElementById('chart-food');
+                const hungerC = document.getElementById('chart-hunger');
+
+                const runDuration = tick - runStartTick;
+
+                drawTrendChart(popC, trendPop, '#38bdf8', runDuration);
+                drawTrendChart(foodC, trendFood, '#67e8f9', runDuration);
+                drawTrendChart(hungerC, trendAvgHunger, '#fb7185', runDuration);
+
+                const pinnedSection = document.getElementById('pinned-section');
+                if (pinnedAgent) {
+                    if (pinnedSection) pinnedSection.classList.remove('hidden');
+                    updatePinnedBoxStatus();
+                    if (pinnedHunger.length > 1) {
+                        const pHungerC = document.getElementById('chart-pinned-hunger');
+                        const pFoodC = document.getElementById('chart-pinned-food');
+                        if (pHungerC) drawTrendChart(pHungerC, pinnedHunger, '#818cf8', runDuration);
+                        if (pFoodC) drawTrendChart(pFoodC, pinnedFood, '#818cf8', runDuration);
+                    }
+                } else if (pinnedSection) {
+                    pinnedSection.classList.add('hidden');
                 }
-                drawGroupTrend(document.getElementById('chart-pop'), 'pop', Math.max(1, popMax));
-                drawGroupTrend(document.getElementById('chart-bag'), 'bag', trendFieldMax('bag'));
-                drawGroupTrend(document.getElementById('chart-hunger'), 'hunger', 100);
-                renderTrendLegend();
             }
 
             function setSpeed(n) {
@@ -4622,12 +4103,12 @@
             function getPresetEnv(type) {
                 // Island only: food spawn + initial agents. First-pass after dropping ground fill.
                 if (type === 'lenient') {
-                    return { foodSpawn: 4, initialAgents: 35 };
+                    return { foodSpawn: 6, initialAgents: 35 };
                 }
                 if (type === 'punishing') {
-                    return { foodSpawn: 16, initialAgents: 80 };
+                    return { foodSpawn: 18, initialAgents: 80 };
                 }
-                return { foodSpawn: 6, initialAgents: 60 };
+                return { foodSpawn: 8, initialAgents: 60 };
             }
 
             function applyPreset(type) {
@@ -4943,7 +4424,6 @@
             }
 
             function renderDifferModal() {
-                renderDifferStories();
                 const list = document.getElementById('differ-list');
                 const edit = document.getElementById('differ-edit');
                 const tg = document.getElementById('differ-tab-groups');
@@ -4996,7 +4476,7 @@
                 const bs = d.bodies;
                 if (differSel >= bs.length) differSel = Math.max(0, bs.length - 1);
                 let html = '<div class="roster-gbar" id="roster-gbar">';
-                html += '<div class="text-[10px] text-slate-400 mb-1">Groups are names. Color is only paint for everyone in that group. To look different, move a person to another group.</div>';
+                html += '<div class="text-[10px] text-slate-400 mb-1">Groups — add / rename here. Color on an agent assigns the group.</div>';
                 for (let i = 0; i < d.groups.length; i++) {
                     const g = d.groups[i];
                     const mem = bs.filter(function (b) { return b.sourceGroupId === g.id; }).length;
@@ -5010,7 +4490,7 @@
                 html += '<div class="differ-agent-scroll"><table class="differ-tbl"><thead><tr><th></th><th>ID</th><th>Hunt</th><th>Burn</th></tr></thead><tbody>';
                 for (let i = 0; i < bs.length; i++) {
                     const b = bs[i];
-                    html += '<tr class="' + (i === differSel ? 'on' : '') + '" data-i="' + i + '"><td><span class="differ-sw" style="background:' + escapeHtml(bodyVizColor(b, d.groups)) + '"></span></td>';
+                    html += '<tr class="' + (i === differSel ? 'on' : '') + '" data-i="' + i + '"><td><span class="differ-sw" style="background:' + escapeHtml(b.color) + '"></span></td>';
                     html += '<td class="font-mono">' + escapeHtml(b.bodyId) + '</td><td>' + Number(b.hunt).toFixed(2) + '</td><td>' + Number(b.hungerRate).toFixed(3) + '</td></tr>';
                 }
                 html += '</tbody></table></div>';
@@ -5081,7 +4561,7 @@
                     bs.push({
                         bodyId: (gid || 'AGT') + '-' + String(n).padStart(2, '0'),
                         name: 'Agent ' + n,
-                        color: (g && g.color) || col,
+                        color: col,
                         sourceGroupId: gid,
                         hungerRate: (g && g.hungerRate) || (src && src.hungerRate) || 0.062,
                         efficiency: (g && g.efficiency) || (src && src.efficiency) || 1.6,
@@ -5113,57 +4593,81 @@
                 wireDifferEditor(b, false);
             }
 
-            function groupById(id, groups) {
-                const gs = groups || (currentDraft() && currentDraft().groups) || [];
+            function groupForColor(hex) {
+                const gs = currentDraft().groups || [];
+                const want = String(hex || '').toLowerCase();
+                for (let i = 0; i < gs.length; i++) {
+                    if (String(gs[i].color || '').toLowerCase() === want) return gs[i];
+                }
+                return null;
+            }
+
+            function groupById(id) {
+                const gs = currentDraft().groups || [];
                 for (let i = 0; i < gs.length; i++) {
                     if (gs[i].id === id) return gs[i];
                 }
                 return null;
             }
 
-            function bodyVizColor(b, groups) {
-                const g = groupById(b && b.sourceGroupId, groups);
-                return (g && g.color) || (b && b.color) || '#64748b';
+            function upsertGroupForColor(hex) {
+                let g = groupForColor(hex);
+                if (g) return g;
+                if (!currentDraft().groups) currentDraft().groups = [];
+                if (currentDraft().groups.length >= DIFFER_MAX_GROUPS) return groupForColor(hex);
+                const i = currentDraft().groups.length;
+                g = {
+                    id: 'G' + i,
+                    name: 'Group ' + (i + 1),
+                    color: hex,
+                    n: 0,
+                    hungerRate: 0.062,
+                    efficiency: 1.6,
+                    hunt: 0.5,
+                    maxSpeed: 2
+                };
+                currentDraft().groups.push(g);
+                return g;
             }
 
-            function paintRosterGroup(gid, hex) {
-                const d = currentDraft();
-                const g = groupById(gid, d.groups);
-                if (g) g.color = hex;
-                const bs = d.bodies || [];
-                for (let i = 0; i < bs.length; i++) {
-                    if (bs[i].sourceGroupId === gid) bs[i].color = hex;
-                }
-            }
-
-            function differRosterGroupRow(selectedGid) {
+            function differColorRow(selected, asGroupPicker, selectedGid) {
                 const gs = currentDraft().groups || [];
-                let h = '<div class="text-[10px] text-slate-500 mb-0.5">Group</div>';
-                h += '<p class="text-[10px] text-slate-500 mb-2">Who this person belongs to. Color is paint, not membership.</p>';
-                h += '<div class="differ-palette" id="de-groups">';
-                for (let i = 0; i < gs.length; i++) {
-                    const g = gs[i];
-                    const on = selectedGid && selectedGid === g.id;
-                    h += '<button type="button" class="differ-sw-wrap" data-gid="' + escapeHtml(g.id) + '" title="' + escapeHtml(g.name || g.id) + '">';
-                    h += '<span class="differ-sw-btn' + (on ? ' on' : '') + '" style="background:' + escapeHtml(g.color) + '"></span>';
-                    h += '<span class="sw-lab">' + escapeHtml(g.name || g.id) + '</span>';
-                    h += '</button>';
+                if (asGroupPicker) {
+                    let h = '<div class="text-[10px] text-slate-500 mb-0.5">Group (by color)</div>';
+                    h += '<p class="text-[10px] text-slate-500 mb-2">Name groups on the <strong>Groups</strong> tab. Roster only picks color — that color becomes the group.</p>';
+                    h += '<div class="differ-palette" id="de-colors">';
+                    const used = {};
+                    for (let i = 0; i < gs.length; i++) {
+                        const g = gs[i];
+                        used[String(g.color).toLowerCase()] = true;
+                        const on = (selectedGid && selectedGid === g.id)
+                            || (selected && String(selected).toLowerCase() === String(g.color).toLowerCase());
+                        h += '<button type="button" class="differ-sw-wrap" data-c="' + escapeHtml(g.color) + '" title="' + escapeHtml(g.name || g.id) + '">';
+                        h += '<span class="differ-sw-btn' + (on ? ' on' : '') + '" style="background:' + escapeHtml(g.color) + '"></span>';
+                        h += '<span class="sw-lab">' + escapeHtml(g.name || g.id) + '</span>';
+                        h += '</button>';
+                    }
+                    for (let i = 0; i < GROUP_COLORS.length; i++) {
+                        const c = GROUP_COLORS[i];
+                        if (used[c.toLowerCase()]) continue;
+                        const on = selected && String(selected).toLowerCase() === c.toLowerCase();
+                        h += '<button type="button" class="differ-sw-wrap" data-c="' + c + '" title="New group">';
+                        h += '<span class="differ-sw-btn' + (on ? ' on' : '') + '" style="background:' + c + '"></span>';
+                        h += '<span class="sw-lab">new</span>';
+                        h += '</button>';
+                    }
+                    h += '</div>';
+                    return h;
                 }
-                h += '</div>';
-                return h;
-            }
-
-            function differColorRow(selected) {
                 const palette = GROUP_COLORS.slice();
                 if (selected && !palette.some(function (c) { return c.toLowerCase() === String(selected).toLowerCase(); })) {
                     palette.push(selected);
                 }
-                let h = '<div class="text-[10px] text-slate-500 mb-0.5">Color (whole group)</div>';
-                h += '<p class="text-[10px] text-slate-500 mb-2">Dots on the island. Same paint for everyone in this group.</p>';
+                let h = '<div class="text-[10px] text-slate-500 mb-0.5">Color</div>';
                 h += '<div class="differ-palette" id="de-colors">';
                 for (let i = 0; i < palette.length; i++) {
                     const c = palette[i];
-                    const on = String(selected || '').toLowerCase() === String(c).toLowerCase() ? ' on' : '';
+                    const on = String(selected).toLowerCase() === String(c).toLowerCase() ? ' on' : '';
                     h += '<button type="button" class="differ-sw-wrap" data-c="' + escapeHtml(c) + '">';
                     h += '<span class="differ-sw-btn' + on + '" style="background:' + escapeHtml(c) + '"></span>';
                     h += '</button>';
@@ -5181,9 +4685,7 @@
                     h += '<label class="text-[10px] text-slate-500">Count</label>';
                     h += '<input type="number" id="de-n" min="1" max="100" class="w-full mb-1 bg-slate-950 border border-slate-700 rounded px-1 text-xs" value="' + (spec.n | 0) + '">';
                 }
-                if (!isGroup) h += differRosterGroupRow(spec.sourceGroupId);
-                const paint = isGroup ? spec.color : bodyVizColor(spec, currentDraft().groups);
-                h += differColorRow(paint);
+                h += differColorRow(spec.color, !isGroup, spec.sourceGroupId);
                 h += differSlider('Hunger rate', 'de-hung', 0.049, 0.084, 0.001, spec.hungerRate, 3);
                 h += differSlider('Efficiency', 'de-eff', 1.2, 2.4, 0.05, spec.efficiency, 2);
                 h += differSlider('Hunt', 'de-hunt', 0, 1, 0.01, spec.hunt, 2);
@@ -5216,35 +4718,21 @@
                 bind('de-spd', 'maxSpeed', 2);
                 const name = document.getElementById('de-name');
                 if (name) name.oninput = function () { spec.name = name.value; };
-                const groupsPick = document.getElementById('de-groups');
-                if (groupsPick) {
-                    groupsPick.querySelectorAll('[data-gid]').forEach(function (btn) {
-                        btn.onclick = function () {
-                            const gid = btn.getAttribute('data-gid');
-                            spec.sourceGroupId = gid;
-                            const g = groupById(gid);
-                            if (g) spec.color = g.color;
-                            renderDifferModal();
-                        };
-                    });
-                }
                 const colors = document.getElementById('de-colors');
                 if (colors) {
                     colors.querySelectorAll('[data-c]').forEach(function (btn) {
                         btn.onclick = function () {
                             const hex = btn.getAttribute('data-c');
-                            if (isGroup) {
-                                spec.color = hex;
-                                if (spec.id && currentDraft().bodies) {
-                                    for (let i = 0; i < currentDraft().bodies.length; i++) {
-                                        if (currentDraft().bodies[i].sourceGroupId === spec.id) {
-                                            currentDraft().bodies[i].color = hex;
-                                        }
+                            spec.color = hex;
+                            if (!isGroup) {
+                                const g = upsertGroupForColor(hex);
+                                if (g) spec.sourceGroupId = g.id;
+                            } else if (spec.id && currentDraft().bodies) {
+                                for (let i = 0; i < currentDraft().bodies.length; i++) {
+                                    if (currentDraft().bodies[i].sourceGroupId === spec.id) {
+                                        currentDraft().bodies[i].color = hex;
                                     }
                                 }
-                            } else {
-                                paintRosterGroup(spec.sourceGroupId, hex);
-                                spec.color = hex;
                             }
                             renderDifferModal();
                         };
@@ -6420,6 +5908,8 @@
             resetSpecialOverridesFromWorld();
             syncSpecialModalUI();
 
+            // NEW for v1 Run History
+            startNewRun();
             renderRunHistory();
             updateHistoryStats();
             updatePinnedBoxStatus();
@@ -6440,8 +5930,6 @@
             });
             
             start();
-            startNewRun();
-            renderTrendLegend();
         </script>
     </body>
 </html>

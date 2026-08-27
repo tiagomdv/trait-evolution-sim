@@ -8,6 +8,27 @@
 
 ---
 
+## How we talk (non-negotiable)
+
+Write like a person sitting next to the human at the sim. **Normal English.** This applies **every time** you work in this repo: chat replies, PR text, commit messages, comments in `index.html`, Help / Vision copy, README, FUTURE_FEATURES, IMPLEMENTATION_LOG, design notes, labels in the UI.
+
+Do:
+
+- Short sentences. Everyday words. Explain a knob by what you *see* (who lives, who starves, colors on the island).
+- Name buttons and files as they appear: Crowd…, Apply, Reset, Help, `index.html`.
+- If a term is unavoidable (hunger rate, hunt, remnant), define it once in plain words the first time it shows up in that doc or comment.
+- When unsure what to build next, say the trade-off in human language, then recommend one small step.
+
+Do not:
+
+- Dense “AI” packing: leftover jargon stacks, unexplained abbreviations, variable names as if they were product names (`t` curve, L/B/P, remnant, caste, decode, Track A/B) unless you immediately say what they mean.
+- Fake-precise science speak when we mean “try this mix and watch who is left.”
+- Writing docs as if the reader already memorized Survive Lab protocol.
+
+Comments in code: one line of *why*, in English. Not a diary of the implementation. Not leftover design-doc shorthand.
+
+---
+
 ## Process resteer (2026-07-23) — READ FIRST
 
 The old flow (full design doc → section-by-section human paste into `index.html` → AI never touches the sim) was too slow for layout work. **New default:**
@@ -52,10 +73,12 @@ Use this when shipping the next version (e.g. layout 0.8.x work currently local)
 ### Smoke test (layout PRs) — human or AI-guided
 
 - Start a new run; pause / resume; change speed
+- Crowd…: click a story, Apply, Reset — mix on the island matches
 - Open Trends and History tabs; charts still draw after tab switch
 - Inspector: select agent, pin/unpin if present, search-by-ID if present
 - Resize window; nothing critical overflows or vanishes
 - Confirm UI version string matches `VERSION`
+- Help still reads as a short how-to, then details
 
 ### Before opening the PR
 
@@ -113,7 +136,9 @@ A (layout) | B (mechanics) | mixed (human approved)
 
 ## Versioning Ritual (lightweight + milestone)
 
-**Scheme:** `N.x.y-codename` where **major N = phase number** (`0.x` = Phase 0 · Survive, …).
+**Scheme:** `N.x.y-codename` where **major N = phase number** (`0.x` = Phase 0 · Survive, `1.x` = Phase 1 · Differ, …).
+
+The **middle** number is a Differ (or later) *slice* — a thing you can play, not a typo fix. Crowd was `1.0.0`. Stories is `1.1.0`. Trends is `1.2.0`. The last number is a small fix on that slice (food slider range, copy, a bug). Don’t burn `1.0.1` on a real feature.
 
 ### Lightweight (Track A iteration)
 
@@ -179,6 +204,8 @@ Dismissed forever (or for a long time) → one line in `IMPLEMENTATION_LOG.md` (
 
 Prefer one mechanic per PR. Stay observable. Trait set finalized when Phase 1 begins.
 
+**Using leftover living agents to make the next crowd is Evolve**, not a Differ polish. Looking at who is still alive (click them, later Trends that know groups) can stay in Differ. Making children from those bodies — inheritance, mutation, “next year” — waits for Phase 2.
+
 ---
 
 ## Documentation Responsibilities
@@ -226,17 +253,19 @@ After the human approves a shipped change:
 - Editing anything under `archive/` except adding new snapshots + MANIFEST rows.
 - Overwriting or deleting history in **`IMPLEMENTATION_LOG.md`**.
 - Leaving **shipped or dismissed** items in **`FUTURE_FEATURES.md`** with completion markers (use the log, then delete from the backlog).
+- Jargon in Help, chat, or docs (write for a human who just opened Crowd…).
 
 ---
 
 ## Quick copy-paste for a new chat
 
 ```
-Read AGENTS.md fully (process resteer 2026-07-23 + backlog hygiene 2026-07-30).
-This session is Track A (layout) / Track B (mechanics): <pick one>.
+Read AGENTS.md fully (talk in normal English + process resteer 2026-07-23 + backlog hygiene 2026-07-30).
+This session is Track A (layout / chrome) / Track B (mechanics): <pick one>.
 Goal: <one sentence>.
 Live VERSION is the source of truth; archive before risky edits; single index.html.
 FUTURE_FEATURES is active backlog only — remove items when shipped; history goes in IMPLEMENTATION_LOG.
+Talk like a person: chat, comments, docs, UI copy. No jargon stacks.
 Do not push unless I ask. Open a PR only after I verify and request it.
 ```
 

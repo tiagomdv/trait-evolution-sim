@@ -1,6 +1,6 @@
 # Phase 1 · Differ import presets
 
-Open World → **Differ…** → **Import**. Files are `version: 2`, `kind: "differ"`.
+**Stories** in Crowd… : Groups = kinds (clones). Roster = ladders / scramble / oddballs (not copies of the group mixes). These JSON files are extra Import mixes. Format: `version: 2`, `kind: "differ"`.
 
 - `groups-*.json` — edit as types, then Reset.
 - `roster-*.json` — one row per body (same traits expanded).
