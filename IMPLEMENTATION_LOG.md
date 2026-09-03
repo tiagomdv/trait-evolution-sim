@@ -801,3 +801,16 @@ Same box on the screen. World is **2×** in both directions (`ISLAND_SCALE`). Do
 **Archive of previous:** `archive/index-1.4.0-island.html`
 
 World size locks on first real layout (`lockedWorldW` / `lockedWorldH`). Hide Mix / Hide graphs only resize the bitmap. Camera always fills left to right: Hide may crop top/bottom; putting a bar back shows the whole map. No extra land, no wrap. Buttons: **Hide Mix**, **Hide graphs**, slim vertical **Show Mix** / **Show graphs**. Trends: new **Total bag** line (sum of bags per group). Left KPI **Total bag** next to Avg bag. Path still 60%. Survive / Lab untouched. Human clicked Hide / unhide and said it was working.
+
+---
+
+## 2026-09-03 — `1.5.0-bump` (knock + hunger tax)
+
+**Version / Phase:** live `1.5.0-bump` · Phase 1 · Differ  
+**Archive of previous:** `archive/index-1.4.1-camera.html`
+
+When two people overlap they bounce and hunger goes **up**. Size is the drawn circle (bag): `3 + 1.5√bag`, no cap. Tax is `0.45 × r × √(r/10)` (skinny ~bag 20 stays ~linear; giants pay superlinear). Fat knocks farther and pays more hunger; thin gets shoved more and pays less. No food moves bag-to-bag. Cooldown 12 ticks so a pile does not tax every frame. Amber flash on the clash. Hunger rate, speed, sight, spawn unchanged. Same-color vs other-color still not a rule.
+
+**Path.** Human set **85%** through Differ.
+
+**Docs.** Bump dropped from `FUTURE_FEATURES.md`. Survive / Lab untouched.

@@ -35,6 +35,7 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-1.3.1-mix-ui.html` | 1.3.1-mix-ui | 1 · Differ | (local) | — | Mix box: Apply closes, four traits always, story blurbs |
 | `index-1.3.2-path.html` | 1.3.2-path | 1 · Differ | (local) | — | Path bar 30%; last live before zoom-out island |
 | `index-1.4.0-island.html` | 1.4.0-island | 1 · Differ | (this PR) | — | Zoom-out 2× world; last live before camera-locked Hide |
+| `index-1.4.1-camera.html` | 1.4.1-camera | 1 · Differ | #29 | — | Locked world + fill-width Hide camera + total bag; last live before bump |
 
 ---
 

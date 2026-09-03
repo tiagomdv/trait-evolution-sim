@@ -2,14 +2,14 @@
 
 **Open work only.** Shipped or dropped items go in `IMPLEMENTATION_LOG.md`, then leave this file.
 
-Live: Phase **1 · Differ** · `1.4.1-camera`. Path: Survive → Differ → Evolve → Economy. Path bar 60% through Differ (human set).  
+Live: Phase **1 · Differ** · `1.5.0-bump`. Path: Survive → Differ → Evolve → Economy. Path bar 85% through Differ (human set).  
 Live file is `index.html`. Do not grow `phase-0-survive-finished.html`.
 
 ---
 
 ## Phase 1 · Differ
 
-The mix already works: Mix, stories, Apply / Reset, graphs, run logs, fat leftovers slow down, three food spots, zoomed-out island. Still no babies. Island weather for Differ is done.
+The mix already works: Mix, stories, Apply / Reset, graphs, run logs, fat leftovers slow down, three food spots, zoomed-out island, bump. Still no babies. Island weather for Differ is done.
 
 **Desk (only if we miss it)**
 
@@ -71,20 +71,6 @@ Two different rules. Do not glue them into one “social” slider. Not queued u
 **Share** — I already have it, I give it. One pellet from my bag to a hungrier neighbor of the same Crowd color, only if my bag is above a bar. Fair-eat (already live) is who wins the pellet on the ground. Share is after you already won.
 
 Talk can exist with zero sharing. Share can exist with zero talk. “Kin” here means same group color, not blood (blood is Evolve). Trade clubs are Economy, not gifts.
-
----
-
-## Bump (not a phase, not next)
-
-When two people walk into each other. Parked. Bigger island is live. Not typed yet.
-
-**Locked rule (human, 2026-09-03):** bigger body = **bigger knock**. Hunger **goes up** (a cost, not a snack). The **bigger one pays more hunger** than the small one. Fat shoves hard and also burns harder for the clash. Thin gets moved more, pays less hunger.
-
-Size here is the drawn circle (bag), same as now. Cooldown so a camp does not tick every frame.
-
-**Do not:** lower hunger on bump (free meal, pile camps heal). Do not make the small one pay more. Do not move food bag-to-bag (that’s Share / Economy).
-
-**First look if we type it:** bounce you can see (flash, step apart, fat knocks farther) plus that hunger tax. Same-color vs other-color can wait. No new trait until a knock is visible.
 
 ---
 
