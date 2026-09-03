@@ -1691,7 +1691,7 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Agent evolution lab</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v1.5.0-bump</span>
+                    <span class="badge-version" id="version-badge">v1.4.1-camera</span>
                 </div>
                 <div class="header-mode" role="group" aria-label="App mode">
                     <button type="button" id="mode-world" class="btn-speed on" onclick="setAppMode('world')">World</button>
@@ -2234,7 +2234,7 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">1.5.0-bump</code> — people are <em>not</em> all the same (Phase 1 · Differ).
+                    Live is <code style="color:#7dd3fc">1.4.1-camera</code> — people are <em>not</em> all the same (Phase 1 · Differ).
                 </p>
 
                 <div class="help-sec">The long path</div>
@@ -2262,7 +2262,7 @@
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
                     People are not copies of each other. You set the mix in <strong>Mix</strong>.
-                    Version <code style="color:#7dd3fc">1.5.0-bump</code>.
+                    Version <code style="color:#7dd3fc">1.4.1-camera</code>.
                 </p>
 
                 <div class="help-sec">How a run works</div>
@@ -2284,13 +2284,12 @@
 
                 <div class="help-sec">What you see</div>
                 <div class="help-entry"><strong>Click a person</strong> — name, four traits, bag.</div>
-                <div class="help-entry"><strong>Fill color</strong> is paint for the whole group (not the group’s name). <strong>Pink ring</strong> = starving. <strong>Cyan pip</strong> = food in the bag. <strong>Amber flash</strong> = two people just bumped.</div>
+                <div class="help-entry"><strong>Fill color</strong> is paint for the whole group (not the group’s name). <strong>Pink ring</strong> = starving. <strong>Cyan pip</strong> = food in the bag.</div>
                 <div class="help-entry">Total people is the sum of group counts (or roster length). Cap 100.</div>
                 <div class="help-entry">Import / Export still work if you want a JSON file. Stories live in Mix; the files in the folder are extras.</div>
 
                 <div class="help-sec">Rules</div>
                 <div class="help-entry">Catch = bag +1, pellet gone. Reach is <strong>20 pixels past the drawn circle</strong>. Dots grow with the bag (still climbing after 1000–2000 pellets). Fat leftovers are slower — same speed trait, but the extra mass drags them. If several people reach the same pellet, a random one in range eats it.</div>
-                <div class="help-entry"><strong>Bump</strong> — walking into someone knocks you both. Hunger goes <em>up</em> (a cost, not a snack). Fat knocks farther and pays more hunger; thin gets shoved more and pays less. Food stays in each bag. A short cooldown so a pile does not tax every tick.</div>
                 <div class="help-entry">Bite size from the bag still uses a frozen “how big a mouthful” number times efficiency. Efficiency is the Differ trait; mouthful size is not.</div>
 
                 <div class="help-sec">Trends and History</div>
@@ -2347,9 +2346,9 @@
             // Integer phase index for "current" node. Survive is frozen; Differ is live.
             const CURRENT_PHASE = 1;
             // 0–1 how far Differ is toward Evolve. Bump this every ship (see AGENTS.md).
-            // Mix, stories, trends, spots, island, camera, bump. Human closed Differ at 100%.
+            // Mix, stories, trends, three spots, Mix box, zoomed-out island. Human set 60%.
             // Fill is a human call, not the version number.
-            const PHASE_WITHIN = 1;
+            const PHASE_WITHIN = 0.60;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
@@ -3181,7 +3180,7 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs + special snapshots
-            const APP_VERSION = '1.5.0-bump';
+            const APP_VERSION = '1.4.1-camera';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
@@ -3233,9 +3232,11 @@
                 return Number.isFinite(Number(f)) ? Math.max(0, Number(f)) : 0;
             }
 
-            // No flatten: radius keeps growing with √bag. Fat kings get huge.
+            // Size keeps climbing after 1000–2000 pellets (old 0.5×√bag flattened too soon).
             function agentDrawRadius(agent) {
-                return 3 + 1.5 * Math.sqrt(agentBag(agent));
+                const f = agentBag(agent);
+                const grow = Math.sqrt(f / (1 + f / 2800));
+                return 3 + grow * 1.15;
             }
 
             // Fat leftovers crawl. Skinny bodies keep their speed trait.
@@ -3284,8 +3285,6 @@
                     this.groupColor = spec.color || '#64748b';
                     this.sourceGroupId = spec.sourceGroupId || '';
                     this.traits = traitsFromSpec(spec);
-                    this.lastBumpTick = -999;
-                    this.bumpFlash = 0;
                 }
 
                 update() {
@@ -3376,77 +3375,7 @@
                         ctx.arc(this.x + 1.5, this.y - 1.5, 1.2, 0, Math.PI * 2);
                         ctx.fill();
                     }
-                    if (this.bumpFlash > 0) {
-                        ctx.strokeStyle = 'rgba(251, 191, 36, 0.85)';
-                        ctx.lineWidth = 2;
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, size + 2.5, 0, Math.PI * 2);
-                        ctx.stroke();
-                        ctx.lineWidth = 1;
-                        this.bumpFlash--;
-                    }
                 }
-            }
-
-            // Walked into someone: bounce, hunger up. Fat knocks harder and pays more.
-            const BUMP_COOLDOWN = 12;
-            const BUMP_HUNGER = 0.45;
-            const BUMP_TAX_R0 = 10; // ~bag 20. Above this, tax grows faster than linear.
-            const BUMP_KICK = 0.55;
-
-            function bumpHungerTax(r) {
-                const rr = Math.max(r, 1);
-                return BUMP_HUNGER * rr * Math.sqrt(rr / BUMP_TAX_R0);
-            }
-
-            function wrapAgentPos(a) {
-                if (a.x < 0) a.x = worldW();
-                if (a.x > worldW()) a.x = 0;
-                if (a.y < 0) a.y = worldH();
-                if (a.y > worldH()) a.y = 0;
-            }
-
-            function resolveBumps() {
-                const n = agents.length;
-                for (let i = 0; i < n; i++) {
-                    const a = agents[i];
-                    const ra = agentDrawRadius(a);
-                    for (let j = i + 1; j < n; j++) {
-                        const b = agents[j];
-                        const rb = agentDrawRadius(b);
-                        const dx = b.x - a.x;
-                        const dy = b.y - a.y;
-                        const d = Math.hypot(dx, dy);
-                        const minD = ra + rb;
-                        if (d >= minD) continue;
-                        const nx = d > 1e-6 ? dx / d : 1;
-                        const ny = d > 1e-6 ? dy / d : 0;
-                        const overlap = minD - (d > 1e-6 ? d : 0);
-                        const inv = 1 / (ra + rb);
-                        a.x -= nx * overlap * (rb * inv);
-                        a.y -= ny * overlap * (rb * inv);
-                        b.x += nx * overlap * (ra * inv);
-                        b.y += ny * overlap * (ra * inv);
-                        const kick = BUMP_KICK * Math.max(ra, rb);
-                        const wa = rb * inv;
-                        const wb = ra * inv;
-                        a.vx -= nx * kick * (0.35 + wa);
-                        a.vy -= ny * kick * (0.35 + wa);
-                        b.vx += nx * kick * (0.35 + wb);
-                        b.vy += ny * kick * (0.35 + wb);
-                        a.bumpFlash = 8;
-                        b.bumpFlash = 8;
-                        if (tick - a.lastBumpTick >= BUMP_COOLDOWN) {
-                            a.hunger += bumpHungerTax(ra);
-                            a.lastBumpTick = tick;
-                        }
-                        if (tick - b.lastBumpTick >= BUMP_COOLDOWN) {
-                            b.hunger += bumpHungerTax(rb);
-                            b.lastBumpTick = tick;
-                        }
-                    }
-                }
-                for (let i = 0; i < n; i++) wrapAgentPos(agents[i]);
             }
 
             function foodPatchRadius() {
@@ -3508,7 +3437,6 @@
                     if (agent.update()) alive.push(agent);
                 }
                 agents = alive;
-                resolveBumps();
 
                 // Wipe: sample a last zero so the graph sits on the floor, then log the run.
                 if (agents.length === 0 && !currentRunEnded && runNumber > 0) {
