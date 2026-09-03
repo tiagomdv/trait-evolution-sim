@@ -294,15 +294,14 @@
             }
             .panel-head .section-title { margin-bottom: 0; }
             .btn-hide-col {
-                font-size: 10px;
-                padding: 0.2rem 0.45rem;
+                font-size: 9px;
+                padding: 0.12rem 0.35rem;
                 border-radius: var(--radius-sm);
                 border: 1px solid var(--border);
                 background: #0a1220;
-                color: #94a3b8;
+                color: var(--muted);
                 cursor: pointer;
                 flex-shrink: 0;
-                letter-spacing: 0.02em;
             }
             .btn-hide-col:hover {
                 border-color: var(--accent);
@@ -319,23 +318,15 @@
                 font-size: 9px;
                 letter-spacing: 0.08em;
                 text-transform: uppercase;
-                line-height: 1.1;
-                padding: 0.55rem 0.18rem;
+                padding: 0.55rem 0.22rem;
                 border: 1px solid var(--border);
                 background: var(--panel);
                 color: var(--accent);
                 border-radius: var(--radius-sm);
                 cursor: pointer;
-                max-width: none;
-                width: auto;
-                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
             }
-            .show-tab:hover {
-                border-color: var(--accent);
-                color: #e0f2fe;
-            }
-            .app-body.hide-left .show-tab-left { display: block; left: 0.12rem; }
-            .app-body.hide-right .show-tab-right { display: block; right: 0.12rem; }
+            .app-body.hide-left .show-tab-left { display: block; left: 0.15rem; }
+            .app-body.hide-right .show-tab-right { display: block; right: 0.15rem; }
             .canvas-host {
                 flex: 1;
                 min-height: 0;
@@ -1691,7 +1682,7 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Agent evolution lab</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v1.4.1-camera</span>
+                    <span class="badge-version" id="version-badge">v1.3.2-path</span>
                 </div>
                 <div class="header-mode" role="group" aria-label="App mode">
                     <button type="button" id="mode-world" class="btn-speed on" onclick="setAppMode('world')">World</button>
@@ -1723,7 +1714,7 @@
                     <div class="col-panel flex-1 scroll-thin" id="panel-controls">
                         <div class="panel-head">
                             <div class="section-title">Controls</div>
-                            <button type="button" class="btn-hide-col" onclick="hideCol('left')" title="Hide Mix and metrics">Hide Mix</button>
+                            <button type="button" class="btn-hide-col" onclick="hideCol('left')" title="Hide left column">Hide ✕</button>
                         </div>
 
                         <div class="mb-2">
@@ -1751,8 +1742,7 @@
                             <div class="kpi"><span>Deaths</span><b id="m-deaths" class="bad">—</b></div>
                             <div class="kpi"><span>Pellets</span><b id="m-food" class="warn">—</b></div>
                             <div class="kpi"><span>Avg hunger</span><b id="m-avgh">—</b></div>
-                            <div class="kpi"><span>Avg bag</span><b id="m-avgf">—</b></div>
-                            <div class="kpi"><span>Total bag</span><b id="m-sumf">—</b></div>
+                            <div class="kpi" style="grid-column:1 / -1"><span>Avg bag</span><b id="m-avgf">—</b></div>
                         </div>
                         <div id="differ-group-metrics" class="gmet"></div>
                         <p id="differ-metrics-hint" class="text-[10px] text-slate-500 mt-1 mb-0">Per caste (max 8). Click an agent for one body.</p>
@@ -1779,7 +1769,7 @@
 
                 <!-- CENTER: one canvas module = phase chrome + agent field (connected, field stays pure) -->
                 <div class="col col-center">
-                    <button type="button" class="show-tab show-tab-left" id="show-tab-left" onclick="showCol('left')" title="Show Mix and metrics">Show Mix</button>
+                    <button type="button" class="show-tab show-tab-left" id="show-tab-left" onclick="showCol('left')" title="Show left column">Left</button>
                     <div class="canvas-module" id="canvas-module">
                         <div class="phase-path" id="phase-path" aria-label="Project phase path">
                             <div class="phase-path-track" id="phase-path-track"></div>
@@ -1794,7 +1784,7 @@
                             <canvas id="canvas" width="800" height="600"></canvas>
                         </div>
                     </div>
-                    <button type="button" class="show-tab show-tab-right" id="show-tab-right" onclick="showCol('right')" title="Show graphs and history">Show graphs</button>
+                    <button type="button" class="show-tab show-tab-right" id="show-tab-right" onclick="showCol('right')" title="Show right column">Right</button>
                 </div>
 
                 <!-- RIGHT: trends then history (history flex-grows) -->
@@ -1802,7 +1792,7 @@
                     <div class="col-panel" id="panel-trends">
                         <div class="panel-head">
                             <div class="section-title">Trends</div>
-                            <button type="button" class="btn-hide-col" onclick="hideCol('right')" title="Hide graphs and history">Hide graphs</button>
+                            <button type="button" class="btn-hide-col" onclick="hideCol('right')" title="Hide right column">Hide ✕</button>
                         </div>
                         <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">This run · by group</div>
                         <div class="trend-legend" id="trend-legend"></div>
@@ -1814,10 +1804,6 @@
                         <div class="chart-row">
                             <div class="chart-label food">Avg bag</div>
                             <canvas id="chart-bag" width="240" height="64" class="bg-slate-950 border border-slate-700 rounded"></canvas>
-                        </div>
-                        <div class="chart-row">
-                            <div class="chart-label food">Total bag</div>
-                            <canvas id="chart-bag-sum" width="240" height="64" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
                         <div class="chart-row">
                             <div class="chart-label hunger">Avg hunger</div>
@@ -2234,7 +2220,7 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">1.4.1-camera</code> — people are <em>not</em> all the same (Phase 1 · Differ).
+                    Live is <code style="color:#7dd3fc">1.3.2-path</code> — people are <em>not</em> all the same (Phase 1 · Differ).
                 </p>
 
                 <div class="help-sec">The long path</div>
@@ -2262,7 +2248,7 @@
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
                     People are not copies of each other. You set the mix in <strong>Mix</strong>.
-                    Version <code style="color:#7dd3fc">1.4.1-camera</code>.
+                    Version <code style="color:#7dd3fc">1.3.2-path</code>.
                 </p>
 
                 <div class="help-sec">How a run works</div>
@@ -2271,8 +2257,6 @@
                 <div class="help-entry">Press <strong>Reset</strong> to spawn that mix. That is when colors and counts on the field update.</div>
                 <div class="help-entry"><strong>Food spawn</strong> on the left is weather (live). Gap between pellet drops, <strong>1–20</strong>. Higher = scarcer. 8 is already a hungry island at 60 people. 1 is almost a pellet every tick. (Zero is not a real gap — it would break the clock.)</div>
                 <div class="help-entry"><strong>Three spots</strong> (checkbox, live) — most pellets land in three piles (dashed rings). A few still fall anywhere. Uncheck for even rain like before.</div>
-                <div class="help-entry">The island is a zoom-out: the box is the same size, people and pellets look smaller, walks take longer. World size locks on first layout. <strong>Hide Mix</strong> / <strong>Hide graphs</strong> only change the camera — the view fills left to right. Hide may crop top and bottom; putting a bar back shows the whole map again. Same land, no extra strip, no wrap.</div>
-                <div class="help-entry">Trends: alive, avg bag, <strong>total bag</strong> (sum of bags in that color), avg hunger. One line per group.</div>
                 <div class="help-entry"><strong>Pause / Speed</strong> — clock. 10× is faster wall time; a sim-second is still 60 ticks.</div>
                 <div class="help-entry">Watch leftover <strong>colors</strong>. Score <em>who is still walking</em>, not how fat the bags are. Right side: a graph per group, and a history row when you Reset or when everyone dies.</div>
 
@@ -2305,33 +2289,6 @@
         <script>
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
-            // Same box on screen; world is 2× so dots look smaller and walks take longer.
-            const ISLAND_SCALE = 2;
-            let lockedWorldW = 0;
-            let lockedWorldH = 0;
-            function worldW() { return lockedWorldW || canvas.width * ISLAND_SCALE; }
-            function worldH() { return lockedWorldH || canvas.height * ISLAND_SCALE; }
-            function lockWorldIfNeeded() {
-                if (lockedWorldW > 0 && lockedWorldH > 0) return;
-                if (canvas.width < 200 || canvas.height < 200) return;
-                lockedWorldW = canvas.width * ISLAND_SCALE;
-                lockedWorldH = canvas.height * ISLAND_SCALE;
-            }
-            // Always fill the canvas left-to-right. Hide zooms (may crop top/bottom). Unhide must show the full map — never crop left/right.
-            function islandCamera() {
-                const ww = worldW();
-                const hh = worldH();
-                const cw = canvas.width;
-                const ch = canvas.height;
-                const scale = cw / ww;
-                return {
-                    scale: scale,
-                    ox: 0,
-                    oy: (ch - hh * scale) / 2,
-                    ww: ww,
-                    hh: hh
-                };
-            }
 
             // Product brand: Option A — title + lab tagline + quiet version (no phase chip).
             // P3 path sits above the canvas (center column only).
@@ -2346,9 +2303,9 @@
             // Integer phase index for "current" node. Survive is frozen; Differ is live.
             const CURRENT_PHASE = 1;
             // 0–1 how far Differ is toward Evolve. Bump this every ship (see AGENTS.md).
-            // Mix, stories, trends, three spots, Mix box, zoomed-out island. Human set 60%.
+            // Mix, stories, trends, three spots, Mix box polish. Island still open (bigger map, N vs food).
             // Fill is a human call, not the version number.
-            const PHASE_WITHIN = 0.60;
+            const PHASE_WITHIN = 0.30;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
@@ -3180,7 +3137,7 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs + special snapshots
-            const APP_VERSION = '1.4.1-camera';
+            const APP_VERSION = '1.3.2-path';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
@@ -3267,8 +3224,8 @@
 
             class Agent {
                 constructor(spec) {
-                    this.x = Math.random() * worldW();
-                    this.y = Math.random() * worldH();
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
                     this.vx = (Math.random() - 0.5) * 1.5;
                     this.vy = (Math.random() - 0.5) * 1.5;
                     this.food = 18 + Math.random() * 12;
@@ -3331,10 +3288,10 @@
                     this.x += this.vx;
                     this.y += this.vy;
 
-                    if (this.x < 0) this.x = worldW();
-                    if (this.x > worldW()) this.x = 0;
-                    if (this.y < 0) this.y = worldH();
-                    if (this.y > worldH()) this.y = 0;
+                    if (this.x < 0) this.x = canvas.width;
+                    if (this.x > canvas.width) this.x = 0;
+                    if (this.y < 0) this.y = canvas.height;
+                    if (this.y > canvas.height) this.y = 0;
 
                     this.hunger += hRate;
 
@@ -3379,13 +3336,13 @@
             }
 
             function foodPatchRadius() {
-                return 0.18 * Math.min(worldW(), worldH());
+                return 0.18 * Math.min(canvas.width, canvas.height);
             }
 
             // 80% inside a random lush circle, 20% anywhere. Off = old even rain.
             function pickFoodXY() {
-                const w = worldW();
-                const h = worldH();
+                const w = canvas.width;
+                const h = canvas.height;
                 if (!foodPatchesOn || Math.random() < 0.2) {
                     return { x: Math.random() * w, y: Math.random() * h };
                 }
@@ -3490,13 +3447,8 @@
             }
 
             function draw() {
-                const cam = islandCamera();
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
-                ctx.fillStyle = '#0a101c';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.setTransform(cam.scale, 0, 0, cam.scale, cam.ox, cam.oy);
                 ctx.fillStyle = 'rgba(10, 16, 28, 0.9)';
-                ctx.fillRect(0, 0, cam.ww, cam.hh);
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 if (foodPatchesOn) {
                     const r = foodPatchRadius();
@@ -3507,7 +3459,7 @@
                     for (let i = 0; i < FOOD_PATCHES.length; i++) {
                         const p = FOOD_PATCHES[i];
                         ctx.beginPath();
-                        ctx.arc(p.fx * worldW(), p.fy * worldH(), r, 0, Math.PI * 2);
+                        ctx.arc(p.fx * canvas.width, p.fy * canvas.height, r, 0, Math.PI * 2);
                         ctx.stroke();
                     }
                     ctx.restore();
@@ -3547,12 +3499,11 @@
                         ctx.lineWidth = 1;
                     }
                 }
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
             }
 
             function computeMetrics() {
                 if (agents.length === 0) {
-                    currentMetrics = { alive: 0, deaths: starvationDeaths, totalFood: 0, avgHunger: 0, minFood: 0, maxFood: 0, avgFood: 0, sumBag: 0 };
+                    currentMetrics = { alive: 0, deaths: starvationDeaths, totalFood: 0, avgHunger: 0, minFood: 0, maxFood: 0, avgFood: 0 };
                     return;
                 }
                 let minF = Infinity, maxF = -Infinity, sumH = 0, sumFood = 0, totalFood = 0;
@@ -3571,8 +3522,7 @@
                     avgHunger: sumH / agents.length,
                     minFood: minF,
                     maxFood: maxF,
-                    avgFood: sumFood / agents.length,
-                    sumBag: sumFood
+                    avgFood: sumFood / agents.length
                 };
             }
 
@@ -3771,17 +3721,14 @@
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
-                const cam = islandCamera();
-                const sx = (e.clientX - rect.left) * scaleX;
-                const sy = (e.clientY - rect.top) * scaleY;
-                const wx = (sx - cam.ox) / cam.scale;
-                const wy = (sy - cam.oy) / cam.scale;
+                const cx = (e.clientX - rect.left) * scaleX;
+                const cy = (e.clientY - rect.top) * scaleY;
                 selectedAgent = null;
                 for (let i = agents.length - 1; i >= 0; i--) {
                     const a = agents[i];
-                    const dist = Math.hypot(a.x - wx, a.y - wy);
+                    const dist = Math.hypot(a.x - cx, a.y - cy);
                     const size = agentDrawRadius(a);
-                    if (dist < size + 18 / cam.scale) { selectedAgent = a; break; }
+                    if (dist < size + 18) { selectedAgent = a; break; }
                 }
                 updateInspector();   // will be defined later
             });
@@ -4554,7 +4501,7 @@
             }
 
             function emptyTrendSeries() {
-                return { pop: [], bag: [], bagSum: [], hunger: [] };
+                return { pop: [], bag: [], hunger: [] };
             }
 
             function initTrendGroups() {
@@ -4597,7 +4544,6 @@
                     const n = s.n;
                     ser.pop.push(n);
                     ser.bag.push(n ? (s.f / n) : (ser.bag.length ? ser.bag[ser.bag.length - 1] : 0));
-                    ser.bagSum.push(s.f);
                     ser.hunger.push(n ? (s.h / n) : (ser.hunger.length ? ser.hunger[ser.hunger.length - 1] : 0));
                 }
                 if (trendSampleAt.length > MAX_TREND_SAMPLES) {
@@ -4607,7 +4553,6 @@
                         if (!ser) continue;
                         ser.pop.shift();
                         ser.bag.shift();
-                        ser.bagSum.shift();
                         ser.hunger.shift();
                     }
                 }
@@ -4624,7 +4569,6 @@
                 set('m-food', food.length);
                 set('m-avgh', Number.isFinite(m.avgHunger) ? m.avgHunger.toFixed(1) : '—');
                 set('m-avgf', Number.isFinite(m.avgFood) ? m.avgFood.toFixed(1) : '—');
-                set('m-sumf', Number.isFinite(m.sumBag) ? m.sumBag.toFixed(0) : '—');
                 const box = document.getElementById('differ-group-metrics');
                 const hint = document.getElementById('differ-metrics-hint');
                 if (!box) return;
@@ -4767,7 +4711,6 @@
                 }
                 drawGroupTrend(document.getElementById('chart-pop'), 'pop', Math.max(1, popMax));
                 drawGroupTrend(document.getElementById('chart-bag'), 'bag', trendFieldMax('bag'));
-                drawGroupTrend(document.getElementById('chart-bag-sum'), 'bagSum', trendFieldMax('bagSum'));
                 drawGroupTrend(document.getElementById('chart-hunger'), 'hunger', 100);
                 renderTrendLegend();
             }
@@ -4834,18 +4777,29 @@
             let showLeftCol = true;
             let showRightCol = true;
 
-            /** Match the bitmap to the host. World size stays locked; this is camera only. */
+            /** Match sim canvas buffer to host size so the world grows when columns hide. */
             function resizeSimCanvas() {
                 const host = document.getElementById('canvas-host');
                 if (!host || !canvas) return;
                 const w = Math.max(120, Math.floor(host.clientWidth));
                 const h = Math.max(120, Math.floor(host.clientHeight));
                 if (w < 2 || h < 2) return;
-                if (canvas.width !== w || canvas.height !== h) {
-                    canvas.width = w;
-                    canvas.height = h;
+                if (canvas.width === w && canvas.height === h) return;
+                canvas.width = w;
+                canvas.height = h;
+                // Keep agents inside the new bounds (world grew/shrank)
+                for (let i = 0; i < agents.length; i++) {
+                    const a = agents[i];
+                    if (a.x > w) a.x = a.x % w;
+                    if (a.y > h) a.y = a.y % h;
+                    if (a.x < 0) a.x = 0;
+                    if (a.y < 0) a.y = 0;
                 }
-                lockWorldIfNeeded();
+                for (let i = 0; i < food.length; i++) {
+                    const f = food[i];
+                    if (f.x > w) f.x = f.x % w;
+                    if (f.y > h) f.y = f.y % h;
+                }
             }
 
             function afterLayoutChange() {

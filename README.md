@@ -4,7 +4,7 @@ Dots walk a 2D island. They get hungry. They eat pellets. Some last; some don’
 
 We start with hunger, then mix different kinds of people, then (later) children, then trade.
 
-**Right now:** Differ is live in [`index.html`](index.html) as `1.3.2-path`. Survive is a finished game in its own file. They do not share state.
+**Right now:** Differ is live in [`index.html`](index.html) as `1.4.1-camera`. Survive is a finished game in its own file. They do not share state.
 
 ---
 
@@ -37,7 +37,7 @@ Survive → Differ → Evolve → Economy. When a phase closes we freeze a playa
 | Phase | Status | Play this |
 |-------|--------|-----------|
 | **0 · Survive** | Closed 2026-08-13 | [`phase-0-survive-finished.html`](phase-0-survive-finished.html) — everyone the same body. |
-| **1 · Differ** | Open — live `1.3.2-path` | [`index.html`](index.html) — Mix, stories, graphs, three food spots. |
+| **1 · Differ** | Open — live `1.4.1-camera` | [`index.html`](index.html) — Mix, stories, graphs, three food spots, zoomed-out island. |
 | **2 · Evolve** | Later | Kids. Not yet. |
 | **3 · Economy** | Later | Trade. Not yet. |
 
@@ -49,7 +49,7 @@ What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.m
 
 Open one at a time. There is no button between them (a lone download of `index.html` would not find the Survive file). Keep both in the folder if you want both.
 
-**Differ (what we’re building)** is [`index.html`](index.html), version `1.3.2-path`.
+**Differ (what we’re building)** is [`index.html`](index.html), version `1.4.1-camera`.
 
 1. Open **Mix**.
 2. Pick a **story** (Groups, Families, or Rungs) or edit **Groups** / **Roster** yourself. The two tabs are separate drafts.
@@ -67,9 +67,9 @@ Survive asks: if everyone is the same, how many live? Differ asks: if they aren�
 
 ## Version
 
-The one-line label in `VERSION` and on the World badge should match. Live is **`1.3.2-path`**. Survive’s frozen label is `0.9.6-params`.
+The one-line label in `VERSION` and on the World badge should match. Live is **`1.4.1-camera`**. Survive’s frozen label is `0.9.6-params`.
 
-Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`). Last number = a small fix on that slice.
+Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`, island `1.4.0`). Last number = a small fix on that slice.
 
 ---
 
