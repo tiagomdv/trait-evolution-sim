@@ -2,9 +2,9 @@
 
 Dots walk a 2D island. They get hungry. They eat pellets. Some last; some don’t.
 
-We start with hunger, then mix different kinds of people, then (later) children, then trade.
+We start with hunger, then mix different kinds of people, then children, then trade.
 
-**Right now:** Differ is **closed**. Last ship is `1.5.0-bump` in [`index.html`](index.html). Next work is Evolve, same file. Survive is a finished game in its own file. They do not share state.
+**Right now:** Evolve is open in [`index.html`](index.html) as `2.0.0-evolve` — door only, no babies yet. Differ and Survive are finished games in their own files. They do not share state.
 
 ---
 
@@ -37,19 +37,19 @@ Survive → Differ → Evolve → Economy. When a phase closes we freeze a playa
 | Phase | Status | Play this |
 |-------|--------|-----------|
 | **0 · Survive** | Closed 2026-08-13 | [`phase-0-survive-finished.html`](phase-0-survive-finished.html) — everyone the same body. |
-| **1 · Differ** | Closed — last ship `1.5.0-bump` | [`index.html`](index.html) — Mix, stories, graphs, three food spots, zoomed-out island, bump. Same file stays live for Evolve. |
-| **2 · Evolve** | Next | Kids. Not yet. |
+| **1 · Differ** | Closed | [`phase-1-differ-finished.html`](phase-1-differ-finished.html) — Mix, stories, graphs, three food spots, zoomed-out island, bump. Last ship `1.5.0-bump`. |
+| **2 · Evolve** | Open — live `2.0.0-evolve` | [`index.html`](index.html) — same island as Differ. Door is open. No children yet. |
 | **3 · Economy** | Later | Trade. Not yet. |
 
 What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.md`. Old numbered copies: `archive/`.
 
 ---
 
-## Two games, two files
+## Three games, three files
 
-Open one at a time. There is no button between them (a lone download of `index.html` would not find the Survive file). Keep both in the folder if you want both.
+Open one at a time. There is no button between them (a lone download of `index.html` would not find the freeze files). Keep them in the folder if you want all three.
 
-**Differ (what we’re building)** is [`index.html`](index.html), version `1.5.0-bump`.
+**Evolve (what we’re building)** is [`index.html`](index.html), version `2.0.0-evolve`. Same Mix / island as Differ. No next-year button yet.
 
 1. Open **Mix**.
 2. Pick a **story** (Groups, Families, or Rungs) or edit **Groups** / **Roster** yourself. The two tabs are separate drafts.
@@ -59,15 +59,17 @@ Open one at a time. There is no button between them (a lone download of `index.h
 
 Trends and History show who is left. Special is off. Lab stays in the Survive file.
 
+**Differ (finished)** is [`phase-1-differ-finished.html`](phase-1-differ-finished.html). Mix kinds, bump, chairs on the food. Do not add features to that file.
+
 **Survive (finished)** is [`phase-0-survive-finished.html`](phase-0-survive-finished.html). Everyone shares one body. Seek vs wander, easy/medium/hard island, Special, Lab, Trends, History. Do not add features to that file.
 
-Survive asks: if everyone is the same, how many live? Differ asks: if they aren’t, **who** is left?
+Survive asks: if everyone is the same, how many live? Differ asks: if they aren’t, **who** is left? Evolve asks: do the leftovers’ kids look like them?
 
 ---
 
 ## Version
 
-The one-line label in `VERSION` and on the World badge should match. Live is **`1.5.0-bump`**. Survive’s frozen label is `0.9.6-params`.
+The one-line label in `VERSION` and on the World badge should match. Live is **`2.0.0-evolve`**. Differ’s frozen label is `1.5.0-bump`. Survive’s frozen label is `0.9.6-params`.
 
 Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`, island `1.4.0`). Last number = a small fix on that slice.
 
@@ -83,9 +85,9 @@ Lab in that file is for “run the same body 30 times.” Don’t use it to judg
 
 We closed Survive when Play + Lab + export felt like a game.
 
-### Differ (open)
+### Differ (closed)
 
-People are **not** the same at spawn. No babies yet (that’s Evolve).
+People are **not** the same at spawn. Frozen when bump felt solid. Babies are Evolve.
 
 We picked four traits by changing one knob at a time on a uniform crowd and asking how many were still standing:
 
@@ -108,7 +110,7 @@ If a change doesn’t make it easier to see a leftover *shape* (who, where, whic
 
 **Layout vs mechanics.** CSS, panels, labels: the AI may edit `index.html`. Hunger, movement, eat, spawn: the human leads; the AI proposes; the human says when to apply. Layout is cheap to undo if `archive/` has a snapshot. Mechanics are not. Full rules: **`AGENTS.md`**.
 
-When Survive closed we froze `phase-0-survive-finished.html` and live `index.html` became Differ.
+When Survive closed we froze `phase-0-survive-finished.html` and live `index.html` became Differ. When Differ closed we froze `phase-1-differ-finished.html` and live `index.html` became Evolve.
 
 ---
 
@@ -116,7 +118,8 @@ When Survive closed we froze `phase-0-survive-finished.html` and live `index.htm
 
 | Path | What it is |
 |------|------------|
-| `index.html` | Live Differ. The only file we grow. |
+| `index.html` | Live Evolve. The only file we grow. |
+| `phase-1-differ-finished.html` | Frozen Differ. Play it; don’t patch it. |
 | `phase-0-survive-finished.html` | Frozen Survive. Play it; don’t patch it. |
 | `phase-1-differ-presets/` | Extra Mix Import JSON. Stories in the app don’t need these files. |
 | `VERSION` | One-line live label. Must match the World badge. |

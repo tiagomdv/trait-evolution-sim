@@ -49,7 +49,7 @@ Still true:
 - One feature at a time when possible.
 - Do not land on `main` unless the human asks. Prefer a PR when they say ship / push / PR.
 - Prefer the human to commit unless they say otherwise this session.
-- Live work is Differ (`index.html`). Do not grow the Survive freeze file.
+- Live work is Evolve (`index.html`). Do not grow the Survive or Differ freeze files.
 
 ---
 
@@ -67,7 +67,7 @@ Still true:
 2. Bump `VERSION` and the in-app badge together.
 3. Snapshot meaningful steps only (risky rewrite, a slice that feels done, before a PR).
 4. Do not quietly change hunger / movement / eat while doing layout.
-5. Update `PHASE_WITHIN` (the path above the island) so it matches what this phase has actually shipped. Survive is done (`CURRENT_PHASE` 1). Differ toward Evolve is 0–1. Do not leave it at an old 8%.
+5. Update `PHASE_WITHIN` (the path above the island) so it matches what this phase has actually shipped. Survive and Differ are done (`CURRENT_PHASE` 2). Evolve toward Economy is 0–1. Do not leave it at an old fill.
 
 ### Smoke test
 
@@ -156,11 +156,11 @@ Survive → Differ → Evolve → Economy
 | Phase | Now |
 |-------|-----|
 | 0 Survive | Closed. Frozen file. |
-| 1 Differ | Live. Mixed bodies. No babies. |
-| 2 Evolve | Later. Children, inheritance. |
+| 1 Differ | Closed. Frozen file. Mixed bodies, bump. |
+| 2 Evolve | Live. Children, inheritance. Door open; no babies in `2.0.0-evolve`. |
 | 3 Economy | Later. Trade first. |
 
-Using leftover living people to **make** the next crowd is Evolve. Looking at who is still alive is Differ.
+Using leftover living people to **make** the next crowd is Evolve. Looking at who is still alive was Differ.
 
 ---
 

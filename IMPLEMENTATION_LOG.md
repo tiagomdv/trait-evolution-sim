@@ -814,3 +814,17 @@ When two people overlap they bounce and hunger goes **up**. Size is the drawn ci
 **Path.** Human **closed Differ at 100%**. Next work is Evolve. No Differ freeze file.
 
 **Docs.** Bump dropped from Differ open work. Own-color tax + crowd avoid parked under Evolve in `FUTURE_FEATURES.md`. Survive / Lab untouched.
+
+---
+
+## 2026-09-03 — `2.0.0-evolve` (open Evolve, door only)
+
+**Version / Phase:** live `2.0.0-evolve` · Phase 2 · Evolve  
+**Archive of previous:** `archive/index-1.5.0-bump.html`  
+**Differ freeze:** `phase-1-differ-finished.html` (play it; don’t patch it)
+
+Path chip is Evolve. Fill **5%** (human set). No Next year, no kids, no new Mix knobs. Island still Mix / bump like 1.5.0-bump.
+
+**Docs.** README / AGENTS / Help say Differ is the other file. `FUTURE_FEATURES.md` drops closed Differ desk; first open work is the birth loop, then kin-tax / crowd avoid.
+
+Survive freeze untouched. No babies until the next ship.

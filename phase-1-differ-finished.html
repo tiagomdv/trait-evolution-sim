@@ -1691,7 +1691,7 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Agent evolution lab</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v2.0.0-evolve</span>
+                    <span class="badge-version" id="version-badge">v1.5.0-bump</span>
                 </div>
                 <div class="header-mode" role="group" aria-label="App mode">
                     <button type="button" id="mode-world" class="btn-speed on" onclick="setAppMode('world')">World</button>
@@ -2234,14 +2234,14 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">2.0.0-evolve</code> — Phase 2 · Evolve is open. No children yet. Differ is a finished file next to this one.
+                    Live is <code style="color:#7dd3fc">1.5.0-bump</code> — people are <em>not</em> all the same (Phase 1 · Differ).
                 </p>
 
                 <div class="help-sec">The long path</div>
                 <div class="help-entry"><strong>Survive</strong> — finished. Everyone shared one body. Frozen file next to this one.</div>
-                <div class="help-entry"><strong>Differ</strong> — finished. Mix kinds of people, watch who is left. Frozen file next to this one.</div>
-                <div class="help-entry"><strong>Evolve</strong> — now. Door is open. Survivors will have children; not in this ship.</div>
-                <div class="help-entry"><strong>Economy</strong> — later. Trade, bags, jobs.</div>
+                <div class="help-entry"><strong>Differ</strong> — now. Mix kinds of people, watch who is left.</div>
+                <div class="help-entry"><strong>Evolve</strong> — later. Survivors have children.</div>
+                <div class="help-entry"><strong>Economy</strong> — later still. Trade, bags, jobs.</div>
 
                 <div class="help-entry" style="margin-top:0.5rem">Open <strong>Mix</strong>, pick a story or edit groups, <strong>Apply</strong> (the box closes), then <strong>Reset</strong>. Food spawn on the left is weather; it changes live.</div>
 
@@ -2254,7 +2254,7 @@
             <div class="modal-dim" onclick="closeAllModals()"></div>
             <div class="modal-box help-wide" role="dialog" aria-labelledby="help-title">
                 <div class="modal-head">
-                    <h2 id="help-title">Help · Evolve World</h2>
+                    <h2 id="help-title">Help · Differ World</h2>
                     <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
                 </div>
 
@@ -2262,7 +2262,7 @@
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
                     People are not copies of each other. You set the mix in <strong>Mix</strong>.
-                    Version <code style="color:#7dd3fc">2.0.0-evolve</code>. Differ is finished in its own file. No babies yet.
+                    Version <code style="color:#7dd3fc">1.5.0-bump</code>.
                 </p>
 
                 <div class="help-sec">How a run works</div>
@@ -2300,7 +2300,6 @@
                 <div class="help-sec">Off for now</div>
                 <div class="help-entry"><strong>Lab</strong> — batch runner from Survive. Not for mixed crowds. Stay in the frozen Survive file.</div>
                 <div class="help-entry"><strong>Special…</strong> — pin one pet. Off.</div>
-                <div class="help-entry"><strong>Children / next year</strong> — not yet. This ship only opens Evolve. Mix still works like Differ.</div>
             </div>
         </div>
 
@@ -2345,11 +2344,12 @@
                 2: 'Agent evolution lab',
                 3: 'Agent evolution lab'
             };
-            // Integer phase index for "current" node. Survive and Differ are frozen; Evolve is live.
-            const CURRENT_PHASE = 2;
-            // 0–1 how far Evolve is toward Economy. Bump this every ship (see AGENTS.md).
-            // Door only. Human set 5%. Fill is a human call, not the version number.
-            const PHASE_WITHIN = 0.05;
+            // Integer phase index for "current" node. Survive is frozen; Differ is live.
+            const CURRENT_PHASE = 1;
+            // 0–1 how far Differ is toward Evolve. Bump this every ship (see AGENTS.md).
+            // Mix, stories, trends, spots, island, camera, bump. Human closed Differ at 100%.
+            // Fill is a human call, not the version number.
+            const PHASE_WITHIN = 1;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
@@ -3181,7 +3181,7 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs + special snapshots
-            const APP_VERSION = '2.0.0-evolve';
+            const APP_VERSION = '1.5.0-bump';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
