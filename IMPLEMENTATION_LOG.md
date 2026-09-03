@@ -764,57 +764,40 @@ Same-day notes that used to be separate log headings (backlog drops, food interv
 
 ---
 
-## 2026-09-03 — Docs: two goals, talk in chat, backlog tidy
+## 2026-09-03 — `1.3.2-path` (patches, Mix box, docs)
 
-**Version / Phase:** still `1.2.0-trends` (docs only)
-
-README now states both jobs: practice AI tools / GitHub, and try for a **wow, look at that** on the island. Talk-like-a-person sits in the README so an agent who only reads that file still speaks normally in **chat**, not only in files. `AGENTS.md` matches.
-
-`FUTURE_FEATURES.md`: dropped world seed (we are not doing replay-by-number). Talk and share sit **outside** the phase list — parked, not next. Patchy food listed before a bigger island.
-
-Aug 27 log notes folded into two ships only: `1.1.0-stories` and `1.2.0-trends`.
-
----
-
-## 2026-09-03 — `1.3.0-patches`
-
-**Version / Phase:** `1.3.0-patches` · Phase 1 · Differ  
-**Archive:** `archive/index-1.2.0-trends.html`  
+**Version / Phase:** live `1.3.2-path` · Phase 1 · Differ  
+**Archives:** `archive/index-1.2.0-trends.html` → `index-1.3.0-patches.html` → `index-1.3.1-mix-ui.html`  
 **Design:** `design-docs/1.3.0-patches-design.html`
 
-Three lush circles on the island. Most pellets land there; a few still fall anywhere.
+One day. Three spots, Mix box, path bar, and the docs that go with them.
 
-- **Three spots** checkbox under Food spawn (on by default). Uncheck = even rain like `1.2.0`.
-- Drop rule: 80% inside a random circle (NW / NE / south), 20% anywhere. Interval still drops 3 pellets.
-- Circles are fractions of the map, so they stay put if the canvas grows.
-- Faint dashed rings so you can see the piles.
-- Weather line: `· 3 spots` or `· even`. Help has one extra line.
+**Island.** Three lush circles. Most pellets land there; a few still fall anywhere. **Three spots** under Food spawn (on by default). Uncheck = even rain like `1.2.0`. Drop rule: 80% inside a random circle (NW / NE / south), 20% anywhere. Interval still drops 3 pellets. Circles are fractions of the map. Faint dashed rings. Weather line: `· 3 spots` or `· even`. Hunger, eat, hunt unchanged. Survive file unchanged.
 
-Hunger, eat, hunt, Crowd… unchanged. Survive file unchanged. No extra sliders for size or bias.
+**Mix box (layout).** **Apply** closes the box; Reset still spawns. Rail button is **Mix**, not Crowd…. Groups cards and the roster table always show all four traits. Groups / Families / Rungs each have a one-line what-it-is; the selected story has a short narrative under the buttons.
 
----
+**Path.** Fill was still 8% (Differ just opened). Human set it to **30%** through Differ (not decoded from the version). `AGENTS.md`: every ship must bump `PHASE_WITHIN`. Ask the human for the percent.
 
-## 2026-09-03 — `1.3.1-mix-ui`
-
-**Version / Phase:** `1.3.1-mix-ui` · Phase 1 · Differ  
-**Archive:** `archive/index-1.3.0-patches.html`
-
-Layout only. Island physics unchanged.
-
-- **Apply** closes the Mix box. Reset still spawns.
-- Rail button is **Mix**, not Crowd…. Same job: who is on the island.
-- Groups cards and the roster table always show all four traits (hunger, efficiency, hunt, speed).
-- Groups / Families / Rungs each have a one-line what-it-is. The selected story has a short narrative under the buttons.
+**Docs.** README states both jobs: practice AI tools / GitHub, and try for a **wow, look at that** on the island. Talk-like-a-person sits in the README so an agent who only reads that file still speaks normally in **chat**. Talk and share sit outside the phase list — parked, not next. World seed dropped (no replay-by-number). Food-vs-crowd slider hint dropped (pointless; how scarce it feels still depends on N, and Help already says so). Bump parked: bigger body knocks farther; hunger goes **up**; the bigger one pays more. Next open island work is a bigger map.
 
 ---
 
-## 2026-09-03 — `1.3.2-path`
+## 2026-09-03 — `1.4.0-island` (zoom out)
 
-**Version / Phase:** `1.3.2-path` · Phase 1 · Differ  
-**Archive:** `archive/index-1.3.1-mix-ui.html`
+**Version / Phase:** live `1.4.0-island` · Phase 1 · Differ  
+**Archive of previous:** `archive/index-1.3.2-path.html`
 
-The path above the island was still at 8% (Differ just opened). Human set the fill to **30%** through Differ (not decoded from `1.3.2`). Mix, stories, trends, three spots, Mix box are live; bigger island still open.
+Same box on the screen. World is **2×** in both directions (`ISLAND_SCALE`). Dots, pellets, and lush rings draw half size. Speed, hunger, hunt numbers, and pellet gap are unchanged — a crossing takes about twice as long, and hunt covers a smaller share of the map. Three spots stay fractions of the world. Hide a column still grows the world with the hole. Click hit area stays easy in screen pixels. Lab and Survive file untouched.
 
-`AGENTS.md`: every ship must bump `PHASE_WITHIN`. Ask the human for the percent.
+**Path.** Human set **60%** through Differ. Evolve chip reads as next.
 
-Bump (contact) is parked in `FUTURE_FEATURES.md`, not this ship: bigger body knocks farther; hunger goes **up**; the bigger one pays more.
+**Docs.** Bigger island dropped from `FUTURE_FEATURES.md`. Island weather for Differ is done. Desk items (overlay, Special, alive roster) only if we miss them.
+
+---
+
+## 2026-09-03 — `1.4.1-camera` (locked world, Hide camera, total bag)
+
+**Version / Phase:** live `1.4.1-camera` · Phase 1 · Differ  
+**Archive of previous:** `archive/index-1.4.0-island.html`
+
+World size locks on first real layout (`lockedWorldW` / `lockedWorldH`). Hide Mix / Hide graphs only resize the bitmap. Camera always fills left to right: Hide may crop top/bottom; putting a bar back shows the whole map. No extra land, no wrap. Buttons: **Hide Mix**, **Hide graphs**, slim vertical **Show Mix** / **Show graphs**. Trends: new **Total bag** line (sum of bags per group). Left KPI **Total bag** next to Avg bag. Path still 60%. Survive / Lab untouched. Human clicked Hide / unhide and said it was working.

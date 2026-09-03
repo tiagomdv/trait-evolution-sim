@@ -2,21 +2,14 @@
 
 **Open work only.** Shipped or dropped items go in `IMPLEMENTATION_LOG.md`, then leave this file.
 
-Live: Phase **1 · Differ** · `1.3.2-path`. Path: Survive → Differ → Evolve → Economy. Path bar 30% through Differ (human set).  
+Live: Phase **1 · Differ** · `1.4.1-camera`. Path: Survive → Differ → Evolve → Economy. Path bar 60% through Differ (human set).  
 Live file is `index.html`. Do not grow `phase-0-survive-finished.html`.
 
 ---
 
 ## Phase 1 · Differ
 
-The mix already works: Mix, stories, Apply / Reset, graphs, run logs, fat leftovers slow down, three food spots. What’s left is more *island* — still no babies.
-
-**Island (weather)**
-
-| Item | In English |
-|------|------------|
-| Bigger island | Canvas is still ~800×600. Same pellet gap on a larger map = more walking. Hunt and speed would show more. Spots already exist, so “where” means something. |
-| Food vs crowd size | Same interval with 30 people vs 80 is a different game. Maybe a hint on the slider, not auto-magic. |
+The mix already works: Mix, stories, Apply / Reset, graphs, run logs, fat leftovers slow down, three food spots, zoomed-out island. Still no babies. Island weather for Differ is done.
 
 **Desk (only if we miss it)**
 
@@ -83,7 +76,7 @@ Talk can exist with zero sharing. Share can exist with zero talk. “Kin” here
 
 ## Bump (not a phase, not next)
 
-When two people walk into each other. Parked. Bigger island first. Not typed yet.
+When two people walk into each other. Parked. Bigger island is live. Not typed yet.
 
 **Locked rule (human, 2026-09-03):** bigger body = **bigger knock**. Hunger **goes up** (a cost, not a snack). The **bigger one pays more hunger** than the small one. Fat shoves hard and also burns harder for the clash. Thin gets moved more, pays less hunger.
 

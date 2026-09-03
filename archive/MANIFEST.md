@@ -33,6 +33,8 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-1.2.0-trends.html` | 1.2.0-trends | 1 · Differ | (local) | — | Trends + History by group; last live before three food spots |
 | `index-1.3.0-patches.html` | 1.3.0-patches | 1 · Differ | (local) | — | Three food spots + checkbox; last live before Mix UI polish |
 | `index-1.3.1-mix-ui.html` | 1.3.1-mix-ui | 1 · Differ | (local) | — | Mix box: Apply closes, four traits always, story blurbs |
+| `index-1.3.2-path.html` | 1.3.2-path | 1 · Differ | (local) | — | Path bar 30%; last live before zoom-out island |
+| `index-1.4.0-island.html` | 1.4.0-island | 1 · Differ | (this PR) | — | Zoom-out 2× world; last live before camera-locked Hide |
 
 ---
 
