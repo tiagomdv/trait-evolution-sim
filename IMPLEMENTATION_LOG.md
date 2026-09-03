@@ -828,3 +828,18 @@ Path chip is Evolve. Fill **5%** (human set). No Next year, no kids, no new Mix 
 **Docs.** README / AGENTS / Help say Differ is the other file. `FUTURE_FEATURES.md` drops closed Differ desk; first open work is the birth loop, then kin-tax / crowd avoid.
 
 Survive freeze untouched. No babies until the next ship.
+
+---
+
+## 2026-09-03 — `2.0.1-desk` (strip Lab + Special)
+
+**Version / Phase:** live `2.0.1-desk` · Phase 2 · Evolve  
+**Archive of previous:** `archive/index-2.0.0-evolve.html`
+
+Layout only. Mix / bump / size / tax unchanged.
+
+Removed from live `index.html`: World | Lab toggle, Lab desk + batch JS, frozen **Special…** and its modal. Header is brand, version, Vision, Help, Speed, Pause, Reset. Tagline **Who has kids**. Path fill **15%** (human set).
+
+Lab and Special still play in `phase-0-survive-finished.html`. Differ freeze not patched.
+
+**Next:** `2.1.0-year` — Next year / kids. Not this ship.

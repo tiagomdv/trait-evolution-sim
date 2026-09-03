@@ -205,6 +205,14 @@
                 border-color: var(--accent);
                 color: var(--accent);
             }
+            .app-header .btn-header.special {
+                color: #fde68a;
+                border-color: #a16207;
+            }
+            .app-header .btn-header.special:hover {
+                border-color: #fbbf24;
+                color: #fbbf24;
+            }
             .app-header .speed-block {
                 display: inline-flex;
                 align-items: center;
@@ -1305,13 +1313,375 @@
             input[type="range"] { accent-color: var(--accent); width: 100%; }
             .scroll-thin { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
 
+            /* === 0.9.5-lab: World | Lab mode shell === */
+            .app-header .header-mode {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.25rem;
+                padding: 0.2rem;
+                background: #0a1220;
+                border: 1px solid var(--border);
+                border-radius: var(--radius-md);
+                flex: 0 0 auto;
+            }
+            .app-header .header-mode .btn-speed {
+                min-width: 3.6rem;
+                text-align: center;
+            }
+            .app-shell.mode-lab .header-world-only { opacity: 0.35; pointer-events: none; }
+            .app-shell.mode-lab .btn-header.special { opacity: 0.45; pointer-events: none; }
+            #view-lab {
+                display: none;
+                flex: 1;
+                min-height: 0;
+                gap: 0.55rem;
+            }
+            .app-shell.mode-lab #view-world { display: none !important; }
+            .app-shell.mode-lab #app-body {
+                display: flex;
+                grid-template-columns: unset;
+            }
+            .app-shell.mode-lab #view-lab {
+                display: flex;
+                flex: 1;
+                min-height: 0;
+                width: 100%;
+            }
+            .lab-left {
+                width: 250px;
+                flex-shrink: 0;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-md);
+            }
+            .lab-left-scroll {
+                flex: 1;
+                min-height: 0;
+                overflow: auto;
+                padding: 0.55rem 0.65rem 0.4rem;
+            }
+            .lab-right {
+                flex: 1;
+                min-width: 0;
+                min-height: 0;
+                overflow: auto;
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-md);
+                padding: 0.55rem 0.7rem;
+            }
+            .lab-sec {
+                font-size: 9px;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--muted);
+                font-weight: 600;
+                margin: 0.5rem 0 0.3rem;
+            }
+            .lab-sec:first-child { margin-top: 0; }
+            .lab-kv {
+                display: flex;
+                justify-content: space-between;
+                gap: 0.35rem;
+                padding: 0.18rem 0;
+                border-bottom: 1px solid #152238;
+                font-size: 11px;
+            }
+            .lab-kv:last-child { border-bottom: none; }
+            .lab-kv .k { color: var(--muted); }
+            .lab-kv .v { color: var(--good); font-family: ui-monospace, monospace; }
+            .lab-batch-card {
+                background: #070d16;
+                border: 1px solid #1e3a5f;
+                border-radius: 0.45rem;
+                padding: 0.4rem 0.5rem;
+                margin-bottom: 0.55rem;
+            }
+            .lab-batch-card .lab-sec { margin-top: 0; margin-bottom: 0.25rem; color: #94a3b8; }
+            .lab-setup-card {
+                background: linear-gradient(180deg, #0d1524 0%, #070d16 100%);
+                border: 1px solid #1e3a5f;
+                border-radius: 0.5rem;
+                padding: 0.45rem 0.5rem 0.4rem;
+                margin-bottom: 0.45rem;
+                box-shadow: 0 1px 0 rgba(14, 165, 233, 0.06);
+            }
+            .lab-setup-card:last-child { margin-bottom: 0; }
+            .lab-setup-card.setup-a { border-color: #0ea5e9; box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.12); }
+            .lab-setup-card.setup-b { border-color: #8b5cf6; box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.12); }
+            .lab-setup-card-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.35rem;
+                margin-bottom: 0.3rem;
+                padding-bottom: 0.3rem;
+                border-bottom: 1px solid #152238;
+            }
+            .lab-setup-card-head .title {
+                font-size: 11px;
+                font-weight: 650;
+                color: #e2e8f0;
+                letter-spacing: 0.02em;
+            }
+            .lab-setup-card.setup-a .lab-setup-card-head .title { color: #38bdf8; }
+            .lab-setup-card.setup-b .lab-setup-card-head .title { color: #c4b5fd; }
+            .lab-setup-badge {
+                font-size: 9px;
+                font-family: ui-monospace, monospace;
+                padding: 0.1rem 0.35rem;
+                border-radius: 999px;
+                border: 1px solid #334155;
+                color: #94a3b8;
+                background: #0a1220;
+            }
+            .lab-setup-badge.seek {
+                border-color: #0ea5e9;
+                color: #7dd3fc;
+                background: #0c4a6e33;
+            }
+            .lab-setup-badge.random {
+                border-color: #a78bfa;
+                color: #ddd6fe;
+                background: #2e106533;
+            }
+            .lab-setup-card .lab-kv { font-size: 10px; padding: 0.14rem 0; }
+            .lab-actions {
+                flex-shrink: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.45rem;
+                padding: 0.7rem 0.7rem 0.8rem;
+                border-top: 1px solid var(--border);
+                background: linear-gradient(180deg, #0a1220 0%, #0d1524 100%);
+            }
+            .lab-actions .btn-lab-params {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.4rem;
+                padding: 0.55rem 0.75rem;
+                font-size: 12px;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+                border-radius: var(--radius-md);
+                border: 1px solid #0ea5e9;
+                background: linear-gradient(180deg, #0c4a6e 0%, #0a3a58 100%);
+                color: #e0f2fe;
+                cursor: pointer;
+                box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.15), 0 4px 12px rgba(0, 0, 0, 0.25);
+            }
+            .lab-actions .btn-lab-params:hover {
+                border-color: #38bdf8;
+                background: linear-gradient(180deg, #0369a1 0%, #0c4a6e 100%);
+                color: #f0f9ff;
+            }
+            .lab-actions .btn-lab-params .btn-lab-sub {
+                display: block;
+                font-size: 9px;
+                font-weight: 500;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                color: #7dd3fc;
+                opacity: 0.9;
+            }
+            .lab-actions .btn-lab-params-inner {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.1rem;
+                line-height: 1.2;
+            }
+            .lab-actions .btn-action,
+            .lab-actions .btn-tiny {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+            .lab-actions .btn-action.primary {
+                padding: 0.55rem 0.75rem;
+                font-size: 12px;
+                font-weight: 650;
+            }
+            .lab-slider-disabled {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+            .lab-slider-disabled input[type="range"] {
+                cursor: not-allowed;
+            }
+            .lab-progress {
+                padding: 0.45rem 0.55rem;
+                background: #04070d;
+                border: 1px solid #1e3a5f;
+                border-radius: 0.4rem;
+                margin-bottom: 0.55rem;
+            }
+            .lab-progress.done {
+                background: #052e16;
+                border-color: #22c55e;
+            }
+            .lab-progress.running {
+                border-color: #0ea5e9;
+            }
+            .lab-progress-row {
+                display: flex;
+                justify-content: space-between;
+                font-size: 11px;
+                margin-bottom: 0.3rem;
+            }
+            .lab-progress-bar {
+                height: 10px;
+                background: #152238;
+                border-radius: 99px;
+                overflow: hidden;
+            }
+            .lab-progress-bar > i {
+                display: block;
+                height: 100%;
+                width: 0%;
+                background: linear-gradient(90deg, #0ea5e9, #7dd3fc);
+                border-radius: 99px;
+                transition: width 0.12s ease;
+            }
+            .lab-result-cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 0.5rem;
+            }
+            .lab-result-card {
+                background: #070d16;
+                border: 1px solid #1e3a5f;
+                border-radius: 0.5rem;
+                padding: 0.5rem 0.55rem;
+                font-size: 11px;
+            }
+            .lab-result-card h4 {
+                margin: 0 0 0.3rem;
+                font-size: 12px;
+                font-weight: 650;
+                color: #e2e8f0;
+            }
+            .lab-result-card.side-a { border-color: #0ea5e9; }
+            .lab-result-card.side-a h4 { color: #38bdf8; }
+            .lab-result-card.side-b { border-color: #8b5cf6; }
+            .lab-result-card.side-b h4 { color: #c4b5fd; }
+            .lab-result-card .stat {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.12rem 0;
+                border-bottom: 1px solid #152238;
+            }
+            .lab-result-card .stat:last-child { border-bottom: none; }
+            .lab-result-card .stat .k { color: #64748b; }
+            .lab-result-card .stat .v { color: #cbd5e1; font-family: ui-monospace, monospace; }
+            .lab-post-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-top: 0.75rem;
+                padding-top: 0.65rem;
+                border-top: 1px solid #1e3a5f;
+            }
+            .lab-post-actions .btn-lab-export,
+            .lab-post-actions .btn-lab-copy {
+                flex: 1 1 8rem;
+                min-height: 2.35rem;
+                padding: 0.5rem 0.85rem;
+                font-size: 12px;
+                font-weight: 600;
+                border-radius: var(--radius-md);
+                cursor: pointer;
+                text-align: center;
+            }
+            .lab-post-actions .btn-lab-export {
+                border: 1px solid #0ea5e9;
+                background: linear-gradient(180deg, #0c4a6e 0%, #0a3a58 100%);
+                color: #e0f2fe;
+                box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.12);
+            }
+            .lab-post-actions .btn-lab-export:hover:not(:disabled) {
+                border-color: #38bdf8;
+                background: linear-gradient(180deg, #0369a1 0%, #0c4a6e 100%);
+            }
+            .lab-post-actions .btn-lab-copy {
+                border: 1px solid #64748b;
+                background: #0f1c2e;
+                color: #e2e8f0;
+            }
+            .lab-post-actions .btn-lab-copy:hover:not(:disabled) {
+                border-color: #94a3b8;
+                background: #152238;
+            }
+            .lab-post-actions .btn-lab-export:disabled,
+            .lab-post-actions .btn-lab-copy:disabled {
+                opacity: 0.4;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+            .lab-params-tabs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.3rem;
+                flex-shrink: 0;
+                margin-bottom: 0.45rem;
+            }
+            .lab-params-tabs .btn-speed {
+                font-size: 10px;
+                padding: 0.25rem 0.5rem;
+            }
+            #modal-lab-params .modal-box {
+                width: min(520px, 100%);
+                max-height: min(88vh, 720px);
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                padding-bottom: 0;
+            }
+            #modal-lab-params .modal-head {
+                flex-shrink: 0;
+            }
+            #modal-lab-params .lab-params-scroll {
+                flex: 1;
+                min-height: 0;
+                overflow: auto;
+                padding-right: 0.15rem;
+            }
+            #modal-lab-params .lab-params-footer {
+                flex-shrink: 0;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.35rem;
+                padding: 0.65rem 0 0.85rem;
+                margin-top: 0.45rem;
+                border-top: 1px solid var(--border);
+                background: linear-gradient(180deg, transparent 0%, #0a1220 35%);
+            }
+            #modal-lab-params .lab-params-footer .btn-tiny,
+            #modal-lab-params .lab-params-footer .btn-action {
+                flex: 1;
+                min-width: 5rem;
+                text-align: center;
+                justify-content: center;
+            }
+            #modal-lab-params .lab-params-hint {
+                flex-shrink: 0;
+                font-size: 10px;
+                color: #64748b;
+                margin: 0 0 0.65rem;
+            }
         </style>
     </head>
     <body>
 
         <div class="app-shell">
 
-            <!-- HEADER: brand · run controls -->
+            <!-- HEADER: brand · World|Lab · world run controls -->
             <header class="app-header">
                 <div class="header-meta">
                     <div class="brand">
@@ -1319,14 +1689,19 @@
                             <span class="project-label">Project name:</span>
                             <span class="project-name" id="project-name">trait-evolution-sim</span>
                         </div>
-                        <div class="app-tagline" id="app-tagline">Who has kids</div>
+                        <div class="app-tagline" id="app-tagline">Agent evolution lab</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v2.0.1-desk</span>
+                    <span class="badge-version" id="version-badge">v2.0.0-evolve</span>
+                </div>
+                <div class="header-mode" role="group" aria-label="App mode">
+                    <button type="button" id="mode-world" class="btn-speed on" onclick="setAppMode('world')">World</button>
+                    <button type="button" id="mode-lab" class="btn-speed frozen" disabled title="Lab is frozen until a later Differ version">Lab</button>
                 </div>
                 <div class="header-actions">
+                    <button type="button" class="btn-header special frozen" id="btn-special" disabled title="Special is frozen until a later Differ version">Special…</button>
                     <button type="button" class="btn-header" onclick="openVisionModal()" title="Project vision and roadmap">Vision…</button>
-                    <button type="button" class="btn-header" onclick="openHelpModal()" title="How a run works">Help</button>
-                    <div class="speed-block">
+                    <button type="button" class="btn-header" onclick="openHelpModal()" title="How the lab works">Help</button>
+                    <div class="speed-block header-world-only">
                         <span class="speed-label">Speed</span>
                         <div class="speed-group">
                             <button type="button" id="speed-1" class="btn-speed on" onclick="setSpeed(1)">1×</button>
@@ -1335,8 +1710,8 @@
                             <button type="button" id="speed-10" class="btn-speed" onclick="setSpeed(10)">10×</button>
                         </div>
                     </div>
-                    <button type="button" class="btn-action" id="btn-pause" onclick="toggleSim()">Pause</button>
-                    <button type="button" class="btn-action primary" onclick="resetSim()">Reset</button>
+                    <button type="button" class="btn-action header-world-only" id="btn-pause" onclick="toggleSim()">Pause</button>
+                    <button type="button" class="btn-action primary header-world-only" onclick="resetSim()">Reset</button>
                 </div>
             </header>
 
@@ -1469,6 +1844,43 @@
                     </div>
                 </div>
             </div><!-- end view-world contents -->
+
+            <!-- Lab desk (0.9.5) -->
+            <div id="view-lab">
+                <aside class="lab-left" id="lab-left">
+                    <div class="lab-left-scroll scroll-thin" id="lab-left-scroll">
+                        <div id="lab-batch-summary"></div>
+                        <div id="lab-setup-summaries"></div>
+                    </div>
+                    <div class="lab-actions">
+                        <button type="button" class="btn-lab-params" onclick="openLabParamsModal()" title="Edit setups and batch size">
+                            <span class="btn-lab-params-inner">
+                                <span>Parameters…</span>
+                                <span class="btn-lab-sub">Setups · batch · stop rules</span>
+                            </span>
+                        </button>
+                        <button type="button" class="btn-action primary" id="btn-lab-start" onclick="startLabBatch()">Start batch</button>
+                        <button type="button" class="btn-tiny" id="btn-lab-cancel" onclick="cancelLabBatch()" style="display:none">Cancel</button>
+                    </div>
+                </aside>
+                <div class="lab-right scroll-thin" id="lab-right">
+                    <div class="lab-progress" id="lab-progress">
+                        <div class="lab-progress-row">
+                            <span id="lab-progress-label" style="color:#94a3b8">No batch yet</span>
+                            <span id="lab-progress-count" class="font-mono" style="color:#7dd3fc">—</span>
+                        </div>
+                        <div class="lab-progress-bar"><i id="lab-progress-fill"></i></div>
+                    </div>
+                    <div class="lab-sec" style="margin-top:0">Results by setup</div>
+                    <div class="lab-result-cards" id="lab-result-cards">
+                        <div style="font-size:11px;color:var(--muted);grid-column:1/-1">Start a batch to compare crowd setups (headless · no special).</div>
+                    </div>
+                    <div class="lab-post-actions">
+                        <button type="button" class="btn-lab-export" id="btn-lab-export" onclick="exportLabBatch()" disabled title="Download last batch JSON">Export batch</button>
+                        <button type="button" class="btn-lab-copy" id="btn-lab-copy" onclick="copyLabBatch()" disabled title="Copy last batch JSON">Copy all</button>
+                    </div>
+                </div>
+            </div>
 
             </div><!-- end app-body -->
 
@@ -1633,6 +2045,7 @@
             </div>
         </div>
 
+        <!-- Lab Parameters modal (0.9.5) — setups + batch; no special -->
         <div id="modal-differ" class="modal-root" aria-hidden="true">
             <div class="modal-dim" onclick="closeAllModals()"></div>
             <div class="modal-box differ-wide" role="dialog" aria-labelledby="differ-title">
@@ -1670,6 +2083,147 @@
             </div>
         </div>
 
+        <div id="modal-lab-params" class="modal-root" aria-hidden="true">
+            <div class="modal-dim" onclick="closeAllModals()"></div>
+            <div class="modal-box" role="dialog" aria-labelledby="lab-params-title">
+                <div class="modal-head">
+                    <h2 id="lab-params-title">Lab parameters</h2>
+                    <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
+                </div>
+                <div class="lab-params-tabs" id="lab-params-tabs"></div>
+                <div class="lab-params-scroll scroll-thin" id="lab-params-body"></div>
+                <div class="lab-params-footer">
+                    <button type="button" class="btn-tiny" id="btn-lab-add-setup" onclick="labAddSetup()">+ Add setup</button>
+                    <button type="button" class="btn-tiny" id="btn-lab-remove-setup" onclick="labRemoveSetup()">Remove setup</button>
+                    <button type="button" class="btn-action primary" onclick="closeLabParamsModal()">Done</button>
+                </div>
+                <p class="lab-params-hint">1–5 setups · island presets = Food spawn + Initial agents · Seek/Agent masters · no special</p>
+            </div>
+        </div>
+
+        <!-- Special agent config modal (0.9.2) -->
+        <div id="modal-special" class="modal-root" aria-hidden="true">
+            <div class="modal-dim" onclick="closeAllModals()"></div>
+            <div class="modal-box params-wide" role="dialog" aria-labelledby="special-title" style="border-color:#fbbf24">
+                <div class="modal-head">
+                    <h2 id="special-title" style="color:#fde68a">Special agent</h2>
+                    <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
+                </div>
+                <p id="special-modal-summary" class="text-[10px] text-slate-400 mb-2" style="margin-top:0">No special yet</p>
+                <div class="flex gap-1 mb-3">
+                    <button type="button" class="btn-tiny" style="flex:1" onclick="matchSpecialAllToWorld()">Match all → world</button>
+                    <button type="button" class="btn-tiny pin" style="flex:1" onclick="focusSpecial()">Focus / pin</button>
+                    <button type="button" class="btn-tiny" style="flex:1" onclick="rerollSpecial()">Reroll body</button>
+                </div>
+                <div class="section-title" style="margin-bottom:0.35rem">Policy</div>
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 text-xs mb-1">
+                        <input type="checkbox" id="sp-custom-movementPolicy" onchange="onSpecialCustomToggle('movementPolicy')">
+                        <span>Custom policy</span>
+                    </label>
+                    <div class="policy-group" id="sp-policy-group">
+                        <button type="button" id="sp-policy-seek" class="btn-speed on" onclick="setSpecialPolicy('seek')">Seek</button>
+                        <button type="button" id="sp-policy-random" class="btn-speed" onclick="setSpecialPolicy('random')">Random</button>
+                    </div>
+                </div>
+                <div class="params-scroll scroll-thin">
+                <div class="section-title" style="margin-bottom:0.35rem">Seek</div>
+                <div class="master-row">
+                    <div class="flex justify-between text-xs mb-0.5">
+                        <span>Seek master</span>
+                        <span id="sp-val-seekMaster" class="font-mono text-sky-300">0.50</span>
+                    </div>
+                    <input type="range" id="sp-slider-seekMaster" min="0" max="1" step="0.01" value="0.5" class="w-full accent-amber-400" oninput="onSpecialSeekMaster(this.value)">
+                    <div class="master-ends"><span>noisy / weak lock</span><span>quiet / committed</span></div>
+                    <p id="sp-seek-master-note" class="text-[10px] text-slate-500 mb-0 mt-1" style="display:none">Custom — a Seek slider left the path</p>
+                </div>
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 text-xs mb-0.5">
+                        <input type="checkbox" id="sp-custom-sight" onchange="onSpecialCustomToggle('sight')">
+                        <span class="flex-1">Sight</span>
+                        <span id="sp-val-sight" class="font-mono text-sky-300">180</span>
+                    </label>
+                    <input type="range" id="sp-slider-sight" min="40" max="400" step="5" value="180" class="w-full accent-amber-400" oninput="onSpecialSlider('sight')">
+                </div>
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 text-xs mb-0.5">
+                        <input type="checkbox" id="sp-custom-hungerPull" onchange="onSpecialCustomToggle('hungerPull')">
+                        <span class="flex-1">Hunger pull</span>
+                        <span id="sp-val-hungerPull" class="font-mono text-sky-300">1.00</span>
+                    </label>
+                    <input type="range" id="sp-slider-hungerPull" min="0" max="2" step="0.05" value="1" class="w-full accent-amber-400" oninput="onSpecialSlider('hungerPull')">
+                </div>
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 text-xs mb-0.5">
+                        <input type="checkbox" id="sp-custom-seekPush" onchange="onSpecialCustomToggle('seekPush')">
+                        <span class="flex-1">Seek push</span>
+                        <span id="sp-val-seekPush" class="font-mono text-sky-300">0.35</span>
+                    </label>
+                    <input type="range" id="sp-slider-seekPush" min="0.05" max="1" step="0.05" value="0.35" class="w-full accent-amber-400" oninput="onSpecialSlider('seekPush')">
+                </div>
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 text-xs mb-0.5">
+                        <input type="checkbox" id="sp-custom-drift" onchange="onSpecialCustomToggle('drift')">
+                        <span class="flex-1">Drift</span>
+                        <span id="sp-val-drift" class="font-mono text-sky-300">0.50</span>
+                    </label>
+                    <input type="range" id="sp-slider-drift" min="0" max="1.5" step="0.05" value="0.5" class="w-full accent-amber-400" oninput="onSpecialSlider('drift')">
+                </div>
+                <div class="section-title" style="margin-top:0.55rem;margin-bottom:0.35rem">Agent</div>
+                <div class="master-row">
+                    <div class="flex justify-between text-xs mb-0.5">
+                        <span>Agent master</span>
+                        <span id="sp-val-agentMaster" class="font-mono text-sky-300">0.50</span>
+                    </div>
+                    <input type="range" id="sp-slider-agentMaster" min="0" max="1" step="0.01" value="0.5" class="w-full accent-amber-400" oninput="onSpecialAgentMaster(this.value)">
+                    <div class="master-ends"><span>easy body</span><span>hard body</span></div>
+                    <p id="sp-agent-master-note" class="text-[10px] text-slate-500 mb-0 mt-1" style="display:none">Custom — an Agent slider left the path</p>
+                </div>
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 text-xs mb-0.5">
+                        <input type="checkbox" id="sp-custom-maxSpeed" onchange="onSpecialCustomToggle('maxSpeed')">
+                        <span class="flex-1">Max speed</span>
+                        <span id="sp-val-maxSpeed" class="font-mono text-sky-300">2.00</span>
+                    </label>
+                    <input type="range" id="sp-slider-maxSpeed" min="0.5" max="4" step="0.1" value="2" class="w-full accent-amber-400" oninput="onSpecialSlider('maxSpeed')">
+                </div>
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 text-xs mb-0.5">
+                        <input type="checkbox" id="sp-custom-hungerRate" onchange="onSpecialCustomToggle('hungerRate')">
+                        <span class="flex-1">Hunger rate</span>
+                        <span id="sp-val-hungerRate" class="font-mono text-sky-300">0.062</span>
+                    </label>
+                    <input type="range" id="sp-slider-hungerRate" min="0.01" max="0.15" step="0.001" value="0.062" class="w-full accent-amber-400" oninput="onSpecialSlider('hungerRate')">
+                </div>
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 text-xs mb-0.5">
+                        <input type="checkbox" id="sp-custom-gluttony" onchange="onSpecialCustomToggle('gluttony')">
+                        <span class="flex-1">Gluttony</span>
+                        <span id="sp-val-gluttony" class="font-mono text-sky-300">0.70</span>
+                    </label>
+                    <input type="range" id="sp-slider-gluttony" min="0.3" max="2" step="0.05" value="0.7" class="w-full accent-amber-400" oninput="onSpecialSlider('gluttony')">
+                </div>
+                <div class="mb-2">
+                    <label class="flex items-center gap-2 text-xs mb-0.5">
+                        <input type="checkbox" id="sp-custom-efficiency" onchange="onSpecialCustomToggle('efficiency')">
+                        <span class="flex-1">Efficiency</span>
+                        <span id="sp-val-efficiency" class="font-mono text-sky-300">1.60</span>
+                    </label>
+                    <input type="range" id="sp-slider-efficiency" min="0.3" max="3" step="0.05" value="1.6" class="w-full accent-amber-400" oninput="onSpecialSlider('efficiency')">
+                </div>
+                <div class="mb-1">
+                    <label class="flex items-center gap-2 text-xs mb-0.5">
+                        <input type="checkbox" id="sp-custom-eatThreshold" onchange="onSpecialCustomToggle('eatThreshold')">
+                        <span class="flex-1">Eat threshold</span>
+                        <span id="sp-val-eatThreshold" class="font-mono text-sky-300">11</span>
+                    </label>
+                    <input type="range" id="sp-slider-eatThreshold" min="5" max="30" step="1" value="11" class="w-full accent-amber-400" oninput="onSpecialSlider('eatThreshold')">
+                </div>
+                <p class="text-[10px] text-slate-500 mt-2 mb-0">Masters write all Seek / Agent overrides. Unchecked child = world. Island is shared. Escape to close</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Vision modal (0.9.3-vision) -->
         <div id="modal-vision" class="modal-root" aria-hidden="true">
             <div class="modal-dim" onclick="closeAllModals()"></div>
@@ -1680,7 +2234,7 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">2.0.1-desk</code> — Phase 2 · Evolve. Lab and Special live in the Survive file. No children yet.
+                    Live is <code style="color:#7dd3fc">2.0.0-evolve</code> — Phase 2 · Evolve is open. No children yet. Differ is a finished file next to this one.
                 </p>
 
                 <div class="help-sec">The long path</div>
@@ -1708,7 +2262,7 @@
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
                     People are not copies of each other. You set the mix in <strong>Mix</strong>.
-                    Version <code style="color:#7dd3fc">2.0.1-desk</code>. Differ is finished in its own file. No babies yet. Lab and Special are only in the Survive freeze.
+                    Version <code style="color:#7dd3fc">2.0.0-evolve</code>. Differ is finished in its own file. No babies yet.
                 </p>
 
                 <div class="help-sec">How a run works</div>
@@ -1744,7 +2298,9 @@
                 <div class="help-entry"><strong>History</strong> — one row per finished run (Reset or wipe). Leftover count plus a chip per group. Best this session is the run that left the most people, not the one that lasted longest.</div>
 
                 <div class="help-sec">Off for now</div>
-                <div class="help-entry"><strong>Children / next year</strong> — not yet. Mix still works like Differ. Lab and Special stay in the Survive freeze file.</div>
+                <div class="help-entry"><strong>Lab</strong> — batch runner from Survive. Not for mixed crowds. Stay in the frozen Survive file.</div>
+                <div class="help-entry"><strong>Special…</strong> — pin one pet. Off.</div>
+                <div class="help-entry"><strong>Children / next year</strong> — not yet. This ship only opens Evolve. Mix still works like Differ.</div>
             </div>
         </div>
 
@@ -1779,16 +2335,21 @@
                 };
             }
 
+            // Product brand: Option A — title + lab tagline + quiet version (no phase chip).
+            // P3 path sits above the canvas (center column only).
             const PHASE_NAMES = { 0: 'Survive', 1: 'Differ', 2: 'Evolve', 3: 'Economy' };
+            // Short lab line only (N4 header); phase story lives in Vision modal + path
             const PHASE_TAGLINES = {
-                0: 'Who lasts',
-                1: 'Who is left',
-                2: 'Who has kids',
-                3: 'Who trades'
+                0: 'Agent evolution lab',
+                1: 'Agent evolution lab',
+                2: 'Agent evolution lab',
+                3: 'Agent evolution lab'
             };
+            // Integer phase index for "current" node. Survive and Differ are frozen; Evolve is live.
             const CURRENT_PHASE = 2;
-            // 0–1 how far Evolve is toward Economy. Human set 15% for the desk strip.
-            const PHASE_WITHIN = 0.15;
+            // 0–1 how far Evolve is toward Economy. Bump this every ship (see AGENTS.md).
+            // Door only. Human set 5%. Fill is a human call, not the version number.
+            const PHASE_WITHIN = 0.05;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
@@ -1858,6 +2419,22 @@
             let maxSpeed = 2.0;                 // speed cap (was hardcoded 2)
             const FOOD_AMOUNT_EPS = 0.2;        // same eligibility as ground eat
 
+            // === 0.9.2-special: one agent with optional param overrides ===
+            const SPECIAL_KEYS = [
+                'movementPolicy', 'sight', 'hungerPull', 'seekPush', 'drift', 'maxSpeed',
+                'hungerRate', 'efficiency', 'gluttony', 'eatThreshold'
+            ];
+            let specialAgent = null;
+            let specialOverrides = null;
+            const SPECIAL_SEEK_KEYS = ['sight', 'hungerPull', 'seekPush', 'drift'];
+            const SPECIAL_AGENT_KEYS = ['maxSpeed', 'hungerRate', 'gluttony', 'efficiency', 'eatThreshold'];
+            let specialSeekMaster = 0.5;
+            let specialAgentMaster = 0.5;
+            let specialSeekMasterCustom = false;
+            let specialAgentMasterCustom = false;
+            // Life (ticks) of special at starvation death; null if still alive or never died this run
+            let specialLifeTicksAtDeath = null;
+
             function globalParam(key) {
                 switch (key) {
                     case 'movementPolicy': return movementPolicy;
@@ -1874,7 +2451,18 @@
                 }
             }
 
+            function resetSpecialOverridesFromWorld() {
+                specialOverrides = {};
+                for (let i = 0; i < SPECIAL_KEYS.length; i++) {
+                    const k = SPECIAL_KEYS[i];
+                    specialOverrides[k] = { useCustom: false, value: globalParam(k) };
+                }
+            }
+
             function p(agent, key) {
+                if (agent && agent.isSpecial && specialOverrides && specialOverrides[key] && specialOverrides[key].useCustom) {
+                    return specialOverrides[key].value;
+                }
                 if (agent && agent.traits && agent.traits[key] != null) return agent.traits[key];
                 return globalParam(key);
             }
@@ -2336,10 +2924,264 @@
                 });
             }
 
+            function countSpecialCustoms() {
+                if (!specialOverrides) return 0;
+                let n = 0;
+                for (let i = 0; i < SPECIAL_KEYS.length; i++) {
+                    if (specialOverrides[SPECIAL_KEYS[i]].useCustom) n++;
+                }
+                return n;
+            }
+
+            function clearSpecialFlags() {
+                for (let i = 0; i < agents.length; i++) agents[i].isSpecial = false;
+                specialAgent = null;
+                specialLifeTicksAtDeath = null;
+            }
+
+            function pickSpecialAgent() {
+                clearSpecialFlags();
+                if (!agents.length) {
+                    updateSpecialStatusUI();
+                    return null;
+                }
+                const idx = Math.floor(Math.random() * agents.length);
+                const a = agents[idx];
+                a.isSpecial = true;
+                specialAgent = a;
+                specialLifeTicksAtDeath = null;
+                updateSpecialStatusUI();
+                return a;
+            }
+
+            function focusSpecial() {
+                if (!specialAgent) {
+                    for (let i = 0; i < agents.length; i++) {
+                        if (agents[i].isSpecial) { specialAgent = agents[i]; break; }
+                    }
+                }
+                if (!specialAgent) return;
+                selectedAgent = specialAgent;
+                pinnedAgent = specialAgent;
+                pinnedHunger = [];
+                pinnedFood = [];
+                updatePinnedBoxStatus();
+                updateInspector();
+                syncTrendsPinClass();
+                renderTrends();
+                updateSpecialStatusUI();
+            }
+
+            function rerollSpecial() {
+                const living = agents.slice();
+                if (!living.length) return;
+                let pool = living.filter(function (a) { return !a.isSpecial; });
+                if (!pool.length) pool = living;
+                clearSpecialFlags();
+                const a = pool[Math.floor(Math.random() * pool.length)];
+                a.isSpecial = true;
+                specialAgent = a;
+                focusSpecial();
+                syncSpecialModalUI();
+            }
+
+            function matchSpecialAllToWorld() {
+                if (!specialOverrides) resetSpecialOverridesFromWorld();
+                for (let i = 0; i < SPECIAL_KEYS.length; i++) {
+                    const k = SPECIAL_KEYS[i];
+                    specialOverrides[k].useCustom = false;
+                    specialOverrides[k].value = globalParam(k);
+                }
+                specialSeekMaster = seekMaster;
+                specialAgentMaster = agentMaster;
+                specialSeekMasterCustom = false;
+                specialAgentMasterCustom = false;
+                syncSpecialModalUI();
+                updateSpecialStatusUI();
+                updateInspector();
+            }
+
+            function applySpecialPath(kind, t) {
+                if (!specialOverrides) resetSpecialOverridesFromWorld();
+                const tmp = {};
+                const keys = kind === 'seek' ? SPECIAL_SEEK_KEYS : SPECIAL_AGENT_KEYS;
+                if (kind === 'seek') applySeekMasterTo(tmp, t);
+                else applyAgentMasterTo(tmp, t);
+                for (let i = 0; i < keys.length; i++) {
+                    const key = keys[i];
+                    if (!specialOverrides[key]) continue;
+                    specialOverrides[key].useCustom = true;
+                    specialOverrides[key].value = tmp[key];
+                }
+                if (kind === 'seek') {
+                    specialSeekMaster = t;
+                    specialSeekMasterCustom = false;
+                } else {
+                    specialAgentMaster = t;
+                    specialAgentMasterCustom = false;
+                }
+                syncSpecialModalUI();
+                updateSpecialStatusUI();
+                updateInspector();
+            }
+
+            function onSpecialSeekMaster(v) { applySpecialPath('seek', parseFloat(v)); }
+            function onSpecialAgentMaster(v) { applySpecialPath('agent', parseFloat(v)); }
+
+            function setSpecialPolicy(pol) {
+                if (!specialOverrides) resetSpecialOverridesFromWorld();
+                specialOverrides.movementPolicy.useCustom = true;
+                specialOverrides.movementPolicy.value = (pol === 'random') ? 'random' : 'seek';
+                const cb = document.getElementById('sp-custom-movementPolicy');
+                if (cb) cb.checked = true;
+                syncSpecialPolicyButtons();
+                updateSpecialStatusUI();
+                updateInspector();
+            }
+
+            function onSpecialCustomToggle(key) {
+                if (!specialOverrides) resetSpecialOverridesFromWorld();
+                const cb = document.getElementById('sp-custom-' + key);
+                if (!cb || !specialOverrides[key]) return;
+                specialOverrides[key].useCustom = !!cb.checked;
+                if (!specialOverrides[key].useCustom) {
+                    specialOverrides[key].value = globalParam(key);
+                } else if (key !== 'movementPolicy') {
+                    const sl = document.getElementById('sp-slider-' + key);
+                    if (sl) {
+                        let v = parseFloat(sl.value);
+                        if (key === 'eatThreshold') v = parseInt(sl.value, 10);
+                        specialOverrides[key].value = v;
+                    }
+                }
+                if (SPECIAL_SEEK_KEYS.indexOf(key) !== -1) specialSeekMasterCustom = true;
+                if (SPECIAL_AGENT_KEYS.indexOf(key) !== -1) specialAgentMasterCustom = true;
+                syncSpecialModalUI();
+                updateSpecialStatusUI();
+                updateInspector();
+            }
+
+            function onSpecialSlider(key) {
+                if (!specialOverrides) resetSpecialOverridesFromWorld();
+                const sl = document.getElementById('sp-slider-' + key);
+                const valEl = document.getElementById('sp-val-' + key);
+                if (!sl || !specialOverrides[key]) return;
+                let v = parseFloat(sl.value);
+                if (key === 'eatThreshold') v = parseInt(sl.value, 10);
+                specialOverrides[key].value = v;
+                specialOverrides[key].useCustom = true;
+                const cb = document.getElementById('sp-custom-' + key);
+                if (cb) cb.checked = true;
+                if (valEl) valEl.textContent = formatSpVal(key, v);
+                if (SPECIAL_SEEK_KEYS.indexOf(key) !== -1) specialSeekMasterCustom = true;
+                if (SPECIAL_AGENT_KEYS.indexOf(key) !== -1) specialAgentMasterCustom = true;
+                updateSpecialStatusUI();
+                updateInspector();
+                syncSpecialMasterNotes();
+            }
+
+            function formatSpVal(key, v) {
+                if (key === 'movementPolicy') return v;
+                if (key === 'hungerRate' || key === 'efficiency' || key === 'gluttony') return Number(v).toFixed(3);
+                if (key === 'hungerPull' || key === 'seekPush' || key === 'drift' || key === 'maxSpeed') return Number(v).toFixed(2);
+                return String(v);
+            }
+
+            function syncSpecialPolicyButtons() {
+                if (!specialOverrides) return;
+                const pol = specialOverrides.movementPolicy.useCustom
+                    ? specialOverrides.movementPolicy.value
+                    : movementPolicy;
+                const seekBtn = document.getElementById('sp-policy-seek');
+                const randBtn = document.getElementById('sp-policy-random');
+                if (seekBtn) seekBtn.classList.toggle('on', pol === 'seek');
+                if (randBtn) randBtn.classList.toggle('on', pol === 'random');
+            }
+
+            function syncSpecialModalUI() {
+                if (!specialOverrides) resetSpecialOverridesFromWorld();
+                for (let i = 0; i < SPECIAL_KEYS.length; i++) {
+                    const k = SPECIAL_KEYS[i];
+                    const o = specialOverrides[k];
+                    if (!o.useCustom) o.value = globalParam(k);
+                    const cb = document.getElementById('sp-custom-' + k);
+                    if (cb) cb.checked = !!o.useCustom;
+                    if (k === 'movementPolicy') continue;
+                    const sl = document.getElementById('sp-slider-' + k);
+                    const valEl = document.getElementById('sp-val-' + k);
+                    if (sl) {
+                        sl.value = o.value;
+                        sl.disabled = !o.useCustom;
+                    }
+                    if (valEl) valEl.textContent = formatSpVal(k, o.value);
+                }
+                syncSpecialPolicyButtons();
+                const sm = document.getElementById('sp-slider-seekMaster');
+                const smv = document.getElementById('sp-val-seekMaster');
+                if (sm) sm.value = specialSeekMaster;
+                if (smv) smv.textContent = Number(specialSeekMaster).toFixed(2);
+                const am = document.getElementById('sp-slider-agentMaster');
+                const amv = document.getElementById('sp-val-agentMaster');
+                if (am) am.value = specialAgentMaster;
+                if (amv) amv.textContent = Number(specialAgentMaster).toFixed(2);
+                syncSpecialMasterNotes();
+                const sum = document.getElementById('special-modal-summary');
+                if (sum) {
+                    if (!specialAgent) sum.textContent = 'No special body yet — Reset to spawn.';
+                    else {
+                        const alive = agents.indexOf(specialAgent) !== -1;
+                        const n = countSpecialCustoms();
+                        sum.textContent = '#' + specialAgent.id + ' · ' + (alive ? 'alive' : 'dead') + ' · overrides: ' + n;
+                    }
+                }
+            }
+
+            function syncSpecialMasterNotes() {
+                const sn = document.getElementById('sp-seek-master-note');
+                const an = document.getElementById('sp-agent-master-note');
+                if (sn) sn.style.display = specialSeekMasterCustom ? '' : 'none';
+                if (an) an.style.display = specialAgentMasterCustom ? '' : 'none';
+            }
+
+            function updateSpecialStatusUI() {
+                const el = document.getElementById('special-status');
+                if (!el) return;
+                if (!specialAgent) {
+                    el.textContent = 'Special: none';
+                    return;
+                }
+                const alive = agents.indexOf(specialAgent) !== -1;
+                const n = countSpecialCustoms();
+                el.textContent = 'Special #' + specialAgent.id + (alive ? '' : ' (dead)') + ' · ' + n + ' override' + (n === 1 ? '' : 's');
+                const sum = document.getElementById('special-modal-summary');
+                if (sum) {
+                    sum.textContent = '#' + specialAgent.id + ' · ' + (alive ? 'alive' : 'dead') + ' · overrides: ' + n;
+                }
+            }
+
+            function openSpecialModal() {
+                if (typeof appMode !== 'undefined' && appMode === 'lab') return;
+                closeAdvancedModalOnly();
+                closeHelpModalOnly();
+                closeHistoryModalOnly();
+                closeVisionModalOnly();
+                syncSpecialModalUI();
+                const m = document.getElementById('modal-special');
+                if (!m) return;
+                m.classList.add('open');
+                m.setAttribute('aria-hidden', 'false');
+            }
+
+            function closeSpecialModalOnly() {
+                const m = document.getElementById('modal-special');
+                if (!m) return;
+                m.classList.remove('open');
+                m.setAttribute('aria-hidden', 'true');
+            }
 
             // === v1 Run History (minimal, in-memory only) ===
-            // 0.9.4-run-logs: each entry may include knobs
-            const APP_VERSION = '2.0.1-desk';
+            // 0.9.4-run-logs: each entry may include knobs + special snapshots
+            const APP_VERSION = '2.0.0-evolve';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
@@ -2432,6 +3274,7 @@
                     this.hunger = 0;
                     this.birthTick = tick;
                     this.id = nextAgentId++;
+                    this.isSpecial = false;
                     this._seekBlend = 0;
                     this._distFood = null;
                     this._effPolicy = 'seek';
@@ -2499,6 +3342,7 @@
                     if (this.hunger > 100) {
                         const life = tick - this.birthTick;
                         if (life > currentRunMaxSurvivalTicks) currentRunMaxSurvivalTicks = life;
+                        if (this.isSpecial) specialLifeTicksAtDeath = life;
                         starvationDeaths++;
                         return false;
                     }
@@ -2643,11 +3487,13 @@
             function init() {
                 agents = [];
                 food = [];
+                specialAgent = null;
                 resetRunRng(Date.now());
                 applyPendingDifferOnReset();
                 const specs = spawnSpecsFromApplied();
                 for (let i = 0; i < specs.length; i++) agents.push(new Agent(specs[i]));
                 spawnFood(NUM_FOOD);
+                if (!specialOverrides) resetSpecialOverridesFromWorld();
                 updateDifferRailChip();
             }
 
@@ -2763,7 +3609,7 @@
                         ctx.stroke();
                         ctx.lineWidth = 1;
                     }
-                    if (agent === pinnedAgent && agent !== selectedAgent) {
+                    if (agent === pinnedAgent && agent !== selectedAgent && !agent.isSpecial) {
                         const size = 3 + Math.sqrt(Math.max(0, agent.food)) * 0.5;
                         ctx.strokeStyle = '#818cf8';
                         ctx.lineWidth = 1.5;
@@ -2803,17 +3649,20 @@
             }
 
             function gameLoop() {
-                for (let i = 0; i < simSpeed; i++) update();
-                draw();
+                // Lab mode: World paused; still keep RAF alive for when we return
+                if (typeof appMode === 'undefined' || appMode === 'world') {
+                    for (let i = 0; i < simSpeed; i++) update();
+                    draw();
 
-                uiFrame++;
-                try {
-                    if (selectedAgent && uiFrame % 5 === 0) updateInspector();
-                    if (pinnedAgent && uiFrame % 5 === 0) updatePinnedBoxStatus();
-                    if (uiFrame % 10 === 0) updateMetricsTab();
-                    if (uiFrame % 15 === 0) renderTrends();
-                } catch (e) {
-                    console.error('[UI]', e);
+                    uiFrame++;
+                    try {
+                        if (selectedAgent && uiFrame % 5 === 0) updateInspector();
+                        if (pinnedAgent && uiFrame % 5 === 0) updatePinnedBoxStatus();
+                        if (uiFrame % 10 === 0) updateMetricsTab();
+                        if (uiFrame % 15 === 0) renderTrends();
+                    } catch (e) {
+                        console.error('[UI]', e);
+                    }
                 }
                 requestAnimationFrame(gameLoop);
             }
@@ -2824,6 +3673,7 @@
                 currentRunMaxSurvivalTicks = 0;
                 currentRunEnded = false;
                 runInitialAgents = initialAgents;
+                specialLifeTicksAtDeath = null;
 
                 // reset new accumulators from 0.7.0-run-compare (per-run avgs for history cards)
                 runPopSum = 0;
@@ -2881,6 +3731,46 @@
                 };
             }
 
+            function snapshotSpecialForLog() {
+                const overrides = {};
+                let customCount = 0;
+                if (specialOverrides) {
+                    for (let i = 0; i < SPECIAL_KEYS.length; i++) {
+                        const k = SPECIAL_KEYS[i];
+                        const o = specialOverrides[k];
+                        if (o && o.useCustom) {
+                            overrides[k] = o.value;
+                            customCount++;
+                        }
+                    }
+                }
+                let agentId = null;
+                let alive = false;
+                let lifeSec = null;
+                let finalHunger = null;
+                let finalFood = null;
+                if (specialAgent) {
+                    agentId = specialAgent.id != null ? specialAgent.id : null;
+                    alive = agents.indexOf(specialAgent) !== -1;
+                    if (alive) {
+                        lifeSec = Math.round(Math.max(0, tick - specialAgent.birthTick) / 60);
+                        finalHunger = Math.round(specialAgent.hunger * 10) / 10;
+                        finalFood = Math.round(specialAgent.food * 100) / 100;
+                    } else if (specialLifeTicksAtDeath != null) {
+                        lifeSec = Math.round(specialLifeTicksAtDeath / 60);
+                        // Hunger/food at death not stored; leave null
+                    }
+                }
+                return {
+                    customCount: customCount,
+                    overrides: overrides,
+                    agentId: agentId,
+                    alive: alive,
+                    lifeSec: lifeSec,
+                    finalHunger: finalHunger,
+                    finalFood: finalFood
+                };
+            }
 
             function recordCurrentRun() {
                 if (currentRunEnded || runNumber === 0) return;
@@ -2942,6 +3832,7 @@
 
             function start() {
                 resizeSimCanvas();
+                if (!specialOverrides) resetSpecialOverridesFromWorld();
                 movementPolicy = 'seek';
                 if (!crowdGroups) crowdGroups = defaultDifferCrowd();
                 init();
@@ -3255,6 +4146,7 @@
                     const dead = r.deaths != null ? r.deaths : '—';
                     const endLabel = r.endedBy === 'reset' ? 'reset' : (r.endedBy === 'extinction' ? 'extinct' : (end === 0 ? 'extinct' : '—'));
                     const sel = (selectedRunLog === r.run) ? ' logs-sel' : '';
+                    const spN = r.special && r.special.customCount ? r.special.customCount : 0;
                     const mix = escapeHtml(r.mixLabel || 'crowd');
                     rows += `<tr class="logs-row${sel}" data-run="${r.run}" onclick="selectRunLog(${r.run})">
   <td style="color:var(--muted)">${r.run}</td>
@@ -3561,6 +4453,7 @@
             function openHistoryModal() {
                 closeAdvancedModalOnly();
                 closeHelpModalOnly();
+                closeSpecialModalOnly();
                 closeVisionModalOnly();
                 renderRunHistory();
                 const m = document.getElementById('modal-history');
@@ -3962,9 +4855,11 @@
                 });
             }
 
-            // Island packages: food spawn + N.
+            // Shared difficulty packages — World rails + Lab setups must stay identical.
+            // Env/eat only (not movement policy / sense / seek).
             //
             // Product scale (human 2026-08-06): prefer **alive @ end** under Random, not duration mid.
+            // Lab showed B@0.075 was a gauntlet (bimodal wipe vs 1–2 tycoons) ≈ punishing on pop.
             // pass5: pull Balanced toward Lenient so L/B/P separate on remnant size; accept B
             // duration often near the wall when a crowd stabilizes.
             // Targets @ Random · ~75–600s: L ~22–32 alive · B ~10–18 · P ~0 (fast wipe).
@@ -4099,6 +4994,7 @@
             function openAdvancedModal() {
                 syncSliders();
                 closeHelpModalOnly();
+                closeSpecialModalOnly();
                 closeHistoryModalOnly();
                 closeVisionModalOnly();
                 closeDifferModalOnly();
@@ -4110,6 +5006,7 @@
 
             function openHelpModal() {
                 closeAdvancedModalOnly();
+                closeSpecialModalOnly();
                 closeHistoryModalOnly();
                 closeVisionModalOnly();
                 const m = document.getElementById('modal-help');
@@ -4121,6 +5018,7 @@
             function openVisionModal() {
                 closeAdvancedModalOnly();
                 closeHelpModalOnly();
+                closeSpecialModalOnly();
                 closeHistoryModalOnly();
                 const m = document.getElementById('modal-vision');
                 if (!m) return;
@@ -4158,7 +5056,9 @@
                 closeAdvancedModalOnly();
                 closeHelpModalOnly();
                 closeVisionModalOnly();
+                closeSpecialModalOnly();
                 closeHistoryModalOnly();
+                closeLabParamsModalOnly();
                 closeDifferModalOnly();
             }
 
@@ -4735,7 +5635,7 @@
                     return;
                 }
                 section.classList.remove('hidden');
-                idEl.textContent = '#' + pinnedAgent.id;
+                idEl.textContent = '#' + pinnedAgent.id + (pinnedAgent.isSpecial ? ' · special' : '');
                 const isAlive = agents.indexOf(pinnedAgent) !== -1;
                 statusEl.textContent = isAlive ? '(alive)' : '(dead)';
                 statusEl.style.color = isAlive ? '#4ade80' : '#f87171';
@@ -4821,10 +5721,945 @@
                     '</div>';
             }
 
+            // =====================================================================
+            // 0.9.5-lab — World | Lab mode, multi-setup headless batches
+            // =====================================================================
+            let appMode = 'world'; // 'world' | 'lab'
+            const LAB_MAX_SETUPS = 5;
+            const LAB_WORLD_W = 800;
+            const LAB_WORLD_H = 600;
+            const LAB_NUM_FOOD = 70;
+            // Trial duration (sim ticks @ 60/sec). Always a hard ceiling so Seek remnants don't hang.
+            // All dead → lock slider to LAB_DURATION_SEC_MAX (long safety for extinction experiments).
+            // Max time → user-editable, default snappy 90s.
+            const LAB_DURATION_SEC_MIN = 15;
+            const LAB_DURATION_SEC_MAX = 600; // 10 min sim — good All-dead safety; not infinite
+            const LAB_DURATION_SEC_DEFAULT = 90; // Max-time mode default (snappy batches)
+            const LAB_MAX_TICKS_DEFAULT = LAB_DURATION_SEC_DEFAULT * 60;
+            const LAB_ALL_DEAD_TICKS = LAB_DURATION_SEC_MAX * 60;
+            const LAB_HEADLESS_CHUNK = 400; // ticks per yield so Cancel + progress stay alive
+
+            let labSetups = [];
+            let labBatch = {
+                agentsPerSetup: 100, // agents in each headless trial of a setup
+                runsPerSetup: 20,
+                stopWhen: 'extinction', // preferred end: extinction first, else max duration
+                maxTicks: LAB_ALL_DEAD_TICKS, // start in All dead → locked to 600s
+                maxTicksUser: LAB_MAX_TICKS_DEFAULT // remembered when using Max time mode
+            };
+            let labParamsTab = 0; // setup index or 'batch'
+            let labBatchRunning = false;
+            let labBatchCancel = false;
+            let lastLabBatch = null; // { experiment, runs, aggregates, status }
+
+            function cloneKnobs(k) {
+                return JSON.parse(JSON.stringify(k));
+            }
+
+            function defaultLabKnobs(overrides) {
+                const presetName = (overrides && overrides.preset) || 'balanced';
+                const packName = (presetName === 'lenient' || presetName === 'punishing') ? presetName : 'balanced';
+                const env = getPresetEnv(packName);
+                const k = {
+                    preset: packName,
+                    movementPolicy: 'seek',
+                    initialAgents: env.initialAgents,
+                    foodSpawn: env.foodSpawn,
+                    sight: 180,
+                    hungerPull: 1.0,
+                    seekPush: 0.35,
+                    drift: 0.5,
+                    maxSpeed: 2.0,
+                    hungerRate: 0.062,
+                    efficiency: 1.6,
+                    gluttony: 0.7,
+                    eatThreshold: 11,
+                    seekMaster: 0.5,
+                    agentMaster: 0.5,
+                    seekMasterCustom: false,
+                    agentMasterCustom: false
+                };
+                if (overrides) {
+                    for (const key in overrides) k[key] = overrides[key];
+                }
+                return k;
+            }
+
+            function initLabModel() {
+                // Default experiment: difficulty ladder under Random (matches common Lab A/B/C)
+                labSetups = [
+                    defaultLabKnobs({ movementPolicy: 'random', preset: 'lenient' }),
+                    defaultLabKnobs({ movementPolicy: 'random', preset: 'balanced' }),
+                    defaultLabKnobs({ movementPolicy: 'random', preset: 'punishing' })
+                ];
+                labParamsTab = 0;
+            }
+
+            function mulberry32(seed) {
+                let a = seed >>> 0;
+                return function () {
+                    a |= 0;
+                    a = (a + 0x6D2B79F5) | 0;
+                    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+                    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+                    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+                };
+            }
+
+            function labKnob(knobs, key) {
+                return knobs[key];
+            }
+
+            function labNearestFood(foodArr, agent, radius) {
+                let best = null;
+                let bestD2 = radius * radius;
+                for (let i = 0; i < foodArr.length; i++) {
+                    const f = foodArr[i];
+                    if (f.amount <= FOOD_AMOUNT_EPS) continue;
+                    const dx = f.x - agent.x;
+                    const dy = f.y - agent.y;
+                    const d2 = dx * dx + dy * dy;
+                    if (d2 < bestD2) {
+                        bestD2 = d2;
+                        best = f;
+                    }
+                }
+                return best;
+            }
+
+            function createHeadlessWorld(knobs, seed) {
+                const rng = mulberry32(seed >>> 0);
+                const n = Math.max(1, Math.min(200, knobs.initialAgents | 0) || labBatch.agentsPerSetup);
+                const agents = [];
+                for (let i = 0; i < n; i++) {
+                    agents.push({
+                        x: rng() * LAB_WORLD_W,
+                        y: rng() * LAB_WORLD_H,
+                        vx: (rng() - 0.5) * 1.5,
+                        vy: (rng() - 0.5) * 1.5,
+                        food: 18 + rng() * 12,
+                        hunger: 0,
+                        birthTick: 0
+                    });
+                }
+                const foodArr = [];
+                for (let i = 0; i < LAB_NUM_FOOD; i++) {
+                    foodArr.push({
+                        x: rng() * LAB_WORLD_W,
+                        y: rng() * LAB_WORLD_H,
+                        amount: 1
+                    });
+                }
+                return {
+                    knobs: knobs,
+                    rng: rng,
+                    agents: agents,
+                    food: foodArr,
+                    tick: 0,
+                    deaths: 0,
+                    initialAgents: n
+                };
+            }
+
+            function headlessStep(state) {
+                const knobs = state.knobs;
+                const rng = state.rng;
+                const wAmp = labKnob(knobs, 'drift');
+                const pol = labKnob(knobs, 'movementPolicy');
+                const sRad = labKnob(knobs, 'sight');
+                const sStr = labKnob(knobs, 'hungerPull');
+                const sAcc = labKnob(knobs, 'seekPush');
+                const mSpd = labKnob(knobs, 'maxSpeed');
+                const hRate = labKnob(knobs, 'hungerRate');
+                const scThresh = labKnob(knobs, 'eatThreshold');
+                const scAmt = labKnob(knobs, 'gluttony');
+                const scFill = labKnob(knobs, 'efficiency');
+                const spawnIv = Math.max(1, labKnob(knobs, 'foodSpawn') | 0);
+
+                state.tick++;
+                const alive = [];
+                for (let i = 0; i < state.agents.length; i++) {
+                    const a = state.agents[i];
+                    let ax = (rng() - 0.5) * wAmp;
+                    let ay = (rng() - 0.5) * wAmp;
+                    if (pol === 'seek') {
+                        const blend = Math.min(1, Math.max(0, (a.hunger / 100) * sStr));
+                        const t = labNearestFood(state.food, a, sRad);
+                        if (t && blend > 0) {
+                            const dx = t.x - a.x;
+                            const dy = t.y - a.y;
+                            const len = Math.hypot(dx, dy) || 1;
+                            ax += blend * sAcc * (dx / len);
+                            ay += blend * sAcc * (dy / len);
+                        }
+                    }
+                    a.vx += ax;
+                    a.vy += ay;
+                    const speed = Math.hypot(a.vx, a.vy);
+                    if (speed > mSpd && speed > 0) {
+                        a.vx = (a.vx / speed) * mSpd;
+                        a.vy = (a.vy / speed) * mSpd;
+                    }
+                    a.x += a.vx;
+                    a.y += a.vy;
+                    if (a.x < 0) a.x = LAB_WORLD_W;
+                    if (a.x > LAB_WORLD_W) a.x = 0;
+                    if (a.y < 0) a.y = LAB_WORLD_H;
+                    if (a.y > LAB_WORLD_H) a.y = 0;
+                    a.hunger += hRate;
+                    if (a.hunger > 100) {
+                        state.deaths++;
+                        continue;
+                    }
+                    if (a.food > 0 && a.hunger > scThresh) {
+                        const eat = Math.min(scAmt, a.food);
+                        a.food -= eat;
+                        a.hunger = Math.max(0, a.hunger - eat * scFill);
+                    }
+                    alive.push(a);
+                }
+                state.agents = alive;
+
+                for (let i = state.food.length - 1; i >= 0; i--) {
+                    const f = state.food[i];
+                    let eaten = false;
+                    for (let j = 0; j < state.agents.length; j++) {
+                        const agent = state.agents[j];
+                        const dx = f.x - agent.x;
+                        const dy = f.y - agent.y;
+                        if (dx * dx + dy * dy < 20 * 20 && f.amount > 0.2) {
+                            agent.food += 1;
+                            f.amount = 0;
+                            eaten = true;
+                            break;
+                        }
+                    }
+                    if (f.amount < 0.2 || eaten) state.food.splice(i, 1);
+                }
+
+                if (state.agents.length > 0 &&
+                    state.tick % spawnIv === 0 &&
+                    state.food.length < LAB_NUM_FOOD * 10) {
+                    for (let s = 0; s < 3; s++) {
+                        state.food.push({
+                            x: rng() * LAB_WORLD_W,
+                            y: rng() * LAB_WORLD_H,
+                            amount: 1
+                        });
+                    }
+                }
+            }
+
+            function headlessOutcomes(state, endedBy) {
+                let sumH = 0, sumF = 0, totFood = 0;
+                for (let i = 0; i < state.agents.length; i++) {
+                    sumH += state.agents[i].hunger;
+                    sumF += state.agents[i].food;
+                }
+                for (let i = 0; i < state.food.length; i++) totFood += state.food[i].amount;
+                const n = state.agents.length;
+                return {
+                    durationSec: Math.round(state.tick / 60),
+                    durationTicks: state.tick,
+                    deaths: state.deaths,
+                    finalPop: n,
+                    endedBy: endedBy,
+                    avgHunger: n ? Math.round((sumH / n) * 10) / 10 : 0,
+                    avgFood: n ? Math.round((sumF / n) * 100) / 100 : 0,
+                    totalFood: Math.round(totFood * 10) / 10
+                };
+            }
+
+            /**
+             * Headless trial with hard max duration always.
+             * stopWhen 'extinction': stop early if pop hits 0, else end at maxTicks.
+             * stopWhen 'max_time': end at maxTicks (or earlier if extinct).
+             * Yields every LAB_HEADLESS_CHUNK ticks so Cancel works mid-trial.
+             * onProgress(tick, cap) optional.
+             * Returns Promise<outcomes>.
+             */
+            function runOneHeadlessAsync(setupKnobs, seed, stopWhen, maxTicks, onProgress) {
+                const knobs = cloneKnobs(setupKnobs);
+                const state = createHeadlessWorld(knobs, seed);
+                const cap = Math.max(60, maxTicks || labBatch.maxTicks || LAB_MAX_TICKS_DEFAULT);
+
+                return new Promise(function (resolve) {
+                    function chunk() {
+                        if (labBatchCancel) {
+                            resolve(headlessOutcomes(state, 'cancelled'));
+                            return;
+                        }
+                        const end = Math.min(state.tick + LAB_HEADLESS_CHUNK, cap);
+                        let endedBy = null;
+                        while (state.tick < end) {
+                            headlessStep(state);
+                            if (state.agents.length === 0) {
+                                endedBy = 'extinction';
+                                break;
+                            }
+                        }
+                        if (!endedBy && state.tick >= cap) {
+                            endedBy = 'max_time';
+                        }
+                        if (onProgress) onProgress(state.tick, cap);
+                        if (endedBy) {
+                            resolve(headlessOutcomes(state, endedBy));
+                            return;
+                        }
+                        setTimeout(chunk, 0);
+                    }
+                    setTimeout(chunk, 0);
+                });
+            }
+
+            function setAppMode(mode) {
+                if (mode === 'lab') return;
+                if (mode === appMode) return;
+                if (labBatchRunning && mode === 'world') {
+                    if (!confirm('A Lab batch is running. Leave Lab and cancel the batch?')) return;
+                    cancelLabBatch();
+                }
+                if (appMode === 'world' && mode === 'lab') {
+                    running = false;
+                    const pauseBtn = document.getElementById('btn-pause');
+                    if (pauseBtn) pauseBtn.textContent = 'Resume';
+                }
+                appMode = mode;
+                const shell = document.querySelector('.app-shell');
+                if (shell) shell.classList.toggle('mode-lab', mode === 'lab');
+                const bw = document.getElementById('mode-world');
+                const bl = document.getElementById('mode-lab');
+                if (bw) bw.classList.toggle('on', mode === 'world');
+                if (bl) bl.classList.toggle('on', mode === 'lab');
+                if (mode === 'lab') {
+                    renderLabLeft();
+                    renderLabResults();
+                } else {
+                    // re-enter World paused
+                    running = false;
+                    const pauseBtn = document.getElementById('btn-pause');
+                    if (pauseBtn) pauseBtn.textContent = 'Resume';
+                    setTimeout(function () { afterLayoutChange(); }, 0);
+                }
+            }
+
+            function labTotalRuns() {
+                return labBatch.runsPerSetup * (labSetups.length || 1);
+            }
+
+            function formatSetupSummaryLines(k) {
+                return {
+                    difficulty: k.preset || 'custom',
+                    policy: k.movementPolicy || 'seek',
+                    sense: (k.sight != null ? k.sight : '—') + ' · ' +
+                        (k.hungerPull != null ? Number(k.hungerPull).toFixed(2).replace(/\.?0+$/, '') : '—') + ' · ' +
+                        (k.seekPush != null ? k.seekPush : '—'),
+                    hungerSpawn: (k.hungerRate != null ? k.hungerRate : '—') + ' · ' +
+                        (k.foodSpawn != null ? k.foodSpawn : '—')
+                };
+            }
+
+            function renderLabLeft() {
+                const batchEl = document.getElementById('lab-batch-summary');
+                const setupsEl = document.getElementById('lab-setup-summaries');
+                if (!batchEl || !setupsEl) return;
+                const stopLabel = labBatch.stopWhen === 'max_time' ? 'Max time' : 'All dead';
+                const maxSec = Math.round(labBatch.maxTicks / 60);
+                batchEl.innerHTML =
+                    '<div class="lab-batch-card">' +
+                    '<div class="lab-sec">Batch</div>' +
+                    '<div class="lab-kv"><span class="k">Setups</span><span class="v">' + labSetups.length + '</span></div>' +
+                    '<div class="lab-kv"><span class="k">Runs per setup</span><span class="v">' + labBatch.runsPerSetup + '</span></div>' +
+                    '<div class="lab-kv"><span class="k">N / setup</span><span class="v">' +
+                    labSetups.map(function (s) { return s.initialAgents != null ? s.initialAgents : '—'; }).join(' · ') +
+                    '</span></div>' +
+                    '<div class="lab-kv"><span class="k">Total runs</span><span class="v">' + labTotalRuns() + '</span></div>' +
+                    '<div class="lab-kv"><span class="k">Stop prefer</span><span class="v">' + stopLabel + '</span></div>' +
+                    '<div class="lab-kv"><span class="k">Max duration</span><span class="v">' + maxSec + 's</span></div>' +
+                    '</div>';
+                let html = '';
+                for (let i = 0; i < labSetups.length; i++) {
+                    const k = labSetups[i];
+                    const s = formatSetupSummaryLines(k);
+                    const side = i === 0 ? ' setup-a' : (i === 1 ? ' setup-b' : '');
+                    const pol = (k.movementPolicy === 'random') ? 'random' : 'seek';
+                    const polCls = k.movementPolicy === 'random' ? 'random' : 'seek';
+                    html += '<div class="lab-setup-card' + side + '">';
+                    html += '<div class="lab-setup-card-head">';
+                    html += '<span class="title">Setup ' + (i + 1) + '</span>';
+                    html += '<span class="lab-setup-badge ' + polCls + '">' + pol + '</span>';
+                    html += '</div>';
+                    html += '<div class="lab-kv"><span class="k">Difficulty</span><span class="v">' + s.difficulty + '</span></div>';
+                    html += '<div class="lab-kv"><span class="k">N · food spawn</span><span class="v">' + (k.initialAgents != null ? k.initialAgents : '—') + ' · ' + (k.foodSpawn != null ? k.foodSpawn : '—') + '</span></div>';
+                    html += '<div class="lab-kv"><span class="k">Seek · Agent master</span><span class="v">' +
+                        (k.seekMaster != null ? Number(k.seekMaster).toFixed(2) : '—') +
+                        (k.seekMasterCustom ? '*' : '') + ' · ' +
+                        (k.agentMaster != null ? Number(k.agentMaster).toFixed(2) : '—') +
+                        (k.agentMasterCustom ? '*' : '') + '</span></div>';
+                    html += '</div>';
+                }
+                setupsEl.innerHTML = html;
+            }
+
+            function setLabProgress(done, total, label, state) {
+                const wrap = document.getElementById('lab-progress');
+                const lab = document.getElementById('lab-progress-label');
+                const cnt = document.getElementById('lab-progress-count');
+                const fill = document.getElementById('lab-progress-fill');
+                if (!wrap) return;
+                wrap.classList.toggle('running', state === 'running');
+                wrap.classList.toggle('done', state === 'done');
+                if (lab) lab.textContent = label || '—';
+                if (cnt) cnt.textContent = (done != null && total != null) ? (done + ' / ' + total) : '—';
+                if (fill) fill.style.width = total ? Math.min(100, Math.round((done / total) * 100)) + '%' : '0%';
+            }
+
+            function renderLabResults() {
+                const cards = document.getElementById('lab-result-cards');
+                const expBtn = document.getElementById('btn-lab-export');
+                const copyBtn = document.getElementById('btn-lab-copy');
+                if (!cards) return;
+                if (!lastLabBatch || !lastLabBatch.aggregates || !lastLabBatch.aggregates.length) {
+                    cards.innerHTML = '<div style="font-size:11px;color:var(--muted);grid-column:1/-1">Start a batch to compare crowd setups (headless · no special).</div>';
+                    if (expBtn) expBtn.disabled = true;
+                    if (copyBtn) copyBtn.disabled = true;
+                    return;
+                }
+                let html = '';
+                for (let i = 0; i < lastLabBatch.aggregates.length; i++) {
+                    const a = lastLabBatch.aggregates[i];
+                    const side = i === 0 ? ' side-a' : (i === 1 ? ' side-b' : '');
+                    const s = formatSetupSummaryLines(a.knobs);
+                    html += '<div class="lab-result-card' + side + '">';
+                    html += '<h4>Setup ' + (i + 1) + ' · ' + s.policy + '</h4>';
+                    html += '<div class="lab-sec" style="margin:0.15rem 0">Config</div>';
+                    html += '<div class="stat"><span class="k">Difficulty</span><span class="v">' + s.difficulty + '</span></div>';
+                    html += '<div class="stat"><span class="k">Policy</span><span class="v">' + s.policy + '</span></div>';
+                    html += '<div class="stat"><span class="k">Sense · str · accel</span><span class="v">' + s.sense + '</span></div>';
+                    html += '<div class="stat"><span class="k">Hunger · spawn</span><span class="v">' + s.hungerSpawn + '</span></div>';
+                    html += '<div class="lab-sec" style="margin:0.15rem 0">Outcomes</div>';
+                    html += '<div class="stat"><span class="k">Runs</span><span class="v">' + a.runs + '</span></div>';
+                    html += '<div class="stat"><span class="k">Alive (avg end)</span><span class="v">' + a.avgAlive + '</span></div>';
+                    html += '<div class="stat"><span class="k">Dead (avg end)</span><span class="v">' + a.avgDead + '</span></div>';
+                    html += '<div class="stat"><span class="k">Mean duration</span><span class="v">' + a.meanDurationSec + 's</span></div>';
+                    html += '<div class="stat"><span class="k">Avg hunger</span><span class="v">' + a.avgHunger + '</span></div>';
+                    html += '<div class="stat"><span class="k">Avg food</span><span class="v">' + a.avgFood + '</span></div>';
+                    html += '</div>';
+                }
+                cards.innerHTML = html;
+                if (expBtn) expBtn.disabled = false;
+                if (copyBtn) copyBtn.disabled = false;
+            }
+
+            function aggregateLabRuns(runs, setups) {
+                const aggs = [];
+                for (let si = 0; si < setups.length; si++) {
+                    const mine = runs.filter(function (r) { return r.setupIndex === si + 1; });
+                    let sumAlive = 0, sumDead = 0, sumDur = 0, sumH = 0, sumF = 0;
+                    for (let i = 0; i < mine.length; i++) {
+                        const o = mine[i].outcomes;
+                        sumAlive += o.finalPop;
+                        sumDead += o.deaths;
+                        sumDur += o.durationSec;
+                        sumH += o.avgHunger;
+                        sumF += o.avgFood;
+                    }
+                    const n = mine.length || 1;
+                    aggs.push({
+                        knobs: cloneKnobs(setups[si]),
+                        runs: mine.length,
+                        avgAlive: Math.round((sumAlive / n) * 10) / 10,
+                        avgDead: Math.round((sumDead / n) * 10) / 10,
+                        meanDurationSec: Math.round(sumDur / n),
+                        avgHunger: Math.round((sumH / n) * 10) / 10,
+                        avgFood: Math.round((sumF / n) * 100) / 100
+                    });
+                }
+                return aggs;
+            }
+
+            function cancelLabBatch() {
+                if (!labBatchRunning) return;
+                labBatchCancel = true;
+            }
+
+            function startLabBatch() {
+                if (labBatchRunning) return;
+                if (!labSetups.length) return;
+                labBatchRunning = true;
+                labBatchCancel = false;
+                const startBtn = document.getElementById('btn-lab-start');
+                const cancelBtn = document.getElementById('btn-lab-cancel');
+                if (startBtn) startBtn.disabled = true;
+                if (cancelBtn) cancelBtn.style.display = '';
+
+                const setupsSnap = labSetups.map(cloneKnobs);
+                const runsPer = labBatch.runsPerSetup;
+                const total = runsPer * setupsSnap.length;
+                const baseSeed = (Date.now() ^ (Math.random() * 1e9)) >>> 0;
+                const runs = [];
+                let completed = 0;
+
+                setLabProgress(0, total, 'Headless…', 'running');
+                lastLabBatch = null;
+                renderLabResults();
+
+                function finish(status) {
+                    labBatchRunning = false;
+                    labBatchCancel = false;
+                    if (startBtn) startBtn.disabled = false;
+                    if (cancelBtn) cancelBtn.style.display = 'none';
+                    const aggregates = aggregateLabRuns(runs, setupsSnap);
+                    lastLabBatch = {
+                        status: status,
+                        experiment: {
+                            setups: setupsSnap.map(function (k, i) {
+                                return { index: i + 1, knobs: k };
+                            }),
+                            runsPerSetup: runsPer,
+                            agentsPerSetup: labBatch.agentsPerSetup,
+                            endRule: labBatch.stopWhen === 'max_time' ? 'max_time' : 'extinction',
+                            maxTicks: labBatch.maxTicks,
+                            baseSeed: baseSeed
+                        },
+                        runs: runs,
+                        aggregates: aggregates
+                    };
+                    setLabProgress(completed, total,
+                        status === 'cancelled' ? 'Batch cancelled' : 'Last batch complete',
+                        'done');
+                    renderLabResults();
+                    showRunLogsToast(status === 'cancelled'
+                        ? 'Lab batch cancelled (' + completed + '/' + total + ')'
+                        : 'Lab batch complete (' + total + ' runs)');
+                }
+
+                let si = 0;
+                let ri = 0;
+                const maxTicksSnap = labBatch.maxTicks;
+                const stopWhenSnap = labBatch.stopWhen;
+
+                function nextTrial() {
+                    if (labBatchCancel) {
+                        finish('cancelled');
+                        return;
+                    }
+                    if (si >= setupsSnap.length) {
+                        finish('complete');
+                        return;
+                    }
+                    const setupIndex = si + 1;
+                    const seed = (baseSeed + si * 10007 + ri * 97) >>> 0;
+                    const knobs = setupsSnap[si];
+                    setLabProgress(
+                        completed,
+                        total,
+                        'Setup ' + setupIndex + ' · trial ' + (ri + 1) + '/' + runsPer,
+                        'running'
+                    );
+
+                    runOneHeadlessAsync(knobs, seed, stopWhenSnap, maxTicksSnap, function (tick, cap) {
+                        if (labBatchCancel) return;
+                        const frac = completed + (tick / cap);
+                        setLabProgress(
+                            Math.min(total, Math.floor(frac * 10) / 10),
+                            total,
+                            'Setup ' + setupIndex + ' · ' + Math.round(tick / 60) + 's / ' + Math.round(cap / 60) + 's',
+                            'running'
+                        );
+                    }).then(function (outcomes) {
+                        if (labBatchCancel && (!outcomes || outcomes.endedBy === 'cancelled')) {
+                            // still record partial if we have a real outcome mid-cancel
+                        }
+                        if (outcomes && outcomes.endedBy !== 'cancelled') {
+                            runs.push({
+                                run: completed + 1,
+                                setupIndex: setupIndex,
+                                seed: seed,
+                                knobs: cloneKnobs(knobs),
+                                special: null,
+                                outcomes: outcomes
+                            });
+                            completed++;
+                        } else if (outcomes && outcomes.endedBy === 'cancelled' && outcomes.durationTicks > 0) {
+                            runs.push({
+                                run: completed + 1,
+                                setupIndex: setupIndex,
+                                seed: seed,
+                                knobs: cloneKnobs(knobs),
+                                special: null,
+                                outcomes: outcomes
+                            });
+                            completed++;
+                            finish('cancelled');
+                            return;
+                        } else if (labBatchCancel) {
+                            finish('cancelled');
+                            return;
+                        }
+                        ri++;
+                        if (ri >= runsPer) {
+                            ri = 0;
+                            si++;
+                        }
+                        setLabProgress(completed, total, 'Headless… Setup ' + Math.min(setupIndex, setupsSnap.length), 'running');
+                        setTimeout(nextTrial, 0);
+                    }).catch(function (e) {
+                        console.error('[Lab]', e);
+                        runs.push({
+                            run: completed + 1,
+                            setupIndex: setupIndex,
+                            seed: seed,
+                            knobs: cloneKnobs(knobs),
+                            special: null,
+                            outcomes: {
+                                durationSec: 0, durationTicks: 0, deaths: 0, finalPop: 0,
+                                endedBy: 'error', avgHunger: 0, avgFood: 0, totalFood: 0
+                            }
+                        });
+                        completed++;
+                        ri++;
+                        if (ri >= runsPer) {
+                            ri = 0;
+                            si++;
+                        }
+                        setTimeout(nextTrial, 0);
+                    });
+                }
+
+                setTimeout(nextTrial, 0);
+            }
+
+            function buildLabExportEnvelope() {
+                if (!lastLabBatch) return null;
+                return {
+                    version: APP_VERSION,
+                    exportedAt: new Date().toISOString(),
+                    mode: 'lab',
+                    status: lastLabBatch.status,
+                    experiment: lastLabBatch.experiment,
+                    runs: lastLabBatch.runs,
+                    aggregates: lastLabBatch.aggregates
+                };
+            }
+
+            function exportLabBatch() {
+                const env = buildLabExportEnvelope();
+                if (!env) return;
+                downloadJson('tes-lab-' + env.runs.length + 'runs-' + APP_VERSION + '.json', env);
+                showRunLogsToast('Exported Lab batch (' + env.runs.length + ' runs)');
+            }
+
+            function copyLabBatch() {
+                const env = buildLabExportEnvelope();
+                if (!env) return;
+                copyJson(env);
+            }
+
+            // --- Lab Parameters modal ---
+            function closeLabParamsModalOnly() {
+                const m = document.getElementById('modal-lab-params');
+                if (!m) return;
+                m.classList.remove('open');
+                m.setAttribute('aria-hidden', 'true');
+            }
+
+            function closeLabParamsModal() {
+                closeLabParamsModalOnly();
+                renderLabLeft();
+            }
+
+            function openLabParamsModal() {
+                closeAllModals();
+                const m = document.getElementById('modal-lab-params');
+                if (!m) return;
+                if (labParamsTab !== 'batch' && (labParamsTab < 0 || labParamsTab >= labSetups.length)) {
+                    labParamsTab = 0;
+                }
+                renderLabParamsModal();
+                m.classList.add('open');
+                m.setAttribute('aria-hidden', 'false');
+            }
+
+            function labAddSetup() {
+                if (labSetups.length >= LAB_MAX_SETUPS) return;
+                labSetups.push(defaultLabKnobs({ preset: 'balanced' }));
+                labParamsTab = labSetups.length - 1;
+                renderLabParamsModal();
+                renderLabLeft();
+            }
+
+            function labRemoveSetup() {
+                if (labSetups.length <= 1) return;
+                if (labParamsTab === 'batch') {
+                    labSetups.pop();
+                } else {
+                    const idx = typeof labParamsTab === 'number' ? labParamsTab : 0;
+                    labSetups.splice(idx, 1);
+                    labParamsTab = Math.min(idx, labSetups.length - 1);
+                }
+                renderLabParamsModal();
+                renderLabLeft();
+            }
+
+            function applyLabPresetToSetup(idx, type) {
+                const k = labSetups[idx];
+                if (!k) return;
+                const packName = (type === 'lenient' || type === 'punishing') ? type : 'balanced';
+                const env = getPresetEnv(packName);
+                k.preset = packName;
+                k.foodSpawn = env.foodSpawn;
+                k.initialAgents = env.initialAgents;
+                renderLabParamsModal();
+            }
+
+            function renderLabParamsModal() {
+                const tabs = document.getElementById('lab-params-tabs');
+                const body = document.getElementById('lab-params-body');
+                const addBtn = document.getElementById('btn-lab-add-setup');
+                const remBtn = document.getElementById('btn-lab-remove-setup');
+                if (!tabs || !body) return;
+                if (addBtn) addBtn.disabled = labSetups.length >= LAB_MAX_SETUPS;
+                if (remBtn) remBtn.disabled = labSetups.length <= 1;
+
+                let th = '';
+                for (let i = 0; i < labSetups.length; i++) {
+                    th += '<button type="button" class="btn-speed' + (labParamsTab === i ? ' on' : '') +
+                        '" data-lab-tab="' + i + '">Setup ' + (i + 1) + '</button>';
+                }
+                th += '<button type="button" class="btn-speed' + (labParamsTab === 'batch' ? ' on' : '') +
+                    '" data-lab-tab="batch">Batch</button>';
+                tabs.innerHTML = th;
+                tabs.querySelectorAll('[data-lab-tab]').forEach(function (btn) {
+                    btn.onclick = function () {
+                        const t = btn.getAttribute('data-lab-tab');
+                        labParamsTab = t === 'batch' ? 'batch' : parseInt(t, 10);
+                        renderLabParamsModal();
+                    };
+                });
+
+                if (labParamsTab === 'batch') {
+                    const allDead = labBatch.stopWhen === 'extinction';
+                    if (allDead) {
+                        labBatch.maxTicks = LAB_ALL_DEAD_TICKS;
+                    } else if (labBatch.maxTicksUser) {
+                        labBatch.maxTicks = labBatch.maxTicksUser;
+                    }
+                    const maxSecShow = Math.round(labBatch.maxTicks / 60);
+                    body.innerHTML =
+                        '<div class="mb-2"><div class="flex justify-between text-xs mb-0.5"><span>Fallback agents / setup</span>' +
+                        '<span class="font-mono text-sky-300" id="lab-val-agents">' + labBatch.agentsPerSetup + '</span></div>' +
+                        '<input type="range" id="lab-slider-agents" min="10" max="100" step="1" value="' + labBatch.agentsPerSetup + '" class="w-full accent-sky-400"></div>' +
+                        '<p class="text-[10px] text-slate-500 mb-2" style="margin-top:-0.25rem">Used only if a setup has no Initial agents. Trials use each setup’s N (island pack).</p>' +
+                        '<div class="mb-2"><div class="flex justify-between text-xs mb-0.5"><span>Runs per setup</span>' +
+                        '<span class="font-mono text-sky-300" id="lab-val-runs">' + labBatch.runsPerSetup + '</span></div>' +
+                        '<input type="range" id="lab-slider-runs" min="1" max="100" step="1" value="' + labBatch.runsPerSetup + '" class="w-full accent-sky-400"></div>' +
+                        '<div class="mb-2"><div class="section-title" style="margin-bottom:0.35rem">Stop prefer</div>' +
+                        '<div class="policy-group">' +
+                        '<button type="button" class="btn-speed' + (allDead ? ' on' : '') + '" id="lab-stop-ext">All dead</button>' +
+                        '<button type="button" class="btn-speed' + (!allDead ? ' on' : '') + '" id="lab-stop-max">Max time</button>' +
+                        '</div></div>' +
+                        labSliderRow(
+                            allDead
+                                ? 'Max duration (fixed ' + LAB_DURATION_SEC_MAX + 's safety)'
+                                : 'Max duration (sim-sec)',
+                            'lab-slider-maxt',
+                            LAB_DURATION_SEC_MIN,
+                            LAB_DURATION_SEC_MAX,
+                            5,
+                            maxSecShow,
+                            0,
+                            allDead
+                        ) +
+                        '<p class="text-[10px] text-slate-500 mt-1 mb-0">' +
+                        (allDead
+                            ? 'All dead: end on extinction when possible. Duration locked to <strong>' + LAB_DURATION_SEC_MAX + 's</strong> so soft remnants cannot hang forever.'
+                            : 'Max time: cut each trial at this duration (or earlier if extinct). Default ' + LAB_DURATION_SEC_DEFAULT + 's for faster batches.') +
+                        '</p>' +
+                        '<p class="text-[10px] text-slate-500 mt-2 mb-0">Total runs = runs × setups = <span class="font-mono text-sky-300">' + labTotalRuns() + '</span>.</p>';
+                    const sa = document.getElementById('lab-slider-agents');
+                    const va = document.getElementById('lab-val-agents');
+                    if (sa) sa.oninput = function () {
+                        labBatch.agentsPerSetup = parseInt(sa.value, 10);
+                        if (va) va.textContent = labBatch.agentsPerSetup;
+                    };
+                    const sr = document.getElementById('lab-slider-runs');
+                    const vr = document.getElementById('lab-val-runs');
+                    if (sr) sr.oninput = function () {
+                        labBatch.runsPerSetup = parseInt(sr.value, 10);
+                        if (vr) vr.textContent = labBatch.runsPerSetup;
+                    };
+                    const smDur = document.getElementById('lab-slider-maxt');
+                    const vm = document.getElementById('lab-slider-maxt-val');
+                    if (smDur && !smDur.disabled) {
+                        smDur.oninput = function () {
+                            const sec = parseInt(smDur.value, 10);
+                            labBatch.maxTicks = sec * 60;
+                            labBatch.maxTicksUser = labBatch.maxTicks;
+                            if (vm) vm.textContent = sec;
+                        };
+                    }
+                    const se = document.getElementById('lab-stop-ext');
+                    const sx = document.getElementById('lab-stop-max');
+                    if (se) se.onclick = function () {
+                        labBatch.stopWhen = 'extinction';
+                        labBatch.maxTicks = LAB_ALL_DEAD_TICKS;
+                        renderLabParamsModal();
+                        renderLabLeft();
+                    };
+                    if (sx) sx.onclick = function () {
+                        labBatch.stopWhen = 'max_time';
+                        labBatch.maxTicks = labBatch.maxTicksUser || LAB_MAX_TICKS_DEFAULT;
+                        renderLabParamsModal();
+                        renderLabLeft();
+                    };
+                    return;
+                }
+
+                const idx = labParamsTab | 0;
+                const k = labSetups[idx];
+                if (!k) return;
+                const isRandom = k.movementPolicy === 'random';
+                const isCustom = k.preset === 'custom' ||
+                    (k.preset !== 'lenient' && k.preset !== 'balanced' && k.preset !== 'punishing');
+                body.innerHTML =
+                    '<div class="mb-2"><div class="section-title" style="margin-bottom:0.35rem">Island</div>' +
+                    '<div class="policy-group" id="lab-preset-group">' +
+                    '<button type="button" class="btn-preset' + (k.preset === 'lenient' ? ' on' : '') + '" data-p="lenient">Lenient</button>' +
+                    '<button type="button" class="btn-preset' + (k.preset === 'balanced' ? ' on' : '') + '" data-p="balanced">Balanced</button>' +
+                    '<button type="button" class="btn-preset' + (k.preset === 'punishing' ? ' on' : '') + '" data-p="punishing">Punishing</button>' +
+                    '<button type="button" class="btn-preset' + (isCustom ? ' on' : '') + '" data-p="custom" id="lab-preset-custom" title="Food spawn or Initial agents moved">Custom</button>' +
+                    '</div></div>' +
+                    '<div class="mb-2"><div class="section-title" style="margin-bottom:0.35rem">Policy</div>' +
+                    '<div class="policy-group">' +
+                    '<button type="button" class="btn-speed' + (k.movementPolicy === 'seek' ? ' on' : '') + '" id="lab-pol-seek">Seek</button>' +
+                    '<button type="button" class="btn-speed' + (isRandom ? ' on' : '') + '" id="lab-pol-rand">Random</button>' +
+                    '</div></div>' +
+                    '<div class="section-title" style="margin:0.35rem 0 0.35rem">Environment</div>' +
+                    labSliderRow('Initial agents', 'lab-s-n', 1, 100, 1, k.initialAgents, 0, false) +
+                    labSliderRow('Food spawn', 'lab-s-spawn', 1, 50, 1, k.foodSpawn, 0, false) +
+                    '<div class="section-title" style="margin:0.55rem 0 0.35rem">Seek</div>' +
+                    labMasterBlock('Seek master', 'lab-s-sm', k.seekMaster != null ? k.seekMaster : 0.5, 'noisy / weak lock', 'quiet / committed', k.seekMasterCustom, isRandom) +
+                    labSliderRow('Sight', 'lab-s-sense', 40, 400, 5, k.sight, 0, isRandom) +
+                    labSliderRow('Hunger pull', 'lab-s-str', 0, 2, 0.05, k.hungerPull, 2, isRandom) +
+                    labSliderRow('Seek push', 'lab-s-acc', 0.05, 1, 0.05, k.seekPush, 2, isRandom) +
+                    labSliderRow('Drift', 'lab-s-wan', 0, 1.5, 0.05, k.drift, 2, isRandom) +
+                    (isRandom ? '<p class="text-[10px] text-slate-500 mb-2">Seek sliders apply only in Seek policy.</p>' : '') +
+                    '<div class="section-title" style="margin:0.55rem 0 0.35rem">Agent</div>' +
+                    labMasterBlock('Agent master', 'lab-s-am', k.agentMaster != null ? k.agentMaster : 0.5, 'easy body', 'hard body', k.agentMasterCustom) +
+                    labSliderRow('Max speed', 'lab-s-spd', 0.5, 4, 0.1, k.maxSpeed, 2, false) +
+                    labSliderRow('Hunger rate', 'lab-s-hung', 0.01, 0.15, 0.001, k.hungerRate, 3, false) +
+                    labSliderRow('Gluttony', 'lab-s-glu', 0.3, 2, 0.05, k.gluttony, 2, false) +
+                    labSliderRow('Efficiency', 'lab-s-eff', 0.3, 3, 0.05, k.efficiency, 2, false) +
+                    labSliderRow('Eat threshold', 'lab-s-eat', 5, 30, 1, k.eatThreshold, 0, false);
+
+                body.querySelectorAll('[data-p]').forEach(function (btn) {
+                    btn.onclick = function () {
+                        const p = btn.getAttribute('data-p');
+                        if (p === 'custom') {
+                            k.preset = 'custom';
+                            syncLabPresetButtons(k);
+                            return;
+                        }
+                        applyLabPresetToSetup(idx, p);
+                    };
+                });
+                const ps = document.getElementById('lab-pol-seek');
+                const pr = document.getElementById('lab-pol-rand');
+                if (ps) ps.onclick = function () {
+                    k.movementPolicy = 'seek';
+                    renderLabParamsModal();
+                };
+                if (pr) pr.onclick = function () {
+                    k.movementPolicy = 'random';
+                    renderLabParamsModal();
+                };
+                const smSeek = document.getElementById('lab-s-sm');
+                if (smSeek && !smSeek.disabled) smSeek.oninput = function () {
+                    applySeekMasterTo(k, parseFloat(smSeek.value));
+                    renderLabParamsModal();
+                    renderLabLeft();
+                };
+                const am = document.getElementById('lab-s-am');
+                if (am) am.oninput = function () {
+                    applyAgentMasterTo(k, parseFloat(am.value));
+                    renderLabParamsModal();
+                    renderLabLeft();
+                };
+                wireLabSlider(idx, 'lab-s-n', 'initialAgents', 0, 'island');
+                wireLabSlider(idx, 'lab-s-spawn', 'foodSpawn', 0, 'island');
+                wireLabSlider(idx, 'lab-s-sense', 'sight', 0, 'seek');
+                wireLabSlider(idx, 'lab-s-str', 'hungerPull', 2, 'seek');
+                wireLabSlider(idx, 'lab-s-acc', 'seekPush', 2, 'seek');
+                wireLabSlider(idx, 'lab-s-wan', 'drift', 2, 'seek');
+                wireLabSlider(idx, 'lab-s-spd', 'maxSpeed', 2, 'agent');
+                wireLabSlider(idx, 'lab-s-hung', 'hungerRate', 3, 'agent');
+                wireLabSlider(idx, 'lab-s-glu', 'gluttony', 2, 'agent');
+                wireLabSlider(idx, 'lab-s-eff', 'efficiency', 2, 'agent');
+                wireLabSlider(idx, 'lab-s-eat', 'eatThreshold', 0, 'agent');
+            }
+
+            function labMasterBlock(label, id, val, lo, hi, custom, disabled) {
+                const shown = Number(val).toFixed(2);
+                const dis = disabled ? ' disabled' : '';
+                const wrapExtra = disabled ? ' lab-slider-disabled' : '';
+                return '<div class="master-row' + wrapExtra + '">' +
+                    '<div class="flex justify-between text-xs mb-0.5"><span>' + label + '</span>' +
+                    '<span class="font-mono text-sky-300" id="' + id + '-val">' + shown + '</span></div>' +
+                    '<input type="range" id="' + id + '" min="0" max="1" step="0.01" value="' + val + '" class="w-full accent-sky-400"' + dis + '>' +
+                    '<div class="master-ends"><span>' + lo + '</span><span>' + hi + '</span></div>' +
+                    (custom && !disabled ? '<p class="text-[10px] text-slate-500 mb-0 mt-1">Custom — a child slider left the path</p>' : '') +
+                    '</div>';
+            }
+
+            function labSliderRow(label, id, min, max, step, val, decimals, disabled) {
+                const d = decimals != null ? decimals : 0;
+                const shown = d > 0 ? Number(val).toFixed(d) : String(val);
+                const dis = disabled ? ' disabled' : '';
+                const wrapCls = disabled ? ' mb-2 lab-slider-disabled' : ' mb-2';
+                return '<div class="' + wrapCls.trim() + '"><div class="flex justify-between text-xs mb-0.5"><span>' + label + '</span>' +
+                    '<span class="font-mono text-sky-300" id="' + id + '-val">' + shown + '</span></div>' +
+                    '<input type="range" id="' + id + '" min="' + min + '" max="' + max + '" step="' + step +
+                    '" value="' + val + '" class="w-full accent-sky-400"' + dis + '></div>';
+            }
+
+            function syncLabPresetButtons(k) {
+                const group = document.getElementById('lab-preset-group');
+                if (!group || !k) return;
+                const preset = k.preset || 'custom';
+                group.querySelectorAll('[data-p]').forEach(function (btn) {
+                    const p = btn.getAttribute('data-p');
+                    const on = (preset === 'custom' && p === 'custom') ||
+                        (preset !== 'custom' && p === preset);
+                    btn.classList.toggle('on', on);
+                });
+            }
+
+            function wireLabSlider(setupIdx, id, key, decimals, shelf) {
+                const el = document.getElementById(id);
+                const valEl = document.getElementById(id + '-val');
+                if (!el || el.disabled) return;
+                el.oninput = function () {
+                    const kn = labSetups[setupIdx];
+                    if (!kn) return;
+                    let v = parseFloat(el.value);
+                    if (decimals === 0) v = Math.round(v);
+                    kn[key] = v;
+                    if (shelf === 'island') {
+                        kn.preset = 'custom';
+                        syncLabPresetButtons(kn);
+                    } else if (shelf === 'seek') kn.seekMasterCustom = true;
+                    else if (shelf === 'agent') kn.agentMasterCustom = true;
+                    if (valEl) valEl.textContent = decimals > 0 ? v.toFixed(decimals) : String(v);
+                    renderLabLeft();
+                };
+            }
 
             syncPhaseBrand();
             initHungerSliders();
             syncPresetButtons();
+            resetSpecialOverridesFromWorld();
+            syncSpecialModalUI();
 
             renderRunHistory();
             updateHistoryStats();
@@ -4834,6 +6669,10 @@
             updateInspector(); // empty-state dock (pin disabled until select)
             updateMetricsTab();
             loadColVisibility();
+
+            initLabModel();
+            renderLabLeft();
+            setLabProgress(0, 0, 'No batch yet', '');
 
             // Fit sim canvas + charts after layout; again on window resize
             setTimeout(function () { afterLayoutChange(); }, 0);

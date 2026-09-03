@@ -4,7 +4,7 @@ Dots walk a 2D island. They get hungry. They eat pellets. Some last; some don’
 
 We start with hunger, then mix different kinds of people, then children, then trade.
 
-**Right now:** Evolve is open in [`index.html`](index.html) as `2.0.0-evolve` — door only, no babies yet. Differ and Survive are finished games in their own files. They do not share state.
+**Right now:** Evolve is open in [`index.html`](index.html) as `2.0.1-desk` — Lab and Special stripped. No babies yet. Differ and Survive are finished games in their own files. They do not share state.
 
 ---
 
@@ -38,7 +38,7 @@ Survive → Differ → Evolve → Economy. When a phase closes we freeze a playa
 |-------|--------|-----------|
 | **0 · Survive** | Closed 2026-08-13 | [`phase-0-survive-finished.html`](phase-0-survive-finished.html) — everyone the same body. |
 | **1 · Differ** | Closed | [`phase-1-differ-finished.html`](phase-1-differ-finished.html) — Mix, stories, graphs, three food spots, zoomed-out island, bump. Last ship `1.5.0-bump`. |
-| **2 · Evolve** | Open — live `2.0.0-evolve` | [`index.html`](index.html) — same island as Differ. Door is open. No children yet. |
+| **2 · Evolve** | Open — live `2.0.1-desk` | [`index.html`](index.html) — same island as Differ. No Lab / Special on this desk. No children yet. |
 | **3 · Economy** | Later | Trade. Not yet. |
 
 What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.md`. Old numbered copies: `archive/`.
@@ -49,7 +49,7 @@ What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.m
 
 Open one at a time. There is no button between them (a lone download of `index.html` would not find the freeze files). Keep them in the folder if you want all three.
 
-**Evolve (what we’re building)** is [`index.html`](index.html), version `2.0.0-evolve`. Same Mix / island as Differ. No next-year button yet.
+**Evolve (what we’re building)** is [`index.html`](index.html), version `2.0.1-desk`. Same Mix / island as Differ. No next-year button yet.
 
 1. Open **Mix**.
 2. Pick a **story** (Groups, Families, or Rungs) or edit **Groups** / **Roster** yourself. The two tabs are separate drafts.
@@ -57,7 +57,7 @@ Open one at a time. There is no button between them (a lone download of `index.h
 4. **Apply** remembers the open tab. The island does not change yet.
 5. **Reset** is when the mix actually spawns. Food interval and **Three spots** on the left are live weather.
 
-Trends and History show who is left. Special is off. Lab stays in the Survive file.
+Trends and History show who is left. Lab and Special are only in the Survive freeze — not on this desk.
 
 **Differ (finished)** is [`phase-1-differ-finished.html`](phase-1-differ-finished.html). Mix kinds, bump, chairs on the food. Do not add features to that file.
 
@@ -69,7 +69,7 @@ Survive asks: if everyone is the same, how many live? Differ asks: if they aren�
 
 ## Version
 
-The one-line label in `VERSION` and on the World badge should match. Live is **`2.0.0-evolve`**. Differ’s frozen label is `1.5.0-bump`. Survive’s frozen label is `0.9.6-params`.
+The one-line label in `VERSION` and on the World badge should match. Live is **`2.0.1-desk`**. Differ’s frozen label is `1.5.0-bump`. Survive’s frozen label is `0.9.6-params`.
 
 Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`, island `1.4.0`). Last number = a small fix on that slice.
 
