@@ -2,11 +2,31 @@
 
 Dots walk a 2D island. They get hungry. They eat pellets. Some last; some don’t.
 
-We start with hunger, then mix different kinds of people, then (later) children, then trade. The point is to **watch who is left** and why.
+We start with hunger, then mix different kinds of people, then (later) children, then trade.
 
-**Right now:** Differ is live in [`index.html`](index.html) as `1.2.0-trends`. Survive is a finished game in its own file. They do not share state.
+**Right now:** Differ is live in [`index.html`](index.html) as `1.3.2-path`. Survive is a finished game in its own file. They do not share state.
 
-A human is the PM. An AI pair types. We ship small steps in git.
+---
+
+## Two things this project is for
+
+**1. Practice AI tools, AI workflows, and GitHub.** A human is the PM. An AI pair types. We ship small steps, look at them, then open a PR. The repo is part of the work, not only a dump of the sim.
+
+**2. Try to see emergence on the island.** Not only “how many are still walking.” You watch a run and go **wow, look at that** — a camp on the food, one color owning a patch, helpers getting used. Something we did not type as a goal, and you can still point at why.
+
+If a change does not help one of those two, it waits.
+
+---
+
+## How to talk (every agent, every chat)
+
+Talk to the human like a person sitting next to the sim. **This chat too**, not only files you edit.
+
+Short sentences. Everyday words. Name buttons as they appear: Mix, Apply, Reset, Help.
+
+Do not hide behind leftover, remnant, caste, or slider codes unless you say what you would *see* on the island.
+
+Full rules: **`AGENTS.md`**. Read that file at the start of any session that changes the sim or the docs.
 
 ---
 
@@ -17,7 +37,7 @@ Survive → Differ → Evolve → Economy. When a phase closes we freeze a playa
 | Phase | Status | Play this |
 |-------|--------|-----------|
 | **0 · Survive** | Closed 2026-08-13 | [`phase-0-survive-finished.html`](phase-0-survive-finished.html) — everyone the same body. |
-| **1 · Differ** | Open — live `1.2.0-trends` | [`index.html`](index.html) — Crowd…, stories, graphs by group. |
+| **1 · Differ** | Open — live `1.3.2-path` | [`index.html`](index.html) — Mix, stories, graphs, three food spots. |
 | **2 · Evolve** | Later | Kids. Not yet. |
 | **3 · Economy** | Later | Trade. Not yet. |
 
@@ -29,13 +49,13 @@ What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.m
 
 Open one at a time. There is no button between them (a lone download of `index.html` would not find the Survive file). Keep both in the folder if you want both.
 
-**Differ (what we’re building)** is [`index.html`](index.html), version `1.2.0-trends`.
+**Differ (what we’re building)** is [`index.html`](index.html), version `1.3.2-path`.
 
-1. Open **Crowd…**.
+1. Open **Mix**.
 2. Pick a **story** (Groups, Families, or Rungs) or edit **Groups** / **Roster** yourself. The two tabs are separate drafts.
 3. You can still **Import** a JSON file.
 4. **Apply** remembers the open tab. The island does not change yet.
-5. **Reset** is when the mix actually spawns. Food interval on the left is live weather.
+5. **Reset** is when the mix actually spawns. Food interval and **Three spots** on the left are live weather.
 
 Trends and History show who is left. Special is off. Lab stays in the Survive file.
 
@@ -47,9 +67,9 @@ Survive asks: if everyone is the same, how many live? Differ asks: if they aren�
 
 ## Version
 
-The one-line label in `VERSION` and on the World badge should match. Live is **`1.2.0-trends`**. Survive’s frozen label is `0.9.6-params`.
+The one-line label in `VERSION` and on the World badge should match. Live is **`1.3.2-path`**. Survive’s frozen label is `0.9.6-params`.
 
-Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`). Last number = a small fix on that slice.
+Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`). Last number = a small fix on that slice.
 
 ---
 
@@ -84,7 +104,7 @@ Judge a mix on the island: who is still walking.
 
 ## How we build
 
-If a change doesn’t make it easier to see *why* the leftover crowd looks like that, it waits. One idea at a time. Live app is a single `index.html` (no build). The human decides when to open a PR.
+If a change doesn’t make it easier to see a leftover *shape* (who, where, which color) — or to ship a small GitHub step — it waits. One idea at a time. Live app is a single `index.html` (no build). The human decides when to open a PR.
 
 **Layout vs mechanics.** CSS, panels, labels: the AI may edit `index.html`. Hunger, movement, eat, spawn: the human leads; the AI proposes; the human says when to apply. Layout is cheap to undo if `archive/` has a snapshot. Mechanics are not. Full rules: **`AGENTS.md`**.
 
@@ -98,7 +118,7 @@ When Survive closed we froze `phase-0-survive-finished.html` and live `index.htm
 |------|------------|
 | `index.html` | Live Differ. The only file we grow. |
 | `phase-0-survive-finished.html` | Frozen Survive. Play it; don’t patch it. |
-| `phase-1-differ-presets/` | Extra Crowd… Import JSON. Stories in the app don’t need these files. |
+| `phase-1-differ-presets/` | Extra Mix Import JSON. Stories in the app don’t need these files. |
 | `VERSION` | One-line live label. Must match the World badge. |
 | `README.md` | This file. |
 | `AGENTS.md` | How any AI should behave here. |

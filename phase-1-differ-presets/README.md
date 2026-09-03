@@ -1,6 +1,6 @@
-# Crowd… import files
+# Mix import files
 
-The app already has **stories** in Crowd… (no file needed):
+The app already has **stories** in Mix (no file needed):
 
 - **Groups** — kinds of people; everyone in a kind is the same
 - **Families** — those same mixes, each named person a little off the average

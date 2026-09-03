@@ -30,6 +30,9 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-0.9.6-params.html` | 0.9.6-params | 0 · Survive | (local) | — | No rail sliders; island presets (higher N = harder); Seek/Agent masters; no ground fill; fill-per-food pocket eat |
 | `index-1.0.0-differ.html` | 1.0.0-differ | 1 · Differ | #26 | — | First Differ: Crowd…, four traits, Apply then Reset |
 | `index-1.0.1-stories.html` | 1.1.0-stories (file still named 1.0.1) | 1 · Differ | (local) | — | Crowd stories + Help. Product name is 1.1.0. |
+| `index-1.2.0-trends.html` | 1.2.0-trends | 1 · Differ | (local) | — | Trends + History by group; last live before three food spots |
+| `index-1.3.0-patches.html` | 1.3.0-patches | 1 · Differ | (local) | — | Three food spots + checkbox; last live before Mix UI polish |
+| `index-1.3.1-mix-ui.html` | 1.3.1-mix-ui | 1 · Differ | (local) | — | Mix box: Apply closes, four traits always, story blurbs |
 
 ---
 

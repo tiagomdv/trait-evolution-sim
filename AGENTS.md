@@ -4,27 +4,29 @@
 
 You are a coding pair. The human (tiagomdv) is PM and has the last word on how the sim *feels*.
 
-Read this whole file at the start of any session that implements, versions, or opens a PR.
+Read this whole file at the start of any session that implements, versions, or opens a PR. The README says the same talk rule so a first read of the repo is enough to speak like a person.
 
 ---
 
 ## How we talk (non-negotiable)
 
-Write like a person sitting next to the human at the sim. **Normal English.** Chat, PR text, commit messages, comments in `index.html`, Help, Vision, README, FUTURE_FEATURES, IMPLEMENTATION_LOG, design notes, UI labels.
+**Every reply to the human is normal English.** Not only README / Help / the log. Plans, reviews, “what next,” commit messages, PR text, comments in `index.html` — same voice as sitting next to the sim.
 
 Do:
 
 - Short sentences. Everyday words. Explain a knob by what you *see* (who lives, who starves, colors on the island).
-- Name buttons and files as they appear: Crowd…, Apply, Reset, Help, `index.html`.
+- Name buttons and files as they appear: Mix, Apply, Reset, Help, `index.html`.
 - If a term is unavoidable, define it once in plain words the first time it shows up.
 
 Do not:
 
 - Jargon stacks or variable names as product names (`t`, remnant, caste, decode) unless you say what they mean.
 - Fake-precise science when we mean “try this mix and watch who is left.”
-- Docs that assume the reader memorized Survive Lab.
+- Docs or chat that assume the reader memorized Survive Lab.
 
 Comments in code: one line of *why*, in English.
+
+This project has two jobs (see README): practice AI + GitHub, and try for a **wow, look at that** on the island. Chat should sound like that, not like a ticket system.
 
 **“Let’s push” means open a PR** after the human asked — not land on `main` unless they clearly say merge to main / push to main.
 
@@ -65,11 +67,12 @@ Still true:
 2. Bump `VERSION` and the in-app badge together.
 3. Snapshot meaningful steps only (risky rewrite, a slice that feels done, before a PR).
 4. Do not quietly change hunger / movement / eat while doing layout.
+5. Update `PHASE_WITHIN` (the path above the island) so it matches what this phase has actually shipped. Survive is done (`CURRENT_PHASE` 1). Differ toward Evolve is 0–1. Do not leave it at an old 8%.
 
 ### Smoke test
 
 - New run; pause / resume; change speed
-- Crowd…: pick a story, Apply, Reset — the island matches
+- Mix: pick a story, Apply, Reset — the island matches
 - Trends and History still draw
 - Click a person; Help still reads as a short how-to, then details
 - Window resize; badge matches `VERSION`
@@ -164,11 +167,12 @@ Using leftover living people to **make** the next crowd is Evolve. Looking at wh
 ## After something ships
 
 - `VERSION` + README if the version changed
+- `PHASE_WITHIN` on the path above the island
 - New dated section at the bottom of `IMPLEMENTATION_LOG.md`
 - Remove matching items from `FUTURE_FEATURES.md`
 - MANIFEST row if you added an archive file
 
-`IMPLEMENTATION_LOG.md` is a museum. Never delete old sections. `FUTURE_FEATURES.md` is only what’s still open — no “we decided / we brainstormed / we shipped this.”
+`IMPLEMENTATION_LOG.md` is a museum. Do not delete old *ships*. Same-day notes may be folded into the two version headings they belong to if the human asks. `FUTURE_FEATURES.md` is only what’s still open — no “we decided / we brainstormed / we shipped this.”
 
 ---
 
@@ -188,7 +192,8 @@ Using leftover living people to **make** the next crowd is Evolve. Looking at wh
 ## Paste this at the start of a new chat
 
 ```
-Read AGENTS.md fully. Talk in normal English everywhere.
+Read AGENTS.md fully (and the talk block in README).
+Talk to me like a person in this chat, not only in files you edit.
 This session is layout / mechanics: <pick one>.
 Goal: <one sentence>.
 Live VERSION is the source of truth. Archive before risky edits. Single index.html.

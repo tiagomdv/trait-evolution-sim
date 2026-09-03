@@ -717,99 +717,104 @@ Survive Lab (section above, 2026-08-13): one knob at a time, rank mean alive at 
 
 ---
 
-## 2026-08-27 — `1.0.1-stories`
+## 2026-08-27 — `1.1.0-stories`
 
-**Version / Phase:** `1.0.1-stories` · Phase 1 · Differ  
-**Track:** A (chrome + docs) · local until human asks for a PR  
-**Archive:** `archive/index-1.0.0-differ.html`
+**Version / Phase:** `1.1.0-stories` · Phase 1 · Differ  
+**Archive:** `archive/index-1.0.0-differ.html` (frozen file still named `archive/index-1.0.1-stories.html` from the first label)
 
-### Talk like a person
+Middle number = a playable slice. We first called this `1.0.1`; it is **`1.1.0-stories`**. `1.0.0-differ` stays the Crowd… first ship.
 
-`AGENTS.md` now requires normal English in chat, comments, Help, and all project docs. No jargon stacks.
+**Crowd stories.** The six group mixes from `phase-1-differ-presets/` are buttons at the top of Crowd…. Click fills the Groups draft. You still **Apply** then **Reset**.
 
-### Crowd stories
+Stories have two rows: Groups and Roster.
 
-The six **group** mixes from `phase-1-differ-presets/` are buttons at the top of Crowd…. Click fills the Groups draft. You still **Apply** then **Reset**. Roster JSON stays Import-only. Files remain in the folder as the same mixes.
+- **Families** — same plots as Groups, but each named person is a little off the group average (not 30 twins). Hunt-off kinds stay nearly blind.
+- **Rungs** — hunt / hunger / efficiency / speed ladders, scramble 60, 12 oddballs.
 
-### Help
+JSON files in `phase-1-differ-presets/` stay Import extras.
 
-Short “what this is / how a run works,” then traits, what you see, rules, what’s off. Vision modal shortened the same way.
+**Help / Vision.** Short “what this is / how a run works,” then traits, what you see, rules, what’s off.
 
-### Dropped from the backlog
+**Food interval.** First pass (floor 8, max 50) was wrong: 8 is already hungry at 60 people, 50 is pointless famine. Slider **1–20**. Default gap **6**. Easy 4 / hard 16. How scarce it feels still depends on how many people.
 
-Lab for mixed crowds (and matching Lab eat / Lab mixed spawn). Differ is judged on the island.
+**Talk like a person.** `AGENTS.md` (and later the README) require normal English in chat, comments, Help, and project docs.
 
-### Not this version (Evolve)
-
-Using who is still alive to *make* the next crowd is Phase 2. Looking at the living people is already a click on the island.
+**Dropped (not worth going back to Survive).** Lab for mixed crowds. Extra Survive-style stories, playbook of old runs, pin canvas to Lab 800×600, import old World runs, last-food memory, food-density gradient, sliding column drawers. Catch stays bag +1, pellet gone. Making the next crowd from who is still alive is Evolve, not this ship.
 
 ---
 
-## 2026-08-27 — Drop Phase 0 leftovers from the backlog
+## 2026-08-27 — `1.2.0-trends`
 
-Human: not worth going back. Checked each leftover against Differ.
-
-**Dropped:** extra Survive-style stories, playbook of old runs, pin canvas to Lab 800×600, import old World runs as a Survive chore, last-food memory, food-density gradient, sliding column drawers.
-
-**Still true for Differ (not a backlog item):** catch = bag +1, pellet gone. No multi-size pellets, no chew-until-empty.
-
-**Already on Phase 1 if it mattered:** Trends / History that know groups, World seed on export. Extra Crowd stories we already shipped six of; invent more only if a mix is actually interesting.
-
----
-
-## 2026-08-27 — Food interval floor 8
-
-First pass (floor 8, max 50) was wrong: **8 is already hungry** at 60 people, and 50 is pointless famine.
-
-Second pass: slider **1–20**. Default gap **6**. Easy 4 / hard 16. Zero is not a real interval (would break the clock). How scarce it feels still depends on how many people — not auto-scaled yet.
-
-Bigger map and patchy food rates are on the Phase 1 backlog as weather — not shipped here.
-
----
-
-## 2026-08-27 — `1.0.2-trends`
-
-**Version / Phase:** `1.0.2-trends` · Phase 1 · Differ  
-**Track:** A (graphs + history) · local until human asks for a PR  
+**Version / Phase:** `1.2.0-trends` · Phase 1 · Differ  
 **Archive:** `archive/index-1.0.1-stories.html`
 
-Trends and History are live again. They know kinds of people.
+We first called this `1.0.2`; it is **`1.2.0-trends`**. Live version. Graphs that know groups.
+
+Trends and History are live again.
 
 - One graph: white = everyone, color = each group. Dead kinds sit at zero.
-- Food / hunger / pin-agent charts removed from this column (they were Survive leftovers).
+- Food / hunger / pin-agent charts removed from this column (Survive leftovers).
 - History row: mix name, how long, leftover count, chip per group.
 - Best this session = most leftover people, not longest clock.
 - Run logs detail shows who was left vs who started.
 
-Not this version: world seed on export, bigger map, patchy food.
+**Docs that day.** README, AGENTS, FUTURE_FEATURES, presets README, Help: rewritten so a person who just opened Crowd… can read them. FUTURE_FEATURES is open work only. Old log sections above this date stay as they were.
+
+Same-day notes that used to be separate log headings (backlog drops, food interval, version numbers, roster stories, docs English) are folded into these two ships.
 
 ---
 
-## 2026-08-27 — Version numbers: stories is 1.1.0, trends is 1.2.0
+## 2026-09-03 — Docs: two goals, talk in chat, backlog tidy
 
-We had labeled stories `1.0.1` and trends `1.0.2` like tiny patches. They aren’t. Middle number = a playable slice.
+**Version / Phase:** still `1.2.0-trends` (docs only)
 
-- `1.0.0-differ` — Crowd… first ship (unchanged)
-- `1.1.0-stories` — stories + Help (frozen file still named `archive/index-1.0.1-stories.html`)
-- `1.2.0-trends` — graphs that know groups (live)
+README now states both jobs: practice AI tools / GitHub, and try for a **wow, look at that** on the island. Talk-like-a-person sits in the README so an agent who only reads that file still speaks normally in **chat**, not only in files. `AGENTS.md` matches.
 
-Last number stays for small fixes on a slice.
+`FUTURE_FEATURES.md`: dropped world seed (we are not doing replay-by-number). Talk and share sit **outside** the phase list — parked, not next. Patchy food listed before a bigger island.
 
----
-
-## 2026-08-27 — Roster stories in Crowd… (folded into unreleased 1.1.0 / live 1.2.0)
-
-Stories now have two rows: Groups and Roster.
-
-Roster stories, two kinds:
-
-- **Families** — same plots as Groups, but each named person is a little off the group average (not 30 twins). Hunt-off kinds stay nearly blind.
-- **Rungs** — hunt/hunger/efficiency/speed ladders, scramble 60, 12 oddballs.
-
-JSON files in `phase-1-differ-presets/roster-*.json` are still Import extras.
+Aug 27 log notes folded into two ships only: `1.1.0-stories` and `1.2.0-trends`.
 
 ---
 
-## 2026-08-27 — Project docs in normal English
+## 2026-09-03 — `1.3.0-patches`
 
-README, AGENTS, FUTURE_FEATURES, presets README, Help already in the app: rewritten so a person who just opened Crowd… can read them. Old log sections below (and above) stay as they were. FUTURE_FEATURES is open work only.
+**Version / Phase:** `1.3.0-patches` · Phase 1 · Differ  
+**Archive:** `archive/index-1.2.0-trends.html`  
+**Design:** `design-docs/1.3.0-patches-design.html`
+
+Three lush circles on the island. Most pellets land there; a few still fall anywhere.
+
+- **Three spots** checkbox under Food spawn (on by default). Uncheck = even rain like `1.2.0`.
+- Drop rule: 80% inside a random circle (NW / NE / south), 20% anywhere. Interval still drops 3 pellets.
+- Circles are fractions of the map, so they stay put if the canvas grows.
+- Faint dashed rings so you can see the piles.
+- Weather line: `· 3 spots` or `· even`. Help has one extra line.
+
+Hunger, eat, hunt, Crowd… unchanged. Survive file unchanged. No extra sliders for size or bias.
+
+---
+
+## 2026-09-03 — `1.3.1-mix-ui`
+
+**Version / Phase:** `1.3.1-mix-ui` · Phase 1 · Differ  
+**Archive:** `archive/index-1.3.0-patches.html`
+
+Layout only. Island physics unchanged.
+
+- **Apply** closes the Mix box. Reset still spawns.
+- Rail button is **Mix**, not Crowd…. Same job: who is on the island.
+- Groups cards and the roster table always show all four traits (hunger, efficiency, hunt, speed).
+- Groups / Families / Rungs each have a one-line what-it-is. The selected story has a short narrative under the buttons.
+
+---
+
+## 2026-09-03 — `1.3.2-path`
+
+**Version / Phase:** `1.3.2-path` · Phase 1 · Differ  
+**Archive:** `archive/index-1.3.1-mix-ui.html`
+
+The path above the island was still at 8% (Differ just opened). Human set the fill to **30%** through Differ (not decoded from `1.3.2`). Mix, stories, trends, three spots, Mix box are live; bigger island still open.
+
+`AGENTS.md`: every ship must bump `PHASE_WITHIN`. Ask the human for the percent.
+
+Bump (contact) is parked in `FUTURE_FEATURES.md`, not this ship: bigger body knocks farther; hunger goes **up**; the bigger one pays more.

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1.3.0-patches · three food spots</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d1524;
+      --border: #1e3a5f;
+      --text: #cbd5e1;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --food: #67e8f9;
+      --warn: #fbbf24;
+    }
+    body { background: var(--bg); color: var(--text); margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 1.5rem 1.1rem 4rem; }
+    h1 { font-size: 1.55rem; font-weight: 650; color: #f1f5f9; margin: 0 0 0.35rem; }
+    h2 { font-size: 1.05rem; font-weight: 650; color: #e2e8f0; margin: 1.75rem 0 0.55rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+    p, li { font-size: 0.92rem; }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+    .panel {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 0.65rem;
+      padding: 0.9rem 1rem; margin: 0.75rem 0;
+    }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9; margin-right: 0.35rem;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 1.1rem; align-items: center; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.4rem 0 0.6rem; }
+    th, td { border: 1px solid var(--border); padding: 0.4rem 0.55rem; text-align: left; vertical-align: top; }
+    th { background: #0a1220; color: #94a3b8; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+    code { font-family: ui-monospace, Menlo, monospace; color: #7dd3fc; font-size: 0.86em; }
+    .callout { border-left: 3px solid var(--accent); padding-left: 0.75rem; margin: 0.7rem 0; }
+    .island-wrap { overflow-x: auto; }
+    .legend { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; font-size: 0.8rem; color: var(--muted); margin: 0.5rem 0 0; }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.35rem; vertical-align: middle; }
+    footer { margin-top: 2rem; font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="meta">
+      <span class="tag">1.3.0-patches</span>
+      <span class="tag warn">Mechanics</span>
+      <span class="tag">Phase 1 · Differ</span>
+      <span class="tag good">Shipped in live `1.3.0-patches`</span>
+    </div>
+
+    <h1>Three food spots</h1>
+    <p class="muted">
+      Pellets still drop on the same clock (Food spawn interval). They just don’t land evenly.
+      Three circles stay put for a run. Most drops land inside them. A few still land anywhere so the rest of the island isn’t a dead zone.
+    </p>
+
+    <h2>What you should see</h2>
+    <p>
+      Open Grazers vs Hunters, Reset, watch. Camps form on the three piles. Wanderers who miss the circles starve sooner. Seekers walk between piles.
+      The thin land still gets a trickle — not a hard wall.
+    </p>
+
+    <h2>Where the circles sit</h2>
+    <p class="muted">
+      Island is the live canvas (about 800×600, it grows if you hide columns). Spots are <strong>fractions of the map</strong>, so they stay in the same neighborhoods when the canvas resizes.
+      Triangle layout: two up, one down. They don’t overlap.
+    </p>
+
+    <div class="panel island-wrap">
+      <svg viewBox="0 0 800 600" width="100%" style="max-width:800px;display:block;background:#05080e;border-radius:8px;border:1px solid #1e3a5f">
+        <rect x="0" y="0" width="800" height="600" fill="#070b12"/>
+        <!-- thin land stipple -->
+        <g fill="#67e8f9" opacity="0.12">
+          <circle cx="80" cy="80" r="2"/><circle cx="200" cy="140" r="2"/><circle cx="520" cy="90" r="2"/>
+          <circle cx="680" cy="200" r="2"/><circle cx="120" cy="380" r="2"/><circle cx="400" cy="280" r="2"/>
+          <circle cx="740" cy="480" r="2"/><circle cx="280" cy="520" r="2"/><circle cx="600" cy="540" r="2"/>
+          <circle cx="360" cy="160" r="2"/><circle cx="480" cy="400" r="2"/><circle cx="160" cy="500" r="2"/>
+        </g>
+        <!-- spots -->
+        <circle cx="224" cy="192" r="108" fill="#67e8f9" fill-opacity="0.10" stroke="#67e8f9" stroke-width="2" stroke-dasharray="6 5"/>
+        <circle cx="576" cy="192" r="108" fill="#67e8f9" fill-opacity="0.10" stroke="#67e8f9" stroke-width="2" stroke-dasharray="6 5"/>
+        <circle cx="400" cy="432" r="108" fill="#67e8f9" fill-opacity="0.10" stroke="#67e8f9" stroke-width="2" stroke-dasharray="6 5"/>
+        <!-- fake lush pellets -->
+        <g fill="#67e8f9">
+          <circle cx="210" cy="180" r="3.5"/><circle cx="240" cy="205" r="3.5"/><circle cx="195" cy="215" r="3"/><circle cx="250" cy="170" r="3"/>
+          <circle cx="560" cy="175" r="3.5"/><circle cx="590" cy="200" r="3.5"/><circle cx="545" cy="210" r="3"/><circle cx="605" cy="185" r="3"/>
+          <circle cx="385" cy="420" r="3.5"/><circle cx="415" cy="445" r="3.5"/><circle cx="375" cy="455" r="3"/><circle cx="425" cy="410" r="3"/>
+        </g>
+        <text x="224" y="196" text-anchor="middle" fill="#e2e8f0" font-size="13" font-family="ui-sans-serif,system-ui">A · NW</text>
+        <text x="576" y="196" text-anchor="middle" fill="#e2e8f0" font-size="13" font-family="ui-sans-serif,system-ui">B · NE</text>
+        <text x="400" y="436" text-anchor="middle" fill="#e2e8f0" font-size="13" font-family="ui-sans-serif,system-ui">C · south</text>
+        <text x="16" y="24" fill="#64748b" font-size="11" font-family="ui-monospace,monospace">island 800 × 600 (scales with canvas)</text>
+        <text x="16" y="584" fill="#64748b" font-size="11" font-family="ui-monospace,monospace">dashed = lush · outside = thin (20% of drops)</text>
+      </svg>
+      <div class="legend">
+        <span><span class="dot" style="background:#67e8f9"></span>Most pellets (inside a circle)</span>
+        <span><span class="dot" style="background:#334155"></span>Thin land (anywhere)</span>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Spot</th><th>Center</th><th>Radius</th><th>Why here</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A · northwest</td>
+          <td>28% across, 32% down</td>
+          <td>18% of the short side (~108 px on 800×600)</td>
+          <td>A camp you can see without hugging the edge</td>
+        </tr>
+        <tr>
+          <td>B · northeast</td>
+          <td>72% across, 32% down</td>
+          <td>same</td>
+          <td>Second pile, a walk away from A. Hunt / speed show up between them.</td>
+        </tr>
+        <tr>
+          <td>C · south</td>
+          <td>50% across, 72% down</td>
+          <td>same</td>
+          <td>Third pile so it isn’t two blobs on a line. Triangle, not a street.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="muted">Gaps between centers are bigger than two radii, so the circles don’t eat each other. People still wrap at the edges like today.</p>
+
+    <h2>How a drop works</h2>
+    <div class="panel">
+      Same as now: every <strong>Interval</strong> ticks, drop 3 pellets (Reset still seeds a pile). Then, for each pellet:
+      <ol>
+        <li><strong>80%</strong> pick one of the three spots at random, then a random point <em>inside</em> that circle.</li>
+        <li><strong>20%</strong> anywhere on the island (today’s rule).</li>
+      </ol>
+      Total food per minute does not change. Only <em>where</em> it lands.
+    </div>
+    <div class="callout">
+      Spots are picked once at <strong>Reset</strong> and stay put until the next Reset.
+      First version: same three fractions every run (what this drawing is). Tiny jitter can wait until the camps feel too samey.
+    </div>
+
+    <h2>What we add to the sim (first slice)</h2>
+    <table>
+      <thead>
+        <tr><th>Thing</th><th>In or out</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Food spawn Interval (already there)</td>
+          <td><strong>Keep</strong></td>
+          <td>Still the weather clock. Patches don’t replace it.</td>
+        </tr>
+        <tr>
+          <td>Faint dashed rings on the canvas</td>
+          <td><strong>In</strong></td>
+          <td>So you can see the neighborhoods. Without rings, “patchy” is just a rumor. Paint only — no extra physics.</td>
+        </tr>
+        <tr>
+          <td>Patches on / off next to Interval</td>
+          <td><strong>In</strong></td>
+          <td>One checkbox: even rain vs three spots. Same crowd, two weathers. Off = today’s map.</td>
+        </tr>
+        <tr>
+          <td>Weather line text</td>
+          <td><strong>In</strong></td>
+          <td>The line under Interval already says <code>N 60 · food spawn 6</code>. Add <code>· 3 spots</code> or <code>· even</code>.</td>
+        </tr>
+        <tr>
+          <td>Help one-liner</td>
+          <td><strong>In</strong></td>
+          <td>Food can be even or three piles. Checkbox is live weather, like Interval.</td>
+        </tr>
+        <tr>
+          <td>Sliders for radius, 80/20, how many spots</td>
+          <td><strong>Out</strong></td>
+          <td>Until we miss them. Tuning three numbers in Lab is Survive-era noise.</td>
+        </tr>
+        <tr>
+          <td>People spawn inside spots</td>
+          <td><strong>Out</strong></td>
+          <td>Bodies still drop anywhere. The test is whether they <em>find</em> the piles.</td>
+        </tr>
+        <tr>
+          <td>Bigger island / food vs crowd hint</td>
+          <td><strong>Out</strong></td>
+          <td>Later Differ items. Not this PR.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Where the checkbox lives</h2>
+    <p>
+      Left rail, under <strong>Food spawn</strong>, above the weather line. One line: <code>Three spots</code> checkbox, on by default for Differ (this is the new weather). Uncheck = even rain again.
+    </p>
+    <div class="panel" style="font-family:ui-monospace,monospace;font-size:12px;color:#94a3b8">
+      Food spawn<br>
+      Interval &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6<br>
+      [========|=======]<br>
+      <span style="color:#67e8f9">☑ Three spots</span><br>
+      N 60 · food spawn 6 · 3 spots
+    </div>
+    <p class="muted">Layout: a checkbox and a few words. Mechanics: where pellets land. Don’t mix extra chrome.</p>
+
+    <h2>What does not change</h2>
+    <ul>
+      <li>Hunger, eat reach, bag, hunt, speed, fair-eat.</li>
+      <li>Crowd… / Apply / Reset.</li>
+      <li>Survive frozen file. Lab. Special still off in Differ.</li>
+      <li>No kids. No trade.</li>
+    </ul>
+
+    <h2>Feel check (you run this)</h2>
+    <ol>
+      <li>Spots on. Grazers vs Hunters. Reset. Three pellet clumps. Rings match the clumps.</li>
+      <li>Spots off. Same run setup. Pellets look like today again.</li>
+      <li>Interval still live. Higher = scarcer, still in the same three neighborhoods.</li>
+      <li>Hide a column: circles still sit at 28 / 72 / 50, not stuck in old pixels.</li>
+      <li>Click a person, Trends, History, Help — still work.</li>
+    </ol>
+
+    <h2>Version</h2>
+    <p>
+      Playable slice, so the middle number moves: leave <code>1.2.0-trends</code> in archive, live becomes <code>1.3.0-patches</code>.
+      Type into <code>index.html</code> only after you say the drawing and the checkbox are the right amount.
+    </p>
+
+    <footer>
+      trait-evolution-sim · design-docs/1.3.0-patches-design.html · 2026-09-03 · not shipped
+    </footer>
+  </div>
+</body>
+</html>
