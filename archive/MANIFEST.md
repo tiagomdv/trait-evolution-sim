@@ -37,6 +37,7 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-1.4.0-island.html` | 1.4.0-island | 1 · Differ | (this PR) | — | Zoom-out 2× world; last live before camera-locked Hide |
 | `index-1.4.1-camera.html` | 1.4.1-camera | 1 · Differ | #29 | — | Locked world + fill-width Hide camera + total bag; last live before bump |
 | `index-1.5.0-bump.html` | 1.5.0-bump | 1 · Differ | #30 | — | Clash + hunger tax; last live before Evolve door; also `phase-1-differ-finished.html` |
+| `index-2.0.0-evolve.html` | 2.0.0-evolve | 2 · Evolve | #31 | — | Door only; last live before Lab/Special strip |
 
 ---
 

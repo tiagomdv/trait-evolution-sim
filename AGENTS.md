@@ -157,7 +157,7 @@ Survive → Differ → Evolve → Economy
 |-------|-----|
 | 0 Survive | Closed. Frozen file. |
 | 1 Differ | Closed. Frozen file. Mixed bodies, bump. |
-| 2 Evolve | Live. Children, inheritance. Door open; no babies in `2.0.0-evolve`. |
+| 2 Evolve | Live. Children, inheritance. Desk is `2.0.1-desk` (no Lab / Special). No babies yet. |
 | 3 Economy | Later. Trade first. |
 
 Using leftover living people to **make** the next crowd is Evolve. Looking at who is still alive was Differ.

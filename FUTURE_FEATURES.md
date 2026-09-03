@@ -2,7 +2,7 @@
 
 **Open work only.** Shipped or dropped items go in `IMPLEMENTATION_LOG.md`, then leave this file.
 
-Live: Phase **2 · Evolve** · `2.0.0-evolve`. Path bar **5%** into Evolve (human set). Door only — no babies yet.  
+Live: Phase **2 · Evolve** · `2.0.1-desk`. Path bar **15%** into Evolve (human set). Lab and Special stripped from live. No babies yet.  
 Live file is `index.html`. Do not grow `phase-0-survive-finished.html` or `phase-1-differ-finished.html`.
 
 ---
