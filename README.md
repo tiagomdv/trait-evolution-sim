@@ -4,7 +4,7 @@ Dots walk a 2D island. They get hungry. They eat pellets. Some last; some don’
 
 We start with hunger, then mix different kinds of people, then (later) children, then trade.
 
-**Right now:** Differ is live in [`index.html`](index.html) as `1.5.0-bump`. Survive is a finished game in its own file. They do not share state.
+**Right now:** Differ is **closed**. Last ship is `1.5.0-bump` in [`index.html`](index.html). Next work is Evolve, same file. Survive is a finished game in its own file. They do not share state.
 
 ---
 
@@ -37,8 +37,8 @@ Survive → Differ → Evolve → Economy. When a phase closes we freeze a playa
 | Phase | Status | Play this |
 |-------|--------|-----------|
 | **0 · Survive** | Closed 2026-08-13 | [`phase-0-survive-finished.html`](phase-0-survive-finished.html) — everyone the same body. |
-| **1 · Differ** | Open — live `1.5.0-bump` | [`index.html`](index.html) — Mix, stories, graphs, three food spots, zoomed-out island, bump. |
-| **2 · Evolve** | Later | Kids. Not yet. |
+| **1 · Differ** | Closed — last ship `1.5.0-bump` | [`index.html`](index.html) — Mix, stories, graphs, three food spots, zoomed-out island, bump. Same file stays live for Evolve. |
+| **2 · Evolve** | Next | Kids. Not yet. |
 | **3 · Economy** | Later | Trade. Not yet. |
 
 What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.md`. Old numbered copies: `archive/`.

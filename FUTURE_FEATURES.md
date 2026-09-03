@@ -2,16 +2,15 @@
 
 **Open work only.** Shipped or dropped items go in `IMPLEMENTATION_LOG.md`, then leave this file.
 
-Live: Phase **1 · Differ** · `1.5.0-bump`. Path: Survive → Differ → Evolve → Economy. Path bar 85% through Differ (human set).  
-Live file is `index.html`. Do not grow `phase-0-survive-finished.html`.
+Live: Phase **1 · Differ** closed · `1.5.0-bump` last Differ ship. Path bar **100%** through Differ (human closed the phase). Next work is Evolve. Still the same `index.html`. Do not grow `phase-0-survive-finished.html`. Do not freeze a second Differ file unless asked.
 
 ---
 
-## Phase 1 · Differ
+## Phase 1 · Differ — closed
 
-The mix already works: Mix, stories, Apply / Reset, graphs, run logs, fat leftovers slow down, three food spots, zoomed-out island, bump. Still no babies. Island weather for Differ is done.
+Bump is the last Differ physics: chairs on the food, poor dying at the buffet, hunt-1 kings turning into piñatas when a crowd keeps walking into them. Mix, stories, graphs, spots, island, camera stay. No new Mix sliders in Differ.
 
-**Desk (only if we miss it)**
+**Desk (only if we miss it — not a reason to reopen Differ)**
 
 | Item | In English |
 |------|------------|
@@ -27,13 +26,15 @@ The question becomes: **who has kids, and do the kids look like them?**
 
 Not a Differ patch. Looking at leftovers is Differ. Making the next crowd from those leftovers is Evolve.
 
-**First thing you can see**
+**First thing you can see** (before new Mix knobs)
 
 1. A run ends (or you press something like “next year”).
 2. Take who is still walking.
-3. Make a new crowd from them — inherit the four traits, nudge a little (mutation).
+3. Make a new crowd from them — inherit the **four** traits, nudge a little (mutation).
 4. Reset the island with that new crowd.
 5. Watch whether hunt-high leftover people become *more* of the field next year.
+
+Do not add kin-tax or crowd-avoid until that loop exists. Kids should copy four things first, not six.
 
 **Then, once that loop exists**
 
@@ -43,6 +44,18 @@ Not a Differ patch. Looking at leftovers is Differ. Making the next crowd from t
 - Maybe a “keep the leftovers, throw away the dead” button vs true overlapping generations.
 
 Do not start generation histograms before you can *see* a birth.
+
+### Social Mix knobs (after the birth loop — not Talk, not Share)
+
+Two different traits. Do not glue them. Do not treat them as stranger-war. Pets run 4–5: prophets **did** get huge; Control kept bumping into them and the fat tax killed the kings. Own-color tax would **not** have saved those prophets (Control hitting gold is other paint). Crowd avoid is the “I won’t be a bullet” knob.
+
+**Own-color tax** — how hard a clash with the **same paint** hits hunger. Stranger clashes stay as they are. Family camp: cheap kin-touch means a pile of the same color can sit together. Expensive kin-touch means a family cooks its own kings. Interesting across years, not as a Differ 1.6.
+
+**Crowd avoid** — steer away from many nearby bodies. Fights hunt (hunt says go to the pellet; avoid says the pellet has a mob). What you’d see: Control stops bumper-caring the gold king; cranked too high looks like Lost who never eat. Hunt-high + avoid-high is a nervous hunter.
+
+Do **not** sneak in stranger tax or king armor as a Differ/Evolve default — that’s a color war. Park until we miss it.
+
+Not Talk (I point). Not Share (I give food). Kin here for own-color tax still means Mix paint until blood exists; after Evolve, blood can mean parents.
 
 ---
 

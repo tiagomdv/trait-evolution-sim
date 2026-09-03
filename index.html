@@ -2347,9 +2347,9 @@
             // Integer phase index for "current" node. Survive is frozen; Differ is live.
             const CURRENT_PHASE = 1;
             // 0–1 how far Differ is toward Evolve. Bump this every ship (see AGENTS.md).
-            // Mix, stories, trends, spots, island, camera, bump. Human set 85%.
+            // Mix, stories, trends, spots, island, camera, bump. Human closed Differ at 100%.
             // Fill is a human call, not the version number.
-            const PHASE_WITHIN = 0.85;
+            const PHASE_WITHIN = 1;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');

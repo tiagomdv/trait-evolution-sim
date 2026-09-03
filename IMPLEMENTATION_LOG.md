@@ -809,8 +809,8 @@ World size locks on first real layout (`lockedWorldW` / `lockedWorldH`). Hide Mi
 **Version / Phase:** live `1.5.0-bump` · Phase 1 · Differ  
 **Archive of previous:** `archive/index-1.4.1-camera.html`
 
-When two people overlap they bounce and hunger goes **up**. Size is the drawn circle (bag): `3 + 1.5√bag`, no cap. Tax is `0.45 × r × √(r/10)` (skinny ~bag 20 stays ~linear; giants pay superlinear). Fat knocks farther and pays more hunger; thin gets shoved more and pays less. No food moves bag-to-bag. Cooldown 12 ticks so a pile does not tax every frame. Amber flash on the clash. Hunger rate, speed, sight, spawn unchanged. Same-color vs other-color still not a rule.
+When two people overlap they bounce and hunger goes **up**. Size is the drawn circle (bag): `3 + 1.5√bag`, no cap. Tax is `0.45 × r × √(r/10)` (skinny ~bag 20 stays ~linear; giants pay superlinear). Fat knocks farther and pays more hunger; thin gets shoved more and pays less. No food moves bag-to-bag. Cooldown 12 ticks so a pile does not tax every frame. Amber flash on the clash. Hunger rate, speed, sight, spawn unchanged. Same-color vs other-color still not a rule (parked as Evolve social — own-color tax is not what killed hunt-1 prophets; crowd avoid is).
 
-**Path.** Human set **85%** through Differ.
+**Path.** Human **closed Differ at 100%**. Next work is Evolve. No Differ freeze file.
 
-**Docs.** Bump dropped from `FUTURE_FEATURES.md`. Survive / Lab untouched.
+**Docs.** Bump dropped from Differ open work. Own-color tax + crowd avoid parked under Evolve in `FUTURE_FEATURES.md`. Survive / Lab untouched.
