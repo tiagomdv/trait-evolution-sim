@@ -1075,28 +1075,6 @@
                 margin-right: 0.25rem;
                 min-width: 4.2rem;
             }
-            .differ-stories .st-block { display: flex; flex-direction: column; gap: 0.15rem; }
-            .differ-stories .st-hint {
-                font-size: 10px;
-                color: #64748b;
-                line-height: 1.35;
-                margin: 0 0 0.15rem 4.45rem;
-            }
-            .differ-stories .st-blurb {
-                font-size: 11px;
-                color: #94a3b8;
-                line-height: 1.4;
-                margin: 0.2rem 0 0;
-                padding-top: 0.35rem;
-                border-top: 1px solid #152238;
-            }
-            .differ-gtraits {
-                font-family: ui-monospace, monospace;
-                font-size: 9px;
-                color: #64748b;
-                margin-top: 0.2rem;
-                letter-spacing: -0.02em;
-            }
             .btn-story {
                 font-size: 11px;
                 font-weight: 600;
@@ -1682,7 +1660,7 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Agent evolution lab</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v1.3.2-path</span>
+                    <span class="badge-version" id="version-badge">v1.2.0-trends</span>
                 </div>
                 <div class="header-mode" role="group" aria-label="App mode">
                     <button type="button" id="mode-world" class="btn-speed on" onclick="setAppMode('world')">World</button>
@@ -1718,11 +1696,11 @@
                         </div>
 
                         <div class="mb-2">
-                            <button type="button" class="btn-differ" onclick="openDifferModal()" title="Who is on the island — Apply, then Reset">
-                                Mix
+                            <button type="button" class="btn-differ" onclick="openDifferModal()" title="Who is in the crowd — apply on Reset">
+                                Crowd…
                                 <span id="differ-rail-sub" class="differ-sub">2 groups · 60 agents</span>
                             </button>
-                            <p class="differ-reset-note">Mix changes apply on <strong>Reset</strong> — not live.</p>
+                            <p class="differ-reset-note">Crowd changes apply on <strong>Reset</strong> — not live.</p>
                         </div>
                         <div class="section-title" style="margin-bottom:0.3rem">Food spawn</div>
                         <div class="flex justify-between text-xs mb-0.5">
@@ -1730,11 +1708,7 @@
                             <span id="val-food-spawn-rail" class="font-mono text-sky-300">6</span>
                         </div>
                         <input type="range" id="slider-food-spawn-rail" min="1" max="20" step="1" value="6" class="w-full accent-sky-400">
-                        <label class="flex items-center gap-2 text-xs text-slate-300 mt-1.5 cursor-pointer" title="Most pellets land in three piles. Uncheck for even rain.">
-                            <input type="checkbox" id="chk-food-patches" checked class="accent-sky-400">
-                            Three spots
-                        </label>
-                        <p id="differ-weather-line" class="text-[10px] font-mono text-slate-400 mt-1 mb-3">N 60 · food spawn 6 · 3 spots</p>
+                        <p id="differ-weather-line" class="text-[10px] font-mono text-slate-400 mt-1 mb-3">N 60 · food spawn 6</p>
                         <!-- Live metrics (KPI tiles) -->
                         <div class="section-title" style="margin-top:0.5rem">Live metrics</div>
                         <div id="metrics-content" class="kpi-grid">
@@ -1923,7 +1897,7 @@
                 </div>
                 <div class="params-scroll scroll-thin">
                 <p class="text-[10px] text-slate-400 mb-2" style="margin-top:0">
-                    N comes from Mix. Food spawn is weather. Hunt / hunger / efficiency / speed on mixed bodies follow Differ, not these sliders.
+                    N comes from Crowd…. Food spawn is weather. Hunt / hunger / efficiency / speed on mixed bodies follow Differ, not these sliders.
                 </p>
 
                 <div class="section-title">Environment</div>
@@ -2037,8 +2011,8 @@
             <div class="modal-box differ-wide" role="dialog" aria-labelledby="differ-title">
                 <div class="modal-head">
                     <div class="differ-head-copy">
-                        <h2 id="differ-title">Mix</h2>
-                        <div class="sub">Who is on the island · Apply remembers this tab · Reset spawns it</div>
+                        <h2 id="differ-title">Crowd</h2>
+                        <div class="sub">Who is in the world · Phase 1 · Differ · applies on Reset</div>
                     </div>
                     <div class="differ-tabs">
                         <button type="button" class="btn-speed on" id="differ-tab-groups" onclick="setDifferTab('groups')">Groups</button>
@@ -2220,7 +2194,7 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">1.3.2-path</code> — people are <em>not</em> all the same (Phase 1 · Differ).
+                    Live is <code style="color:#7dd3fc">1.2.0-trends</code> — people are <em>not</em> all the same (Phase 1 · Differ).
                 </p>
 
                 <div class="help-sec">The long path</div>
@@ -2229,7 +2203,7 @@
                 <div class="help-entry"><strong>Evolve</strong> — later. Survivors have children.</div>
                 <div class="help-entry"><strong>Economy</strong> — later still. Trade, bags, jobs.</div>
 
-                <div class="help-entry" style="margin-top:0.5rem">Open <strong>Mix</strong>, pick a story or edit groups, <strong>Apply</strong> (the box closes), then <strong>Reset</strong>. Food spawn on the left is weather; it changes live.</div>
+                <div class="help-entry" style="margin-top:0.5rem">Open <strong>Crowd…</strong>, pick a story or edit groups, <strong>Apply</strong>, then <strong>Reset</strong>. Food spawn on the left is weather; it changes live.</div>
 
                 <p class="text-[10px] text-slate-500 mt-3 mb-0">Escape or click outside to close</p>
             </div>
@@ -2247,16 +2221,15 @@
                 <p class="help-intro">
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
-                    People are not copies of each other. You set the mix in <strong>Mix</strong>.
-                    Version <code style="color:#7dd3fc">1.3.2-path</code>.
+                    People are not copies of each other. You set the mix in <strong>Crowd…</strong>.
+                    Version <code style="color:#7dd3fc">1.2.0-trends</code>.
                 </p>
 
                 <div class="help-sec">How a run works</div>
-                <div class="help-entry">Open <strong>Mix</strong>. <strong>Groups</strong> — kinds, everyone in a kind is the same. <strong>Families</strong> — the same mixes, but each named person sits a little off the group average. <strong>Rungs</strong> — hunt/hunger/efficiency/speed ladders, a scramble, or 12 oddballs. Groups and Roster tabs are separate drafts. A short story sits under the buttons.</div>
+                <div class="help-entry">Open <strong>Crowd…</strong>. <strong>Groups</strong> — kinds, everyone in a kind is the same. <strong>Families</strong> — the same mixes, but each named person sits a little off the group average. <strong>Rungs</strong> — hunt/hunger/efficiency/speed ladders, a scramble, or 12 oddballs. Groups and Roster tabs are separate drafts.</div>
                 <div class="help-entry">Press <strong>Apply</strong> to remember the open tab. The island does not change yet.</div>
                 <div class="help-entry">Press <strong>Reset</strong> to spawn that mix. That is when colors and counts on the field update.</div>
                 <div class="help-entry"><strong>Food spawn</strong> on the left is weather (live). Gap between pellet drops, <strong>1–20</strong>. Higher = scarcer. 8 is already a hungry island at 60 people. 1 is almost a pellet every tick. (Zero is not a real gap — it would break the clock.)</div>
-                <div class="help-entry"><strong>Three spots</strong> (checkbox, live) — most pellets land in three piles (dashed rings). A few still fall anywhere. Uncheck for even rain like before.</div>
                 <div class="help-entry"><strong>Pause / Speed</strong> — clock. 10× is faster wall time; a sim-second is still 60 ticks.</div>
                 <div class="help-entry">Watch leftover <strong>colors</strong>. Score <em>who is still walking</em>, not how fat the bags are. Right side: a graph per group, and a history row when you Reset or when everyone dies.</div>
 
@@ -2270,7 +2243,7 @@
                 <div class="help-entry"><strong>Click a person</strong> — name, four traits, bag.</div>
                 <div class="help-entry"><strong>Fill color</strong> is paint for the whole group (not the group’s name). <strong>Pink ring</strong> = starving. <strong>Cyan pip</strong> = food in the bag.</div>
                 <div class="help-entry">Total people is the sum of group counts (or roster length). Cap 100.</div>
-                <div class="help-entry">Import / Export still work if you want a JSON file. Stories live in Mix; the files in the folder are extras.</div>
+                <div class="help-entry">Import / Export still work if you want a JSON file. Stories live in Crowd…; the files in the folder are extras.</div>
 
                 <div class="help-sec">Rules</div>
                 <div class="help-entry">Catch = bag +1, pellet gone. Reach is <strong>20 pixels past the drawn circle</strong>. Dots grow with the bag (still climbing after 1000–2000 pellets). Fat leftovers are slower — same speed trait, but the extra mass drags them. If several people reach the same pellet, a random one in range eats it.</div>
@@ -2300,12 +2273,10 @@
                 2: 'Agent evolution lab',
                 3: 'Agent evolution lab'
             };
-            // Integer phase index for "current" node. Survive is frozen; Differ is live.
+            // Integer phase index for "current" node. Survive closed → Differ design (no 1.x ship yet).
             const CURRENT_PHASE = 1;
-            // 0–1 how far Differ is toward Evolve. Bump this every ship (see AGENTS.md).
-            // Mix, stories, trends, three spots, Mix box polish. Island still open (bigger map, N vs food).
-            // Fill is a human call, not the version number.
-            const PHASE_WITHIN = 0.30;
+            // 0–1 progress within the current phase toward the next.
+            const PHASE_WITHIN = 0.08;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
@@ -2441,7 +2412,7 @@
                 };
             }
 
-            // Same mixes as phase-1-differ-presets/*.json — built here so Mix works without a server.
+            // Same mixes as phase-1-differ-presets/*.json — built here so Crowd… works without a server.
             const STORY_CTL = [
                 { id: 'CTL', name: 'Control', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 },
                 { id: 'STN', name: 'Strain', color: '#c4b5fd', n: 30, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6 }
@@ -2492,42 +2463,24 @@
             ];
 
             const DIFFER_STORIES = [
-                { id: 'control-strain', label: 'Control vs Strain', mode: 'groups', groups: STORY_CTL,
-                    blurb: 'Usual bodies vs a weaker kind that burns faster, hunts less, and walks slower. Same island — who is left?' },
-                { id: 'seekers-wanderers', label: 'Seekers vs Wanderers', mode: 'groups', groups: STORY_SEK,
-                    blurb: 'Half lock onto food. Half wander. Everything else is the same. Watch the colors on the piles.' },
-                { id: 'tortoises-hares', label: 'Tortoises vs Hares', mode: 'groups', groups: STORY_TOR,
-                    blurb: 'Slow cheap burn vs fast hungry twitch. Hares get there first. Tortoises last longer if they eat.' },
-                { id: 'grazers-hunters', label: 'Grazers vs Hunters', mode: 'groups', groups: STORY_GRZ,
-                    blurb: 'Cheap wanderers vs hungry lock-on. The three food piles are for this mix — camps vs chasers.' },
-                { id: 'three-castes', label: 'Three kinds', mode: 'groups', groups: STORY_RIC,
-                    blurb: 'Idle rich, working poor, and lost. Different burn, hunt, and speed. Three colors, one island.' },
-                { id: 'pets', label: 'Pets + control', mode: 'groups', groups: STORY_PET,
-                    blurb: 'A few weird bodies in a crowd of normals: prophet, mayfly, ghost. Most people are the usual kind.' },
-                { id: 'roster-control-strain', label: 'Control vs Strain', mode: 'roster', family: true, groups: STORY_CTL,
-                    blurb: 'Same plot as Groups, but cousins not twins. Each named person sits a little off the family average.' },
-                { id: 'roster-seekers-wanderers', label: 'Seekers vs Wanderers', mode: 'roster', family: true, groups: STORY_SEK,
-                    blurb: 'Seekers vs wanderers, each person a little different. Hunt-off stay nearly blind.' },
-                { id: 'roster-tortoises-hares', label: 'Tortoises vs Hares', mode: 'roster', family: true, groups: STORY_TOR,
-                    blurb: 'Slow vs twitchy families. Nobody is a perfect copy of their kind.' },
-                { id: 'roster-grazers-hunters', label: 'Grazers vs Hunters', mode: 'roster', family: true, groups: STORY_GRZ,
-                    blurb: 'Grazers and hunters as named cousins. Some graze harder; some hunt a bit less.' },
-                { id: 'roster-three-castes', label: 'Three kinds', mode: 'roster', family: true, groups: STORY_RIC,
-                    blurb: 'Rich, poor, and lost — each person nudged off the group mean. Color is still the family.' },
-                { id: 'roster-pets', label: 'Pets + control', mode: 'roster', family: true, groups: STORY_PET,
-                    blurb: 'The pets, plus a control crowd, each body a little off. Named people, not clones.' },
-                { id: 'roster-hunt-ladder', label: 'Hunt 0 → 1', mode: 'roster', groups: STORY_LADDER, nameBy: 'hunt', spread: { LAD: { hunt: [0, 1] } },
-                    blurb: 'Sixty people. Hunt from off (wander) to fully locked on. One trait, a staircase.' },
-                { id: 'roster-hunger-ladder', label: 'Hunger easy → hard', mode: 'roster', groups: STORY_LADDER, nameBy: 'hungerRate', spread: { LAD: { hungerRate: [0.049, 0.084] } },
-                    blurb: 'Same hunt, burn from easy to cruel. Who starves first when the piles are far?' },
-                { id: 'roster-eff-ladder', label: 'Efficiency 1.2 → 2.4', mode: 'roster', groups: STORY_LADDER, nameBy: 'efficiency', spread: { LAD: { efficiency: [1.2, 2.4] } },
-                    blurb: 'Meals from thin to fat. A bite does more for people at the high end.' },
-                { id: 'roster-speed-ladder', label: 'Speed slow → twitchy', mode: 'roster', groups: STORY_LADDER, nameBy: 'maxSpeed', spread: { LAD: { maxSpeed: [1.2, 2.4] } },
-                    blurb: 'Walk from crawl to twitch. Speed is a tax or a gift, depending on the piles.' },
-                { id: 'roster-scramble', label: 'Scramble 60', mode: 'roster', groups: STORY_LADDER, scramble: true,
-                    blurb: 'All four traits shuffled. No teams. Sixty different bodies, same island.' },
-                { id: 'roster-oddballs', label: 'Oddballs ×12', mode: 'roster', groups: STORY_ODD_GROUPS, bodies: STORY_ODD_BODIES,
-                    blurb: 'Twelve named weirdos: blind, locked on, slow, twitchy, ghost, mayfly… Watch which oddball lasts.' }
+                { id: 'control-strain', label: 'Control vs Strain', mode: 'groups', groups: STORY_CTL },
+                { id: 'seekers-wanderers', label: 'Seekers vs Wanderers', mode: 'groups', groups: STORY_SEK },
+                { id: 'tortoises-hares', label: 'Tortoises vs Hares', mode: 'groups', groups: STORY_TOR },
+                { id: 'grazers-hunters', label: 'Grazers vs Hunters', mode: 'groups', groups: STORY_GRZ },
+                { id: 'three-castes', label: 'Three kinds', mode: 'groups', groups: STORY_RIC },
+                { id: 'pets', label: 'Pets + control', mode: 'groups', groups: STORY_PET },
+                { id: 'roster-control-strain', label: 'Control vs Strain', mode: 'roster', family: true, groups: STORY_CTL },
+                { id: 'roster-seekers-wanderers', label: 'Seekers vs Wanderers', mode: 'roster', family: true, groups: STORY_SEK },
+                { id: 'roster-tortoises-hares', label: 'Tortoises vs Hares', mode: 'roster', family: true, groups: STORY_TOR },
+                { id: 'roster-grazers-hunters', label: 'Grazers vs Hunters', mode: 'roster', family: true, groups: STORY_GRZ },
+                { id: 'roster-three-castes', label: 'Three kinds', mode: 'roster', family: true, groups: STORY_RIC },
+                { id: 'roster-pets', label: 'Pets + control', mode: 'roster', family: true, groups: STORY_PET },
+                { id: 'roster-hunt-ladder', label: 'Hunt 0 → 1', mode: 'roster', groups: STORY_LADDER, nameBy: 'hunt', spread: { LAD: { hunt: [0, 1] } } },
+                { id: 'roster-hunger-ladder', label: 'Hunger easy → hard', mode: 'roster', groups: STORY_LADDER, nameBy: 'hungerRate', spread: { LAD: { hungerRate: [0.049, 0.084] } } },
+                { id: 'roster-eff-ladder', label: 'Efficiency 1.2 → 2.4', mode: 'roster', groups: STORY_LADDER, nameBy: 'efficiency', spread: { LAD: { efficiency: [1.2, 2.4] } } },
+                { id: 'roster-speed-ladder', label: 'Speed slow → twitchy', mode: 'roster', groups: STORY_LADDER, nameBy: 'maxSpeed', spread: { LAD: { maxSpeed: [1.2, 2.4] } } },
+                { id: 'roster-scramble', label: 'Scramble 60', mode: 'roster', groups: STORY_LADDER, scramble: true },
+                { id: 'roster-oddballs', label: 'Oddballs ×12', mode: 'roster', groups: STORY_ODD_GROUPS, bodies: STORY_ODD_BODIES }
             ];
 
             function storyPad(n) {
@@ -2698,31 +2651,19 @@
                 const el = document.getElementById('differ-stories');
                 if (!el) return;
                 const onId = matchingStoryId(currentDraft());
-                let onStory = null;
-                for (let i = 0; i < DIFFER_STORIES.length; i++) {
-                    if (DIFFER_STORIES[i].id === onId) { onStory = DIFFER_STORIES[i]; break; }
-                }
-                function row(lab, pred, hint) {
-                    let h = '<div class="st-block"><div class="st-row"><span class="st-lab">' + lab + '</span>';
+                function row(lab, pred) {
+                    let h = '<div class="st-row"><span class="st-lab">' + lab + '</span>';
                     for (let i = 0; i < DIFFER_STORIES.length; i++) {
                         const s = DIFFER_STORIES[i];
                         if (!pred(s)) continue;
                         h += '<button type="button" class="btn-story' + (s.id === onId ? ' on' : '') + '" data-story="' + s.id + '">' + escapeHtml(s.label) + '</button>';
                     }
-                    h += '</div><p class="st-hint">' + hint + '</p></div>';
-                    return h;
+                    return h + '</div>';
                 }
-                const blurb = onStory
-                    ? onStory.blurb
-                    : 'Your own mix. The four traits are hunger, efficiency, hunt, and speed. Apply, then Reset.';
                 el.innerHTML =
-                    row('Groups', function (s) { return s.mode !== 'roster'; },
-                        'Everyone in a kind is the same body. Color is the kind.') +
-                    row('Families', function (s) { return s.mode === 'roster' && s.family; },
-                        'Same plots as Groups, but each named person sits a little off the average. Cousins, not twins.') +
-                    row('Rungs', function (s) { return s.mode === 'roster' && !s.family; },
-                        'One trait from low to high, a scramble, or twelve oddballs. No matching twins.') +
-                    '<p class="st-blurb">' + escapeHtml(blurb) + '</p>';
+                    row('Groups', function (s) { return s.mode !== 'roster'; }) +
+                    row('Families', function (s) { return s.mode === 'roster' && s.family; }) +
+                    row('Rungs', function (s) { return s.mode === 'roster' && !s.family; });
                 el.querySelectorAll('[data-story]').forEach(function (btn) {
                     btn.onclick = function () { applyDifferStory(btn.getAttribute('data-story')); };
                 });
@@ -2858,7 +2799,6 @@
                     stampedDiffer = cloneDiffer(d);
                 }
                 updateDifferRailChip();
-                closeAllModals();
             }
 
             function applyPendingDifferOnReset() {
@@ -3137,7 +3077,7 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs + special snapshots
-            const APP_VERSION = '1.3.2-path';
+            const APP_VERSION = '1.2.0-trends';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
@@ -3160,12 +3100,6 @@
             // Live counters (reset every run)
             let starvationDeaths = 0;
             let foodSpawn = 6; // ~60 people; 8 already feels hungry
-            let foodPatchesOn = true; // three lush circles; uncheck = even rain
-            const FOOD_PATCHES = [
-                { fx: 0.28, fy: 0.32 },
-                { fx: 0.72, fy: 0.32 },
-                { fx: 0.50, fy: 0.72 }
-            ];
             let uiFrame = 0;
 
             // Time-series for current run (sampled, capped)
@@ -3335,36 +3269,11 @@
                 }
             }
 
-            function foodPatchRadius() {
-                return 0.18 * Math.min(canvas.width, canvas.height);
-            }
-
-            // 80% inside a random lush circle, 20% anywhere. Off = old even rain.
-            function pickFoodXY() {
-                const w = canvas.width;
-                const h = canvas.height;
-                if (!foodPatchesOn || Math.random() < 0.2) {
-                    return { x: Math.random() * w, y: Math.random() * h };
-                }
-                const p = FOOD_PATCHES[Math.floor(Math.random() * FOOD_PATCHES.length)];
-                const r = foodPatchRadius();
-                const ang = Math.random() * Math.PI * 2;
-                const rad = Math.sqrt(Math.random()) * r;
-                let x = p.fx * w + Math.cos(ang) * rad;
-                let y = p.fy * h + Math.sin(ang) * rad;
-                if (x < 0) x = 0;
-                if (y < 0) y = 0;
-                if (x > w) x = w;
-                if (y > h) y = h;
-                return { x: x, y: y };
-            }
-
             function spawnFood(count) {
                 for (let i = 0; i < count; i++) {
-                    const p = pickFoodXY();
                     food.push({
-                        x: p.x,
-                        y: p.y,
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
                         amount: 1
                     });
                 }
@@ -3449,21 +3358,6 @@
             function draw() {
                 ctx.fillStyle = 'rgba(10, 16, 28, 0.9)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                if (foodPatchesOn) {
-                    const r = foodPatchRadius();
-                    ctx.save();
-                    ctx.strokeStyle = 'rgba(103, 232, 249, 0.35)';
-                    ctx.setLineDash([6, 5]);
-                    ctx.lineWidth = 1.5;
-                    for (let i = 0; i < FOOD_PATCHES.length; i++) {
-                        const p = FOOD_PATCHES[i];
-                        ctx.beginPath();
-                        ctx.arc(p.fx * canvas.width, p.fy * canvas.height, r, 0, Math.PI * 2);
-                        ctx.stroke();
-                    }
-                    ctx.restore();
-                }
 
                 // Food
                 ctx.fillStyle = '#67e8f9';
@@ -3593,7 +3487,6 @@
                     initialAgents: initialAgents,
                     hungerRate: hungerRate,
                     foodSpawn: foodSpawn,
-                    foodPatchesOn: foodPatchesOn,
                     sight: sight,
                     hungerPull: hungerPull,
                     seekPush: seekPush,
@@ -3748,7 +3641,7 @@
                 }
                 bind('slider-number-agents', 'val-number-agents',
                     function () { return initialAgents; },
-                    function () { /* N owned by Mix */ },
+                    function () { /* N owned by Crowd… */ },
                     function (v) { return String(v); });
                 const nSl = document.getElementById('slider-number-agents');
                 if (nSl) { nSl.disabled = true; nSl.style.opacity = '0.45'; }
@@ -3762,14 +3655,6 @@
                     function (v) { foodSpawn = Math.max(1, Math.min(20, parseInt(v, 10) || 1)); },
                     function (v) { return String(v); },
                     function () { markIslandCustom(); updateDifferRailChip(); syncSliders(); });
-                const patchChk = document.getElementById('chk-food-patches');
-                if (patchChk) {
-                    patchChk.checked = foodPatchesOn;
-                    patchChk.onchange = function () {
-                        foodPatchesOn = !!patchChk.checked;
-                        updateDifferRailChip();
-                    };
-                }
                 bind('slider-sense-radius', 'val-sense-radius',
                     function () { return sight; },
                     function (v) { sight = parseFloat(v); },
@@ -4975,7 +4860,7 @@
                 if (differPendingDirty()) line = 'not applied — press Apply';
                 else if (differStampWaitingReset()) line = 'applied — Reset to spawn';
                 if (sub) sub.textContent = line;
-                if (weather) weather.textContent = 'N ' + n + ' · food spawn ' + foodSpawn + (foodPatchesOn ? ' · 3 spots' : ' · even');
+                if (weather) weather.textContent = 'N ' + n + ' · food spawn ' + foodSpawn;
                 const hint = document.getElementById('differ-foot-hint');
                 if (hint) {
                     const dn = differTab === 'roster' ? ((d.bodies && d.bodies.length) || 0) : sumGroupN(d);
@@ -5079,11 +4964,7 @@
                 for (let i = 0; i < gs.length; i++) {
                     const g = gs[i];
                     html += '<div class="differ-gcard' + (i === differSel ? ' on' : '') + '" data-i="' + i + '" style="border-color:' + escapeHtml(g.color) + '">';
-                    html += '<div class="flex justify-between text-xs"><span><span class="differ-sw" style="background:' + escapeHtml(g.color) + '"></span>' + escapeHtml(g.name) + '</span><span class="font-mono">' + (g.n | 0) + '</span></div>';
-                    html += '<div class="differ-gtraits">hung ' + Number(g.hungerRate).toFixed(3) +
-                        ' · eff ' + Number(g.efficiency).toFixed(2) +
-                        ' · hunt ' + Number(g.hunt).toFixed(2) +
-                        ' · spd ' + Number(g.maxSpeed).toFixed(1) + '</div></div>';
+                    html += '<div class="flex justify-between text-xs"><span><span class="differ-sw" style="background:' + escapeHtml(g.color) + '"></span>' + escapeHtml(g.name) + '</span><span class="font-mono">' + (g.n | 0) + '</span></div></div>';
                 }
                 html += '<button type="button" class="btn-tiny mt-1" id="differ-add-g">+ Group</button>';
                 list.innerHTML = html;
@@ -5126,15 +5007,11 @@
                     html += '<button type="button" class="rg-del" data-gi="' + i + '" title="Remove group">✕</button></div>';
                 }
                 html += '<button type="button" class="btn-tiny" id="roster-add-g">+ Group</button></div>';
-                html += '<div class="differ-agent-scroll"><table class="differ-tbl"><thead><tr><th></th><th>ID</th><th>Hung</th><th>Eff</th><th>Hunt</th><th>Spd</th></tr></thead><tbody>';
+                html += '<div class="differ-agent-scroll"><table class="differ-tbl"><thead><tr><th></th><th>ID</th><th>Hunt</th><th>Burn</th></tr></thead><tbody>';
                 for (let i = 0; i < bs.length; i++) {
                     const b = bs[i];
                     html += '<tr class="' + (i === differSel ? 'on' : '') + '" data-i="' + i + '"><td><span class="differ-sw" style="background:' + escapeHtml(bodyVizColor(b, d.groups)) + '"></span></td>';
-                    html += '<td class="font-mono">' + escapeHtml(b.bodyId) + '</td>';
-                    html += '<td>' + Number(b.hungerRate).toFixed(3) + '</td>';
-                    html += '<td>' + Number(b.efficiency).toFixed(2) + '</td>';
-                    html += '<td>' + Number(b.hunt).toFixed(2) + '</td>';
-                    html += '<td>' + Number(b.maxSpeed).toFixed(1) + '</td></tr>';
+                    html += '<td class="font-mono">' + escapeHtml(b.bodyId) + '</td><td>' + Number(b.hunt).toFixed(2) + '</td><td>' + Number(b.hungerRate).toFixed(3) + '</td></tr>';
                 }
                 html += '</tbody></table></div>';
                 html += '<div class="differ-list-actions flex gap-1 flex-wrap">';

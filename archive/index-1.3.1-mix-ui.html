@@ -1682,7 +1682,7 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Agent evolution lab</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v1.3.2-path</span>
+                    <span class="badge-version" id="version-badge">v1.3.1-mix-ui</span>
                 </div>
                 <div class="header-mode" role="group" aria-label="App mode">
                     <button type="button" id="mode-world" class="btn-speed on" onclick="setAppMode('world')">World</button>
@@ -2220,7 +2220,7 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">1.3.2-path</code> — people are <em>not</em> all the same (Phase 1 · Differ).
+                    Live is <code style="color:#7dd3fc">1.3.1-mix-ui</code> — people are <em>not</em> all the same (Phase 1 · Differ).
                 </p>
 
                 <div class="help-sec">The long path</div>
@@ -2248,7 +2248,7 @@
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
                     People are not copies of each other. You set the mix in <strong>Mix</strong>.
-                    Version <code style="color:#7dd3fc">1.3.2-path</code>.
+                    Version <code style="color:#7dd3fc">1.3.1-mix-ui</code>.
                 </p>
 
                 <div class="help-sec">How a run works</div>
@@ -2300,12 +2300,10 @@
                 2: 'Agent evolution lab',
                 3: 'Agent evolution lab'
             };
-            // Integer phase index for "current" node. Survive is frozen; Differ is live.
+            // Integer phase index for "current" node. Survive closed → Differ design (no 1.x ship yet).
             const CURRENT_PHASE = 1;
-            // 0–1 how far Differ is toward Evolve. Bump this every ship (see AGENTS.md).
-            // Mix, stories, trends, three spots, Mix box polish. Island still open (bigger map, N vs food).
-            // Fill is a human call, not the version number.
-            const PHASE_WITHIN = 0.30;
+            // 0–1 progress within the current phase toward the next.
+            const PHASE_WITHIN = 0.08;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
@@ -3137,7 +3135,7 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs + special snapshots
-            const APP_VERSION = '1.3.2-path';
+            const APP_VERSION = '1.3.1-mix-ui';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
