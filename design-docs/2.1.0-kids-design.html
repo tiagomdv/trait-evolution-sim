@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2.1.0-kids · first visible Evolve</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d1524;
+      --border: #1e3a5f;
+      --text: #cbd5e1;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --food: #67e8f9;
+      --warn: #fbbf24;
+    }
+    body { background: var(--bg); color: var(--text); margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 1.5rem 1.1rem 4rem; }
+    h1 { font-size: 1.55rem; font-weight: 650; color: #f1f5f9; margin: 0 0 0.35rem; }
+    h2 { font-size: 1.05rem; font-weight: 650; color: #e2e8f0; margin: 1.75rem 0 0.55rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+    p, li { font-size: 0.92rem; }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+    .panel {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 0.65rem;
+      padding: 0.9rem 1rem; margin: 0.75rem 0;
+    }
+    .tag {
+      display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px;
+      background: #0c4a6e; color: #bae6fd; border: 1px solid #0ea5e9; margin-right: 0.35rem;
+    }
+    .tag.warn { background: #422006; color: #fde68a; border-color: #d97706; }
+    .tag.good { background: #052e16; color: #bbf7d0; border-color: #22c55e; }
+    .meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 1.1rem; align-items: center; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.4rem 0 0.6rem; }
+    th, td { border: 1px solid var(--border); padding: 0.4rem 0.55rem; text-align: left; vertical-align: top; }
+    th { background: #0a1220; color: #94a3b8; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+    code { font-family: ui-monospace, Menlo, monospace; color: #7dd3fc; font-size: 0.86em; }
+    .callout { border-left: 3px solid var(--accent); padding-left: 0.75rem; margin: 0.7rem 0; }
+    footer { margin-top: 2rem; font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="meta">
+      <span class="tag">2.1.0-kids</span>
+      <span class="tag warn">Mechanics</span>
+      <span class="tag">Phase 2 · Evolve</span>
+      <span class="tag good">Draft on live index.html — human judges feel</span>
+    </div>
+
+    <h1>First visible Evolve — kids beside a living parent</h1>
+    <p class="muted">
+      Copy-four-traits + Reset is Differ with a new Mix. You never see a parent.
+      This slice keeps adults on the island and spawns kids next to them.
+      Mix now has five knobs: hunger rate, efficiency, hunt, speed, and <strong>birth frequency</strong>. Cling / care clocks are still not Mix. Help / Vision leftover cleanup is a later pass.
+    </p>
+
+    <h2>What you should see</h2>
+    <p>
+      Open Mix, Apply, Reset. For about one minute at 1× it looks like Differ.
+      Then small dots appear next to living people. They stick, then peel toward pellets.
+      Click a small one: name ends in <strong>kid</strong>, bag is tiny, <strong>Cling</strong> shows in the inspector and falls toward zero.
+    </p>
+
+    <h2>Clocks vs Mix traits</h2>
+    <p>
+      Kids spawn with <strong>full Mix traits</strong> (copied + nudge). No weak-body curve.
+      Clocks only change <em>who hunt points at</em>: parent, newborn, then food.
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>Name in code</th><th>What it is</th><th>At 1×</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>LIFE_RISE</code> 3600</td><td>Age before they can have kids. Cling/care mostly gone by here.</td><td>~60s at 1×</td></tr>
+        <tr><td><code>birthFreq</code> Mix 0–1</td><td>How often they have kids after that. Copied + nudge. 0 = none. 0.5 ≈ 30s gap. 1 ≈ 6s gap.</td><td>see Mix slider</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">Do not retune Mix hunger / speed / spawn / bump numbers unless the human says so. Same blood line (one Mix founder → kids → grandkids) skip bump. Two strangers with the same Mix paint still clash.</p>
+
+    <h2>How a kid is made</h2>
+    <ol>
+      <li>Each tick, after deaths: living bodies older than <code>LIFE_RISE</code> whose Mix birth-frequency gap has elapsed can have a kid. No live head-count cap.</li>
+      <li>Same parent can have <strong>more than one</strong> kid. Too-young bodies do not birth. Gap is Mix birth frequency.</li>
+      <li>Kid appears 8–18 world units beside the parent (wraps if they sit on the edge).</li>
+      <li>Paint and Mix group stay the parent’s. Name is <code>parent name + " kid"</code>.</li>
+      <li>Mix traits copied from the parent, then a small nudge, clamped to Mix ranges. Full strength from tick one.</li>
+      <li>Bag starts ~1–4. Hunger starts ~22–40 so they actually hunt. Adults keep the bags they already had.</li>
+    </ol>
+    <div class="panel">
+      Nudge spans: hunger rate ±0.004, efficiency ±0.08, hunt ±0.06, speed ±0.1.
+      Mix Reset adults still spawn the old way: random place, bag ~18–30, hunger 0.
+    </div>
+
+    <h2>Parent-pull (cling) and care (parent → kid)</h2>
+    <p>
+      Hunt already steers. Extra is state, not a Mix slider.
+    </p>
+    <p>
+      <strong>Cling (kid):</strong> lock on that parent. Starts at 1. Each tick: <code>1 − age / LIFE_RISE</code>, minus hunger/100. Hunger ≥ 55 hunts pellets even if cling is left (empty-bag kids were dying in the clump).
+      Parent dead → food. No ghost.
+    </p>
+    <p>
+      <strong>Care (parent):</strong> for a while after a birth, the same lock aims at the <em>newest living kid</em>.
+      Clock starts at <code>lastBirthTick</code> (a new baby resets it). Same length as cling. Hunger ≥ 55 → pellets first.
+      Newest kid dead → next living offspring while the clock is up, else food. No ghost.
+    </p>
+    <p>
+      Hunt order: care (newborn) first, then own parent, then food.
+      So a parent who is also someone’s kid will tend the baby before chasing grandma.
+      Hunt 0 still barely locks — wanderer families do not glue. That is hunt, not a bug.
+    </p>
+    <p class="muted">
+      What you should see: after a birth they meet in a clump (no bump tax on that pair). Then both peel toward pellets. Next baby, the parent’s hunt snaps to the new one; an older kid may still be clinging if their own clock is up.
+    </p>
+
+    <h2>No life curve</h2>
+    <p>
+      Parked. Kids are the parent’s Mix numbers plus a nudge. Empty bag is the only “baby” tell (small dot).
+    </p>
+
+    <h2>UI / UX that actually changed</h2>
+    <p class="muted">
+      This PR is mechanics. No new buttons, no Mix fifth slider, no Next year, no kid color, no Help rewrite.
+      Desk changes are only what you need to <em>read</em> the new island.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Surface</th><th>Before (2.0.1-desk)</th><th>Now (2.1.0-kids)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>World badge</td>
+          <td><code>v2.0.1-desk</code></td>
+          <td><code>v2.1.0-kids</code> — matches <code>VERSION</code></td>
+        </tr>
+        <tr>
+          <td>Island dots</td>
+          <td>Same draw rule for everyone</td>
+          <td>Same draw rule. Kids look smaller because bags start empty (size is still √bag). No extra kid outline. Hungry ring and bump flash unchanged.</td>
+        </tr>
+        <tr>
+          <td>Click a person</td>
+          <td>Name, four traits, bag, age</td>
+          <td>Kids: <strong>Cling</strong>. A parent who just had a kid: <strong>Care</strong>. Dock traits are Mix copy + nudge, full strength.</td>
+        </tr>
+        <tr>
+          <td>Name on the dock</td>
+          <td>Mix name</td>
+          <td>Kids: <code>Control 0 kid</code> (parent display name + “ kid”)</td>
+        </tr>
+        <tr>
+          <td>Mix box</td>
+          <td>Four traits</td>
+          <td>Untouched. Apply / Reset still spawn the Mix crowd only. Kids appear during the run.</td>
+        </tr>
+        <tr>
+          <td>Alive / Trends / History</td>
+          <td>By Mix color. Alive Y scaled to Mix start (kids clipped). Left count treated extra kids as dead.</td>
+          <td>Kids keep parent paint. Alive Y is Mix start or the real peak, whichever is higher. Charts a bit taller. Left: +N kids / −N dead. No generation chart.</td>
+        </tr>
+        <tr>
+          <td>Vision intro</td>
+          <td>No children yet</td>
+          <td>One line: adults stay; kids spawn next to a parent. Version code updated.</td>
+        </tr>
+        <tr>
+          <td>Help intro</td>
+          <td>No babies yet</td>
+          <td>One line: kids copy four traits, cling, peel to food. How-to body not rewritten.</td>
+        </tr>
+        <tr>
+          <td>Path bar</td>
+          <td>15% (human set)</td>
+          <td>Still 15% until the human sets a new fill</td>
+        </tr>
+        <tr>
+          <td>Pause / Speed / Reset</td>
+          <td>Clock and wipe</td>
+          <td>Unchanged. Reset still wipes kids; a new Mix crowd starts with no parents.</td>
+        </tr>
+        <tr>
+          <td>Birth season banner</td>
+          <td>None</td>
+          <td>Amber pulse on the island ~15s at 1× before prime: <strong>Birth season coming up</strong>. Then a steady <strong>Birth season</strong> while anyone is in prime. Not a Mix knob. Off the field (overlay chrome).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Left stale on purpose.</strong> Vision still has “Door is open. Survivors will have children; not in this ship.”
+      That is leftover Differ/Evolve chrome. Cleanup is a later pass, not this feel PR.
+    </div>
+
+    <h2>What we did not add</h2>
+    <ul>
+      <li>No Next year wipe. No birth button.</li>
+      <li>No Mix cling, Mix longevity, or baby-luck dice.</li>
+      <li>No Share, Talk, kin-tax, crowd avoid.</li>
+      <li>No kid sprite, halo, or parent–child line on the canvas. The clump is the UI.</li>
+      <li>No Help tutorial for the two clocks.</li>
+    </ul>
+
+    <h2>Smoke</h2>
+    <ul>
+      <li>Kids appear near someone, not from a blank Reset.</li>
+      <li>Stick, then peel to pellets.</li>
+      <li>Weaker, then sharper, then tired — same for every color.</li>
+      <li>Mix and bump still feel like 2.0.1-desk while adults are in prime.</li>
+      <li><code>phase-0-survive-finished.html</code> and <code>phase-1-differ-finished.html</code> untouched.</li>
+    </ul>
+
+    <footer>
+      Live file: <code>index.html</code>. Archive of previous: <code>archive/index-2.0.1-desk.html</code>.
+      <strong>URGENT next:</strong> rewrite or thoroughly review project docs so they match this slice.
+      Then: inherited peak/fade clock, mutation knob, generation charts, Help/Vision chrome, kin-tax, crowd avoid.
+    </footer>
+  </div>
+</body>
+</html>

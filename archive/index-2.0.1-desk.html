@@ -341,40 +341,6 @@
                 overflow: hidden;
                 padding: 0; /* flush agent field */
             }
-            .birth-warn {
-                position: absolute;
-                top: 0.45rem;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 4;
-                display: none;
-                pointer-events: none;
-                font-size: 11px;
-                font-weight: 650;
-                letter-spacing: 0.04em;
-                text-transform: uppercase;
-                padding: 0.28rem 0.7rem;
-                border-radius: 999px;
-                white-space: nowrap;
-                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-            }
-            .birth-warn.on { display: block; }
-            .birth-warn.coming {
-                color: #422006;
-                background: #fbbf24;
-                border: 1px solid #f59e0b;
-                animation: birth-warn-pulse 1.1s ease-in-out infinite;
-            }
-            .birth-warn.open {
-                color: #ecfeff;
-                background: #0e7490;
-                border: 1px solid #22d3ee;
-                animation: none;
-            }
-            @keyframes birth-warn-pulse {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0.62; }
-            }
             #canvas {
                 background: var(--canvas-bg);
                 border: none;
@@ -419,7 +385,7 @@
             #panel-trends canvas {
                 display: block;
                 width: 100% !important;
-                height: 80px;
+                height: 64px;
                 max-width: 100%;
             }
             .trend-legend {
@@ -1355,7 +1321,7 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Who has kids</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v2.1.0-kids</span>
+                    <span class="badge-version" id="version-badge">v2.0.1-desk</span>
                 </div>
                 <div class="header-actions">
                     <button type="button" class="btn-header" onclick="openVisionModal()" title="Project vision and roadmap">Vision…</button>
@@ -1451,7 +1417,6 @@
                         </div>
                         <div class="canvas-host" id="canvas-host">
                             <canvas id="canvas" width="800" height="600"></canvas>
-                            <div id="birth-warn" class="birth-warn" role="status" aria-live="polite"></div>
                         </div>
                     </div>
                     <button type="button" class="show-tab show-tab-right" id="show-tab-right" onclick="showCol('right')" title="Show graphs and history">Show graphs</button>
@@ -1464,24 +1429,24 @@
                             <div class="section-title">Trends</div>
                             <button type="button" class="btn-hide-col" onclick="hideCol('right')" title="Hide graphs and history">Hide graphs</button>
                         </div>
-                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">This run · by group · kids in parent color</div>
+                        <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">This run · by group</div>
                         <div class="trend-legend" id="trend-legend"></div>
 
                         <div class="chart-row">
                             <div class="chart-label pop">Alive</div>
-                            <canvas id="chart-pop" width="240" height="80" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            <canvas id="chart-pop" width="240" height="64" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
                         <div class="chart-row">
                             <div class="chart-label food">Avg bag</div>
-                            <canvas id="chart-bag" width="240" height="80" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            <canvas id="chart-bag" width="240" height="64" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
                         <div class="chart-row">
                             <div class="chart-label food">Total bag</div>
-                            <canvas id="chart-bag-sum" width="240" height="80" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            <canvas id="chart-bag-sum" width="240" height="64" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
                         <div class="chart-row">
                             <div class="chart-label hunger">Avg hunger</div>
-                            <canvas id="chart-hunger" width="240" height="80" class="bg-slate-950 border border-slate-700 rounded"></canvas>
+                            <canvas id="chart-hunger" width="240" height="64" class="bg-slate-950 border border-slate-700 rounded"></canvas>
                         </div>
                     </div>
                     <div class="col-panel" id="panel-history">
@@ -1715,7 +1680,7 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">2.1.0-kids</code> — Phase 2 · Evolve. Adults stay; kids spawn next to a parent. Lab and Special live in the Survive file.
+                    Live is <code style="color:#7dd3fc">2.0.1-desk</code> — Phase 2 · Evolve. Lab and Special live in the Survive file. No children yet.
                 </p>
 
                 <div class="help-sec">The long path</div>
@@ -1743,37 +1708,35 @@
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
                     People are not copies of each other. You set the mix in <strong>Mix</strong>.
-                    Version <code style="color:#7dd3fc">2.1.0-kids</code>. Differ is finished in its own file. Kids copy Mix traits (including birth frequency) and cling, then peel to food. Lab and Special are only in the Survive freeze.
+                    Version <code style="color:#7dd3fc">2.0.1-desk</code>. Differ is finished in its own file. No babies yet. Lab and Special are only in the Survive freeze.
                 </p>
 
                 <div class="help-sec">How a run works</div>
-                <div class="help-entry">Open <strong>Mix</strong>. <strong>Groups</strong> — kinds, everyone in a kind is the same. <strong>Families</strong> — the same mixes, but each named person sits a little off the group average. <strong>Rungs</strong> — hunt/hunger/efficiency/speed/birth ladders, a scramble, or 12 oddballs. Groups and Roster tabs are separate drafts. A short story sits under the buttons.</div>
+                <div class="help-entry">Open <strong>Mix</strong>. <strong>Groups</strong> — kinds, everyone in a kind is the same. <strong>Families</strong> — the same mixes, but each named person sits a little off the group average. <strong>Rungs</strong> — hunt/hunger/efficiency/speed ladders, a scramble, or 12 oddballs. Groups and Roster tabs are separate drafts. A short story sits under the buttons.</div>
                 <div class="help-entry">Press <strong>Apply</strong> to remember the open tab. The island does not change yet.</div>
                 <div class="help-entry">Press <strong>Reset</strong> to spawn that mix. That is when colors and counts on the field update.</div>
                 <div class="help-entry"><strong>Food spawn</strong> on the left is weather (live). Gap between pellet drops, <strong>1–20</strong>. Higher = scarcer. 8 is already a hungry island at 60 people. 1 is almost a pellet every tick. (Zero is not a real gap — it would break the clock.)</div>
                 <div class="help-entry"><strong>Three spots</strong> (checkbox, live) — most pellets land in three piles (dashed rings). A few still fall anywhere. Uncheck for even rain like before.</div>
                 <div class="help-entry">The island is a zoom-out: the box is the same size, people and pellets look smaller, walks take longer. World size locks on first layout. <strong>Hide Mix</strong> / <strong>Hide graphs</strong> only change the camera — the view fills left to right. Hide may crop top and bottom; putting a bar back shows the whole map again. Same land, no extra strip, no wrap.</div>
-                <div class="help-entry">Trends: alive, avg bag, <strong>total bag</strong> (sum of bags in that color), avg hunger. One line per group. Kids count in the parent’s color; Alive scales up when a color grows past Mix start.</div>
+                <div class="help-entry">Trends: alive, avg bag, <strong>total bag</strong> (sum of bags in that color), avg hunger. One line per group.</div>
                 <div class="help-entry"><strong>Pause / Speed</strong> — clock. 10× is faster wall time; a sim-second is still 60 ticks.</div>
                 <div class="help-entry">Watch leftover <strong>colors</strong>. Score <em>who is still walking</em>, not how fat the bags are. Right side: a graph per group, and a history row when you Reset or when everyone dies.</div>
-                <div class="help-entry">A yellow banner on the island warns <strong>Birth season coming up</strong> shortly before people hit prime. While anyone is in prime it stays <strong>Birth season</strong>. Kids appear next to living parents then. The kid’s starter bag is taken from the parent (about 1–4, or whatever is left). For a while the parent hunts toward that kid (same kind of pull as food-hunt); the kid hunts the parent. If they walk into each other the parent passes 1 food. Then both peel to pellets.</div>
 
-                <div class="help-sec">The Mix traits</div>
+                <div class="help-sec">The four traits</div>
                 <div class="help-entry"><strong>Hunger rate</strong> — How fast they burn. High = starve sooner if they miss food.</div>
                 <div class="help-entry"><strong>Efficiency</strong> — How much a bite from the bag lowers hunger. High = better meals.</div>
                 <div class="help-entry"><strong>Hunt</strong> — One number for “do I lock onto food?” Zero is basically off (wander). Around the middle is normal seeking. One is fully locked on. Extra hunt past that barely saves more lives.</div>
                 <div class="help-entry"><strong>Speed</strong> — How fast they can walk. Slow is a tax. Faster is not always more survivors — it is there so a mix can look slow vs twitchy.</div>
-                <div class="help-entry"><strong>Birth frequency</strong> — How often they have kids after they hit prime. Zero is none. Around the middle is the old shared gap (~30s at 1×). One is a pile. Copied to kids with a small nudge. Not cling, not care.</div>
 
                 <div class="help-sec">What you see</div>
-                <div class="help-entry"><strong>Click a person</strong> — name, Mix traits, bag. Kids show <strong>Cling</strong>. A parent who just had a kid shows <strong>Care</strong>.</div>
+                <div class="help-entry"><strong>Click a person</strong> — name, four traits, bag.</div>
                 <div class="help-entry"><strong>Fill color</strong> is paint for the whole group (not the group’s name). <strong>Pink ring</strong> = starving. <strong>Cyan pip</strong> = food in the bag. <strong>Amber flash</strong> = two people just bumped.</div>
-                <div class="help-entry">Mix Reset stamps at most 100. Live kids are not capped.</div>
+                <div class="help-entry">Total people is the sum of group counts (or roster length). Cap 100.</div>
                 <div class="help-entry">Import / Export still work if you want a JSON file. Stories live in Mix; the files in the folder are extras.</div>
 
                 <div class="help-sec">Rules</div>
                 <div class="help-entry">Catch = bag +1, pellet gone. Reach is <strong>20 pixels past the drawn circle</strong>. Dots grow with the bag (still climbing after 1000–2000 pellets). Fat leftovers are slower — same speed trait, but the extra mass drags them. If several people reach the same pellet, a random one in range eats it.</div>
-                <div class="help-entry"><strong>Bump</strong> — walking into someone knocks you both. Hunger goes <em>up</em> (a cost, not a snack). Fat knocks farther and pays more hunger; thin gets shoved more and pays less. Food stays in each bag, except a parent walking into their kid passes 1 food (no knock, no tax). Same blood line still skips the tax. A short cooldown so a pile does not fire every tick.</div>
+                <div class="help-entry"><strong>Bump</strong> — walking into someone knocks you both. Hunger goes <em>up</em> (a cost, not a snack). Fat knocks farther and pays more hunger; thin gets shoved more and pays less. Food stays in each bag. A short cooldown so a pile does not tax every tick.</div>
                 <div class="help-entry">Bite size from the bag still uses a frozen “how big a mouthful” number times efficiency. Efficiency is the Differ trait; mouthful size is not.</div>
 
                 <div class="help-sec">Trends and History</div>
@@ -1825,7 +1788,6 @@
             };
             const CURRENT_PHASE = 2;
             // 0–1 how far Evolve is toward Economy. Human set 15% for the desk strip.
-            // Ask before changing — do not invent a fill from 2.1.0-kids.
             const PHASE_WITHIN = 0.15;
 
             function syncPhaseBrand() {
@@ -1921,16 +1883,6 @@
             const DIFFER_MAX_N = 100;
             const DIFFER_MAX_GROUPS = 8;
 
-            // First visible Evolve. Same numbers for every body. Not Mix knobs.
-            // Cling fades around the start of prime so we do not add a sixth slider.
-            // Human: stretch both clocks ~5× vs the first draft (feel). 10× was too long.
-            const LIFE_RISE = 3600;      // ticks until they can birth; cling/care use this too
-            const FOOD_OVER_FAMILY = 55; // hunger this high → hunt pellets, not parent/kid
-            // No fade. Once prime, they stay Mix-sharp and can keep having kids until they starve.
-            const BIRTH_GAP_MID = 1800;  // Mix birthFreq 0.5 → this gap (~30s at 1×)
-            const BIRTH_WARN = 900;      // ticks before prime (~15s at 1×) — “season coming” banner
-            const KID_NUDGE = { hungerRate: 0.004, efficiency: 0.08, hunt: 0.06, maxSpeed: 0.1, birthFreq: 0.08 };
-
             function defaultDifferCrowd() {
                 return {
                     version: 2,
@@ -1938,8 +1890,8 @@
                     mode: 'groups',
                     n: 60,
                     groups: [
-                        { id: 'A', name: 'Control', color: GROUP_COLORS[0], n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2, birthFreq: 0.5 },
-                        { id: 'B', name: 'Strain', color: GROUP_COLORS[1], n: 30, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6, birthFreq: 0.5 }
+                        { id: 'A', name: 'Control', color: GROUP_COLORS[0], n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2 },
+                        { id: 'B', name: 'Strain', color: GROUP_COLORS[1], n: 30, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6 }
                     ],
                     bodies: []
                 };
@@ -1947,52 +1899,52 @@
 
             // Same mixes as phase-1-differ-presets/*.json — built here so Mix works without a server.
             const STORY_CTL = [
-                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 },
-                { id: 'STN', name: 'Strain', color: '#c4b5fd', n: 30, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6, birthFreq: 0.5 }
+                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 },
+                { id: 'STN', name: 'Strain', color: '#c4b5fd', n: 30, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6 }
             ];
             const STORY_SEK = [
-                { id: 'SEK', name: 'Seekers', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.7, maxSpeed: 2.0, birthFreq: 0.5 },
-                { id: 'WAN', name: 'Wanderers', color: '#c4b5fd', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 2.0, birthFreq: 0.5 }
+                { id: 'SEK', name: 'Seekers', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.7, maxSpeed: 2.0 },
+                { id: 'WAN', name: 'Wanderers', color: '#c4b5fd', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 2.0 }
             ];
             const STORY_TOR = [
-                { id: 'TOR', name: 'Tortoises', color: '#4ade80', n: 30, hungerRate: 0.05, efficiency: 1.8, hunt: 0.35, maxSpeed: 1.2, birthFreq: 0.5 },
-                { id: 'HAR', name: 'Hares', color: '#fbbf24', n: 30, hungerRate: 0.078, efficiency: 1.4, hunt: 0.8, maxSpeed: 2.4, birthFreq: 0.5 }
+                { id: 'TOR', name: 'Tortoises', color: '#4ade80', n: 30, hungerRate: 0.05, efficiency: 1.8, hunt: 0.35, maxSpeed: 1.2 },
+                { id: 'HAR', name: 'Hares', color: '#fbbf24', n: 30, hungerRate: 0.078, efficiency: 1.4, hunt: 0.8, maxSpeed: 2.4 }
             ];
             const STORY_GRZ = [
-                { id: 'GRZ', name: 'Grazers', color: '#4ade80', n: 30, hungerRate: 0.055, efficiency: 2.2, hunt: 0.15, maxSpeed: 1.6, birthFreq: 0.5 },
-                { id: 'HNT', name: 'Hunters', color: '#fb7185', n: 30, hungerRate: 0.075, efficiency: 1.3, hunt: 0.9, maxSpeed: 2.2, birthFreq: 0.5 }
+                { id: 'GRZ', name: 'Grazers', color: '#4ade80', n: 30, hungerRate: 0.055, efficiency: 2.2, hunt: 0.15, maxSpeed: 1.6 },
+                { id: 'HNT', name: 'Hunters', color: '#fb7185', n: 30, hungerRate: 0.075, efficiency: 1.3, hunt: 0.9, maxSpeed: 2.2 }
             ];
             const STORY_RIC = [
-                { id: 'RIC', name: 'Idle rich', color: '#fbbf24', n: 20, hungerRate: 0.05, efficiency: 2.3, hunt: 0.45, maxSpeed: 2.0, birthFreq: 0.5 },
-                { id: 'WRK', name: 'Working poor', color: '#fb7185', n: 20, hungerRate: 0.08, efficiency: 1.25, hunt: 0.55, maxSpeed: 2.0, birthFreq: 0.5 },
-                { id: 'LST', name: 'Lost', color: '#64748b', n: 20, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.4, birthFreq: 0.15 }
+                { id: 'RIC', name: 'Idle rich', color: '#fbbf24', n: 20, hungerRate: 0.05, efficiency: 2.3, hunt: 0.45, maxSpeed: 2.0 },
+                { id: 'WRK', name: 'Working poor', color: '#fb7185', n: 20, hungerRate: 0.08, efficiency: 1.25, hunt: 0.55, maxSpeed: 2.0 },
+                { id: 'LST', name: 'Lost', color: '#64748b', n: 20, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.4 }
             ];
             const STORY_PET = [
-                { id: 'PRO', name: 'Prophet', color: '#fbbf24', n: 3, hungerRate: 0.052, efficiency: 2.4, hunt: 1.0, maxSpeed: 2.2, birthFreq: 0.5 },
-                { id: 'FLY', name: 'Mayfly', color: '#fb7185', n: 8, hungerRate: 0.084, efficiency: 1.2, hunt: 0.85, maxSpeed: 2.4, birthFreq: 0.9 },
-                { id: 'GHO', name: 'Ghost', color: '#22d3ee', n: 5, hungerRate: 0.055, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.2, birthFreq: 0.0 },
-                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 44, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 }
+                { id: 'PRO', name: 'Prophet', color: '#fbbf24', n: 3, hungerRate: 0.052, efficiency: 2.4, hunt: 1.0, maxSpeed: 2.2 },
+                { id: 'FLY', name: 'Mayfly', color: '#fb7185', n: 8, hungerRate: 0.084, efficiency: 1.2, hunt: 0.85, maxSpeed: 2.4 },
+                { id: 'GHO', name: 'Ghost', color: '#22d3ee', n: 5, hungerRate: 0.055, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.2 },
+                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 44, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 }
             ];
 
             const STORY_LADDER = [
-                { id: 'LAD', name: 'Ladder', color: '#38bdf8', n: 60, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 }
+                { id: 'LAD', name: 'Ladder', color: '#38bdf8', n: 60, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 }
             ];
             const STORY_ODD_GROUPS = [
-                { id: 'ODD', name: 'Oddballs', color: '#fbbf24', n: 12, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 }
+                { id: 'ODD', name: 'Oddballs', color: '#fbbf24', n: 12, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 }
             ];
             const STORY_ODD_BODIES = [
-                { bodyId: 'BLI', name: 'Blind', color: '#c4b5fd', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 2.0, birthFreq: 0.5 },
-                { bodyId: 'LOK', name: 'Locked on', color: '#38bdf8', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 1.0, maxSpeed: 2.0, birthFreq: 0.5 },
-                { bodyId: 'EAS', name: 'Easy burn', color: '#4ade80', sourceGroupId: 'ODD', hungerRate: 0.049, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 },
-                { bodyId: 'HOT', name: 'Hot burn', color: '#fb7185', sourceGroupId: 'ODD', hungerRate: 0.084, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 },
-                { bodyId: 'FAT', name: 'Good meals', color: '#fbbf24', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 2.4, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 },
-                { bodyId: 'THN', name: 'Bad meals', color: '#fb7185', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.2, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 },
-                { bodyId: 'SLO', name: 'Slow', color: '#4ade80', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 1.2, birthFreq: 0.5 },
-                { bodyId: 'TWI', name: 'Twitchy', color: '#fbbf24', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.4, birthFreq: 0.5 },
-                { bodyId: 'GHO', name: 'Ghost', color: '#22d3ee', sourceGroupId: 'ODD', hungerRate: 0.052, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.2, birthFreq: 0.0 },
-                { bodyId: 'FLY', name: 'Mayfly', color: '#fb7185', sourceGroupId: 'ODD', hungerRate: 0.084, efficiency: 1.2, hunt: 0.9, maxSpeed: 2.4, birthFreq: 0.9 },
-                { bodyId: 'PRO', name: 'Prophet', color: '#fbbf24', sourceGroupId: 'ODD', hungerRate: 0.049, efficiency: 2.4, hunt: 1.0, maxSpeed: 2.2, birthFreq: 0.5 },
-                { bodyId: 'STN', name: 'Strain', color: '#c4b5fd', sourceGroupId: 'ODD', hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6, birthFreq: 0.5 }
+                { bodyId: 'BLI', name: 'Blind', color: '#c4b5fd', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 2.0 },
+                { bodyId: 'LOK', name: 'Locked on', color: '#38bdf8', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 1.0, maxSpeed: 2.0 },
+                { bodyId: 'EAS', name: 'Easy burn', color: '#4ade80', sourceGroupId: 'ODD', hungerRate: 0.049, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 },
+                { bodyId: 'HOT', name: 'Hot burn', color: '#fb7185', sourceGroupId: 'ODD', hungerRate: 0.084, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0 },
+                { bodyId: 'FAT', name: 'Good meals', color: '#fbbf24', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 2.4, hunt: 0.5, maxSpeed: 2.0 },
+                { bodyId: 'THN', name: 'Bad meals', color: '#fb7185', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.2, hunt: 0.5, maxSpeed: 2.0 },
+                { bodyId: 'SLO', name: 'Slow', color: '#4ade80', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 1.2 },
+                { bodyId: 'TWI', name: 'Twitchy', color: '#fbbf24', sourceGroupId: 'ODD', hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.4 },
+                { bodyId: 'GHO', name: 'Ghost', color: '#22d3ee', sourceGroupId: 'ODD', hungerRate: 0.052, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.2 },
+                { bodyId: 'FLY', name: 'Mayfly', color: '#fb7185', sourceGroupId: 'ODD', hungerRate: 0.084, efficiency: 1.2, hunt: 0.9, maxSpeed: 2.4 },
+                { bodyId: 'PRO', name: 'Prophet', color: '#fbbf24', sourceGroupId: 'ODD', hungerRate: 0.049, efficiency: 2.4, hunt: 1.0, maxSpeed: 2.2 },
+                { bodyId: 'STN', name: 'Strain', color: '#c4b5fd', sourceGroupId: 'ODD', hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6 }
             ];
 
             const DIFFER_STORIES = [
@@ -2028,10 +1980,8 @@
                     blurb: 'Meals from thin to fat. A bite does more for people at the high end.' },
                 { id: 'roster-speed-ladder', label: 'Speed slow → twitchy', mode: 'roster', groups: STORY_LADDER, nameBy: 'maxSpeed', spread: { LAD: { maxSpeed: [1.2, 2.4] } },
                     blurb: 'Walk from crawl to twitch. Speed is a tax or a gift, depending on the piles.' },
-                { id: 'roster-birth-ladder', label: 'Birth rare → often', mode: 'roster', groups: STORY_LADDER, nameBy: 'birthFreq', spread: { LAD: { birthFreq: [0, 1] } },
-                    blurb: 'One trait: how often they have kids after prime. Zero is none. One is a pile.' },
                 { id: 'roster-scramble', label: 'Scramble 60', mode: 'roster', groups: STORY_LADDER, scramble: true,
-                    blurb: 'All Mix traits shuffled. No teams. Sixty different bodies, same island.' },
+                    blurb: 'All four traits shuffled. No teams. Sixty different bodies, same island.' },
                 { id: 'roster-oddballs', label: 'Oddballs ×12', mode: 'roster', groups: STORY_ODD_GROUPS, bodies: STORY_ODD_BODIES,
                     blurb: 'Twelve named weirdos: blind, locked on, slow, twitchy, ghost, mayfly… Watch which oddball lasts.' }
             ];
@@ -2071,8 +2021,7 @@
                         hunt: huntOff
                             ? [0, 0.08]
                             : [storyClamp(g.hunt - 0.16, 0, 1), storyClamp(g.hunt + 0.16, 0, 1)],
-                        maxSpeed: [storyClamp(g.maxSpeed - 0.25, 1.2, 2.4), storyClamp(g.maxSpeed + 0.25, 1.2, 2.4)],
-                        birthFreq: [storyClamp(specBirthFreq(g) - 0.16, 0, 1), storyClamp(specBirthFreq(g) + 0.16, 0, 1)]
+                        maxSpeed: [storyClamp(g.maxSpeed - 0.25, 1.2, 2.4), storyClamp(g.maxSpeed + 0.25, 1.2, 2.4)]
                     };
                 }
                 return out;
@@ -2081,7 +2030,7 @@
             function expandStoryBodies(groups, spread, nameBy, scramble, family) {
                 const bodies = [];
                 spread = spread || {};
-                const digits = { hungerRate: 3, efficiency: 2, hunt: 2, maxSpeed: 1, birthFreq: 2 };
+                const digits = { hungerRate: 3, efficiency: 2, hunt: 2, maxSpeed: 1 };
                 for (let gi = 0; gi < groups.length; gi++) {
                     const g = groups[gi];
                     const n = g.n | 0;
@@ -2091,10 +2040,10 @@
                             const pair = sp[key];
                             let v;
                             if (scramble) {
-                                const steps = { hungerRate: 7, efficiency: 11, hunt: 1, maxSpeed: 3, birthFreq: 5 };
+                                const steps = { hungerRate: 7, efficiency: 11, hunt: 1, maxSpeed: 3 };
                                 const j = (i * (steps[key] || 1)) % n;
-                                const lo = { hungerRate: 0.049, efficiency: 1.2, hunt: 0, maxSpeed: 1.2, birthFreq: 0 }[key];
-                                const hi = { hungerRate: 0.084, efficiency: 2.4, hunt: 1, maxSpeed: 2.4, birthFreq: 1 }[key];
+                                const lo = { hungerRate: 0.049, efficiency: 1.2, hunt: 0, maxSpeed: 1.2 }[key];
+                                const hi = { hungerRate: 0.084, efficiency: 2.4, hunt: 1, maxSpeed: 2.4 }[key];
                                 v = storyLerp(j, n, lo, hi);
                             } else if (pair) {
                                 const slot = family ? storyJitterSlot(g.id + key, i, n) : i;
@@ -2108,13 +2057,11 @@
                         const efficiency = pick('efficiency');
                         const hunt = pick('hunt');
                         const maxSpeed = pick('maxSpeed');
-                        const birthFreq = pick('birthFreq');
                         let name = (g.name || g.id) + ' ' + storyPad(i + 1);
                         if (nameBy === 'hunt') name = 'Hunt ' + hunt.toFixed(2);
                         else if (nameBy === 'hungerRate') name = 'Hunger ' + hungerRate.toFixed(3);
                         else if (nameBy === 'efficiency') name = 'Eff ' + efficiency.toFixed(2);
                         else if (nameBy === 'maxSpeed') name = 'Speed ' + maxSpeed.toFixed(1);
-                        else if (nameBy === 'birthFreq') name = 'Birth ' + birthFreq.toFixed(2);
                         else if (scramble) name = 'Mix ' + storyPad(i + 1);
                         bodies.push({
                             bodyId: g.id + '-' + storyPad(i + 1),
@@ -2124,8 +2071,7 @@
                             hungerRate: hungerRate,
                             efficiency: efficiency,
                             hunt: hunt,
-                            maxSpeed: maxSpeed,
-                            birthFreq: birthFreq
+                            maxSpeed: maxSpeed
                         });
                     }
                 }
@@ -2168,7 +2114,7 @@
                 const wantMode = draft.mode === 'roster' ? 'roster' : 'groups';
                 const keyOf = function (gs) {
                     return (gs || []).map(function (g) {
-                        return [g.name, g.n | 0, Number(g.hungerRate).toFixed(3), Number(g.efficiency).toFixed(2), Number(g.hunt).toFixed(2), Number(g.maxSpeed).toFixed(1), Number(specBirthFreq(g)).toFixed(2)].join('|');
+                        return [g.name, g.n | 0, Number(g.hungerRate).toFixed(3), Number(g.efficiency).toFixed(2), Number(g.hunt).toFixed(2), Number(g.maxSpeed).toFixed(1)].join('|');
                     }).join('/');
                 };
                 const here = keyOf(draft.groups);
@@ -2224,7 +2170,7 @@
                 }
                 const blurb = onStory
                     ? onStory.blurb
-                    : 'Your own mix. The traits are hunger, efficiency, hunt, speed, and birth frequency. Apply, then Reset.';
+                    : 'Your own mix. The four traits are hunger, efficiency, hunt, and speed. Apply, then Reset.';
                 el.innerHTML =
                     row('Groups', function (s) { return s.mode !== 'roster'; },
                         'Everyone in a kind is the same body. Color is the kind.') +
@@ -2284,28 +2230,6 @@
                     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
             }
 
-            function specBirthFreq(spec) {
-                const v = spec && spec.birthFreq;
-                if (v == null || !Number.isFinite(Number(v))) return 0.5;
-                return Math.max(0, Math.min(1, Number(v)));
-            }
-
-            // Mix 0 = no kids. 0.5 = old shared gap. 1 = often. Not the cling clock.
-            function decodeBirthFreq(t) {
-                t = specBirthFreq({ birthFreq: t });
-                if (t <= 0.04) return { births: false, gap: Infinity };
-                const t0 = 0.04, g0 = 7200, tMid = 0.5, gMid = BIRTH_GAP_MID, g1 = 360;
-                let gap;
-                if (t <= tMid) {
-                    const u = (t - t0) / (tMid - t0);
-                    gap = g0 + (gMid - g0) * u;
-                } else {
-                    const u = (t - tMid) / (1 - tMid);
-                    gap = gMid + (g1 - gMid) * u;
-                }
-                return { births: true, gap: Math.max(120, Math.round(gap)) };
-            }
-
             function decodeHunt(t) {
                 t = Math.max(0, Math.min(1, Number(t) || 0));
                 function mix(a, b, u) {
@@ -2329,72 +2253,11 @@
                     efficiency: Number(spec.efficiency),
                     maxSpeed: Number(spec.maxSpeed),
                     hunt: hunt,
-                    birthFreq: specBirthFreq(spec),
                     sight: d.sight,
                     hungerPull: d.hungerPull,
                     seekPush: d.seekPush,
                     movementPolicy: 'seek'
                 };
-            }
-
-            // No body curve. Kids spawn with full Mix traits. Cling/care are hunt *targets*, not weaker stats.
-
-            function nudgeKidTrait(v, span, lo, hi) {
-                const n = v + (Math.random() * 2 - 1) * span;
-                return Math.max(lo, Math.min(hi, n));
-            }
-
-            function findAgentById(id) {
-                if (id == null) return null;
-                for (let i = 0; i < agents.length; i++) {
-                    if (agents[i].id === id) return agents[i];
-                }
-                return null;
-            }
-
-            function kidCling(agent) {
-                if (!agent.parentId) return 0;
-                const age = tick - agent.birthTick;
-                let c = 1 - age / LIFE_RISE;
-                c -= agent.hunger / 100;
-                return Math.max(0, Math.min(1, c));
-            }
-
-            // After a birth, parent hunt aims at the new kid. Same clock as cling. Not Mix.
-            // A new birth resets the clock (lastBirthTick). Hungry parents peel sooner so they still eat.
-            function careCling(agent) {
-                if (!agent.offspringIds || !agent.offspringIds.length) return 0;
-                const since = tick - agent.lastBirthTick;
-                let c = 1 - since / LIFE_RISE;
-                c -= agent.hunger / 100;
-                return Math.max(0, Math.min(1, c));
-            }
-
-            function livingCaredKid(agent) {
-                const ids = agent.offspringIds;
-                if (!ids || !ids.length) return null;
-                for (let i = ids.length - 1; i >= 0; i--) {
-                    const k = findAgentById(ids[i]);
-                    if (k) return k;
-                }
-                return null;
-            }
-
-            // Starving → food first (or they die in the clump). Else care, then own parent, then food.
-            function huntLockTarget(agent, sight) {
-                if (agent.hunger >= FOOD_OVER_FAMILY) {
-                    const pellet = nearestFoodInRadius(agent, sight);
-                    if (pellet) return pellet;
-                }
-                if (careCling(agent) > 0) {
-                    const kid = livingCaredKid(agent);
-                    if (kid) return kid;
-                }
-                if (kidCling(agent) > 0) {
-                    const parent = findAgentById(agent.parentId);
-                    if (parent) return parent;
-                }
-                return nearestFoodInRadius(agent, sight);
             }
 
             function cloneDiffer(c) {
@@ -2430,8 +2293,7 @@
                             hungerRate: g.hungerRate,
                             efficiency: g.efficiency,
                             hunt: g.hunt,
-                            maxSpeed: g.maxSpeed,
-                            birthFreq: specBirthFreq(g)
+                            maxSpeed: g.maxSpeed
                         });
                     }
                 }
@@ -2477,7 +2339,7 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs
-            const APP_VERSION = '2.1.0-kids';
+            const APP_VERSION = '2.0.1-desk';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
@@ -2562,35 +2424,28 @@
 
             class Agent {
                 constructor(spec) {
-                    spec = spec || {};
-                    this.x = spec.x != null ? spec.x : Math.random() * worldW();
-                    this.y = spec.y != null ? spec.y : Math.random() * worldH();
+                    this.x = Math.random() * worldW();
+                    this.y = Math.random() * worldH();
                     this.vx = (Math.random() - 0.5) * 1.5;
                     this.vy = (Math.random() - 0.5) * 1.5;
-                    this.food = spec.food != null ? spec.food : 18 + Math.random() * 12;
-                    this.hunger = spec.hunger != null ? spec.hunger : 0;
+                    this.food = 18 + Math.random() * 12;
+                    this.hunger = 0;
                     this.birthTick = tick;
                     this.id = nextAgentId++;
                     this._seekBlend = 0;
                     this._distFood = null;
                     this._effPolicy = 'seek';
+                    spec = spec || {};
                     this.bodyId = spec.bodyId || String(this.id);
                     this.displayName = spec.name || this.bodyId;
                     this.groupColor = spec.color || '#64748b';
                     this.sourceGroupId = spec.sourceGroupId || '';
-                    this.parentId = spec.parentId || null;
-                    this.familyId = spec.familyId != null ? spec.familyId : this.id;
-                    this.kidCount = 0;
-                    this.lastBirthTick = -99999;
-                    this.offspringIds = [];
-                    this.baseTraits = traitsFromSpec(spec);
-                    this.traits = this.baseTraits;
+                    this.traits = traitsFromSpec(spec);
                     this.lastBumpTick = -999;
                     this.bumpFlash = 0;
                 }
 
                 update() {
-                    this.traits = this.baseTraits;
                     const wAmp = p(this, 'drift');
                     const pol = p(this, 'movementPolicy');
                     const sRad = p(this, 'sight');
@@ -2611,7 +2466,7 @@
                     if (pol === 'seek') {
                         const blend = Math.min(1, Math.max(0, (this.hunger / 100) * sStr));
                         this._seekBlend = blend;
-                        const t = huntLockTarget(this, sRad);
+                        const t = nearestFoodInRadius(this, sRad);
                         if (t && blend > 0) {
                             const dx = t.x - this.x;
                             const dy = t.y - this.y;
@@ -2689,121 +2544,15 @@
                 }
             }
 
-            function spawnKid(parent) {
-                if (!parent) return;
-                const ang = Math.random() * Math.PI * 2;
-                const dist = 8 + Math.random() * 10;
-                let x = parent.x + Math.cos(ang) * dist;
-                let y = parent.y + Math.sin(ang) * dist;
-                if (x < 0) x += worldW();
-                if (x > worldW()) x -= worldW();
-                if (y < 0) y += worldH();
-                if (y > worldH()) y -= worldH();
-                const bt = parent.baseTraits || parent.traits;
-                parent.kidCount = (parent.kidCount | 0) + 1;
-                parent.lastBirthTick = tick;
-                // Starter bag comes off the parent. Empty parent → empty kid.
-                const wantBag = 1 + Math.random() * 3;
-                const fromParent = Math.min(Math.max(0, parent.food), wantBag);
-                parent.food -= fromParent;
-                const spec = {
-                    bodyId: 'k' + parent.id + '-' + parent.kidCount,
-                    name: (parent.displayName || parent.bodyId) + ' kid',
-                    color: parent.groupColor,
-                    sourceGroupId: parent.sourceGroupId,
-                    parentId: parent.id,
-                    familyId: parent.familyId != null ? parent.familyId : parent.id,
-                    x: x,
-                    y: y,
-                    food: fromParent,
-                    hunger: 22 + Math.random() * 18,
-                    hungerRate: nudgeKidTrait(bt.hungerRate, KID_NUDGE.hungerRate, 0.049, 0.084),
-                    efficiency: nudgeKidTrait(bt.efficiency, KID_NUDGE.efficiency, 1.2, 2.4),
-                    hunt: nudgeKidTrait(bt.hunt, KID_NUDGE.hunt, 0, 1),
-                    maxSpeed: nudgeKidTrait(bt.maxSpeed, KID_NUDGE.maxSpeed, 1.2, 2.4),
-                    birthFreq: nudgeKidTrait(specBirthFreq(bt), KID_NUDGE.birthFreq, 0, 1)
-                };
-                const kid = new Agent(spec);
-                parent.offspringIds.push(kid.id);
-                agents.push(kid);
-            }
-
-            // While in prime, more than one kid. Each parent uses their Mix gap. No live head-count cap.
-            function tryBirths() {
-                const eligible = [];
-                for (let i = 0; i < agents.length; i++) {
-                    const a = agents[i];
-                    const age = tick - a.birthTick;
-                    if (age < LIFE_RISE) continue;
-                    const bf = decodeBirthFreq(specBirthFreq(a.baseTraits || a.traits));
-                    if (!bf.births) continue;
-                    if (tick - a.lastBirthTick < bf.gap) continue;
-                    eligible.push(a);
-                }
-                for (let i = 0; i < eligible.length; i++) spawnKid(eligible[i]);
-            }
-
-            function updateBirthSeasonBanner() {
-                const el = document.getElementById('birth-warn');
-                if (!el) return;
-                let coming = 0;
-                let open = 0;
-                for (let i = 0; i < agents.length; i++) {
-                    const age = tick - agents[i].birthTick;
-                    if (age >= LIFE_RISE - BIRTH_WARN && age < LIFE_RISE) coming++;
-                    else if (age >= LIFE_RISE) open++;
-                }
-                el.classList.remove('on', 'coming', 'open');
-                if (open > 0) {
-                    el.textContent = 'Birth season';
-                    el.classList.add('on', 'open');
-                } else if (coming > 0) {
-                    el.textContent = 'Birth season coming up';
-                    el.classList.add('on', 'coming');
-                } else {
-                    el.textContent = '';
-                }
-            }
-
             // Walked into someone: bounce, hunger up. Fat knocks harder and pays more.
             const BUMP_COOLDOWN = 12;
             const BUMP_HUNGER = 0.45;
             const BUMP_TAX_R0 = 10; // ~bag 20. Above this, tax grows faster than linear.
             const BUMP_KICK = 0.55;
-            const PARENT_FEED = 1; // parent → that kid on overlap. Not Mix.
 
             function bumpHungerTax(r) {
                 const rr = Math.max(r, 1);
                 return BUMP_HUNGER * rr * Math.sqrt(rr / BUMP_TAX_R0);
-            }
-
-            // Blood line from a Mix founder. Not Mix paint — two Control strangers still bump.
-            function sameFamily(a, b) {
-                if (!a || !b) return false;
-                const fa = a.familyId != null ? a.familyId : a.id;
-                const fb = b.familyId != null ? b.familyId : b.id;
-                return fa === fb;
-            }
-
-            function parentKidPair(a, b) {
-                if (a && b && b.parentId === a.id) return { parent: a, kid: b };
-                if (a && b && a.parentId === b.id) return { parent: b, kid: a };
-                return null;
-            }
-
-            function tryParentFeedKid(a, b) {
-                const pair = parentKidPair(a, b);
-                if (!pair) return;
-                const parent = pair.parent;
-                const kid = pair.kid;
-                if (tick - parent.lastBumpTick < BUMP_COOLDOWN) return;
-                const n = Math.min(PARENT_FEED, Math.max(0, parent.food));
-                if (n <= 0) return;
-                parent.food -= n;
-                kid.food += n;
-                parent.lastBumpTick = tick;
-                parent.bumpFlash = 8;
-                kid.bumpFlash = 8;
             }
 
             function wrapAgentPos(a) {
@@ -2826,11 +2575,6 @@
                         const d = Math.hypot(dx, dy);
                         const minD = ra + rb;
                         if (d >= minD) continue;
-                        // Blood line: no knock, no tax. Parent → that kid still passes food.
-                        if (sameFamily(a, b)) {
-                            tryParentFeedKid(a, b);
-                            continue;
-                        }
                         const nx = d > 1e-6 ? dx / d : 1;
                         const ny = d > 1e-6 ? dy / d : 0;
                         const overlap = minD - (d > 1e-6 ? d : 0);
@@ -2918,7 +2662,6 @@
                     if (agent.update()) alive.push(agent);
                 }
                 agents = alive;
-                tryBirths();
                 resolveBumps();
 
                 // Wipe: sample a last zero so the graph sits on the floor, then log the run.
@@ -3068,7 +2811,6 @@
                     if (selectedAgent && uiFrame % 5 === 0) updateInspector();
                     if (pinnedAgent && uiFrame % 5 === 0) updatePinnedBoxStatus();
                     if (uiFrame % 10 === 0) updateMetricsTab();
-                    if (uiFrame % 10 === 0) updateBirthSeasonBanner();
                     if (uiFrame % 15 === 0) renderTrends();
                 } catch (e) {
                     console.error('[UI]', e);
@@ -3106,7 +2848,6 @@
 
                 syncTrendsPinClass();
                 computeMetrics();
-                updateBirthSeasonBanner();
             }
 
             function resetSim() {
@@ -3622,7 +3363,7 @@
                     if (!surv.length) {
                         html += '<div style="color:var(--muted);font-size:10px">Nobody left.</div>';
                     } else {
-                        html += '<table class="surv"><thead><tr><th>Name</th><th>Group</th><th class="r">Hunger</th><th class="r">Eff</th><th class="r">Hunt</th><th class="r">Speed</th><th class="r">Birth</th></tr></thead><tbody>';
+                        html += '<table class="surv"><thead><tr><th>Name</th><th>Group</th><th class="r">Hunger</th><th class="r">Eff</th><th class="r">Hunt</th><th class="r">Speed</th></tr></thead><tbody>';
                         for (let i = 0; i < surv.length; i++) {
                             const s = surv[i];
                             const gname = (groups.filter(function (g) { return g.id === s.sourceGroupId; })[0] || {}).name || s.sourceGroupId || '';
@@ -3630,8 +3371,7 @@
                                 '<td class="r">' + Number(s.hungerRate).toFixed(3) + '</td>' +
                                 '<td class="r">' + Number(s.efficiency).toFixed(2) + '</td>' +
                                 '<td class="r">' + Number(s.hunt).toFixed(2) + '</td>' +
-                                '<td class="r">' + Number(s.maxSpeed).toFixed(1) + '</td>' +
-                                '<td class="r">' + Number(specBirthFreq(s)).toFixed(2) + '</td></tr>';
+                                '<td class="r">' + Number(s.maxSpeed).toFixed(1) + '</td></tr>';
                         }
                         html += '</tbody></table>';
                     }
@@ -3944,8 +3684,7 @@
                 return 'hunger ' + Number(t.hungerRate).toFixed(3) +
                     ' · efficiency ' + Number(t.efficiency).toFixed(2) +
                     ' · hunt ' + Number(t.hunt).toFixed(2) +
-                    ' · speed ' + Number(t.maxSpeed).toFixed(1) +
-                    ' · birth ' + Number(specBirthFreq(t)).toFixed(2);
+                    ' · speed ' + Number(t.maxSpeed).toFixed(1);
             }
 
             function snapshotMixForLog(remnant) {
@@ -3968,8 +3707,7 @@
                         hungerRate: g.hungerRate,
                         efficiency: g.efficiency,
                         hunt: g.hunt,
-                        maxSpeed: g.maxSpeed,
-                        birthFreq: specBirthFreq(g)
+                        maxSpeed: g.maxSpeed
                     };
                 });
                 const survivors = [];
@@ -3986,7 +3724,6 @@
                             efficiency: t.efficiency,
                             hunt: t.hunt,
                             maxSpeed: t.maxSpeed,
-                            birthFreq: specBirthFreq(t),
                             hunger: Math.round(a.hunger * 10) / 10,
                             bag: Math.round(a.food * 10) / 10
                         });
@@ -4096,20 +3833,16 @@
                 box.innerHTML = castes.map(function (g) {
                     const s = stats[g.id] || { n: 0, h: 0, f: 0 };
                     const al = s.n;
-                    const started = g.started | 0;
-                    const extra = al - started;
+                    const dead = Math.max(0, (g.started | 0) - al);
                     const hAvg = al ? (s.h / al).toFixed(1) : '—';
                     const fAvg = al ? (s.f / al).toFixed(1) : '—';
-                    const delta = extra > 0
-                        ? '<span class="de" style="color:#86efac">+' + extra + '</span>'
-                        : '<span class="de">−' + Math.max(0, -extra) + '</span>';
                     return '<div class="gmet-row">' +
                         '<span class="differ-sw" style="background:' + escapeHtml(g.color) + '"></span>' +
                         '<div class="gmet-main">' +
                         '<div class="gmet-top"><span class="nm">' + escapeHtml(g.name) + '</span>' +
-                        '<span class="al">' + al + '/' + started + '</span></div>' +
+                        '<span class="al">' + al + '/' + (g.started | 0) + '</span></div>' +
                         '<div class="hf">hunger ' + hAvg + ' · bag ' + fAvg +
-                        ' ' + delta + '</div>' +
+                        ' <span class="de">−' + dead + '</span></div>' +
                         '</div></div>';
                 }).join('');
             }
@@ -4118,7 +3851,7 @@
                 if (!canvasEl) return;
                 const parent = canvasEl.parentElement || canvasEl;
                 const cssW = Math.max(80, Math.floor(parent.clientWidth || canvasEl.clientWidth || 240));
-                const cssH = 80;
+                const cssH = 64;
                 // Match buffer to CSS width so the line fills the column (not a 240px stub)
                 if (canvasEl.width !== cssW) canvasEl.width = cssW;
                 if (canvasEl.height !== cssH) canvasEl.height = cssH;
@@ -4207,8 +3940,7 @@
             }
 
             function renderTrends() {
-                // Mix start is not a ceiling anymore — kids push a color above started.
-                let popMax = trendFieldMax('pop');
+                let popMax = 0;
                 for (let i = 0; i < trendGroupMeta.length; i++) {
                     popMax = Math.max(popMax, trendGroupMeta[i].started | 0);
                 }
@@ -4502,8 +4234,7 @@
                             hungerRate: b.hungerRate,
                             efficiency: b.efficiency,
                             hunt: b.hunt,
-                            maxSpeed: b.maxSpeed,
-                            birthFreq: specBirthFreq(b)
+                            maxSpeed: b.maxSpeed
                         };
                         order.push(id);
                     }
@@ -4517,7 +4248,7 @@
                 const order = [];
                 for (let i = 0; i < bodies.length; i++) {
                     const b = bodies[i];
-                    const key = [Number(b.hungerRate).toFixed(3), Number(b.efficiency).toFixed(2), Number(b.hunt).toFixed(2), Number(b.maxSpeed).toFixed(1), Number(specBirthFreq(b)).toFixed(2)].join('|');
+                    const key = [Number(b.hungerRate).toFixed(3), Number(b.efficiency).toFixed(2), Number(b.hunt).toFixed(2), Number(b.maxSpeed).toFixed(1)].join('|');
                     if (!map[key]) {
                         map[key] = {
                             id: 'G' + order.length,
@@ -4527,8 +4258,7 @@
                             hungerRate: Number(b.hungerRate),
                             efficiency: Number(b.efficiency),
                             hunt: Number(b.hunt),
-                            maxSpeed: Number(b.maxSpeed),
-                            birthFreq: specBirthFreq(b)
+                            maxSpeed: Number(b.maxSpeed)
                         };
                         order.push(key);
                     }
@@ -4571,8 +4301,7 @@
                     html += '<div class="differ-gtraits">hung ' + Number(g.hungerRate).toFixed(3) +
                         ' · eff ' + Number(g.efficiency).toFixed(2) +
                         ' · hunt ' + Number(g.hunt).toFixed(2) +
-                        ' · spd ' + Number(g.maxSpeed).toFixed(1) +
-                        ' · birth ' + Number(specBirthFreq(g)).toFixed(2) + '</div></div>';
+                        ' · spd ' + Number(g.maxSpeed).toFixed(1) + '</div></div>';
                 }
                 html += '<button type="button" class="btn-tiny mt-1" id="differ-add-g">+ Group</button>';
                 list.innerHTML = html;
@@ -4585,7 +4314,7 @@
                     const i = gs.length;
                     gs.push({
                         id: 'G' + i, name: 'Group ' + (i + 1), color: GROUP_COLORS[i % GROUP_COLORS.length],
-                        n: 10, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2, birthFreq: 0.5
+                        n: 10, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2
                     });
                     differSel = gs.length - 1;
                     renderDifferModal();
@@ -4615,7 +4344,7 @@
                     html += '<button type="button" class="rg-del" data-gi="' + i + '" title="Remove group">✕</button></div>';
                 }
                 html += '<button type="button" class="btn-tiny" id="roster-add-g">+ Group</button></div>';
-                html += '<div class="differ-agent-scroll"><table class="differ-tbl"><thead><tr><th></th><th>ID</th><th>Hung</th><th>Eff</th><th>Hunt</th><th>Spd</th><th>Birth</th></tr></thead><tbody>';
+                html += '<div class="differ-agent-scroll"><table class="differ-tbl"><thead><tr><th></th><th>ID</th><th>Hung</th><th>Eff</th><th>Hunt</th><th>Spd</th></tr></thead><tbody>';
                 for (let i = 0; i < bs.length; i++) {
                     const b = bs[i];
                     html += '<tr class="' + (i === differSel ? 'on' : '') + '" data-i="' + i + '"><td><span class="differ-sw" style="background:' + escapeHtml(bodyVizColor(b, d.groups)) + '"></span></td>';
@@ -4623,8 +4352,7 @@
                     html += '<td>' + Number(b.hungerRate).toFixed(3) + '</td>';
                     html += '<td>' + Number(b.efficiency).toFixed(2) + '</td>';
                     html += '<td>' + Number(b.hunt).toFixed(2) + '</td>';
-                    html += '<td>' + Number(b.maxSpeed).toFixed(1) + '</td>';
-                    html += '<td>' + Number(specBirthFreq(b)).toFixed(2) + '</td></tr>';
+                    html += '<td>' + Number(b.maxSpeed).toFixed(1) + '</td></tr>';
                 }
                 html += '</tbody></table></div>';
                 html += '<div class="differ-list-actions flex gap-1 flex-wrap">';
@@ -4650,7 +4378,7 @@
                         id: 'G' + d.groups.length,
                         name: 'Group ' + (d.groups.length + 1),
                         color: col, n: 0,
-                        hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2, birthFreq: 0.5
+                        hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2
                     });
                     renderDifferModal();
                 };
@@ -4699,8 +4427,7 @@
                         hungerRate: (g && g.hungerRate) || (src && src.hungerRate) || 0.062,
                         efficiency: (g && g.efficiency) || (src && src.efficiency) || 1.6,
                         hunt: (g && g.hunt) || (src && src.hunt) || 0.5,
-                        maxSpeed: (g && g.maxSpeed) || (src && src.maxSpeed) || 2,
-                        birthFreq: specBirthFreq(g || src)
+                        maxSpeed: (g && g.maxSpeed) || (src && src.maxSpeed) || 2
                     });
                     differSel = bs.length - 1;
                     renderDifferModal();
@@ -4803,10 +4530,6 @@
                 h += differSlider('Hunt', 'de-hunt', 0, 1, 0.01, spec.hunt, 2);
                 h += '<p class="text-[9px] text-slate-500 mb-1">sight ' + d.sight + ' · pull ' + d.hungerPull.toFixed(2) + ' · push ' + d.seekPush.toFixed(2) + '</p>';
                 h += differSlider('Speed', 'de-spd', 1.2, 2.4, 0.1, spec.maxSpeed, 2);
-                const bf = specBirthFreq(spec);
-                const bd = decodeBirthFreq(bf);
-                h += differSlider('Birth frequency', 'de-birth', 0, 1, 0.01, bf, 2);
-                h += '<p class="text-[9px] text-slate-500 mb-1">' + (bd.births ? ('gap ~' + Math.round(bd.gap / 60) + 's at 1×') : 'no kids') + '</p>';
                 if (isGroup) h += '<button type="button" class="btn-tiny" id="de-rm">Remove group</button>';
                 return h;
             }
@@ -4824,7 +4547,7 @@
                     sl.oninput = function () {
                         spec[key] = parseFloat(sl.value);
                         if (lab) lab.textContent = Number(spec[key]).toFixed(digits);
-                        if (key === 'hunt' || key === 'birthFreq') renderDifferModal();
+                        if (key === 'hunt') renderDifferModal();
                         else updateDifferRailChip();
                     };
                 }
@@ -4832,7 +4555,6 @@
                 bind('de-eff', 'efficiency', 2);
                 bind('de-hunt', 'hunt', 2);
                 bind('de-spd', 'maxSpeed', 2);
-                bind('de-birth', 'birthFreq', 2);
                 const name = document.getElementById('de-name');
                 if (name) name.oninput = function () { spec.name = name.value; };
                 const groupsPick = document.getElementById('de-groups');
@@ -4969,8 +4691,7 @@
                             hungerRate: Number(g.hungerRate),
                             efficiency: Number(g.efficiency),
                             hunt: Number(g.hunt),
-                            maxSpeed: Number(g.maxSpeed),
-                            birthFreq: specBirthFreq(g)
+                            maxSpeed: Number(g.maxSpeed)
                         };
                     });
                     c.bodies = [];
@@ -4986,8 +4707,7 @@
                             hungerRate: Number(b.hungerRate),
                             efficiency: Number(b.efficiency),
                             hunt: Number(b.hunt),
-                            maxSpeed: Number(b.maxSpeed),
-                            birthFreq: specBirthFreq(b)
+                            maxSpeed: Number(b.maxSpeed)
                         };
                     });
                     if (Array.isArray(raw.groups)) c.groups = raw.groups;
@@ -5097,14 +4817,7 @@
                     '<div style="color:var(--muted)">Hunger rate</div><div class="font-mono text-right">' + Number(p(selectedAgent, 'hungerRate')).toFixed(3) + '</div>' +
                     '<div style="color:var(--muted)">Efficiency</div><div class="font-mono text-right">' + Number(p(selectedAgent, 'efficiency')).toFixed(2) + '</div>' +
                     '<div style="color:var(--muted)">Speed</div><div class="font-mono text-right">' + Number(p(selectedAgent, 'maxSpeed')).toFixed(2) + '</div>' +
-                    '<div style="color:var(--muted)">Birth</div><div class="font-mono text-right">' + Number(specBirthFreq(selectedAgent.baseTraits || tr)).toFixed(2) + '</div>' +
                     '<div style="color:var(--muted)">Age</div><div class="font-mono text-right">' + (life / 60).toFixed(1) + 's</div>' +
-                    (selectedAgent.parentId
-                        ? '<div style="color:var(--muted)">Cling</div><div class="font-mono text-right">' + kidCling(selectedAgent).toFixed(2) + '</div>'
-                        : '') +
-                    (careCling(selectedAgent) > 0
-                        ? '<div style="color:var(--muted)">Care</div><div class="font-mono text-right">' + careCling(selectedAgent).toFixed(2) + '</div>'
-                        : '') +
                     '</div>';
             }
 
