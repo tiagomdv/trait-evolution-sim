@@ -4,7 +4,7 @@
 
 You are a coding pair. The human (tiagomdv) is PM and has the last word on how the sim *feels*.
 
-Read this whole file at the start of any session that implements, versions, or opens a PR. The README says the same talk rule so a first read of the repo is enough to speak like a person.
+Read this whole file at the start of any session that implements, versions, or opens a PR. Talk lives here, not in the README. The README is for a human who found the repo.
 
 ---
 
@@ -26,7 +26,7 @@ Do not:
 
 Comments in code: one line of *why*, in English.
 
-This project has two jobs (see README): practice AI + GitHub, and try for a **wow, look at that** on the island. Chat should sound like that, not like a ticket system.
+This project has two jobs (README §2): practice AI + GitHub, and try for a **wow, look at that** on the island. Chat should sound like that, not like a ticket system.
 
 **“Let’s push” means open a PR** after the human asked — not land on `main` unless they clearly say merge to main / push to main.
 
@@ -157,7 +157,7 @@ Survive → Differ → Evolve → Economy
 |-------|-----|
 | 0 Survive | Closed. Frozen file. |
 | 1 Differ | Closed. Frozen file. Mixed bodies, bump. |
-| 2 Evolve | Live. Children, inheritance. Desk is `2.0.1-desk` (no Lab / Special). No babies yet. |
+| 2 Evolve | Live. Children, inheritance. Live is `2.1.0-kids` (adults stay; kids next to a parent). |
 | 3 Economy | Later. Trade first. |
 
 Using leftover living people to **make** the next crowd is Evolve. Looking at who is still alive was Differ.
@@ -192,7 +192,7 @@ Using leftover living people to **make** the next crowd is Evolve. Looking at wh
 ## Paste this at the start of a new chat
 
 ```
-Read AGENTS.md fully (and the talk block in README).
+Read AGENTS.md fully. Talk lives there, not in the README.
 Talk to me like a person in this chat, not only in files you edit.
 This session is layout / mechanics: <pick one>.
 Goal: <one sentence>.

@@ -843,3 +843,24 @@ Removed from live `index.html`: World | Lab toggle, Lab desk + batch JS, frozen 
 Lab and Special still play in `phase-0-survive-finished.html`. Differ freeze not patched.
 
 **Next:** `2.1.0-year` — Next year / kids. Not this ship.
+
+---
+
+## 2026-09-10 — `2.1.0-kids` (first visible Evolve)
+
+**Version / Phase:** live `2.1.0-kids` · Phase 2 · Evolve  
+**Archive of previous:** `archive/index-2.0.1-desk.html`
+
+Mechanics. Adults stay. Kids spawn next to a living parent. Mix has a fifth trait: **birth frequency** (0 = none, 0.5 ≈ old 30s gap, 1 = often). Copied at birth with a small nudge. Once prime they keep having kids until they starve (no fade, no live head-count cap).
+
+Kid hunt starts on that parent (same pull as food-hunt). A shared cling clock — same for every kid, not a Mix trait — plus hunger peels them toward pellets. Parent dies first → food, no ghost. The kid’s starter bag (about 1–4) is taken from the parent; empty parent → empty kid. If they walk into each other the parent passes 1 food (no knock, no tax). Mix Reset still stamps at most 100. Live births have no head-count cap.
+
+Kids spawn with full Mix traits (no weak-body curve). They may have kids after LIFE_RISE. Hunger ≥ 55 hunts food over family. Same blood line skips knock and tax. Living parents keep having kids until they starve.
+
+Not Share, Talk, kin-tax, crowd avoid, or baby-luck dice. Hunger / speed / spawn / bump tax numbers not retuned. A kid and **that** living parent do not bump (no knock, no tax). Other clashes unchanged. Freeze files not patched. Help / Vision leftover cleanup is a later pass.
+
+**Path.** Human set **30%** once kids were on the island.
+
+**Docs.** First visible birth loop dropped from open work. README rewritten for humans (numbered sections; talk rule lives in `AGENTS.md` only). Roadmap next: better metrics, evolution as a theme. Parked: inherited peak/fade clock, mutation knob, wipe-year, Help/Vision chrome, kin-tax, crowd avoid.
+
+This versioning (`2.1.0-kids`) is closed. Archive: `archive/index-2.1.0-kids.html`.

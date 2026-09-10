@@ -1,87 +1,88 @@
-# trait-evolution-sim
+# Trait evolution sim
 
-Dots walk a 2D island. They get hungry. They eat pellets. Some last; some don’t.
+Dots walk a 2D island. Hunger goes up. They grab pellets and nibble a bag. Some last. Some don’t. You mix kinds of people, then watch who is still walking — and whether their kids look like them.
 
-We start with hunger, then mix different kinds of people, then children, then trade.
+Live game: [`index.html`](index.html), version **`2.1.0-kids`**. Open that file in a browser. There is no build.
 
-**Right now:** Evolve is open in [`index.html`](index.html) as `2.0.1-desk` — Lab and Special stripped. No babies yet. Differ and Survive are finished games in their own files. They do not share state.
+This slice of Evolve is done enough to ship: adults stay, kids spawn next to a living parent, Mix has a fifth trait (birth frequency), bags pass from parent to kid. Differ and Survive are finished games in their own files. They do not share state.
 
----
-
-## Two things this project is for
-
-**1. Practice AI tools, AI workflows, and GitHub.** A human is the PM. An AI pair types. We ship small steps, look at them, then open a PR. The repo is part of the work, not only a dump of the sim.
-
-**2. Try to see emergence on the island.** Not only “how many are still walking.” You watch a run and go **wow, look at that** — a camp on the food, one color owning a patch, helpers getting used. Something we did not type as a goal, and you can still point at why.
-
-If a change does not help one of those two, it waits.
+If you are an AI about to change the sim, read **`AGENTS.md` first** (how to talk, layout vs mechanics, when to open a PR). This README is for a human who found the repo.
 
 ---
 
-## How to talk (every agent, every chat)
+## 1. What this is
 
-Talk to the human like a person sitting next to the sim. **This chat too**, not only files you edit.
+A small, single-file sim. One island, colored people, food piles, a Mix panel, graphs, a history of runs.
 
-Short sentences. Everyday words. Name buttons as they appear: Mix, Apply, Reset, Help.
+The long arc is Survive → Differ → Evolve → Economy. We freeze a playable copy when a phase feels like a game, then live `index.html` becomes the next phase.
 
-Do not hide behind leftover, remnant, caste, or slider codes unless you say what you would *see* on the island.
-
-Full rules: **`AGENTS.md`**. Read that file at the start of any session that changes the sim or the docs.
+**Right now** we are in **Evolve**. The question is: who has kids, and do the kids look like them?
 
 ---
 
-## Phases
+## 2. Why this repo exists
 
-Survive → Differ → Evolve → Economy. When a phase closes we freeze a playable copy and stop editing it. Live work stays `index.html`.
+Two jobs. They are not a slogan stacked on top of each other.
 
-| Phase | Status | Play this |
-|-------|--------|-----------|
-| **0 · Survive** | Closed 2026-08-13 | [`phase-0-survive-finished.html`](phase-0-survive-finished.html) — everyone the same body. |
-| **1 · Differ** | Closed | [`phase-1-differ-finished.html`](phase-1-differ-finished.html) — Mix, stories, graphs, three food spots, zoomed-out island, bump. Last ship `1.5.0-bump`. |
-| **2 · Evolve** | Open — live `2.0.1-desk` | [`index.html`](index.html) — same island as Differ. No Lab / Special on this desk. No children yet. |
-| **3 · Economy** | Later | Trade. Not yet. |
+**Practice.** A human is PM. An AI pair types. We ship small steps, look at them, then open a PR. GitHub is part of the work, not a dump at the end.
+
+**Watch the island.** Not only “how many are still walking.” A camp on the food. One color owning a patch. A Prophet line filling the map while Mayflies burn. Something you did not type as a goal, that you can still point at.
+
+How we decide what to type next lives in §7, not here.
+
+---
+
+## 3. How to play (Evolve)
+
+Keep the three HTML files in the same folder if you want all three games. There is no in-app button between them. A lone download of `index.html` will not find the freeze files.
+
+1. Open [`index.html`](index.html).
+2. Open **Mix**. Pick a **story** (Groups, Families, or Rungs) or edit **Groups** / **Roster**. Those two tabs are separate drafts.
+3. **Apply** remembers the open tab. The island does not change yet.
+4. **Reset** is when that mix actually spawns.
+5. Food interval and **Three spots** on the left are live weather. Pause / Speed are the clock.
+6. Watch colors. Click a person for Mix traits, bag, **Birth**, cling/care. Trends and History sit on the right.
+
+Kids appear after people hit prime (~60s at 1×). A yellow banner warns when that season is close. Mix Reset stamps at most 100 people; live kids are not capped.
+
+Lab and Special are only in the Survive freeze — not on this desk.
+
+---
+
+## 4. Three games, three files
+
+Each file is a whole game with its own question. Open one at a time. When a phase closed we froze it and stopped editing it.
+
+**Survive** — [`phase-0-survive-finished.html`](phase-0-survive-finished.html)  
+If everyone is the same body, how many live? Seek vs wander, easy/medium/hard island, Special, Lab, Trends, History. Frozen label `0.9.6-params`. Do not add features to this file.
+
+**Differ** — [`phase-1-differ-finished.html`](phase-1-differ-finished.html)  
+If they are not the same at spawn, **who** is left? Mix, stories, graphs, three food spots, zoomed-out island, bump. Frozen label `1.5.0-bump`. Do not add features to this file.
+
+**Evolve (live)** — [`index.html`](index.html)  
+Do the leftovers’ kids look like them? Same Mix island as Differ, plus overlapping lives: parents stay, kids spawn beside them, copy Mix traits (hunger, efficiency, hunt, speed, **birth frequency**) with a small nudge. Cling, care, food from the parent. Version `2.1.0-kids`. This is the only file we grow.
+
+**Economy** is later. Trade. Not a file yet.
 
 What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.md`. Old numbered copies: `archive/`.
 
 ---
 
-## Three games, three files
+## 5. Version labels
 
-Open one at a time. There is no button between them (a lone download of `index.html` would not find the freeze files). Keep them in the folder if you want all three.
+The one-line label in `VERSION` and on the World badge should match. Live is **`2.1.0-kids`**.
 
-**Evolve (what we’re building)** is [`index.html`](index.html), version `2.0.1-desk`. Same Mix / island as Differ. No next-year button yet.
-
-1. Open **Mix**.
-2. Pick a **story** (Groups, Families, or Rungs) or edit **Groups** / **Roster** yourself. The two tabs are separate drafts.
-3. You can still **Import** a JSON file.
-4. **Apply** remembers the open tab. The island does not change yet.
-5. **Reset** is when the mix actually spawns. Food interval and **Three spots** on the left are live weather.
-
-Trends and History show who is left. Lab and Special are only in the Survive freeze — not on this desk.
-
-**Differ (finished)** is [`phase-1-differ-finished.html`](phase-1-differ-finished.html). Mix kinds, bump, chairs on the food. Do not add features to that file.
-
-**Survive (finished)** is [`phase-0-survive-finished.html`](phase-0-survive-finished.html). Everyone shares one body. Seek vs wander, easy/medium/hard island, Special, Lab, Trends, History. Do not add features to that file.
-
-Survive asks: if everyone is the same, how many live? Differ asks: if they aren’t, **who** is left? Evolve asks: do the leftovers’ kids look like them?
+Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`, island `1.4.0`, bump `1.5.0`, kids `2.1.0`). Last number = a small fix on that slice.
 
 ---
 
-## Version
-
-The one-line label in `VERSION` and on the World badge should match. Live is **`2.0.1-desk`**. Differ’s frozen label is `1.5.0-bump`. Survive’s frozen label is `0.9.6-params`.
-
-Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`, island `1.4.0`). Last number = a small fix on that slice.
-
----
-
-## How we got here
+## 6. How we got here
 
 ### Survive (closed)
 
 Everyone uses the same knobs. Hunger goes up, they walk, they eat. How many are still walking after a while is the score.
 
-Lab in that file is for “run the same body 30 times.” Don’t use it to judge a mixed Crowd. One fat leftover sitting on a pile of bags makes average food look huge — don’t rank by that.
+Lab in that file is for “run the same body 30 times.” Don’t use it to judge a mixed crowd. One fat leftover sitting on a pile of bags makes average food look huge — don’t rank by that.
 
 We closed Survive when Play + Lab + export felt like a game.
 
@@ -102,19 +103,29 @@ Meal size and “how hungry before I nibble the bag” did not change how many l
 
 Judge a mix on the island: who is still walking.
 
+### Evolve (this ship)
+
+Wipe-the-year and copy-four-traits into a new Mix was still Differ: you never see a parent. First visible Evolve keeps adults on the map and spawns kids next to them.
+
+Birth frequency is Mix. Cling and care are clocks, not a fifth slider. Kids use full Mix traits. Same blood line skips bump tax; parent hands food at birth and when they walk into that kid.
+
 ---
 
-## How we build
+## 7. How we build
 
-If a change doesn’t make it easier to see a leftover *shape* (who, where, which color) — or to ship a small GitHub step — it waits. One idea at a time. Live app is a single `index.html` (no build). The human decides when to open a PR.
+One idea at a time when we can. Live app is a single `index.html` (no build). The human decides when to open a PR. Prefer the human to commit unless they say otherwise.
+
+If a change does not make it easier to **see a leftover shape** (who, where, which color, whose kids) — or to **ship a small GitHub step** — it waits.
 
 **Layout vs mechanics.** CSS, panels, labels: the AI may edit `index.html`. Hunger, movement, eat, spawn: the human leads; the AI proposes; the human says when to apply. Layout is cheap to undo if `archive/` has a snapshot. Mechanics are not. Full rules: **`AGENTS.md`**.
 
 When Survive closed we froze `phase-0-survive-finished.html` and live `index.html` became Differ. When Differ closed we froze `phase-1-differ-finished.html` and live `index.html` became Evolve.
 
+**Do not patch** the two freeze files. Do not land on `main` unless the human says merge / push to main. “Let’s push” means open a PR after they looked.
+
 ---
 
-## What’s in the folder
+## 8. What’s in the folder
 
 | Path | What it is |
 |------|------------|
@@ -123,9 +134,20 @@ When Survive closed we froze `phase-0-survive-finished.html` and live `index.htm
 | `phase-0-survive-finished.html` | Frozen Survive. Play it; don’t patch it. |
 | `phase-1-differ-presets/` | Extra Mix Import JSON. Stories in the app don’t need these files. |
 | `VERSION` | One-line live label. Must match the World badge. |
-| `README.md` | This file. |
-| `AGENTS.md` | How any AI should behave here. |
+| `README.md` | This file. For humans. |
+| `AGENTS.md` | How any AI should behave here (talk, PRs, shipping). |
 | `FUTURE_FEATURES.md` | Open work only. |
 | `IMPLEMENTATION_LOG.md` | What each version shipped, newest at the bottom. |
 | `archive/` | Old `index.html` copies + old docs. Index: `archive/MANIFEST.md`. |
 | `design-docs/` | Design notes from when we needed them. Not the live app. |
+
+---
+
+## 9. What’s next
+
+Kids are on the island. Next Evolve work is **not** another birth mechanic first. Roadmap (detail in `FUTURE_FEATURES.md`):
+
+- **Better metrics** — graphs and History that show generations, not only Differ-style leftover counts.
+- **Evolution as a theme** — Help, Vision, path, and the desk should read as family on the island, not Differ with babies glued on.
+
+Then parked feel items (body curve, mutation size, Help/Vision chrome, kin-tax, crowd avoid). Economy after inheritance actually reads.
