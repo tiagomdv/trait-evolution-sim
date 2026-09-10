@@ -859,7 +859,7 @@ Kids spawn with full Mix traits (no weak-body curve). They may have kids after L
 
 Not Share, Talk, kin-tax, crowd avoid, or baby-luck dice. Hunger / speed / spawn / bump tax numbers not retuned. A kid and **that** living parent do not bump (no knock, no tax). Other clashes unchanged. Freeze files not patched. Help / Vision leftover cleanup is a later pass.
 
-**Path.** Still **15%** until the human sets `PHASE_WITHIN`. Do not invent a fill.
+**Path.** Human set **30%** once kids were on the island.
 
 **Docs.** First visible birth loop dropped from open work. README rewritten for humans (numbered sections; talk rule lives in `AGENTS.md` only). Roadmap next: better metrics, evolution as a theme. Parked: inherited peak/fade clock, mutation knob, wipe-year, Help/Vision chrome, kin-tax, crowd avoid.
 

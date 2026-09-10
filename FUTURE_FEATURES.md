@@ -2,7 +2,7 @@
 
 **Open work only.** Shipped or dropped items go in `IMPLEMENTATION_LOG.md`, then leave this file.
 
-Live: Phase **2 · Evolve** · `2.1.0-kids` (**this versioning is closed**). Path bar **15%** into Evolve (human set; ask before changing).  
+Live: Phase **2 · Evolve** · `2.1.0-kids` (**this versioning is closed**). Path bar **30%** into Evolve (human set for kids on the island; ask before changing).  
 Live file is `index.html`. Do not grow `phase-0-survive-finished.html` or `phase-1-differ-finished.html`.
 
 Kids are on the island. Do not open another birth-knob PR first.
@@ -35,7 +35,7 @@ Open:
 - Help, Vision, path, tagline — family, not “Differ is finished / babies later.”
 - Mix stories and leftover chips that score **whose kids**, not only whose paint.
 - Strip leftover Survive / Differ chrome in live `index.html` (comments, dead sliders, “lab” talk) in the same pass if it is still lying.
-- Path fill (`PHASE_WITHIN`) — human sets it when the desk actually feels like Evolve. Do not invent a number.
+- Path fill (`PHASE_WITHIN`) is **30%** as of this ship. Next bump is still the human — do not invent a number.
 
 This is copy + chrome + what the graphs claim. Not a new birth mechanic.
 
