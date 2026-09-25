@@ -39,7 +39,8 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-1.5.0-bump.html` | 1.5.0-bump | 1 · Differ | #30 | — | Clash + hunger tax; last live before Evolve door; also `phase-1-differ-finished.html` |
 | `index-2.0.0-evolve.html` | 2.0.0-evolve | 2 · Evolve | #31 | — | Door only; last live before Lab/Special strip |
 | `index-2.0.1-desk.html` | 2.0.1-desk | 2 · Evolve | (local) | — | Lab/Special stripped; last live before kids |
-| `index-2.1.0-kids.html` | 2.1.0-kids | 2 · Evolve | (this PR) | — | First visible Evolve: overlapping lives, birth Mix, parent food; last live before metrics / theme pass |
+| `index-2.1.0-kids.html` | 2.1.0-kids | 2 · Evolve | (this PR) | — | First visible Evolve: overlapping lives, birth Mix, parent food; last live before the gate |
+| `index-2.2.0-gate.html` | 2.2.0-gate | 2 · Evolve | (local) | — | Earned births, five-minute cling, parent dent; last live before the snack stop and wider kid copy |
 
 ---
 

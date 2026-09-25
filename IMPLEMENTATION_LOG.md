@@ -879,3 +879,18 @@ Births only while the island season is open. First open at about 5 minutes, open
 The kid follows the parent for about five minutes. The parent does not chase. Each birth leaves the parent burning a little faster, eating a little worse, and walking a little slower. That dent stays. Hunt and birth frequency do not drop. Kid still copies the mix from before the dent.
 
 Not in this slice: a hunger bill, snack cutoff, wider nudge, metrics, theme. Feel not judged yet.
+
+---
+
+## 2026-09-25 — `2.3.0-tree` (Reset summary)
+
+**Version / Phase:** live `2.3.0-tree` · Phase 2 · Evolve · path **75%** (human set)  
+**Archive of previous:** `archive/index-2.2.0-gate.html`
+
+The parent stops handing food when cling ends. The birth bag stays. The kid’s copy wobbles a bit more on hunt and birth frequency, and about one birth in eight one trait jumps. The parent’s dent is unchanged.
+
+Reset pauses the finished island and opens **Summary**. It shows how long the run was, births, deaths, who is still walking, and the top 3 people with the most kids. Each card has their paint, name, id, and the five mix numbers. Their kids and one step of grandkids are listed, then a count of the rest. The next crowd starts when that window closes.
+
+Live metrics has a Births tile. The person you click shows how many kids they have had.
+
+Not in this slice: generation graphs, unique export ids, Help and Vision rewrite. Next is `2.4.0-metrics`, then `2.5.0-theme`.

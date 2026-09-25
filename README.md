@@ -1,10 +1,10 @@
 # Trait evolution sim
 
-Dots walk a 2D island. Hunger goes up. They grab pellets and nibble a bag. Some last. Some don’t. You mix kinds of people, then watch who is still walking — and whether their kids look like them.
+Dots walk a 2D island. Hunger goes up. They grab pellets and nibble a bag. Some last. Some don’t. You mix kinds of people, watch who is still walking, and watch the kids born next to them.
 
-Live game: [`index.html`](index.html), version **`2.2.0-gate`**. Open that file in a browser. There is no build.
+Live game: [`index.html`](index.html), version **`2.3.0-tree`**. Open that file in a browser. There is no build.
 
-This slice of Evolve is done enough to ship: adults stay, kids spawn next to a living parent, Mix has a fifth trait (birth frequency), bags pass from parent to kid. Differ and Survive are finished games in their own files. They do not share state.
+Adults stay on the map. Kids appear beside a living parent and copy that parent’s mix, including how often they have kids. A starter bag moves from parent to kid. Differ and Survive are finished games in their own files. They do not share state.
 
 If you are an AI about to change the sim, read **`AGENTS.md` first** (how to talk, layout vs mechanics, when to open a PR). This README is for a human who found the repo.
 
@@ -14,9 +14,9 @@ If you are an AI about to change the sim, read **`AGENTS.md` first** (how to tal
 
 A small, single-file sim. One island, colored people, food piles, a Mix panel, graphs, a history of runs.
 
-The long arc is Survive → Differ → Evolve → Economy. We freeze a playable copy when a phase feels like a game, then live `index.html` becomes the next phase.
+Survive, Differ, and Evolve are three games in this repo. We freeze a playable copy when a phase feels finished, then live `index.html` becomes the next one. Trade is a different project. It will not be added here.
 
-**Right now** we are in **Evolve**. The question is: who has kids, and do the kids look like them?
+**Right now** the live game is Evolve. Adults stay on the island. Their kids appear beside them, copy their mix, and have to live on that copy.
 
 ---
 
@@ -40,10 +40,10 @@ Keep the three HTML files in the same folder if you want all three games. There 
 2. Open **Mix**. Pick a **story** (Groups, Families, or Rungs) or edit **Groups** / **Roster**. Those two tabs are separate drafts.
 3. **Apply** remembers the open tab. The island does not change yet.
 4. **Reset** is when that mix actually spawns.
-5. Food interval and **Three spots** on the left are live weather. Pause / Speed are the clock.
-6. Watch colors. Click a person for Mix traits, bag, **Birth**, cling/care. Trends and History sit on the right.
+5. Food interval on the left is live weather. Pellets fall as even rain. Pause / Speed are the clock.
+6. Watch colors. Click a person for Mix traits, bag, **Birth**, and cling. Trends and History sit on the right.
 
-Kids appear after people hit prime (~60s at 1×). A yellow banner warns when that season is close. Mix Reset stamps at most 100 people; live kids are not capped.
+A person can have a kid only during an open birth season, after about a minute of life, with a bag of at least 20 and hunger under 70. The first season opens at about five minutes. It stays open for about two and a half minutes, then closed for about five. A yellow banner warns for about 75 seconds before it opens. Mix Reset stamps at most 30 people. Kids born during the run are not capped. The kid follows that parent for about five minutes. The parent does not chase.
 
 Lab and Special are only in the Survive freeze — not on this desk.
 
@@ -60,9 +60,7 @@ If everyone is the same body, how many live? Seek vs wander, easy/medium/hard is
 If they are not the same at spawn, **who** is left? Mix, stories, graphs, three food spots, zoomed-out island, bump. Frozen label `1.5.0-bump`. Do not add features to this file.
 
 **Evolve (live)** — [`index.html`](index.html)  
-Do the leftovers’ kids look like them? Same Mix island as Differ, plus overlapping lives: parents stay, kids spawn beside them, copy Mix traits (hunger, efficiency, hunt, speed, **birth frequency**) with a small nudge. The kid follows the parent. Births only in an open season, and only with a bag. Version `2.2.0-gate`. This is the only file we grow.
-
-**Economy** is later. Trade. Not a file yet.
+Adults stay. A kid is born next to a living parent and copies that parent’s hunger, meals, hunt, speed, and birth frequency. The copy wobbles a bit, and about one birth in eight one trait jumps. Births happen only in an open season, and only when the parent’s bag is full enough and they are not too hungry. Each birth leaves the parent burning a little faster, eating a little worse, and walking a little slower. The parent passes one food only while the kid is still following. Reset opens a Summary of who had kids, then the next crowd starts when that window closes. Version `2.3.0-tree`. This is the only file we grow.
 
 What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.md`. Old numbered copies: `archive/`.
 
@@ -70,7 +68,7 @@ What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.m
 
 ## 5. Version labels
 
-The one-line label in `VERSION` and on the World badge should match. Live is **`2.2.0-gate`**.
+The one-line label in `VERSION` and on the World badge should match. Live is **`2.3.0-tree`**.
 
 Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`, island `1.4.0`, bump `1.5.0`, kids `2.1.0`). Last number = a small fix on that slice.
 
@@ -105,9 +103,9 @@ Judge a mix on the island: who is still walking.
 
 ### Evolve (this ship)
 
-Wipe-the-year and copy-four-traits into a new Mix was still Differ: you never see a parent. First visible Evolve keeps adults on the map and spawns kids next to them.
+Differ ends when you look at who is still walking. Evolve continues from those people. They stay on the map and have kids beside them. You can watch a parent and a child at the same time.
 
-Birth frequency is Mix. Cling and care are clocks, not a fifth slider. Kids use full Mix traits. Same blood line skips bump tax; parent hands food at birth and when they walk into that kid.
+Birth frequency is a Mix trait. It sets how often a person tries. Cling is a clock, about five minutes, not another slider. During that time the kid follows the parent. Kids are born with a full mix. People in the same blood line do not knock or tax each other. The parent gives the kid a starter bag at birth, and still passes one food when they walk into that kid. Each birth also dents the parent’s burn, meals, and speed. That dent stays.
 
 ---
 
@@ -145,9 +143,9 @@ When Survive closed we froze `phase-0-survive-finished.html` and live `index.htm
 
 ## 9. What’s next
 
-Kids are on the island. Next Evolve work is **not** another birth mechanic first. Roadmap (detail in `FUTURE_FEATURES.md`):
+Live is `2.3.0-tree`. Two slices close this repo:
 
-- **Better metrics** — graphs and History that show generations, not only Differ-style leftover counts.
-- **Evolution as a theme** — Help, Vision, path, and the desk should read as family on the island, not Differ with babies glued on.
+- **2.4.0-metrics** — graphs and History that show generations, births, and who descended from whom.
+- **2.5.0-theme** — Help, Vision, and the desk talk about families. Then this project stops.
 
-Then parked feel items (body curve, mutation size, Help/Vision chrome, kin-tax, crowd avoid). Economy after inheritance actually reads.
+Body curve, a mutation slider, own-color tax, and crowd avoid stay parked. Trade is a different project.
