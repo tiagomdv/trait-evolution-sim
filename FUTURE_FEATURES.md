@@ -2,7 +2,7 @@
 
 **Open work only.** Shipped or dropped items go in `IMPLEMENTATION_LOG.md`, then leave this file.
 
-Live: Phase **2 · Evolve** · `2.3.0-tree`. Path bar **75%** (human set with the tree). `2.2.0-gate` is closed.  
+Live: Phase **2 · Evolve** · `2.4.0-theme`. This repository stops here. Path bar **75%** (left as set on the tree). `2.3.0-tree` is closed.  
 Live file is `index.html`. Do not grow `phase-0-survive-finished.html` or `phase-1-differ-finished.html`.
 
 Kids are on the island. Do not open another birth-knob PR first.
@@ -11,33 +11,7 @@ Kids are on the island. Do not open another birth-knob PR first.
 
 ## Do next (Evolve)
 
-Two ships. Metrics first if we split. Theme can share a PR with Help/Vision chrome if the human says so. Not glued to a feel retune.
-
-### 1. Better metrics
-
-History and Trends are still Differ: leftover count, avg bag, avg hunger, Mix paint. They do not show a family.
-
-Open:
-
-- Graphs over **generations** — mean hunt / hunger / efficiency / speed / birth, and how spread the line is.
-- Alive / deaths that admit **births** (a 60 stamp with 1634 deaths is real; the UI should not look like a Differ wipe).
-- Unique person ids in export (`k1-1` on two people is a bug).
-- Click / History that can tell founder vs kid vs grandkid without counting the word “kid.”
-
-If you cannot see it on the island, it waits. No science dashboard.
-
-### 2. Evolution as a theme (includes desk chrome)
-
-Kids are on the map. The desk still reads like Differ with babies glued on.
-
-Open:
-
-- Help, Vision, path, tagline — family, not “Differ is finished / babies later.”
-- Mix stories and leftover chips that score **whose kids**, not only whose paint.
-- Strip leftover Survive / Differ chrome in live `index.html` (comments, dead sliders, “lab” talk) in the same pass if it is still lying.
-- Path fill (`PHASE_WITHIN`) is **75%** as of this ship. Next bump is still the human — do not invent a number.
-
-This is copy + chrome + what the graphs claim. Not a new birth mechanic.
+Nothing in this repository. Help and Vision now describe the live island. Generation graphs were dropped. The Summary, the Births tile, and the graphs already on the desk stay as they are.
 
 ---
 

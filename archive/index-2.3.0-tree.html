@@ -1403,9 +1403,9 @@
                             <span class="project-label">Project name:</span>
                             <span class="project-name" id="project-name">trait-evolution-sim</span>
                         </div>
-                        <div class="app-tagline" id="app-tagline">Parents and their kids</div>
+                        <div class="app-tagline" id="app-tagline">Who has kids</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v2.4.0-theme</span>
+                    <span class="badge-version" id="version-badge">v2.3.0-tree</span>
                 </div>
                 <div class="header-actions">
                     <button type="button" class="btn-header" onclick="openVisionModal()" title="Project vision and roadmap">Vision…</button>
@@ -1754,13 +1754,13 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    This file is <code style="color:#7dd3fc">2.4.0-theme</code>. People have kids beside them. Lab and Special are in the Survive file.
+                    Live is <code style="color:#7dd3fc">2.3.0-tree</code> — Phase 2 · Evolve. Birth is a season, and it has to be earned. Lab and Special live in the Survive file.
                 </p>
 
                 <div class="help-sec">The long path</div>
-                <div class="help-entry">Survive is finished. Everyone in that file has the same body. The file sits next to this one, and we do not add to it.</div>
-                <div class="help-entry">Differ is finished. People in that file start different from each other, and you watch who is still walking. That file sits next to this one too.</div>
-                <div class="help-entry">Evolve is this file. Adults stay on the island. A kid is born next to a living parent and copies that parent’s mix. This repository ends with this game.</div>
+                <div class="help-entry"><strong>Survive</strong> — finished. Everyone shared one body. Frozen file next to this one.</div>
+                <div class="help-entry"><strong>Differ</strong> — finished. Mix kinds of people, watch who is left. Frozen file next to this one.</div>
+                <div class="help-entry"><strong>Evolve</strong> — now. Door is open. Survivors will have children; not in this ship.</div>
 
                 <div class="help-entry" style="margin-top:0.5rem">Open <strong>Mix</strong>, pick a story or edit groups, <strong>Apply</strong> (the box closes), then <strong>Reset</strong>. Food spawn on the left is weather; it changes live.</div>
 
@@ -1791,12 +1791,9 @@
                 <p class="help-intro">
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
-                    You set the mix. A kid copies the parent. Births happen only in an open season, and only when the parent’s bag is full enough.
-                    Version <code style="color:#7dd3fc">2.4.0-theme</code>.
+                    People are not copies of each other. You set the mix in <strong>Mix</strong>.
+                    Version <code style="color:#7dd3fc">2.3.0-tree</code>. Differ is finished in its own file. Kids copy Mix traits and follow the parent. Births only happen in an open season, and only with a full enough bag. Lab and Special are only in the Survive freeze.
                 </p>
-
-                <div class="help-sec">How to play</div>
-                <div class="help-entry">Open Mix and pick a story, or edit the groups yourself. Apply stores that mix. The island stays as it is until you press Reset. Reset is what puts the new people down. The food interval on the left changes how often pellets fall. Pause and Speed only change the clock. Click a person to read their bag and their mix. The next Reset pauses this run and opens Summary.</div>
 
                 <div class="help-sec">How a run works</div>
                 <div class="help-entry">Open <strong>Mix</strong>. <strong>Groups</strong> — kinds, everyone in a kind is the same. <strong>Families</strong> — the same mixes, but each named person sits a little off the group average. <strong>Rungs</strong> — hunt/hunger/efficiency/speed/birth ladders, a scramble, or 12 oddballs. Groups and Roster tabs are separate drafts. A short story sits under the buttons.</div>
@@ -1814,7 +1811,7 @@
                 <div class="help-entry"><strong>Efficiency</strong> — How much a bite from the bag lowers hunger. High = better meals.</div>
                 <div class="help-entry"><strong>Hunt</strong> — One number for “do I lock onto food?” Zero is basically off (wander). Around the middle is normal seeking. One is fully locked on. Extra hunt past that barely saves more lives.</div>
                 <div class="help-entry"><strong>Speed</strong> — How fast they can walk. Slow is a tax. Faster is not always more survivors — it is there so a mix can look slow vs twitchy.</div>
-                <div class="help-entry"><strong>Birth frequency</strong> — How often they have kids once they are past prime and a birth season is open. Zero means no kids. Around the middle, a parent tries about every 30 seconds once a season is open. One means often. The child is close to the parent, not a perfect copy. About one birth in eight, one trait jumps further than usual.</div>
+                <div class="help-entry"><strong>Birth frequency</strong> — How often they have kids once they are past prime and a birth season is open. Zero is none. Around the middle is about 30s between kids. One is often. Copied to kids with a small nudge.</div>
 
                 <div class="help-sec">What you see</div>
                 <div class="help-entry"><strong>Click a person</strong> — name, Mix traits, bag. A kid who is still following shows <strong>Cling</strong>.</div>
@@ -1829,10 +1826,10 @@
 
                 <div class="help-sec">Trends and History</div>
                 <div class="help-entry"><strong>Trends</strong> — one colored line per kind: alive, average bag, average hunger. Left edge is the start of the run (time 0). Bottom is 0. Alive goes to zero when a kind is gone; bag and hunger keep the last living average.</div>
-                <div class="help-entry"><strong>History</strong> — one row per finished run (Reset or wipe). Leftover count plus a chip per group. Best this session is the run that left the most people, not the one that lasted longest. Reset pauses the island and opens Summary. That window shows how long the run lasted, how many were born, how many died, and the three people who had the most kids.</div>
+                <div class="help-entry"><strong>History</strong> — one row per finished run (Reset or wipe). Leftover count plus a chip per group. Best this session is the run that left the most people, not the one that lasted longest.</div>
 
-                <div class="help-sec">Not in this file</div>
-                <div class="help-entry">Lab and Special are only in the Survive file. Buying and selling food is a different project.</div>
+                <div class="help-sec">Off for now</div>
+                <div class="help-entry"><strong>Children / next year</strong> — not yet. Mix still works like Differ. Lab and Special stay in the Survive freeze file.</div>
             </div>
         </div>
 
@@ -1871,7 +1868,7 @@
             const PHASE_TAGLINES = {
                 0: 'Who lasts',
                 1: 'Who is left',
-                2: 'Parents and their kids'
+                2: 'Who has kids'
             };
             const CURRENT_PHASE = 2;
             // Stored fill. The desk stops at Evolve, so this is not drawn as a next phase. Human set 75% with the line.
@@ -2527,7 +2524,7 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs
-            const APP_VERSION = '2.4.0-theme';
+            const APP_VERSION = '2.3.0-tree';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];

@@ -41,6 +41,7 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 | `index-2.0.1-desk.html` | 2.0.1-desk | 2 · Evolve | (local) | — | Lab/Special stripped; last live before kids |
 | `index-2.1.0-kids.html` | 2.1.0-kids | 2 · Evolve | (this PR) | — | First visible Evolve: overlapping lives, birth Mix, parent food; last live before the gate |
 | `index-2.2.0-gate.html` | 2.2.0-gate | 2 · Evolve | (local) | — | Earned births, five-minute cling, parent dent; last live before the snack stop and wider kid copy |
+| `index-2.3.0-tree.html` | 2.3.0-tree | 2 · Evolve | (local) | — | Snack stop, wider kid copy, Reset summary; last live before the desk copy |
 
 ---
 
