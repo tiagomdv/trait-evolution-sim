@@ -157,7 +157,7 @@ Survive → Differ → Evolve → Economy
 |-------|-----|
 | 0 Survive | Closed. Frozen file. |
 | 1 Differ | Closed. Frozen file. Mixed bodies, bump. |
-| 2 Evolve | Live. Children, inheritance. Live is `2.1.0-kids` (adults stay; kids next to a parent). |
+| 2 Evolve | Live. Children, inheritance. Live is `2.2.0-gate` (birth is a season and has to be earned). |
 | 3 Economy | Later. Trade first. |
 
 Using leftover living people to **make** the next crowd is Evolve. Looking at who is still alive was Differ.

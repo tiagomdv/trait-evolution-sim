@@ -1355,7 +1355,7 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Who has kids</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v2.1.0-kids</span>
+                    <span class="badge-version" id="version-badge">v2.2.0-gate</span>
                 </div>
                 <div class="header-actions">
                     <button type="button" class="btn-header" onclick="openVisionModal()" title="Project vision and roadmap">Vision…</button>
@@ -1398,11 +1398,7 @@
                             <span id="val-food-spawn-rail" class="font-mono text-sky-300">6</span>
                         </div>
                         <input type="range" id="slider-food-spawn-rail" min="1" max="20" step="1" value="6" class="w-full accent-sky-400">
-                        <label class="flex items-center gap-2 text-xs text-slate-300 mt-1.5 cursor-pointer" title="Most pellets land in three piles. Uncheck for even rain.">
-                            <input type="checkbox" id="chk-food-patches" checked class="accent-sky-400">
-                            Three spots
-                        </label>
-                        <p id="differ-weather-line" class="text-[10px] font-mono text-slate-400 mt-1 mb-3">N 60 · food spawn 6 · 3 spots</p>
+                        <p id="differ-weather-line" class="text-[10px] font-mono text-slate-400 mt-1 mb-3">N 30 · food spawn 6</p>
                         <!-- Live metrics (KPI tiles) -->
                         <div class="section-title" style="margin-top:0.5rem">Live metrics</div>
                         <div id="metrics-content" class="kpi-grid">
@@ -1446,7 +1442,6 @@
                                 <span data-phase="0">Survive</span>
                                 <span data-phase="1">Differ</span>
                                 <span data-phase="2">Evolve</span>
-                                <span data-phase="3">Economy</span>
                             </div>
                         </div>
                         <div class="canvas-host" id="canvas-host">
@@ -1564,13 +1559,6 @@
                 </p>
 
                 <div class="section-title">Environment</div>
-                <div class="mb-2">
-                    <div class="flex justify-between text-xs mb-0.5">
-                        <span title="Count at next Reset">Initial agents</span>
-                        <span id="val-number-agents" class="font-mono text-sky-300">60</span>
-                    </div>
-                    <input type="range" id="slider-number-agents" min="1" max="100" step="1" value="60" class="w-full accent-sky-400">
-                </div>
                 <div class="mb-3">
                     <div class="flex justify-between text-xs mb-0.5">
                         <span title="Ticks between food drops. Higher = scarcer">Food spawn</span>
@@ -1715,14 +1703,13 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">2.1.0-kids</code> — Phase 2 · Evolve. Adults stay; kids spawn next to a parent. Lab and Special live in the Survive file.
+                    Live is <code style="color:#7dd3fc">2.2.0-gate</code> — Phase 2 · Evolve. Birth is a season, and it has to be earned. Lab and Special live in the Survive file.
                 </p>
 
                 <div class="help-sec">The long path</div>
                 <div class="help-entry"><strong>Survive</strong> — finished. Everyone shared one body. Frozen file next to this one.</div>
                 <div class="help-entry"><strong>Differ</strong> — finished. Mix kinds of people, watch who is left. Frozen file next to this one.</div>
                 <div class="help-entry"><strong>Evolve</strong> — now. Door is open. Survivors will have children; not in this ship.</div>
-                <div class="help-entry"><strong>Economy</strong> — later. Trade, bags, jobs.</div>
 
                 <div class="help-entry" style="margin-top:0.5rem">Open <strong>Mix</strong>, pick a story or edit groups, <strong>Apply</strong> (the box closes), then <strong>Reset</strong>. Food spawn on the left is weather; it changes live.</div>
 
@@ -1743,32 +1730,31 @@
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
                     People are not copies of each other. You set the mix in <strong>Mix</strong>.
-                    Version <code style="color:#7dd3fc">2.1.0-kids</code>. Differ is finished in its own file. Kids copy Mix traits (including birth frequency) and cling, then peel to food. Lab and Special are only in the Survive freeze.
+                    Version <code style="color:#7dd3fc">2.2.0-gate</code>. Differ is finished in its own file. Kids copy Mix traits and follow the parent. Births only happen in an open season, and only with a full enough bag. Lab and Special are only in the Survive freeze.
                 </p>
 
                 <div class="help-sec">How a run works</div>
                 <div class="help-entry">Open <strong>Mix</strong>. <strong>Groups</strong> — kinds, everyone in a kind is the same. <strong>Families</strong> — the same mixes, but each named person sits a little off the group average. <strong>Rungs</strong> — hunt/hunger/efficiency/speed/birth ladders, a scramble, or 12 oddballs. Groups and Roster tabs are separate drafts. A short story sits under the buttons.</div>
                 <div class="help-entry">Press <strong>Apply</strong> to remember the open tab. The island does not change yet.</div>
                 <div class="help-entry">Press <strong>Reset</strong> to spawn that mix. That is when colors and counts on the field update.</div>
-                <div class="help-entry"><strong>Food spawn</strong> on the left is weather (live). Gap between pellet drops, <strong>1–20</strong>. Higher = scarcer. 8 is already a hungry island at 60 people. 1 is almost a pellet every tick. (Zero is not a real gap — it would break the clock.)</div>
-                <div class="help-entry"><strong>Three spots</strong> (checkbox, live) — most pellets land in three piles (dashed rings). A few still fall anywhere. Uncheck for even rain like before.</div>
+                <div class="help-entry"><strong>Food spawn</strong> on the left is weather (live). Gap between pellet drops, <strong>1–20</strong>. Higher = scarcer. Pellets fall as even rain. 1 is almost a pellet every tick. (Zero is not a real gap — it would break the clock.)</div>
                 <div class="help-entry">The island is a zoom-out: the box is the same size, people and pellets look smaller, walks take longer. World size locks on first layout. <strong>Hide Mix</strong> / <strong>Hide graphs</strong> only change the camera — the view fills left to right. Hide may crop top and bottom; putting a bar back shows the whole map again. Same land, no extra strip, no wrap.</div>
                 <div class="help-entry">Trends: alive, avg bag, <strong>total bag</strong> (sum of bags in that color), avg hunger. One line per group. Kids count in the parent’s color; Alive scales up when a color grows past Mix start.</div>
                 <div class="help-entry"><strong>Pause / Speed</strong> — clock. 10× is faster wall time; a sim-second is still 60 ticks.</div>
                 <div class="help-entry">Watch leftover <strong>colors</strong>. Score <em>who is still walking</em>, not how fat the bags are. Right side: a graph per group, and a history row when you Reset or when everyone dies.</div>
-                <div class="help-entry">A yellow banner on the island warns <strong>Birth season coming up</strong> shortly before people hit prime. While anyone is in prime it stays <strong>Birth season</strong>. Kids appear next to living parents then. The kid’s starter bag is taken from the parent (about 1–4, or whatever is left). For a while the parent hunts toward that kid (same kind of pull as food-hunt); the kid hunts the parent. If they walk into each other the parent passes 1 food. Then both peel to pellets.</div>
+                <div class="help-entry">A yellow banner is the island clock. <strong>Birth season coming up</strong>, then <strong>Birth season</strong>, then it goes blank. Kids only appear while it says Birth season, next to a living parent who is past prime, with a bag of at least 20 and hunger under 70. The kid follows that parent for about five minutes. The parent does not chase them. The starter bag (about 1–4) comes off the parent, and the parent burns a little faster, eats a little worse, and walks a little slower from then on.</div>
 
                 <div class="help-sec">The Mix traits</div>
                 <div class="help-entry"><strong>Hunger rate</strong> — How fast they burn. High = starve sooner if they miss food.</div>
                 <div class="help-entry"><strong>Efficiency</strong> — How much a bite from the bag lowers hunger. High = better meals.</div>
                 <div class="help-entry"><strong>Hunt</strong> — One number for “do I lock onto food?” Zero is basically off (wander). Around the middle is normal seeking. One is fully locked on. Extra hunt past that barely saves more lives.</div>
                 <div class="help-entry"><strong>Speed</strong> — How fast they can walk. Slow is a tax. Faster is not always more survivors — it is there so a mix can look slow vs twitchy.</div>
-                <div class="help-entry"><strong>Birth frequency</strong> — How often they have kids after they hit prime. Zero is none. Around the middle is the old shared gap (~30s at 1×). One is a pile. Copied to kids with a small nudge. Not cling, not care.</div>
+                <div class="help-entry"><strong>Birth frequency</strong> — How often they have kids once they are past prime and a birth season is open. Zero is none. Around the middle is about 30s between kids. One is often. Copied to kids with a small nudge.</div>
 
                 <div class="help-sec">What you see</div>
-                <div class="help-entry"><strong>Click a person</strong> — name, Mix traits, bag. Kids show <strong>Cling</strong>. A parent who just had a kid shows <strong>Care</strong>.</div>
+                <div class="help-entry"><strong>Click a person</strong> — name, Mix traits, bag. A kid who is still following shows <strong>Cling</strong>.</div>
                 <div class="help-entry"><strong>Fill color</strong> is paint for the whole group (not the group’s name). <strong>Pink ring</strong> = starving. <strong>Cyan pip</strong> = food in the bag. <strong>Amber flash</strong> = two people just bumped.</div>
-                <div class="help-entry">Mix Reset stamps at most 100. Live kids are not capped.</div>
+                <div class="help-entry">Mix Reset stamps at most 30. Live kids are not capped. Headcount comes from the Mix story.</div>
                 <div class="help-entry">Import / Export still work if you want a JSON file. Stories live in Mix; the files in the folder are extras.</div>
 
                 <div class="help-sec">Rules</div>
@@ -1816,16 +1802,15 @@
                 };
             }
 
-            const PHASE_NAMES = { 0: 'Survive', 1: 'Differ', 2: 'Evolve', 3: 'Economy' };
+            const PHASE_NAMES = { 0: 'Survive', 1: 'Differ', 2: 'Evolve' };
             const PHASE_TAGLINES = {
                 0: 'Who lasts',
                 1: 'Who is left',
-                2: 'Who has kids',
-                3: 'Who trades'
+                2: 'Who has kids'
             };
             const CURRENT_PHASE = 2;
-            // 0–1 how far Evolve is toward Economy. Human set 30% for kids on the island.
-            const PHASE_WITHIN = 0.30;
+            // Stored fill. The desk stops at Evolve, so this is not drawn as a next phase. Human set 40% with the gate.
+            const PHASE_WITHIN = 0.40;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
@@ -1833,18 +1818,18 @@
                     tag.textContent = PHASE_TAGLINES[CURRENT_PHASE];
                 }
 
-                // P3 track: node · seg · node · seg · … (partial fill on active segment)
+                // Survive · Differ · Evolve. No phase after this one on the desk.
                 const track = document.getElementById('phase-path-track');
                 if (track) {
                     const within = Math.max(0, Math.min(1, PHASE_WITHIN));
                     let html = '';
-                    for (let i = 0; i < 4; i++) {
+                    for (let i = 0; i < 3; i++) {
                         let cls = 'phase-path-node';
                         if (i < CURRENT_PHASE) cls += ' done';
                         else if (i === CURRENT_PHASE) cls += ' current';
                         else cls += ' future';
                         html += '<div class="' + cls + '" title="Phase ' + i + ' · ' + (PHASE_NAMES[i] || '') + '"></div>';
-                        if (i < 3) {
+                        if (i < 2) {
                             if (i < CURRENT_PHASE) {
                                 html += '<div class="phase-path-seg on"></div>';
                             } else if (i === CURRENT_PHASE) {
@@ -1871,7 +1856,7 @@
             }
 
 
-            let initialAgents = 60;
+            let initialAgents = 30;
             let agents = [];
             let food = [];
             let tick = 0;
@@ -1917,17 +1902,23 @@
             }
 
             const GROUP_COLORS = ['#38bdf8', '#c4b5fd', '#4ade80', '#fbbf24', '#fb7185', '#22d3ee', '#a3e635', '#f472b6'];
-            const DIFFER_MAX_N = 100;
+            const DIFFER_MAX_N = 30;
             const DIFFER_MAX_GROUPS = 8;
 
             // First visible Evolve. Same numbers for every body. Not Mix knobs.
             // Cling fades around the start of prime so we do not add a sixth slider.
             // Human: stretch both clocks ~5× vs the first draft (feel). 10× was too long.
-            const LIFE_RISE = 3600;      // ticks until they can birth; cling/care use this too
-            const FOOD_OVER_FAMILY = 55; // hunger this high → hunt pellets, not parent/kid
+            const LIFE_RISE = 3600;      // ticks until they can birth (~60s at 1×)
+            const CLING_TICKS = LIFE_RISE * 5; // kid hunts the parent ~5 min; not the birth season
+            const FOOD_OVER_FAMILY = 55; // hunger this high → hunt pellets, not parent
             // No fade. Once prime, they stay Mix-sharp and can keep having kids until they starve.
             const BIRTH_GAP_MID = 1800;  // Mix birthFreq 0.5 → this gap (~30s at 1×)
-            const BIRTH_WARN = 900;      // ticks before prime (~15s at 1×) — “season coming” banner
+            const BIRTH_SEASON_START = 18000; // first open ~5 min
+            const BIRTH_SEASON_OPEN = 9000;   // open 2.5 min
+            const BIRTH_SEASON_CLOSED = 18000; // then closed 5 min
+            const BIRTH_WARN = 4500;     // ~75s of “season coming”
+            const BIRTH_BAG_MIN = 20;
+            const BIRTH_HUNGER_MAX = 70;
             const KID_NUDGE = { hungerRate: 0.004, efficiency: 0.08, hunt: 0.06, maxSpeed: 0.1, birthFreq: 0.08 };
 
             function defaultDifferCrowd() {
@@ -1935,10 +1926,10 @@
                     version: 2,
                     kind: 'differ',
                     mode: 'groups',
-                    n: 60,
+                    n: 30,
                     groups: [
-                        { id: 'A', name: 'Control', color: GROUP_COLORS[0], n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2, birthFreq: 0.5 },
-                        { id: 'B', name: 'Strain', color: GROUP_COLORS[1], n: 30, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6, birthFreq: 0.5 }
+                        { id: 'A', name: 'Control', color: GROUP_COLORS[0], n: 15, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2, birthFreq: 0.5 },
+                        { id: 'B', name: 'Strain', color: GROUP_COLORS[1], n: 15, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6, birthFreq: 0.5 }
                     ],
                     bodies: []
                 };
@@ -1946,35 +1937,35 @@
 
             // Same mixes as phase-1-differ-presets/*.json — built here so Mix works without a server.
             const STORY_CTL = [
-                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 },
-                { id: 'STN', name: 'Strain', color: '#c4b5fd', n: 30, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6, birthFreq: 0.5 }
+                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 15, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 },
+                { id: 'STN', name: 'Strain', color: '#c4b5fd', n: 15, hungerRate: 0.078, efficiency: 1.3, hunt: 0.2, maxSpeed: 1.6, birthFreq: 0.5 }
             ];
             const STORY_SEK = [
-                { id: 'SEK', name: 'Seekers', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.7, maxSpeed: 2.0, birthFreq: 0.5 },
-                { id: 'WAN', name: 'Wanderers', color: '#c4b5fd', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 2.0, birthFreq: 0.5 }
+                { id: 'SEK', name: 'Seekers', color: '#38bdf8', n: 15, hungerRate: 0.062, efficiency: 1.6, hunt: 0.7, maxSpeed: 2.0, birthFreq: 0.5 },
+                { id: 'WAN', name: 'Wanderers', color: '#c4b5fd', n: 15, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 2.0, birthFreq: 0.5 }
             ];
             const STORY_TOR = [
-                { id: 'TOR', name: 'Tortoises', color: '#4ade80', n: 30, hungerRate: 0.05, efficiency: 1.8, hunt: 0.35, maxSpeed: 1.2, birthFreq: 0.5 },
-                { id: 'HAR', name: 'Hares', color: '#fbbf24', n: 30, hungerRate: 0.078, efficiency: 1.4, hunt: 0.8, maxSpeed: 2.4, birthFreq: 0.5 }
+                { id: 'TOR', name: 'Tortoises', color: '#4ade80', n: 15, hungerRate: 0.05, efficiency: 1.8, hunt: 0.35, maxSpeed: 1.2, birthFreq: 0.5 },
+                { id: 'HAR', name: 'Hares', color: '#fbbf24', n: 15, hungerRate: 0.078, efficiency: 1.4, hunt: 0.8, maxSpeed: 2.4, birthFreq: 0.5 }
             ];
             const STORY_GRZ = [
-                { id: 'GRZ', name: 'Grazers', color: '#4ade80', n: 30, hungerRate: 0.055, efficiency: 2.2, hunt: 0.15, maxSpeed: 1.6, birthFreq: 0.5 },
-                { id: 'HNT', name: 'Hunters', color: '#fb7185', n: 30, hungerRate: 0.075, efficiency: 1.3, hunt: 0.9, maxSpeed: 2.2, birthFreq: 0.5 }
+                { id: 'GRZ', name: 'Grazers', color: '#4ade80', n: 15, hungerRate: 0.055, efficiency: 2.2, hunt: 0.15, maxSpeed: 1.6, birthFreq: 0.5 },
+                { id: 'HNT', name: 'Hunters', color: '#fb7185', n: 15, hungerRate: 0.075, efficiency: 1.3, hunt: 0.9, maxSpeed: 2.2, birthFreq: 0.5 }
             ];
             const STORY_RIC = [
-                { id: 'RIC', name: 'Idle rich', color: '#fbbf24', n: 20, hungerRate: 0.05, efficiency: 2.3, hunt: 0.45, maxSpeed: 2.0, birthFreq: 0.5 },
-                { id: 'WRK', name: 'Working poor', color: '#fb7185', n: 20, hungerRate: 0.08, efficiency: 1.25, hunt: 0.55, maxSpeed: 2.0, birthFreq: 0.5 },
-                { id: 'LST', name: 'Lost', color: '#64748b', n: 20, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.4, birthFreq: 0.15 }
+                { id: 'RIC', name: 'Idle rich', color: '#fbbf24', n: 10, hungerRate: 0.05, efficiency: 2.3, hunt: 0.45, maxSpeed: 2.0, birthFreq: 0.5 },
+                { id: 'WRK', name: 'Working poor', color: '#fb7185', n: 10, hungerRate: 0.08, efficiency: 1.25, hunt: 0.55, maxSpeed: 2.0, birthFreq: 0.5 },
+                { id: 'LST', name: 'Lost', color: '#64748b', n: 10, hungerRate: 0.062, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.4, birthFreq: 0.15 }
             ];
             const STORY_PET = [
-                { id: 'PRO', name: 'Prophet', color: '#fbbf24', n: 3, hungerRate: 0.052, efficiency: 2.4, hunt: 1.0, maxSpeed: 2.2, birthFreq: 0.5 },
-                { id: 'FLY', name: 'Mayfly', color: '#fb7185', n: 8, hungerRate: 0.084, efficiency: 1.2, hunt: 0.85, maxSpeed: 2.4, birthFreq: 0.9 },
-                { id: 'GHO', name: 'Ghost', color: '#22d3ee', n: 5, hungerRate: 0.055, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.2, birthFreq: 0.0 },
-                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 44, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 }
+                { id: 'PRO', name: 'Prophet', color: '#fbbf24', n: 2, hungerRate: 0.052, efficiency: 2.4, hunt: 1.0, maxSpeed: 2.2, birthFreq: 0.5 },
+                { id: 'FLY', name: 'Mayfly', color: '#fb7185', n: 4, hungerRate: 0.084, efficiency: 1.2, hunt: 0.85, maxSpeed: 2.4, birthFreq: 0.9 },
+                { id: 'GHO', name: 'Ghost', color: '#22d3ee', n: 3, hungerRate: 0.055, efficiency: 1.6, hunt: 0.0, maxSpeed: 1.2, birthFreq: 0.0 },
+                { id: 'CTL', name: 'Control', color: '#38bdf8', n: 21, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 }
             ];
 
             const STORY_LADDER = [
-                { id: 'LAD', name: 'Ladder', color: '#38bdf8', n: 60, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 }
+                { id: 'LAD', name: 'Ladder', color: '#38bdf8', n: 30, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 }
             ];
             const STORY_ODD_GROUPS = [
                 { id: 'ODD', name: 'Oddballs', color: '#fbbf24', n: 12, hungerRate: 0.062, efficiency: 1.6, hunt: 0.5, maxSpeed: 2.0, birthFreq: 0.5 }
@@ -2002,7 +1993,7 @@
                 { id: 'tortoises-hares', label: 'Tortoises vs Hares', mode: 'groups', groups: STORY_TOR,
                     blurb: 'Slow cheap burn vs fast hungry twitch. Hares get there first. Tortoises last longer if they eat.' },
                 { id: 'grazers-hunters', label: 'Grazers vs Hunters', mode: 'groups', groups: STORY_GRZ,
-                    blurb: 'Cheap wanderers vs hungry lock-on. The three food piles are for this mix — camps vs chasers.' },
+                    blurb: 'Cheap wanderers vs hungry lock-on. Even rain — camps vs chasers.' },
                 { id: 'three-castes', label: 'Three kinds', mode: 'groups', groups: STORY_RIC,
                     blurb: 'Idle rich, working poor, and lost. Different burn, hunt, and speed. Three colors, one island.' },
                 { id: 'pets', label: 'Pets + control', mode: 'groups', groups: STORY_PET,
@@ -2020,7 +2011,7 @@
                 { id: 'roster-pets', label: 'Pets + control', mode: 'roster', family: true, groups: STORY_PET,
                     blurb: 'The pets, plus a control crowd, each body a little off. Named people, not clones.' },
                 { id: 'roster-hunt-ladder', label: 'Hunt 0 → 1', mode: 'roster', groups: STORY_LADDER, nameBy: 'hunt', spread: { LAD: { hunt: [0, 1] } },
-                    blurb: 'Sixty people. Hunt from off (wander) to fully locked on. One trait, a staircase.' },
+                    blurb: 'Thirty people. Hunt from off (wander) to fully locked on. One trait, a staircase.' },
                 { id: 'roster-hunger-ladder', label: 'Hunger easy → hard', mode: 'roster', groups: STORY_LADDER, nameBy: 'hungerRate', spread: { LAD: { hungerRate: [0.049, 0.084] } },
                     blurb: 'Same hunt, burn from easy to cruel. Who starves first when the piles are far?' },
                 { id: 'roster-eff-ladder', label: 'Efficiency 1.2 → 2.4', mode: 'roster', groups: STORY_LADDER, nameBy: 'efficiency', spread: { LAD: { efficiency: [1.2, 2.4] } },
@@ -2029,8 +2020,8 @@
                     blurb: 'Walk from crawl to twitch. Speed is a tax or a gift, depending on the piles.' },
                 { id: 'roster-birth-ladder', label: 'Birth rare → often', mode: 'roster', groups: STORY_LADDER, nameBy: 'birthFreq', spread: { LAD: { birthFreq: [0, 1] } },
                     blurb: 'One trait: how often they have kids after prime. Zero is none. One is a pile.' },
-                { id: 'roster-scramble', label: 'Scramble 60', mode: 'roster', groups: STORY_LADDER, scramble: true,
-                    blurb: 'All Mix traits shuffled. No teams. Sixty different bodies, same island.' },
+                { id: 'roster-scramble', label: 'Scramble 30', mode: 'roster', groups: STORY_LADDER, scramble: true,
+                    blurb: 'All Mix traits shuffled. No teams. Thirty different bodies, same island.' },
                 { id: 'roster-oddballs', label: 'Oddballs ×12', mode: 'roster', groups: STORY_ODD_GROUPS, bodies: STORY_ODD_BODIES,
                     blurb: 'Twelve named weirdos: blind, locked on, slow, twitchy, ghost, mayfly… Watch which oddball lasts.' }
             ];
@@ -2354,19 +2345,14 @@
             function kidCling(agent) {
                 if (!agent.parentId) return 0;
                 const age = tick - agent.birthTick;
-                let c = 1 - age / LIFE_RISE;
+                let c = 1 - age / CLING_TICKS;
                 c -= agent.hunger / 100;
                 return Math.max(0, Math.min(1, c));
             }
 
-            // After a birth, parent hunt aims at the new kid. Same clock as cling. Not Mix.
-            // A new birth resets the clock (lastBirthTick). Hungry parents peel sooner so they still eat.
-            function careCling(agent) {
-                if (!agent.offspringIds || !agent.offspringIds.length) return 0;
-                const since = tick - agent.lastBirthTick;
-                let c = 1 - since / LIFE_RISE;
-                c -= agent.hunger / 100;
-                return Math.max(0, Math.min(1, c));
+            // No care. The parent does not hunt the kid. The kid hunts the parent.
+            function careCling() {
+                return 0;
             }
 
             function livingCaredKid(agent) {
@@ -2379,15 +2365,11 @@
                 return null;
             }
 
-            // Starving → food first (or they die in the clump). Else care, then own parent, then food.
+            // Starving → food first. Else the kid hunts their parent, then food. Parents do not chase kids.
             function huntLockTarget(agent, sight) {
                 if (agent.hunger >= FOOD_OVER_FAMILY) {
                     const pellet = nearestFoodInRadius(agent, sight);
                     if (pellet) return pellet;
-                }
-                if (careCling(agent) > 0) {
-                    const kid = livingCaredKid(agent);
-                    if (kid) return kid;
                 }
                 if (kidCling(agent) > 0) {
                     const parent = findAgentById(agent.parentId);
@@ -2476,7 +2458,7 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs
-            const APP_VERSION = '2.1.0-kids';
+            const APP_VERSION = '2.2.0-gate';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
@@ -2484,7 +2466,7 @@
             let currentRunEnded = false;
             let bestLongestSec = 0;
             let bestLeftover = 0;
-            let runInitialAgents = 100;
+            let runInitialAgents = 30;
             let selectedRunLog = null; // run number selected in Run logs modal
 
             // UI/UX Polish V1
@@ -2499,7 +2481,7 @@
             // Live counters (reset every run)
             let starvationDeaths = 0;
             let foodSpawn = 6; // ~60 people; 8 already feels hungry
-            let foodPatchesOn = true; // three lush circles; uncheck = even rain
+            let foodPatchesOn = false; // even rain; three piles removed
             const FOOD_PATCHES = [
                 { fx: 0.28, fy: 0.32 },
                 { fx: 0.72, fy: 0.32 },
@@ -2658,6 +2640,12 @@
 
                 draw() {
                     const size = agentDrawRadius(this);
+                    const selected = this === selectedAgent;
+                    ctx.save();
+                    if (selected) {
+                        // Whole disc blinks so the click is obvious on a crowded island.
+                        ctx.globalAlpha = 0.25 + 0.75 * (0.5 + 0.5 * Math.sin(tick * 0.45));
+                    }
                     ctx.fillStyle = this.groupColor || '#64748b';
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, size, 0, Math.PI * 2);
@@ -2685,6 +2673,7 @@
                         ctx.lineWidth = 1;
                         this.bumpFlash--;
                     }
+                    ctx.restore();
                 }
             }
 
@@ -2725,10 +2714,30 @@
                 const kid = new Agent(spec);
                 parent.offspringIds.push(kid.id);
                 agents.push(kid);
+                // Lasting dent. Kid already copied the mix from before this step.
+                const t = parent.baseTraits;
+                t.hungerRate = Math.min(0.084, t.hungerRate + KID_NUDGE.hungerRate);
+                t.efficiency = Math.max(1.2, t.efficiency - KID_NUDGE.efficiency);
+                t.maxSpeed = Math.max(1.2, t.maxSpeed - KID_NUDGE.maxSpeed);
+            }
+
+            // Island clock. Closed months do not move anyone's personal birth wait.
+            function birthSeasonPhase() {
+                const cycle = BIRTH_SEASON_OPEN + BIRTH_SEASON_CLOSED;
+                let nextOpen;
+                if (tick < BIRTH_SEASON_START) nextOpen = BIRTH_SEASON_START;
+                else {
+                    const into = (tick - BIRTH_SEASON_START) % cycle;
+                    if (into < BIRTH_SEASON_OPEN) return 'open';
+                    nextOpen = tick + (cycle - into);
+                }
+                if (nextOpen - tick <= BIRTH_WARN && nextOpen - tick > 0) return 'coming';
+                return 'closed';
             }
 
             // While in prime, more than one kid. Each parent uses their Mix gap. No live head-count cap.
             function tryBirths() {
+                if (birthSeasonPhase() !== 'open') return;
                 const eligible = [];
                 for (let i = 0; i < agents.length; i++) {
                     const a = agents[i];
@@ -2737,6 +2746,9 @@
                     const bf = decodeBirthFreq(specBirthFreq(a.baseTraits || a.traits));
                     if (!bf.births) continue;
                     if (tick - a.lastBirthTick < bf.gap) continue;
+                    // A miss does not move the birth clock. lastBirthTick is stamped in spawnKid.
+                    if (a.food < BIRTH_BAG_MIN) continue;
+                    if (a.hunger >= BIRTH_HUNGER_MAX) continue;
                     eligible.push(a);
                 }
                 for (let i = 0; i < eligible.length; i++) spawnKid(eligible[i]);
@@ -2745,18 +2757,12 @@
             function updateBirthSeasonBanner() {
                 const el = document.getElementById('birth-warn');
                 if (!el) return;
-                let coming = 0;
-                let open = 0;
-                for (let i = 0; i < agents.length; i++) {
-                    const age = tick - agents[i].birthTick;
-                    if (age >= LIFE_RISE - BIRTH_WARN && age < LIFE_RISE) coming++;
-                    else if (age >= LIFE_RISE) open++;
-                }
+                const phase = birthSeasonPhase();
                 el.classList.remove('on', 'coming', 'open');
-                if (open > 0) {
+                if (phase === 'open') {
                     el.textContent = 'Birth season';
                     el.classList.add('on', 'open');
-                } else if (coming > 0) {
+                } else if (phase === 'coming') {
                     el.textContent = 'Birth season coming up';
                     el.classList.add('on', 'coming');
                 } else {
@@ -3238,12 +3244,6 @@
                         if (onMove) onMove();
                     };
                 }
-                bind('slider-number-agents', 'val-number-agents',
-                    function () { return initialAgents; },
-                    function () { /* N owned by Mix */ },
-                    function (v) { return String(v); });
-                const nSl = document.getElementById('slider-number-agents');
-                if (nSl) { nSl.disabled = true; nSl.style.opacity = '0.45'; }
                 bind('slider-food-spawn', 'val-food-spawn',
                     function () { return foodSpawn; },
                     function (v) { foodSpawn = Math.max(1, Math.min(20, parseInt(v, 10) || 1)); },
@@ -3254,14 +3254,6 @@
                     function (v) { foodSpawn = Math.max(1, Math.min(20, parseInt(v, 10) || 1)); },
                     function (v) { return String(v); },
                     function () { markIslandCustom(); updateDifferRailChip(); syncSliders(); });
-                const patchChk = document.getElementById('chk-food-patches');
-                if (patchChk) {
-                    patchChk.checked = foodPatchesOn;
-                    patchChk.onchange = function () {
-                        foodPatchesOn = !!patchChk.checked;
-                        updateDifferRailChip();
-                    };
-                }
                 bind('slider-sense-radius', 'val-sense-radius',
                     function () { return sight; },
                     function (v) { sight = parseFloat(v); },
@@ -4460,7 +4452,7 @@
                 if (differPendingDirty()) line = 'not applied — press Apply';
                 else if (differStampWaitingReset()) line = 'applied — Reset to spawn';
                 if (sub) sub.textContent = line;
-                if (weather) weather.textContent = 'N ' + n + ' · food spawn ' + foodSpawn + (foodPatchesOn ? ' · 3 spots' : ' · even');
+                if (weather) weather.textContent = 'N ' + n + ' · food spawn ' + foodSpawn;
                 const hint = document.getElementById('differ-foot-hint');
                 if (hint) {
                     const dn = differTab === 'roster' ? ((d.bodies && d.bodies.length) || 0) : sumGroupN(d);
@@ -5101,9 +5093,7 @@
                     (selectedAgent.parentId
                         ? '<div style="color:var(--muted)">Cling</div><div class="font-mono text-right">' + kidCling(selectedAgent).toFixed(2) + '</div>'
                         : '') +
-                    (careCling(selectedAgent) > 0
-                        ? '<div style="color:var(--muted)">Care</div><div class="font-mono text-right">' + careCling(selectedAgent).toFixed(2) + '</div>'
-                        : '') +
+
                     '</div>';
             }
 

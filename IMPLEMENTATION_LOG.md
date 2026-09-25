@@ -864,3 +864,18 @@ Not Share, Talk, kin-tax, crowd avoid, or baby-luck dice. Hunger / speed / spawn
 **Docs.** First visible birth loop dropped from open work. README rewritten for humans (numbered sections; talk rule lives in `AGENTS.md` only). Roadmap next: better metrics, evolution as a theme. Parked: inherited peak/fade clock, mutation knob, wipe-year, Help/Vision chrome, kin-tax, crowd avoid.
 
 This versioning (`2.1.0-kids`) is closed. Archive: `archive/index-2.1.0-kids.html`.
+
+---
+
+## 2026-09-25 — `2.2.0-gate` (birth has to be earned)
+
+**Version / Phase:** live `2.2.0-gate` · Phase 2 · Evolve · path **40%** (human set)  
+**Archive of previous:** `archive/index-2.1.0-kids.html` (already on disk; not rewritten)
+
+Mechanics. Mix stamps at most 30. The Initial agents slider is gone. Three spots is gone; pellets fall as even rain.
+
+Births only while the island season is open. First open at about 5 minutes, open 2.5 minutes, closed 5 minutes, warning 75 seconds. Outside that window, no kids. Prime is still about one minute. A parent also needs bag at least 20 and hunger under 70. Missing those does not restart their personal wait.
+
+The kid follows the parent for about five minutes. The parent does not chase. Each birth leaves the parent burning a little faster, eating a little worse, and walking a little slower. That dent stays. Hunt and birth frequency do not drop. Kid still copies the mix from before the dent.
+
+Not in this slice: a hunger bill, snack cutoff, wider nudge, metrics, theme. Feel not judged yet.
