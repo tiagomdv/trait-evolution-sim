@@ -2,7 +2,7 @@
 
 Dots walk a 2D island. Hunger goes up. They grab pellets and nibble a bag. Some last. Some don’t. You mix kinds of people, watch who is still walking, and watch the kids born next to them.
 
-Live game: [`index.html`](index.html), version **`2.3.0-tree`**. Open that file in a browser. There is no build.
+Live game: [`index.html`](index.html), version **`2.4.0-theme`**. Open that file in a browser. There is no build.
 
 Adults stay on the map. Kids appear beside a living parent and copy that parent’s mix, including how often they have kids. A starter bag moves from parent to kid. Differ and Survive are finished games in their own files. They do not share state.
 
@@ -60,7 +60,7 @@ If everyone is the same body, how many live? Seek vs wander, easy/medium/hard is
 If they are not the same at spawn, **who** is left? Mix, stories, graphs, three food spots, zoomed-out island, bump. Frozen label `1.5.0-bump`. Do not add features to this file.
 
 **Evolve (live)** — [`index.html`](index.html)  
-Adults stay. A kid is born next to a living parent and copies that parent’s hunger, meals, hunt, speed, and birth frequency. The copy wobbles a bit, and about one birth in eight one trait jumps. Births happen only in an open season, and only when the parent’s bag is full enough and they are not too hungry. Each birth leaves the parent burning a little faster, eating a little worse, and walking a little slower. The parent passes one food only while the kid is still following. Reset opens a Summary of who had kids, then the next crowd starts when that window closes. Version `2.3.0-tree`. This is the only file we grow.
+Adults stay. A kid is born next to a living parent and copies that parent’s hunger, meals, hunt, speed, and birth frequency. The copy wobbles a bit, and about one birth in eight one trait jumps. Births happen only in an open season, and only when the parent’s bag is full enough and they are not too hungry. Each birth leaves the parent burning a little faster, eating a little worse, and walking a little slower. The parent passes one food only while the kid is still following. Reset opens a Summary of who had kids, then the next crowd starts when that window closes. Version `2.4.0-theme`. This repository stops with this game.
 
 What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.md`. Old numbered copies: `archive/`.
 
@@ -68,7 +68,7 @@ What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.m
 
 ## 5. Version labels
 
-The one-line label in `VERSION` and on the World badge should match. Live is **`2.3.0-tree`**.
+The one-line label in `VERSION` and on the World badge should match. Live is **`2.4.0-theme`**.
 
 Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`, island `1.4.0`, bump `1.5.0`, kids `2.1.0`). Last number = a small fix on that slice.
 
@@ -143,9 +143,4 @@ When Survive closed we froze `phase-0-survive-finished.html` and live `index.htm
 
 ## 9. What’s next
 
-Live is `2.3.0-tree`. Two slices close this repo:
-
-- **2.4.0-metrics** — graphs and History that show generations, births, and who descended from whom.
-- **2.5.0-theme** — Help, Vision, and the desk talk about families. Then this project stops.
-
-Body curve, a mutation slider, own-color tax, and crowd avoid stay parked. Trade is a different project.
+This repository stops at `2.4.0-theme`. Help and Vision describe the island as it is. Generation graphs were not added. Body curve, a mutation slider, own-color tax, and crowd avoid stay parked. Trade is a different project.

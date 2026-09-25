@@ -894,3 +894,14 @@ Reset pauses the finished island and opens **Summary**. It shows how long the ru
 Live metrics has a Births tile. The person you click shows how many kids they have had.
 
 Not in this slice: generation graphs, unique export ids, Help and Vision rewrite. Next is `2.4.0-metrics`, then `2.5.0-theme`.
+
+---
+
+## 2026-09-25 — `2.4.0-theme` (desk copy)
+
+**Version / Phase:** live `2.4.0-theme` · Phase 2 · Evolve · path **75%** (left as set)  
+**Archive of previous:** `archive/index-2.3.0-tree.html`
+
+Layout. The header says “Parents and their kids.” Vision and Help no longer say children are still to come. Help opens with a short how to play. Birth frequency text matches the wider copy and the rare jump. Lab, Special, and trade are named as outside this file.
+
+No birth, snack, nudge, or graph changes. Generation graphs were dropped. This repository stops here.
