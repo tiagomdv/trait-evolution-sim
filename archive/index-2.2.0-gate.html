@@ -646,56 +646,6 @@
             .modal-box.help-wide {
                 width: min(540px, 100%);
             }
-            .modal-box.summary-wide { width: min(560px, 100%); }
-            .summary-line { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.75rem; }
-            .summary-empty { margin: 0.2rem 0 0.55rem; color: #e2e8f0; }
-            .summary-person {
-                border: 1px solid var(--border);
-                border-radius: 0.55rem;
-                background: #0a1220;
-                padding: 0.55rem 0.65rem 0.5rem;
-                margin: 0 0 0.55rem;
-            }
-            .summary-row { display: flex; align-items: center; gap: 0.45rem; font-size: 0.88rem; }
-            .summary-dot { width: 0.65rem; height: 0.65rem; border-radius: 99px; flex: 0 0 auto; }
-            .summary-id { font-family: ui-monospace, Menlo, monospace; font-size: 0.75rem; color: #7dd3fc; }
-            .summary-n { margin-left: auto; color: var(--warn); font-variant-numeric: tabular-nums; font-size: 0.8rem; white-space: nowrap; }
-            .summary-kids { margin: 0.35rem 0 0.15rem 0.15rem; font-size: 0.8rem; }
-            .summary-kids .summary-kids { margin-top: 0.05rem; margin-left: 0.75rem; }
-            .summary-more { color: var(--muted); margin-top: 0.15rem; }
-            .summary-traits {
-                display: grid;
-                grid-template-columns: repeat(5, minmax(0, 1fr));
-                gap: 0.3rem;
-                margin: 0.4rem 0 0.15rem;
-            }
-            .summary-traits span {
-                background: #070b12;
-                border: 1px solid var(--border);
-                border-radius: 0.4rem;
-                padding: 0.28rem 0.3rem 0.32rem;
-                min-width: 0;
-            }
-            .summary-traits em {
-                display: block;
-                font-style: normal;
-                font-size: 0.58rem;
-                letter-spacing: 0.04em;
-                text-transform: uppercase;
-                color: var(--muted);
-                line-height: 1.2;
-            }
-            .summary-traits b {
-                display: block;
-                margin-top: 0.12rem;
-                font-weight: 600;
-                font-family: ui-monospace, Menlo, monospace;
-                font-size: 0.78rem;
-                color: #e2e8f0;
-            }
-            .summary-kids .summary-traits { gap: 0.22rem; margin: 0.12rem 0 0.28rem; }
-            .summary-kids .summary-traits span { padding: 0.16rem 0.22rem 0.18rem; }
-            .summary-kids .summary-traits b { font-size: 0.68rem; }
             .modal-head {
                 display: flex;
                 justify-content: space-between;
@@ -1405,7 +1355,7 @@
                         </div>
                         <div class="app-tagline" id="app-tagline">Who has kids</div>
                     </div>
-                    <span class="badge-version" id="version-badge">v2.3.0-tree</span>
+                    <span class="badge-version" id="version-badge">v2.2.0-gate</span>
                 </div>
                 <div class="header-actions">
                     <button type="button" class="btn-header" onclick="openVisionModal()" title="Project vision and roadmap">Vision…</button>
@@ -1454,7 +1404,6 @@
                         <div id="metrics-content" class="kpi-grid">
                             <div class="kpi"><span>Alive</span><b id="m-alive" class="good">—</b></div>
                             <div class="kpi"><span>Deaths</span><b id="m-deaths" class="bad">—</b></div>
-                            <div class="kpi"><span>Births</span><b id="m-births">—</b></div>
                             <div class="kpi"><span>Pellets</span><b id="m-food" class="warn">—</b></div>
                             <div class="kpi"><span>Avg hunger</span><b id="m-avgh">—</b></div>
                             <div class="kpi"><span>Avg bag</span><b id="m-avgf">—</b></div>
@@ -1754,7 +1703,7 @@
                 </div>
                 <p class="help-intro">
                     Dots walk an island, get hungry, and eat pellets. Some last; some don’t.
-                    Live is <code style="color:#7dd3fc">2.3.0-tree</code> — Phase 2 · Evolve. Birth is a season, and it has to be earned. Lab and Special live in the Survive file.
+                    Live is <code style="color:#7dd3fc">2.2.0-gate</code> — Phase 2 · Evolve. Birth is a season, and it has to be earned. Lab and Special live in the Survive file.
                 </p>
 
                 <div class="help-sec">The long path</div>
@@ -1765,17 +1714,6 @@
                 <div class="help-entry" style="margin-top:0.5rem">Open <strong>Mix</strong>, pick a story or edit groups, <strong>Apply</strong> (the box closes), then <strong>Reset</strong>. Food spawn on the left is weather; it changes live.</div>
 
                 <p class="text-[10px] text-slate-500 mt-3 mb-0">Escape or click outside to close</p>
-            </div>
-        </div>
-
-        <div id="modal-summary" class="modal-root" aria-hidden="true">
-            <div class="modal-dim" onclick="closeAllModals()"></div>
-            <div class="modal-box summary-wide" role="dialog" aria-labelledby="summary-title">
-                <div class="modal-head">
-                    <h2 id="summary-title">Summary</h2>
-                    <button type="button" class="modal-close" onclick="closeAllModals()" title="Close">✕</button>
-                </div>
-                <div id="summary-body"></div>
             </div>
         </div>
 
@@ -1792,7 +1730,7 @@
                     Dots walk a 2D island. Hunger goes up every tick. Past 100 they die.
                     Grab a pellet → <strong>one food in the bag</strong>. They nibble the bag when hungry enough.
                     People are not copies of each other. You set the mix in <strong>Mix</strong>.
-                    Version <code style="color:#7dd3fc">2.3.0-tree</code>. Differ is finished in its own file. Kids copy Mix traits and follow the parent. Births only happen in an open season, and only with a full enough bag. Lab and Special are only in the Survive freeze.
+                    Version <code style="color:#7dd3fc">2.2.0-gate</code>. Differ is finished in its own file. Kids copy Mix traits and follow the parent. Births only happen in an open season, and only with a full enough bag. Lab and Special are only in the Survive freeze.
                 </p>
 
                 <div class="help-sec">How a run works</div>
@@ -1821,7 +1759,7 @@
 
                 <div class="help-sec">Rules</div>
                 <div class="help-entry">Catch = bag +1, pellet gone. Reach is <strong>20 pixels past the drawn circle</strong>. Dots grow with the bag (still climbing after 1000–2000 pellets). Fat leftovers are slower — same speed trait, but the extra mass drags them. If several people reach the same pellet, a random one in range eats it.</div>
-                <div class="help-entry"><strong>Bump</strong> — walking into someone knocks you both. Hunger goes <em>up</em> (a cost, not a snack). Fat knocks farther and pays more hunger; thin gets shoved more and pays less. Food stays in each bag, except a parent walking into their kid passes 1 food while that kid is still following (no knock, no tax). Same blood line still skips the tax. A short cooldown so a pile does not fire every tick.</div>
+                <div class="help-entry"><strong>Bump</strong> — walking into someone knocks you both. Hunger goes <em>up</em> (a cost, not a snack). Fat knocks farther and pays more hunger; thin gets shoved more and pays less. Food stays in each bag, except a parent walking into their kid passes 1 food (no knock, no tax). Same blood line still skips the tax. A short cooldown so a pile does not fire every tick.</div>
                 <div class="help-entry">Bite size from the bag still uses a frozen “how big a mouthful” number times efficiency. Efficiency is the Differ trait; mouthful size is not.</div>
 
                 <div class="help-sec">Trends and History</div>
@@ -1871,8 +1809,8 @@
                 2: 'Who has kids'
             };
             const CURRENT_PHASE = 2;
-            // Stored fill. The desk stops at Evolve, so this is not drawn as a next phase. Human set 75% with the line.
-            const PHASE_WITHIN = 0.75;
+            // Stored fill. The desk stops at Evolve, so this is not drawn as a next phase. Human set 40% with the gate.
+            const PHASE_WITHIN = 0.40;
 
             function syncPhaseBrand() {
                 const tag = document.getElementById('app-tagline');
@@ -1981,11 +1919,7 @@
             const BIRTH_WARN = 4500;     // ~75s of “season coming”
             const BIRTH_BAG_MIN = 20;
             const BIRTH_HUNGER_MAX = 70;
-            const KID_NUDGE = { hungerRate: 0.004, efficiency: 0.08, hunt: 0.10, maxSpeed: 0.1, birthFreq: 0.12 };
-            // Parent dent stays the old step. A wider kid wobble must not change it.
-            const PARENT_DENT = { hungerRate: 0.004, efficiency: 0.08, maxSpeed: 0.1 };
-            const KID_JUMP_CHANCE = 1 / 8;
-            const KID_JUMP_MULT = 3;
+            const KID_NUDGE = { hungerRate: 0.004, efficiency: 0.08, hunt: 0.06, maxSpeed: 0.1, birthFreq: 0.08 };
 
             function defaultDifferCrowd() {
                 return {
@@ -2524,11 +2458,10 @@
 
             // === v1 Run History (minimal, in-memory only) ===
             // 0.9.4-run-logs: each entry may include knobs
-            const APP_VERSION = '2.3.0-tree';
+            const APP_VERSION = '2.2.0-gate';
             let runNumber = 0;
             let runStartTick = 0;
             let runHistory = [];
-            let birthNotes = [];
             let currentRunMaxSurvivalTicks = 0;
             let currentRunEnded = false;
             let bestLongestSec = 0;
@@ -2761,13 +2694,6 @@
                 const wantBag = 1 + Math.random() * 3;
                 const fromParent = Math.min(Math.max(0, parent.food), wantBag);
                 parent.food -= fromParent;
-                const jumpKey = Math.random() < KID_JUMP_CHANCE
-                    ? ['hungerRate', 'efficiency', 'hunt', 'maxSpeed', 'birthFreq'][Math.floor(Math.random() * 5)]
-                    : null;
-                const kidSpan = function (key) {
-                    const base = KID_NUDGE[key];
-                    return jumpKey === key ? base * KID_JUMP_MULT : base;
-                };
                 const spec = {
                     bodyId: 'k' + parent.id + '-' + parent.kidCount,
                     name: (parent.displayName || parent.bodyId) + ' kid',
@@ -2779,22 +2705,20 @@
                     y: y,
                     food: fromParent,
                     hunger: 22 + Math.random() * 18,
-                    hungerRate: nudgeKidTrait(bt.hungerRate, kidSpan('hungerRate'), 0.049, 0.084),
-                    efficiency: nudgeKidTrait(bt.efficiency, kidSpan('efficiency'), 1.2, 2.4),
-                    hunt: nudgeKidTrait(bt.hunt, kidSpan('hunt'), 0, 1),
-                    maxSpeed: nudgeKidTrait(bt.maxSpeed, kidSpan('maxSpeed'), 1.2, 2.4),
-                    birthFreq: nudgeKidTrait(specBirthFreq(bt), kidSpan('birthFreq'), 0, 1)
+                    hungerRate: nudgeKidTrait(bt.hungerRate, KID_NUDGE.hungerRate, 0.049, 0.084),
+                    efficiency: nudgeKidTrait(bt.efficiency, KID_NUDGE.efficiency, 1.2, 2.4),
+                    hunt: nudgeKidTrait(bt.hunt, KID_NUDGE.hunt, 0, 1),
+                    maxSpeed: nudgeKidTrait(bt.maxSpeed, KID_NUDGE.maxSpeed, 1.2, 2.4),
+                    birthFreq: nudgeKidTrait(specBirthFreq(bt), KID_NUDGE.birthFreq, 0, 1)
                 };
                 const kid = new Agent(spec);
                 parent.offspringIds.push(kid.id);
                 agents.push(kid);
-                notePerson(kid, parent.id);
                 // Lasting dent. Kid already copied the mix from before this step.
                 const t = parent.baseTraits;
-                t.hungerRate = Math.min(0.084, t.hungerRate + PARENT_DENT.hungerRate);
-                t.efficiency = Math.max(1.2, t.efficiency - PARENT_DENT.efficiency);
-                t.maxSpeed = Math.max(1.2, t.maxSpeed - PARENT_DENT.maxSpeed);
-                rememberTraits(parent);
+                t.hungerRate = Math.min(0.084, t.hungerRate + KID_NUDGE.hungerRate);
+                t.efficiency = Math.max(1.2, t.efficiency - KID_NUDGE.efficiency);
+                t.maxSpeed = Math.max(1.2, t.maxSpeed - KID_NUDGE.maxSpeed);
             }
 
             // Island clock. Closed months do not move anyone's personal birth wait.
@@ -2877,8 +2801,6 @@
                 if (!pair) return;
                 const parent = pair.parent;
                 const kid = pair.kid;
-                // Snack ends with cling. The birth bag already left in spawnKid.
-                if (kidCling(kid) <= 0) return;
                 if (tick - parent.lastBumpTick < BUMP_COOLDOWN) return;
                 const n = Math.min(PARENT_FEED, Math.max(0, parent.food));
                 if (n <= 0) return;
@@ -2982,15 +2904,10 @@
             function init() {
                 agents = [];
                 food = [];
-                birthNotes = [];
                 resetRunRng(Date.now());
                 applyPendingDifferOnReset();
                 const specs = spawnSpecsFromApplied();
-                for (let i = 0; i < specs.length; i++) {
-                    const a = new Agent(specs[i]);
-                    agents.push(a);
-                    notePerson(a, null);
-                }
+                for (let i = 0; i < specs.length; i++) agents.push(new Agent(specs[i]));
                 spawnFood(NUM_FOOD);
                 updateDifferRailChip();
             }
@@ -3121,17 +3038,9 @@
                 ctx.setTransform(1, 0, 0, 1, 0, 0);
             }
 
-            function countBirths() {
-                let n = 0;
-                for (let i = 0; i < birthNotes.length; i++) {
-                    if (birthNotes[i].parentId != null) n++;
-                }
-                return n;
-            }
-
             function computeMetrics() {
                 if (agents.length === 0) {
-                    currentMetrics = { alive: 0, deaths: starvationDeaths, births: countBirths(), totalFood: 0, avgHunger: 0, minFood: 0, maxFood: 0, avgFood: 0, sumBag: 0 };
+                    currentMetrics = { alive: 0, deaths: starvationDeaths, totalFood: 0, avgHunger: 0, minFood: 0, maxFood: 0, avgFood: 0, sumBag: 0 };
                     return;
                 }
                 let minF = Infinity, maxF = -Infinity, sumH = 0, sumFood = 0, totalFood = 0;
@@ -3146,7 +3055,6 @@
                 currentMetrics = {
                     alive: agents.length,
                     deaths: starvationDeaths,
-                    births: countBirths(),
                     totalFood: Math.round(totalFood * 10) / 10,
                     avgHunger: sumH / agents.length,
                     minFood: minF,
@@ -3206,141 +3114,12 @@
                 updateBirthSeasonBanner();
             }
 
-            function copyTraits(agent) {
-                const t = agent.baseTraits || agent.traits || {};
-                return {
-                    hungerRate: Number(t.hungerRate),
-                    efficiency: Number(t.efficiency),
-                    hunt: Number(t.hunt),
-                    maxSpeed: Number(t.maxSpeed),
-                    birthFreq: specBirthFreq(t)
-                };
-            }
-
-            function rememberTraits(agent) {
-                for (let i = 0; i < birthNotes.length; i++) {
-                    if (birthNotes[i].id === agent.id) {
-                        birthNotes[i].traits = copyTraits(agent);
-                        return;
-                    }
-                }
-            }
-
-            function notePerson(agent, parentId) {
-                birthNotes.push({
-                    id: agent.id,
-                    name: agent.displayName || agent.bodyId,
-                    bodyId: agent.bodyId,
-                    color: agent.groupColor || '#64748b',
-                    parentId: parentId,
-                    born: birthNotes.length,
-                    traits: copyTraits(agent)
-                });
-            }
-
-            function traitChip(label, value) {
-                return '<span><em>' + label + '</em><b>' + value + '</b></span>';
-            }
-
-            function traitLine(tr) {
-                if (!tr) return '';
-                return '<div class="summary-traits">'
-                    + traitChip('Hunger rate', Number(tr.hungerRate).toFixed(3))
-                    + traitChip('Efficiency', Number(tr.efficiency).toFixed(2))
-                    + traitChip('Hunt', Number(tr.hunt).toFixed(2))
-                    + traitChip('Speed', Number(tr.maxSpeed).toFixed(2))
-                    + traitChip('Birth', Number(tr.birthFreq).toFixed(2))
-                    + '</div>';
-            }
-
-            function childrenOf(id) {
-                const out = [];
-                for (let i = 0; i < birthNotes.length; i++) {
-                    if (birthNotes[i].parentId === id) out.push(birthNotes[i]);
-                }
-                return out;
-            }
-
-            function summaryClock(sec) {
-                if (sec < 60) return sec + 's';
-                const m = Math.round(sec / 60);
-                return m + ' min';
-            }
-
-            const SUMMARY_NAMES = 8;
-
-            function summaryKidLines(notes, depth) {
-                if (!notes.length || depth > 1) return '';
-                const shown = notes.slice(0, SUMMARY_NAMES);
-                let html = '<div class="summary-kids">';
-                for (let i = 0; i < shown.length; i++) {
-                    const n = shown[i];
-                    const kids = childrenOf(n.id);
-                    const extra = (depth === 0 && kids.length) ? ' · ' + kids.length + ' kids' : '';
-                    html += '<div>' + escapeHtml(n.name) + ' <span class="summary-id">' + escapeHtml(n.bodyId) + '</span>' + extra + '</div>';
-                    html += traitLine(n.traits);
-                    if (depth === 0 && kids.length) html += summaryKidLines(kids, 1);
-                }
-                const rest = notes.length - shown.length;
-                if (rest > 0) html += '<div class="summary-more">' + rest + ' more</div>';
-                html += '</div>';
-                return html;
-            }
-
-            function renderRunSummary() {
-                for (let i = 0; i < agents.length; i++) rememberTraits(agents[i]);
-                const sec = Math.round(Math.max(0, tick - runStartTick) / 60);
-                let births = 0;
-                for (let i = 0; i < birthNotes.length; i++) {
-                    if (birthNotes[i].parentId != null) births++;
-                }
-                const line = summaryClock(sec) + ' · ' + births + ' births · ' + starvationDeaths + ' starved · ' + agents.length + ' still walking';
-                let html = '';
-                if (!births) html += '<p class="summary-empty">Nobody had a kid.</p>';
-                html += '<p class="summary-line">' + line + '</p>';
-                const ranked = [];
-                for (let i = 0; i < birthNotes.length; i++) {
-                    const kids = childrenOf(birthNotes[i].id);
-                    if (kids.length) ranked.push({ note: birthNotes[i], kids: kids });
-                }
-                ranked.sort(function (a, b) {
-                    if (b.kids.length !== a.kids.length) return b.kids.length - a.kids.length;
-                    return a.note.born - b.note.born;
-                });
-                const top = ranked.slice(0, 3);
-                for (let i = 0; i < top.length; i++) {
-                    const n = top[i].note;
-                    const count = top[i].kids.length;
-                    html += '<div class="summary-person"><div class="summary-row">'
-                        + '<span class="summary-dot" style="background:' + escapeHtml(n.color) + '"></span>'
-                        + '<strong>' + escapeHtml(n.name) + '</strong>'
-                        + '<span class="summary-id">' + escapeHtml(n.bodyId) + '</span>'
-                        + '<span class="summary-n">' + count + (count === 1 ? ' kid' : ' kids') + '</span>'
-                        + '</div>' + traitLine(n.traits) + summaryKidLines(top[i].kids, 0) + '</div>';
-                }
-                return html;
-            }
-
-            function openRunSummary(html) {
-                const body = document.getElementById('summary-body');
-                const m = document.getElementById('modal-summary');
-                if (!body || !m) return;
-                body.innerHTML = html;
-                m.classList.add('open');
-                m.setAttribute('aria-hidden', 'false');
-            }
-
-            let summaryHold = false;
-
             function resetSim() {
-                if (summaryHold) return;
                 recordCurrentRun();
-                const summaryHtml = renderRunSummary();
-                running = false;
-                const pauseBtn = document.getElementById('btn-pause');
-                if (pauseBtn) pauseBtn.textContent = 'Resume';
-                summaryHold = true;
-                openRunSummary(summaryHtml);
+                tick = 0;
+                init();
+                startNewRun();
+                updateInspector();
             }
 
             function snapshotWorldKnobs() {
@@ -4275,7 +4054,6 @@
                 };
                 set('m-alive', m.alive ?? 0);
                 set('m-deaths', m.deaths ?? 0);
-                set('m-births', m.births ?? 0);
                 set('m-food', food.length);
                 set('m-avgh', Number.isFinite(m.avgHunger) ? m.avgHunger.toFixed(1) : '—');
                 set('m-avgf', Number.isFinite(m.avgFood) ? m.avgFood.toFixed(1) : '—');
@@ -4635,29 +4413,12 @@
                 if (m) { m.classList.remove('open'); m.setAttribute('aria-hidden', 'true'); }
             }
 
-            function closeSummaryModalOnly() {
-                const m = document.getElementById('modal-summary');
-                if (!m) return;
-                m.classList.remove('open');
-                m.setAttribute('aria-hidden', 'true');
-                if (!summaryHold) return;
-                summaryHold = false;
-                tick = 0;
-                init();
-                startNewRun();
-                updateInspector();
-                running = true;
-                const pauseBtn = document.getElementById('btn-pause');
-                if (pauseBtn) pauseBtn.textContent = 'Pause';
-            }
-
             function closeAllModals() {
                 closeAdvancedModalOnly();
                 closeHelpModalOnly();
                 closeVisionModalOnly();
                 closeHistoryModalOnly();
                 closeDifferModalOnly();
-                closeSummaryModalOnly();
             }
 
             function draftSnapshot() {
@@ -5328,7 +5089,6 @@
                     '<div style="color:var(--muted)">Efficiency</div><div class="font-mono text-right">' + Number(p(selectedAgent, 'efficiency')).toFixed(2) + '</div>' +
                     '<div style="color:var(--muted)">Speed</div><div class="font-mono text-right">' + Number(p(selectedAgent, 'maxSpeed')).toFixed(2) + '</div>' +
                     '<div style="color:var(--muted)">Birth</div><div class="font-mono text-right">' + Number(specBirthFreq(selectedAgent.baseTraits || tr)).toFixed(2) + '</div>' +
-                    '<div style="color:var(--muted)">Births</div><div class="font-mono text-right">' + (selectedAgent.kidCount | 0) + '</div>' +
                     '<div style="color:var(--muted)">Age</div><div class="font-mono text-right">' + (life / 60).toFixed(1) + 's</div>' +
                     (selectedAgent.parentId
                         ? '<div style="color:var(--muted)">Cling</div><div class="font-mono text-right">' + kidCling(selectedAgent).toFixed(2) + '</div>'
