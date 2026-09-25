@@ -2,7 +2,7 @@
 
 **Open work only.** Shipped or dropped items go in `IMPLEMENTATION_LOG.md`, then leave this file.
 
-Live: Phase **2 · Evolve** · `2.1.0-kids` (**this versioning is closed**). Path bar **30%** into Evolve (human set for kids on the island; ask before changing).  
+Live: Phase **2 · Evolve** · `2.2.0-gate`. Path bar **40%** (human set with the gate). `2.1.0-kids` is closed.  
 Live file is `index.html`. Do not grow `phase-0-survive-finished.html` or `phase-1-differ-finished.html`.
 
 Kids are on the island. Do not open another birth-knob PR first.

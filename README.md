@@ -2,7 +2,7 @@
 
 Dots walk a 2D island. Hunger goes up. They grab pellets and nibble a bag. Some last. Some don’t. You mix kinds of people, then watch who is still walking — and whether their kids look like them.
 
-Live game: [`index.html`](index.html), version **`2.1.0-kids`**. Open that file in a browser. There is no build.
+Live game: [`index.html`](index.html), version **`2.2.0-gate`**. Open that file in a browser. There is no build.
 
 This slice of Evolve is done enough to ship: adults stay, kids spawn next to a living parent, Mix has a fifth trait (birth frequency), bags pass from parent to kid. Differ and Survive are finished games in their own files. They do not share state.
 
@@ -60,7 +60,7 @@ If everyone is the same body, how many live? Seek vs wander, easy/medium/hard is
 If they are not the same at spawn, **who** is left? Mix, stories, graphs, three food spots, zoomed-out island, bump. Frozen label `1.5.0-bump`. Do not add features to this file.
 
 **Evolve (live)** — [`index.html`](index.html)  
-Do the leftovers’ kids look like them? Same Mix island as Differ, plus overlapping lives: parents stay, kids spawn beside them, copy Mix traits (hunger, efficiency, hunt, speed, **birth frequency**) with a small nudge. Cling, care, food from the parent. Version `2.1.0-kids`. This is the only file we grow.
+Do the leftovers’ kids look like them? Same Mix island as Differ, plus overlapping lives: parents stay, kids spawn beside them, copy Mix traits (hunger, efficiency, hunt, speed, **birth frequency**) with a small nudge. The kid follows the parent. Births only in an open season, and only with a bag. Version `2.2.0-gate`. This is the only file we grow.
 
 **Economy** is later. Trade. Not a file yet.
 
@@ -70,7 +70,7 @@ What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.m
 
 ## 5. Version labels
 
-The one-line label in `VERSION` and on the World badge should match. Live is **`2.1.0-kids`**.
+The one-line label in `VERSION` and on the World badge should match. Live is **`2.2.0-gate`**.
 
 Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`, island `1.4.0`, bump `1.5.0`, kids `2.1.0`). Last number = a small fix on that slice.
 
