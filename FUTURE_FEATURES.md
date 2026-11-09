@@ -1,23 +1,16 @@
 # Future features — trait-evolution-sim
 
-**Open work only.** Shipped or dropped items go in `IMPLEMENTATION_LOG.md`, then leave this file.
+This project is finished at `2.4.0-theme` (Phase 2 · Evolve). There is no open work left in this repository. Live file is `index.html`. Do not grow `phase-0-survive-finished.html` or `phase-1-differ-finished.html`.
 
-Live: Phase **2 · Evolve** · `2.4.0-theme`. This repository stops here. Path bar **75%** (left as set on the tree). `2.3.0-tree` is closed.  
-Live file is `index.html`. Do not grow `phase-0-survive-finished.html` or `phase-1-differ-finished.html`.
+Path bar was left at **75%** on the tree ship. That number stays as history.
 
-Kids are on the island. Do not open another birth-knob PR first.
-
----
-
-## Do next (Evolve)
-
-Nothing in this repository. Help and Vision now describe the live island. Generation graphs were dropped. The Summary, the Births tile, and the graphs already on the desk stay as they are.
+Shipped work lives in `IMPLEMENTATION_LOG.md`. The lists below are archived ideas only. They are not a roadmap and not “what’s next.”
 
 ---
 
-## Parked (Evolve — only if we miss it)
+## Archived · Evolve ideas never queued
 
-Not queued. Do not sneak into the metrics or theme PR.
+These stayed parked. They were not built.
 
 - **Body curve** (weak → prime → fade). Kids keep full Mix traits.
 - How big the nudge is (mutation knob).
@@ -32,19 +25,19 @@ Pets run note: prophets got huge; Control bumping them (other paint) is what coo
 
 ---
 
-## Not a phase, not next
+## Archived · Talk and Share (never a phase)
 
 **Talk (call)** — I point, I do not give. Tug nearby people toward a pile. No food leaves a bag. Needs a mark on the canvas. Useless if food is everywhere.
 
 **Share** — I give a pellet from my bag to a hungrier neighbor (same Mix paint, bag above a bar). **Not** the parent→kid handoff already live (birth bag + bump 1 food). Fair-eat is who wins the pellet on the ground.
 
-Do not glue Talk and Share. Trade clubs are Economy, not gifts.
+Do not glue Talk and Share.
 
 ---
 
-## Phase 3 · Economy
+## Archived · Phase 3 Economy ideas (never built)
 
-After inheritance actually **reads** (metrics + theme, not only kids existing). One step at a time; each is new physics.
+These ideas were sketched as a possible Phase 3. They were never built in this repository. Evolve was the last game.
 
 | Step | Name | What it is |
 |------|------|------------|
@@ -54,11 +47,11 @@ After inheritance actually **reads** (metrics + theme, not only kids existing). 
 | 3.4 | Labor | Some people work for others. |
 | 3.5 | Capital | Saving / investing — only if 3.1–3.4 need it. |
 
-Traits that only make sense once trade or storage exists wait for this phase.
+Traits that only make sense once trade or storage exists waited for this phase. That phase did not happen here.
 
 ---
 
-## Tooling (any phase, lower priority)
+## Archived · Tooling ideas
 
 - Folder of old run files, not only this browser session.
 - Comment sections inside the single `index.html` — no extra source files unless asked.

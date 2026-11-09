@@ -1,146 +1,69 @@
-# Trait evolution sim
+# trait-evolution-sim
 
-Dots walk a 2D island. Hunger goes up. They grab pellets and nibble a bag. Some last. Some don’t. You mix kinds of people, watch who is still walking, and watch the kids born next to them.
+A 2D island where simple people eat, survive, and have kids. You mix their traits and watch which kinds win.
 
-Live game: [`index.html`](index.html), version **`2.4.0-theme`**. Open that file in a browser. There is no build.
+![Evolve run with parents, kids, Mix, and Trends](design-docs/images/readme-hero.png)
 
-Adults stay on the map. Kids appear beside a living parent and copy that parent’s mix, including how often they have kids. A starter bag moves from parent to kid. Differ and Survive are finished games in their own files. They do not share state.
+## Play it
 
-If you are an AI about to change the sim, read **`AGENTS.md` first** (how to talk, layout vs mechanics, when to open a PR). This README is for a human who found the repo.
+There is no hosted demo. Download or clone the repo so `index.html` and the two freeze files sit in the same folder, then open `index.html` in a browser. There is no build step. Opening a single file from GitHub only shows the source.
 
----
+## What to watch for
 
-## 1. What this is
+- One color camping on the food while another starves.
+- A parent with kids nearby, still walking the same patch.
+- A mix that looked even at Reset, then one kind quietly takes the map.
 
-A small, single-file sim. One island, colored people, food piles, a Mix panel, graphs, a history of runs.
+## How to play (Evolve)
 
-Survive, Differ, and Evolve are three games in this repo. We freeze a playable copy when a phase feels finished, then live `index.html` becomes the next one. Trade is a different project. It will not be added here.
+1. Open **Mix**.
+2. Pick a story (Groups, Families, or Rungs), or edit the groups yourself.
+3. Press **Apply**. The island does not change yet.
+4. Press **Reset**. That is when the mix spawns.
+5. Watch the island. Click a person for their traits and bag. Trends and History sit on the right. Food interval and Pause / Speed are live. The in-app Help has the full rules.
 
-**Right now** the live game is Evolve. Adults stay on the island. Their kids appear beside them, copy their mix, and have to live on that copy.
+## Three games, three questions
 
----
+Each file is its own game. Keep them in the same folder if you want all three.
 
-## 2. Why this repo exists
+- **Survive** lives in [`phase-0-survive-finished.html`](phase-0-survive-finished.html). If everyone is the same body, how many live?
+- **Differ** lives in [`phase-1-differ-finished.html`](phase-1-differ-finished.html). If they are not the same at spawn, who is left?
+- **Evolve** is the live game in [`index.html`](index.html). Adults stay. Do their kids look like them?
 
-Two jobs. They are not a slogan stacked on top of each other.
+## What we learned
 
-**Practice.** A human is PM. An AI pair types. We ship small steps, look at them, then open a PR. GitHub is part of the work, not a dump at the end.
-
-**Watch the island.** Not only “how many are still walking.” A camp on the food. One color owning a patch. A Prophet line filling the map while Mayflies burn. Something you did not type as a goal, that you can still point at.
-
-How we decide what to type next lives in §7, not here.
-
----
-
-## 3. How to play (Evolve)
-
-Keep the three HTML files in the same folder if you want all three games. There is no in-app button between them. A lone download of `index.html` will not find the freeze files.
-
-1. Open [`index.html`](index.html).
-2. Open **Mix**. Pick a **story** (Groups, Families, or Rungs) or edit **Groups** / **Roster**. Those two tabs are separate drafts.
-3. **Apply** remembers the open tab. The island does not change yet.
-4. **Reset** is when that mix actually spawns.
-5. Food interval on the left is live weather. Pellets fall as even rain. Pause / Speed are the clock.
-6. Watch colors. Click a person for Mix traits, bag, **Birth**, and cling. Trends and History sit on the right.
-
-A person can have a kid only during an open birth season, after about a minute of life, with a bag of at least 20 and hunger under 70. The first season opens at about five minutes. It stays open for about two and a half minutes, then closed for about five. A yellow banner warns for about 75 seconds before it opens. Mix Reset stamps at most 30 people. Kids born during the run are not capped. The kid follows that parent for about five minutes. The parent does not chase.
-
-Lab and Special are only in the Survive freeze — not on this desk.
-
----
-
-## 4. Three games, three files
-
-Each file is a whole game with its own question. Open one at a time. When a phase closed we froze it and stopped editing it.
-
-**Survive** — [`phase-0-survive-finished.html`](phase-0-survive-finished.html)  
-If everyone is the same body, how many live? Seek vs wander, easy/medium/hard island, Special, Lab, Trends, History. Frozen label `0.9.6-params`. Do not add features to this file.
-
-**Differ** — [`phase-1-differ-finished.html`](phase-1-differ-finished.html)  
-If they are not the same at spawn, **who** is left? Mix, stories, graphs, three food spots, zoomed-out island, bump. Frozen label `1.5.0-bump`. Do not add features to this file.
-
-**Evolve (live)** — [`index.html`](index.html)  
-Adults stay. A kid is born next to a living parent and copies that parent’s hunger, meals, hunt, speed, and birth frequency. The copy wobbles a bit, and about one birth in eight one trait jumps. Births happen only in an open season, and only when the parent’s bag is full enough and they are not too hungry. Each birth leaves the parent burning a little faster, eating a little worse, and walking a little slower. The parent passes one food only while the kid is still following. Reset opens a Summary of who had kids, then the next crowd starts when that window closes. Version `2.4.0-theme`. This repository stops with this game.
-
-What’s next: `FUTURE_FEATURES.md`. What already shipped: `IMPLEMENTATION_LOG.md`. Old numbered copies: `archive/`.
-
----
-
-## 5. Version labels
-
-The one-line label in `VERSION` and on the World badge should match. Live is **`2.4.0-theme`**.
-
-Middle number = a playable slice (Crowd `1.0.0`, stories `1.1.0`, trends `1.2.0`, patches `1.3.0`, island `1.4.0`, bump `1.5.0`, kids `2.1.0`). Last number = a small fix on that slice.
-
----
-
-## 6. How we got here
-
-### Survive (closed)
-
-Everyone uses the same knobs. Hunger goes up, they walk, they eat. How many are still walking after a while is the score.
-
-Lab in that file is for “run the same body 30 times.” Don’t use it to judge a mixed crowd. One fat leftover sitting on a pile of bags makes average food look huge — don’t rank by that.
-
-We closed Survive when Play + Lab + export felt like a game.
-
-### Differ (closed)
-
-People are **not** the same at spawn. Frozen when bump felt solid. Babies are Evolve.
-
-We picked four traits by changing one knob at a time on a uniform crowd and asking how many were still standing:
+In Differ we kept four body traits by changing one knob at a time on a uniform crowd and asking how many were still standing:
 
 | Trait | Why it stayed |
 |-------|----------------|
 | Hunger rate | Changes how many live, smoothly. |
 | Efficiency | Same. How much a bite from the bag helps. Very low wipes the crowd. |
-| Hunt | Seeing / pulling / pushing toward food was basically on or off. One number. Zero is off. |
-| Speed | Barely changed *how many* lived. Kept so a mix can look slow vs twitchy. Fat leftovers also get slower as their bag (and drawn size) grows. |
+| Hunt | Seeking food was basically on or off. Zero is off. |
+| Speed | Barely changed how many lived. Kept so a mix can look slow vs twitchy. |
 
-Meal size and “how hungry before I nibble the bag” did not change how many lived. Food interval and how many people are weather, not a body.
+Meal size and “how hungry before I nibble” did not change survival. Food interval and headcount are weather, not a body. Evolve adds birth frequency so parents can have kids.
 
-Judge a mix on the island: who is still walking.
+Do not rank a mix by average bag. One fat leftover on a pile of food makes that number look huge while the rest of the crowd is already gone. Judge who is still walking.
 
-### Evolve (this ship)
+## Status
 
-Differ ends when you look at who is still walking. Evolve continues from those people. They stay on the map and have kids beside them. You can watch a parent and a child at the same time.
+Live release: `2.4.0-theme`. This project is complete. Evolve was the last game. The economy and trade ideas were never built here.
 
-Birth frequency is a Mix trait. It sets how often a person tries. Cling is a clock, about five minutes, not another slider. During that time the kid follows the parent. Kids are born with a full mix. People in the same blood line do not knock or tax each other. The parent gives the kid a starter bag at birth, and still passes one food when they walk into that kid. Each birth also dents the parent’s burn, meals, and speed. That dent stays.
+## How it's built
 
----
+One person, Tiago, is the product owner. An AI pair helps type. The live game is one HTML file. Versions are named `N.x.y-codename`. Work ships one small step at a time. When a phase feels finished, that game is frozen in its own file and live `index.html` becomes the next one. Agent rules live in [`AGENTS.md`](AGENTS.md).
 
-## 7. How we build
-
-One idea at a time when we can. Live app is a single `index.html` (no build). The human decides when to open a PR. Prefer the human to commit unless they say otherwise.
-
-If a change does not make it easier to **see a leftover shape** (who, where, which color, whose kids) — or to **ship a small GitHub step** — it waits.
-
-**Layout vs mechanics.** CSS, panels, labels: the AI may edit `index.html`. Hunger, movement, eat, spawn: the human leads; the AI proposes; the human says when to apply. Layout is cheap to undo if `archive/` has a snapshot. Mechanics are not. Full rules: **`AGENTS.md`**.
-
-When Survive closed we froze `phase-0-survive-finished.html` and live `index.html` became Differ. When Differ closed we froze `phase-1-differ-finished.html` and live `index.html` became Evolve.
-
-**Do not patch** the two freeze files. Do not land on `main` unless the human says merge / push to main. “Let’s push” means open a PR after they looked.
-
----
-
-## 8. What’s in the folder
+## Repo map
 
 | Path | What it is |
 |------|------------|
-| `index.html` | Live Evolve. The only file we grow. |
-| `phase-1-differ-finished.html` | Frozen Differ. Play it; don’t patch it. |
-| `phase-0-survive-finished.html` | Frozen Survive. Play it; don’t patch it. |
-| `phase-1-differ-presets/` | Extra Mix Import JSON. Stories in the app don’t need these files. |
-| `VERSION` | One-line live label. Must match the World badge. |
-| `README.md` | This file. For humans. |
-| `AGENTS.md` | How any AI should behave here (talk, PRs, shipping). |
-| `FUTURE_FEATURES.md` | Open work only. |
-| `IMPLEMENTATION_LOG.md` | What each version shipped, newest at the bottom. |
-| `archive/` | Old `index.html` copies + old docs. Index: `archive/MANIFEST.md`. |
-| `design-docs/` | Design notes from when we needed them. Not the live app. |
-
----
-
-## 9. What’s next
-
-This repository stops at `2.4.0-theme`. Help and Vision describe the island as it is. Generation graphs were not added. Body curve, a mutation slider, own-color tax, and crowd avoid stay parked. Trade is a different project.
+| `index.html` | Live Evolve. The only file that grew. |
+| `phase-0-survive-finished.html` | Frozen Survive. Play it; do not patch it. |
+| `phase-1-differ-finished.html` | Frozen Differ. Play it; do not patch it. |
+| `phase-1-differ-presets/` | Extra Mix Import JSON. |
+| `VERSION` | Live label. Must match the header badge. |
+| `AGENTS.md` | How any AI should behave here. |
+| `FUTURE_FEATURES.md` | Archived ideas. No open work. |
+| `IMPLEMENTATION_LOG.md` | What each version shipped. |
+| `archive/` | Old snapshots. Index: `archive/MANIFEST.md`. |
+| `design-docs/` | Design notes. Not the live app. |
