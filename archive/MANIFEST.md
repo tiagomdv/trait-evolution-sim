@@ -60,4 +60,11 @@ Live sim is always `../index.html`. Version label is in `../VERSION`.
 
 **Thematic arc:** Survive → Differ → Evolve → Economy  
 **Version scheme:** `N.x` where major N = phase number  
-Trade lives inside Phase 3 · Economy. Live docs updated; history preserved in `IMPLEMENTATION_LOG.md` and `archive/docs/`; `FUTURE_FEATURES.md` is active backlog only (see 2026-07-30 hygiene).
+Trade lived inside Phase 3 · Economy in the 2026-07-02 plan. Live docs from that day preserved history in `IMPLEMENTATION_LOG.md` and `archive/docs/`. See Finished note (2026-11-09): Economy was never built; `FUTURE_FEATURES.md` is an archive now.
+
+---
+
+## Finished note (2026-11-09)
+
+This repository finished at Evolve · `2.4.0-theme`. Economy was never built here. `FUTURE_FEATURES.md` keeps the old Economy sketch as archived ideas only. No new `index.html` snapshot in this docs-only ship.
+

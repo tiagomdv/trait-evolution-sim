@@ -1,6 +1,6 @@
 # Implementation Log — trait-evolution-sim
 
-What **already shipped**. Newest at the bottom. **Add** new dated sections; do not rewrite or delete old ones. What’s next lives only in `FUTURE_FEATURES.md`.
+What **already shipped**. Newest at the bottom. **Add** new dated sections; do not rewrite or delete old ones. Archived ideas live in `FUTURE_FEATURES.md`. This project finished at `2.4.0-theme`.
 
 Older entries keep the words they had when we wrote them. New entries: normal English.
 
@@ -905,3 +905,15 @@ Not in this slice: generation graphs, unique export ids, Help and Vision rewrite
 Layout. The header says “Parents and their kids.” Vision and Help no longer say children are still to come. Help opens with a short how to play. Birth frequency text matches the wider copy and the rare jump. Lab, Special, and trade are named as outside this file.
 
 No birth, snack, nudge, or graph changes. Generation graphs were dropped. This repository stops here.
+
+---
+
+## 2026-11-09 — README rewrite; project marked finished (docs only)
+
+**Version / Phase:** live still `2.4.0-theme` · Phase 2 · Evolve · no version bump  
+**Track:** Docs only. `index.html`, freeze files, and `VERSION` untouched.
+
+Rewrote `README.md` for outsiders (hook, screenshot, Play it, how to play, three games, what we learned, finished status, how it was built, repo map). Added `design-docs/images/readme-hero.png` from a live Evolve run with families visible.
+
+Marked the project finished at Evolve. `FUTURE_FEATURES.md` now says there is no open work; Phase 3 Economy ideas (Trade, Storage, Production, Labor, Capital) stay under an archived heading as never built. `AGENTS.md` and `archive/MANIFEST.md` match that finished status. History in this log is unchanged above this entry.
+

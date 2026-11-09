@@ -67,7 +67,7 @@ Still true:
 2. Bump `VERSION` and the in-app badge together.
 3. Snapshot meaningful steps only (risky rewrite, a slice that feels done, before a PR).
 4. Do not quietly change hunger / movement / eat while doing layout.
-5. Update `PHASE_WITHIN` (the path above the island) so it matches what this phase has actually shipped. Survive and Differ are done (`CURRENT_PHASE` 2). Evolve toward Economy is 0–1. Do not leave it at an old fill.
+5. Update `PHASE_WITHIN` (the path above the island) so it matches what this phase has actually shipped. Survive, Differ, and Evolve are done (`CURRENT_PHASE` 2). The project finished at Evolve. Do not invent a new fill.
 
 ### Smoke test
 
@@ -84,7 +84,7 @@ Still true:
 3. `archive/MANIFEST.md` has a row for any new snapshot
 4. README live line updated if the version changed
 5. Short new section at the **bottom** of `IMPLEMENTATION_LOG.md` (add, don’t rewrite the past)
-6. `FUTURE_FEATURES.md` — remove what shipped or we dropped; leave only still-open work
+6. `FUTURE_FEATURES.md` — this project is finished; that file holds archived ideas only, not a backlog
 7. No full design-doc package unless the human asked
 
 ### PR description
@@ -143,7 +143,7 @@ Do **not** edit files inside `archive/` (only add snapshots + MANIFEST rows).
 2. Layout: AI may write `index.html`. Mechanics: human leads.
 3. Human owns ship: they look, then they ask for the PR. No surprise `main`.
 4. Stay in the current phase.
-5. Log = history (append only). FUTURE_FEATURES = open work only.
+5. Log = history (append only). FUTURE_FEATURES = archived ideas only (project finished).
 
 Wanted later → `FUTURE_FEATURES.md`. Dropped → one line in `IMPLEMENTATION_LOG.md`, then delete it from FUTURE_FEATURES.
 
@@ -151,14 +151,14 @@ Wanted later → `FUTURE_FEATURES.md`. Dropped → one line in `IMPLEMENTATION_L
 
 ## Phases
 
-Survive → Differ → Evolve → Economy
+Survive → Differ → Evolve. Economy was sketched and never built here.
 
 | Phase | Now |
 |-------|-----|
 | 0 Survive | Closed. Frozen file. |
 | 1 Differ | Closed. Frozen file. Mixed bodies, bump. |
-| 2 Evolve | Closed at `2.4.0-theme`. Adults stay, kids copy them, Reset opens a summary. |
-| 3 Economy | Later. Trade first. |
+| 2 Evolve | Finished at `2.4.0-theme`. Adults stay, kids copy them, Reset opens a summary. |
+| 3 Economy | Never built in this repository. Ideas archived in `FUTURE_FEATURES.md`. |
 
 Using leftover living people to **make** the next crowd is Evolve. Looking at who is still alive was Differ.
 
@@ -172,7 +172,7 @@ Using leftover living people to **make** the next crowd is Evolve. Looking at wh
 - Remove matching items from `FUTURE_FEATURES.md`
 - MANIFEST row if you added an archive file
 
-`IMPLEMENTATION_LOG.md` is a museum. Do not delete old *ships*. Same-day notes may be folded into the two version headings they belong to if the human asks. `FUTURE_FEATURES.md` is only what’s still open — no “we decided / we brainstormed / we shipped this.”
+`IMPLEMENTATION_LOG.md` is a museum. Do not delete old *ships*. Same-day notes may be folded into the two version headings they belong to if the human asks. `FUTURE_FEATURES.md` holds archived ideas only. This project is finished at `2.4.0-theme`.
 
 ---
 
@@ -184,7 +184,7 @@ Using leftover living people to **make** the next crowd is Evolve. Looking at wh
 - Open a PR or push to `main` unless the human asked.
 - Edit `archive/` except adding snapshots + MANIFEST.
 - Rewrite history in the log.
-- Leave shipped or dropped items in FUTURE_FEATURES.
+- Treat `FUTURE_FEATURES.md` as a live backlog. The project is finished; that file is an archive.
 - Write Help or docs as if the reader already knows Survive Lab.
 
 ---
@@ -197,6 +197,6 @@ Talk to me like a person in this chat, not only in files you edit.
 This session is layout / mechanics: <pick one>.
 Goal: <one sentence>.
 Live VERSION is the source of truth. Archive before risky edits. Single index.html.
-FUTURE_FEATURES is open work only. History goes in IMPLEMENTATION_LOG.
+FUTURE_FEATURES is archived ideas only (project finished). History goes in IMPLEMENTATION_LOG.
 Do not push to main unless I say so. Open a PR when I ask to ship / push / PR.
 ```
